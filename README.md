@@ -1,6 +1,8 @@
 # TestBuddy
 
+<!-- Plugin description -->
 The IDE plugin that helps you during testing.
+<!-- Plugin description end -->
 
 Some of the features in the plugin:
 
