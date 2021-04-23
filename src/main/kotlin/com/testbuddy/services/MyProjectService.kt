@@ -1,7 +1,7 @@
-package com.github.jorgeromeu.testbuddy.services
+package com.testbuddy.services
 
-import com.github.jorgeromeu.testbuddy.MyBundle
 import com.intellij.openapi.project.Project
+import com.testbuddy.MyBundle
 
 class MyProjectService(project: Project) {
 

@@ -1,9 +1,9 @@
-package com.github.jorgeromeu.testbuddy.listeners
+package com.testbuddy.listeners
 
-import com.github.jorgeromeu.testbuddy.services.MyProjectService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
+import com.testbuddy.services.MyProjectService
 
 internal class MyProjectManagerListener : ProjectManagerListener {
 
