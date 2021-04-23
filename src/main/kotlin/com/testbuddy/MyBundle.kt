@@ -1,4 +1,4 @@
-package com.github.jorgeromeu.testbuddy
+package com.testbuddy
 
 import com.intellij.AbstractBundle
 import org.jetbrains.annotations.NonNls
