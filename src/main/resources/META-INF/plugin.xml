@@ -16,4 +16,10 @@
         <listener class="com.testbuddy.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
+
+    <!-- Extension point for Main User Interface-->
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="TestBuddy" secondary="true" icon="AllIcons.General.Modified" anchor="right"
+                    factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
+    </extensions>
 </idea-plugin>
