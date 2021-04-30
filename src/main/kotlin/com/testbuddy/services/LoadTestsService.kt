@@ -7,7 +7,7 @@ import com.testbuddy.models.TestCaseData
 
 class LoadTestsService {
 
-    private val testAnnotations = setOf("org.junit.jupiter.api.Test")
+    private val testAnnotations = setOf("Test", "ParameterizedTest")
 
     /**
      * Extracts all the test methods from a PSI file.
@@ -16,11 +16,8 @@ class LoadTestsService {
      * @return a list of TestCaseData elements representing the test cases
      */
     fun getTests(file: PsiFile): List<TestCaseData> {
-
         val methods = PsiTreeUtil.findChildrenOfType(file, PsiMethod::class.java)
-        val tests = methods.filter(this::isTestMethod).map { TestCaseData(it.name) }
-
-        return tests
+        return methods.filter(this::isTestMethod).map { TestCaseData(it.name) }
     }
 
     /**
