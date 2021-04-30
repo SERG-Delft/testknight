@@ -9,7 +9,8 @@
     <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
     </extensions>
 
 </idea-plugin>
