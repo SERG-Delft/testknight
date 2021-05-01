@@ -30,9 +30,6 @@ repositories {
 }
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
-    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
-    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
-    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     implementation("org.testng:testng:7.1.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0")
 
