@@ -6,14 +6,10 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.testbuddy.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.testbuddy.services.MyProjectService"/>
+        <applicationService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.testbuddy.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
