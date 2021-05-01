@@ -1,5 +1,6 @@
 package com.testbuddy.services
 
+import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
@@ -17,7 +18,7 @@ class LoadTestsService {
      */
     fun getTests(file: PsiFile): List<TestCaseData> {
         val methods = PsiTreeUtil.findChildrenOfType(file, PsiMethod::class.java)
-        return methods.filter(this::isTestMethod).map { TestCaseData(it.name) }
+        return methods.filter(this::isTestMethod).map { TestCaseData(it.name, (it.parent as PsiClass).name ?: "", it) }
     }
 
     /**

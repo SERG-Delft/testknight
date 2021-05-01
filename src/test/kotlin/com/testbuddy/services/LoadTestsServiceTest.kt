@@ -1,5 +1,8 @@
 package com.testbuddy.services
 
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.models.TestCaseData
 import junit.framework.TestCase
@@ -23,13 +26,14 @@ internal class LoadTestsServiceTest : BasePlatformTestCase() {
     fun testLoadTestsSimple() {
         this.myFixture.configureByFile("/PointTest.java")
         val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val result = service.getTests(psi)
-        val expected = listOf(
-            TestCaseData("translateTest"),
-            TestCaseData("setXTest"),
-            TestCaseData("setYTest"),
-            TestCaseData("parameterizedTest")
-        )
+        val expected = if (testClass != null) listOf(
+            TestCaseData("translateTest", "PointTest", testClass.findMethodsByName("translateTest")[0] as PsiMethod),
+            TestCaseData("setXTest", "PointTest", testClass.findMethodsByName("setXTest")[0] as PsiMethod),
+            TestCaseData("setYTest", "PointTest", testClass.findMethodsByName("setYTest")[0] as PsiMethod),
+            TestCaseData("parameterizedTest", "PointTest", testClass.findMethodsByName("parameterizedTest")[0] as PsiMethod)
+        ) else listOf<TestCaseData>()
         TestCase.assertEquals(expected, result)
     }
 
