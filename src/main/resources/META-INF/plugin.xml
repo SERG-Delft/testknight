@@ -18,8 +18,21 @@
     </applicationListeners>
 
     <!-- Extension point for Main User Interface-->
+
     <extensions defaultExtensionNs="com.intellij">
+
         <toolWindow id="TestBuddy" secondary="true" icon="AllIcons.General.Modified" anchor="right"
                     factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
     </extensions>
+
+    <!---Action in CopyPaste tab which updates the CopyPaste UI -->
+    <actions>
+        <action id="deployAction" class="com.testbuddy.views.actions.LoadTestAction"
+                text="Add New Test Cases" description="Adds a new template test case."
+                icon="AllIcons.General.Add">
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
+            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+        </action>
+    </actions>
+
 </idea-plugin>
