@@ -13,4 +13,7 @@
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
     </extensions>
 
+    <actions>
+        <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
+    </actions>
 </idea-plugin>
