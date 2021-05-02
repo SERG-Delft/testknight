@@ -1,18 +1,25 @@
 package com.testbuddy.views
 
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.SimpleToolWindowPanel
+import com.intellij.ui.CheckboxTree
+import com.intellij.ui.CheckboxTree.CheckboxTreeCellRenderer
+import com.intellij.ui.CheckedTreeNode
+import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.layout.panel
+import com.intellij.util.ui.tree.TreeUtil
 import java.awt.Component
+import java.awt.Dimension
 import javax.swing.BoxLayout
 import javax.swing.JButton
-import javax.swing.JPanel
+import javax.swing.JTree
 
 class UserInterface {
 
@@ -38,38 +45,45 @@ class UserInterface {
         return x
     }
 
+    /**
+     * Temporary suppress because skeleton code doesn't use the attributes.
+     */
+    @Suppress("UnusedPrivateMember")
     private fun createCheckListMethod(nameMethod: String, checkBoxes: List<JBCheckBox>): Component {
-        checkBoxes.size
-
         val list: MutableList<JBCheckBox> = mutableListOf()
         list.add(createCheckBox("Item 1", "It works"))
         list.add(createCheckBox("Item 2", "It works2"))
 
-        // var top : DefaultMutableTreeNode  = DefaultMutableTreeNode("The Java Series")
-        // createNodes(top)
-        // var tree: JBTreeTable = JBTreeTable()
+        val root = CheckedTreeNode("root")
 
-//
-//        var listItems : JBList <JBCheckBox> = JBList<JBCheckBox>(list)
-//        listItems.setCellRenderer { list, value, index, isSelected, cellHasFocus -> value}
-//        for (checkBox in list) {
-//           listItems.add(checkBox)
-//        }
-
-//         list2.cellRenderer
-
-        return panel {
-
-            hideableRow(nameMethod) {
-                right {
-                    for (checkBox in list) {
-                        row {
-                            checkBox()
-                        }
-                    }
+        val tree = CheckboxTree(
+            object : CheckboxTreeCellRenderer(true, false) {
+                override fun customizeRenderer(
+                    tree: JTree,
+                    value: Any,
+                    selected: Boolean,
+                    expanded: Boolean,
+                    leaf: Boolean,
+                    row: Int,
+                    hasFocus: Boolean
+                ) {
+                    if (value !is CheckedTreeNode) return
+                    val pair: String = value.userObject as String
+                    val renderer = textRenderer
+                    renderer.icon = AllIcons.General.Modified
+                    renderer.append(pair, SimpleTextAttributes.REGULAR_ATTRIBUTES)
                 }
-            }
-        }
+            },
+            root
+        )
+
+        val x = CheckedTreeNode("Hello")
+        x.add(CheckedTreeNode("Hello from inside"))
+        (tree.model.root as CheckedTreeNode).add(x)
+        (tree.model.root as CheckedTreeNode).add(CheckedTreeNode("Hello 2"))
+        TreeUtil.expand(tree, 1)
+
+        return tree
     }
 
     private fun addMethodChecklist(nameMethod: String, checkBoxes: List<JBCheckBox>): Component {
@@ -77,11 +91,10 @@ class UserInterface {
     }
 
     private fun createCheckList(): Component? {
-        // var scrollPanel = JBScrollPane()
-        // var panel= JPanel()
         val panel = JBScrollPane()
-        val content = JPanel()
+        val content = panel {}
         content.layout = BoxLayout(content, BoxLayout.PAGE_AXIS)
+        content.size = Dimension(Int.MAX_VALUE, Int.MAX_VALUE)
         panel.setViewportView(content)
 
         val button = JButton("test")
@@ -89,16 +102,6 @@ class UserInterface {
             content.add(addMethodChecklist("Add Method", mutableListOf()))
         }
         content.add(button)
-
-//        content.add(addMethodChecklist("ajwijw", mutableListOf()))
-//        content.add(addMethodChecklist("qko2kqo", mutableListOf()))
-//        checkListMethods.add(addMethodChecklist("ajwijw", mutableListOf()))
-//        return panel() {
-//            for (method in checkListMethods)
-//                panel(){
-//                    method
-//                }
-//        }
 
         return panel
     }
