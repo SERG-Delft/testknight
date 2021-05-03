@@ -6,14 +6,34 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.testbuddy.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.testbuddy.services.MyProjectService"/>
+        <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.testbuddy.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <!-- Extension point for Main User Interface-->
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <toolWindow id="TestBuddy" secondary="true" icon="AllIcons.General.Modified" anchor="right"
+                    factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
+    </extensions>
+
+    <!---Action in CopyPaste tab which updates the CopyPaste UI -->
+    <actions>
+        <action id="deployAction" class="com.testbuddy.views.actions.LoadTestAction"
+                text="Add New Test Cases" description="Adds a new template test case."
+                icon="AllIcons.General.Add">
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
+            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+        </action>
+    </actions>
+
+
+    <actions>
+        <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
+    </actions>
+
 </idea-plugin>
