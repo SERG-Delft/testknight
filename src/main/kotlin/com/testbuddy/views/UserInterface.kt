@@ -16,7 +16,6 @@ import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.layout.panel
 import com.intellij.util.ui.tree.TreeUtil
 import java.awt.Component
-import java.awt.Dimension
 import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JTree
@@ -33,7 +32,7 @@ class UserInterface {
         return mainUI
     }
 
-    fun createCheckBox(name: String, action: String): JBCheckBox {
+    private fun createCheckBox(name: String, action: String): JBCheckBox {
         val x = JBCheckBox(name)
         x.addActionListener {
             run {
@@ -47,6 +46,10 @@ class UserInterface {
 
     /**
      * Temporary suppress because skeleton code doesn't use the attributes.
+     *
+     * Create a new CheckboxTree everytime to add new checklists.
+     * Currently this has skeleton code for CellRenderer and other features which needs to be modified later.
+     *
      */
     @Suppress("UnusedPrivateMember")
     private fun createCheckListMethod(nameMethod: String, checkBoxes: List<JBCheckBox>): Component {
@@ -68,36 +71,43 @@ class UserInterface {
                     hasFocus: Boolean
                 ) {
                     if (value !is CheckedTreeNode) return
-                    val pair: String = value.userObject as String
+                    val text: String = value.userObject as String
                     val renderer = textRenderer
+
                     renderer.icon = AllIcons.General.Modified
-                    renderer.append(pair, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                    renderer.append(text, SimpleTextAttributes.REGULAR_ATTRIBUTES)
                 }
             },
             root
         )
 
-        val x = CheckedTreeNode("Hello")
-        x.add(CheckedTreeNode("Hello from inside"))
-        (tree.model.root as CheckedTreeNode).add(x)
-        (tree.model.root as CheckedTreeNode).add(CheckedTreeNode("Hello 2"))
+        val checklistNode = CheckedTreeNode("Hello")
+        checklistNode.add(CheckedTreeNode("Hello from inside"))
+
+        (tree.model.root as CheckedTreeNode).add(checklistNode)
         TreeUtil.expand(tree, 1)
 
-        return tree
+        val panel = panel {}
+        panel.add(tree)
+
+        return panel
     }
 
     private fun addMethodChecklist(nameMethod: String, checkBoxes: List<JBCheckBox>): Component {
         return createCheckListMethod(nameMethod, checkBoxes)
     }
 
+    /**
+     * Creates the base UI which has scroll panel and a button which adds checklist to the panel.
+     */
     private fun createCheckList(): Component? {
         val panel = JBScrollPane()
         val content = panel {}
         content.layout = BoxLayout(content, BoxLayout.PAGE_AXIS)
-        content.size = Dimension(Int.MAX_VALUE, Int.MAX_VALUE)
+
         panel.setViewportView(content)
 
-        val button = JButton("test")
+        val button = JButton("Add checklist")
         button.addActionListener {
             content.add(addMethodChecklist("Add Method", mutableListOf()))
         }
