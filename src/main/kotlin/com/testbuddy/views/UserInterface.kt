@@ -17,8 +17,10 @@ import com.intellij.ui.layout.panel
 import com.intellij.util.ui.tree.TreeUtil
 import java.awt.Component
 import java.awt.Dimension
+import java.time.Instant
 import javax.swing.BoxLayout
 import javax.swing.JButton
+import javax.swing.JLabel
 import javax.swing.JTree
 
 class UserInterface {
@@ -57,7 +59,7 @@ class UserInterface {
         val root = CheckedTreeNode("root")
 
         val tree = CheckboxTree(
-            object : CheckboxTreeCellRenderer(true, false) {
+            object : CheckboxTreeCellRenderer(true, true) {
                 override fun customizeRenderer(
                     tree: JTree,
                     value: Any,
@@ -69,8 +71,12 @@ class UserInterface {
                 ) {
                     if (value !is CheckedTreeNode) return
                     val pair: String = value.userObject as String
+                    //tree.size = Dimension(25,20)
+                    tree.size = Dimension(1000, 52)
+                  //  tree.size = TreeUtil.getPreferredMinSize()
                     val renderer = textRenderer
                     renderer.icon = AllIcons.General.Modified
+                    //renderer.size = Dimension(1000, 53)
                     renderer.append(pair, SimpleTextAttributes.REGULAR_ATTRIBUTES)
                 }
             },
