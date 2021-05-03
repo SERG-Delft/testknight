@@ -1,6 +1,5 @@
 # Sprint agenda week <NUM>
 
-- **Start of the meeting:**
 - **Scrum Master:**
 - **Note Taker:**
 
