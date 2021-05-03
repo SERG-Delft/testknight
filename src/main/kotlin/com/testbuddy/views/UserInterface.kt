@@ -60,7 +60,7 @@ class UserInterface {
         val root = CheckedTreeNode("root")
 
         val tree = CheckboxTree(
-            object : CheckboxTreeCellRenderer(true, false) {
+            object : CheckboxTreeCellRenderer(true, true) {
                 override fun customizeRenderer(
                     tree: JTree,
                     value: Any,
