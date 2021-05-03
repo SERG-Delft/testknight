@@ -6,16 +6,12 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.testbuddy.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.testbuddy.services.MyProjectService"/>
+        <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.testbuddy.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 
     <!-- Extension point for Main User Interface-->
 
@@ -33,6 +29,11 @@
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
         </action>
+    </actions>
+
+
+    <actions>
+        <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
     </actions>
 
 </idea-plugin>
