@@ -25,3 +25,7 @@ In case you have issues with the way or the quality of work of one of your teamm
 ## Handling task related issues
 When working on projects such as TestBuddy it is only natural that you encounter trouble or issues that get in the way of your work. In case this happens please first of all try to address the issue on your own. Try to see if you can find anyone who has tackled this online. 
 If after a sincere effort you see that you are still unable to proceed, please ask help from a team member. There is no shame in asking for help.
+
+## Assignment delivery
+* Issue delivery: The people assigned to an issue are responsible to for its delivery. If because of the problem they are not able to deliver it on time they should notify the rest of team on time. Moreover, that week's Scrum master should keep track of the progress on all the issues of the sprint.
+* Group Assignment delivery: For the assignments that have to be written by the entire team one person will be assigned to submit them on a per assignment basis. Once the assignment has been submitted that person should notify the rest of the team. The team is then expected to verify that the submission was successful. If the deadline for the assignment is approaching and there is no submission by the responsible individual then the team needs to take action and assign the task to someone else.
