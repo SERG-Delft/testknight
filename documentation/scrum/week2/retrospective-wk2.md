@@ -6,9 +6,9 @@
 ## Tasks
 
 - **UI Team (Cristian, Mathan)**
-    - [ ] Research UI/Actions (automatic) testing
+    - [x] Research UI/Actions (automatic) testing
     - [ ] Create "Load Tests" action
-    - [ ] Create GUI skeleton 
+    - [x] Create GUI skeleton 
 - **Backend Team (Jorge, Pavlos, Piyush)** 
     - [x] Start research on how to detect the important segments of a test method
     - [x] Implement basic copying of tests
@@ -25,6 +25,7 @@
     - We started with using Kotlin UI DSL but that turned out to be hard to work with in regards to dynamic code generation.
     - We had issues regarding small offsets/layout issues for the UI.
     - Testing UI is quite hard and we have to do more research on it, we will test it in the next sprint maybe.
+    - There was not enough time to complete the "Create Load Tests action" issue. The basic skeleton is in place so in the next sprint we will be able to finish it quickly. 
 - **Backend Team (Jorge, Pavlos, Piyush):** 
     - Jetbrains documentation was not up to date regarding on using the PSI system for Java files. 
     It took us a while to understand what was going on but since we had anticipated issues like that we were still on time.
