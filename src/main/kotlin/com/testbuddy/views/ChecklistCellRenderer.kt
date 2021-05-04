@@ -1,7 +1,6 @@
 package com.testbuddy.com.testbuddy.views
 
 import com.intellij.ui.CheckboxTree
-import com.intellij.ui.CheckboxTreeBase.CheckboxTreeCellRendererBase
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.SimpleTextAttributes
 import javax.swing.JTree
@@ -18,12 +17,13 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
         row: Int,
         hasFocus: Boolean
     ) {
-        if(value is DefaultMutableTreeNode) {
-            this.remove(checkbox)
+        // Without checkbox
+        if (value is DefaultMutableTreeNode) {
             val text: String = value.userObject as String
             val renderer = textRenderer
             renderer.append(text, SimpleTextAttributes.REGULAR_ATTRIBUTES)
         } else if (value is CheckedTreeNode) {
+            // with checkbox
             val text: String = value.userObject as String
             val renderer = textRenderer
             renderer.append(text, SimpleTextAttributes.REGULAR_ATTRIBUTES)
