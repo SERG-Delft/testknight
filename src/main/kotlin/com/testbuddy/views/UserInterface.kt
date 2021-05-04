@@ -1,6 +1,5 @@
 package com.testbuddy.views
 
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
@@ -15,15 +14,18 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.layout.panel
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.com.testbuddy.views.ChecklistCellRenderer
 import java.awt.Component
 import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JTree
+import javax.swing.tree.DefaultTreeModel
 
 class UserInterface {
 
     private var mainUI: JBTabbedPane? = null
     private var testCaseUI: DialogPanel? = null
+    private var checkListTree: CheckboxTree? = null
 
     /**
      * Returns the Component which will be displayed on the tool window
@@ -52,48 +54,21 @@ class UserInterface {
      *
      */
     @Suppress("UnusedPrivateMember")
-    private fun createCheckListMethod(nameMethod: String, checkBoxes: List<JBCheckBox>): Component {
+    private fun createCheckListMethod(nameMethod: String, checkBoxes: List<JBCheckBox>) {
         val list: MutableList<JBCheckBox> = mutableListOf()
         list.add(createCheckBox("Item 1", "It works"))
         list.add(createCheckBox("Item 2", "It works2"))
 
-        val root = CheckedTreeNode("root")
+        val checklistNode = CheckedTreeNode("Can anybody find me")
+        checklistNode.add(CheckedTreeNode("Somebody"))
+        (checkListTree!!.model.root as CheckedTreeNode).add(checklistNode)
 
-        val tree = CheckboxTree(
-            object : CheckboxTreeCellRenderer(true, true) {
-                override fun customizeRenderer(
-                    tree: JTree,
-                    value: Any,
-                    selected: Boolean,
-                    expanded: Boolean,
-                    leaf: Boolean,
-                    row: Int,
-                    hasFocus: Boolean
-                ) {
-                    if (value !is CheckedTreeNode) return
-                    val text: String = value.userObject as String
-                    val renderer = textRenderer
-
-                    renderer.icon = AllIcons.General.Modified
-                    renderer.append(text, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-                }
-            },
-            root
-        )
-
-        val checklistNode = CheckedTreeNode("Hello")
-        checklistNode.add(CheckedTreeNode("Hello from inside"))
-
-        (tree.model.root as CheckedTreeNode).add(checklistNode)
-        TreeUtil.expand(tree, 1)
-
-        val panel = panel {}
-        panel.add(tree)
-
-        return panel
+        //Reload updates the UI to have the new nodes
+        (checkListTree!!.model as DefaultTreeModel).reload()
+        TreeUtil.expand(checkListTree!!, 1)
     }
 
-    private fun addMethodChecklist(nameMethod: String, checkBoxes: List<JBCheckBox>): Component {
+    private fun addMethodChecklist(nameMethod: String, checkBoxes: List<JBCheckBox>) {
         return createCheckListMethod(nameMethod, checkBoxes)
     }
 
@@ -102,17 +77,19 @@ class UserInterface {
      */
     private fun createCheckList(): Component? {
         val panel = JBScrollPane()
-        val content = panel {}
-        content.layout = BoxLayout(content, BoxLayout.PAGE_AXIS)
 
-        panel.setViewportView(content)
+        val root = CheckedTreeNode("root")
 
-        val button = JButton("Add checklist")
-        button.addActionListener {
-            content.add(addMethodChecklist("Add Method", mutableListOf()))
-        }
-        content.add(button)
+        checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
 
+        val checklistNode = CheckedTreeNode("Hello")
+        checklistNode.add(CheckedTreeNode("Hello from inside"))
+
+        (checkListTree!!.model.root as CheckedTreeNode).add(checklistNode)
+        TreeUtil.expand(checkListTree!!, 1)
+
+//        content.add(checkListTree)
+        panel.setViewportView(checkListTree)
         return panel
     }
 
@@ -134,6 +111,14 @@ class UserInterface {
         testCaseUI = panel {}
         testCaseUI!!.layout = BoxLayout(testCaseUI, BoxLayout.PAGE_AXIS)
         panel.setViewportView(testCaseUI)
+
+
+        //temp
+        val button = JButton("Add checklist")
+        button.addActionListener {
+            addMethodChecklist("Add Method", mutableListOf())
+        }
+        testCaseUI!!.add(button)
 
         toolWindowPanel.setContent(panel)
         return toolWindowPanel
