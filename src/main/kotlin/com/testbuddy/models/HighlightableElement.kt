@@ -28,7 +28,7 @@ class HighlightableElement(val psiElement: PsiElement, val editor: Editor) {
     /**
      * Highlights the element.
      */
-    fun highlight() {
+    fun highlight(): RangeHighlighter? {
         highlighter = editor.markupModel.addRangeHighlighter(
             psiElement.startOffset,
             psiElement.endOffset,
@@ -38,6 +38,7 @@ class HighlightableElement(val psiElement: PsiElement, val editor: Editor) {
         )
 
         highlighted = true
+        return highlighter
     }
 
     /**
