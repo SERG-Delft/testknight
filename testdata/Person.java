@@ -51,6 +51,12 @@ public class Person {
         this.name = name;
     }
 
+    //Affects a class field as a side-effect
+    public void setFullName(String firstName, String lastName) {
+        String res = firstName + " " + lastName;
+        name = res;
+    }
+
     //No side effect -> should assert on return value
     public int getYearBorn(int currentYear) {
         return currentYear - this.age;
