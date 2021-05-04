@@ -47,7 +47,8 @@ class LoadTestAction : AnAction {
     @Suppress("MagicNumber")
     override fun actionPerformed(event: AnActionEvent) {
 
-        //Take the load test service and use the get tests.
+        // Take the load test service and use the get tests
+
         val loadTestsService = event.project!!.service<LoadTestsService>()
         val listMethods = loadTestsService.getTests(event.getData(CommonDataKeys.PSI_FILE)!!)
 
