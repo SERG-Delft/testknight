@@ -63,6 +63,8 @@ class LoadTestAction : AnAction {
         val copyPasteViewport = copyPasteScroll.getComponent(0) as JBViewport
         val copyPastePanel = copyPasteViewport.getComponent(0) as JPanel
 
+        copyPastePanel.removeAll()
+
         for (method in listMethods) {
 
             // Create the panel for each test method
