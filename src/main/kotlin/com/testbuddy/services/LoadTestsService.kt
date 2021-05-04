@@ -8,7 +8,10 @@ import com.testbuddy.models.TestMethodData
 
 class LoadTestsService {
 
-    private val testAnnotations = setOf("Test", "ParameterizedTest")
+    private val testAnnotations = setOf(
+        "Test", "ParameterizedTest", "org.junit.jupiter.api.Test",
+        "org.junit.jupiter.api.ParameterizedTest", "org.junit.Test", "org.junit.ParameterizedTest"
+    )
 
     /**
      * Extracts all the test methods from a PSI file.
