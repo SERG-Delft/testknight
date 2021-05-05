@@ -15,23 +15,7 @@ import javax.swing.JTabbedPane
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
-class LoadChecklistAction : AnAction {
-
-    /**
-     * Default constructor for AnAction
-     */
-    constructor() : super()
-
-    /**
-     * This constructor is used to support dynamically added menu actions.
-     * It sets the text, description to be displayed for the menu item.
-     * Otherwise, the default AnAction constructor is used by the IntelliJ Platform.
-     *
-     * @param text        The text to be displayed as a menu item.
-     * @param description The description of the menu item.
-     * @param icon        The icon to be used with the menu item.
-     */
-    constructor(text: String?, description: String?, icon: Icon?) : super(text, description, icon)
+class LoadChecklistAction : AnAction() {
 
     /**
      * Updates the CheckList tab to add new checklist cases.
