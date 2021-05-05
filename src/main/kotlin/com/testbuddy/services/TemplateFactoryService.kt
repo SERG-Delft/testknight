@@ -8,12 +8,15 @@ import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameterList
 
-class TemplateFactoryService(val project: Project) {
+class TemplateFactoryService(private val project: Project) {
 
-    val tm = TemplateManager.getInstance(project)
+    private val tm = TemplateManager.getInstance(project)
 
     /**
-     * Creates a Template Instance from a PSI method
+     * Creates a Template instance from a PSI method where the method identifier
+     * is a variable to be replaced.
+     *
+     * @param psiMethod the PSI method to base the template off of
      */
     fun createTemplate(psiMethod: PsiMethod): Template {
 
@@ -29,7 +32,7 @@ class TemplateFactoryService(val project: Project) {
         val paramList: PsiParameterList = psiMethod.parameterList
         val code = psiMethod.body
 
-        annotations.forEach { it -> template.addTextSegment("${it.text}\n") }
+        annotations.forEach { template.addTextSegment("${it.text}\n") }
 
         if (returnTy != null) {
             template.addTextSegment("${returnTy.canonicalText} ")
