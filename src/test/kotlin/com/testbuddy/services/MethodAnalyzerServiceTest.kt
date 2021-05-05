@@ -5,15 +5,16 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.com.testbuddy.models.MutatesClassFieldSideEffect
+import com.testbuddy.com.testbuddy.models.SideEffect
 import com.testbuddy.com.testbuddy.models.ThrowsExceptionSideEffect
-import com.testbuddy.com.testbuddy.services.MethodAnalyzerService
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
+import java.lang.AssertionError
 
 class MethodAnalyzerServiceTest : BasePlatformTestCase() {
 
-    val service = MethodAnalyzerService()
+    private val service = MethodAnalyzerService()
 
     @Before
     public override fun setUp() {
@@ -22,7 +23,7 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testExceptionSideEffectsExplicitlyThrown() {
+    fun testAllSideEffectsThrown() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(
@@ -30,10 +31,7 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
             ThrowsExceptionSideEffect("CannotBeThatOldException"),
             MutatesClassFieldSideEffect("this.age")
         )
-        if (testClass != null) {
-            val method = testClass.findMethodsByName("setAge")[0] as PsiMethod
-            assertEquals(expected, service.getSideEffects(method))
-        }
+        assertMethodSideEffects(testClass, expected, "setAge")
     }
 
     @Test
@@ -41,26 +39,15 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(ThrowsExceptionSideEffect("IOException"))
-        if (testClass != null) {
-            val method = testClass.findMethodsByName("save")[0] as PsiMethod
-            TestCase.assertEquals(expected, service.getSideEffects(method))
-        }
+        assertMethodSideEffects(testClass, expected, "save")
     }
-
-//    @Test
-//    fun testOnlyFieldMutationSideEffects() {}
 
     @Test
     fun testFieldMutationSideEffectsThisNotSpecified() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(MutatesClassFieldSideEffect("this.name"))
-        if (testClass != null) {
-            val method = testClass.findMethodsByName("setFullName")[0] as PsiMethod
-            TestCase.assertEquals(expected, service.getSideEffects(method))
-        } else {
-            TestCase.assertTrue(false) // if we reached here the test should fail
-        }
+        assertMethodSideEffects(testClass, expected, "setFullName")
     }
 
     @Test
@@ -68,21 +55,34 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(MutatesClassFieldSideEffect("this.name"))
-        if (testClass != null) {
-            val method = testClass.findMethodsByName("setName")[0] as PsiMethod
-            TestCase.assertEquals(expected, service.getSideEffects(method))
-        } else {
-            TestCase.assertTrue(false) // if we reached here the test should fail
-        }
+        assertMethodSideEffects(testClass, expected, "setName")
     }
-//
-//    @Test
-//    fun testAllPossibleSideEffects() {}
-//
-//    @Test
-//    fun testNoSideEffect() {}
+
+    @Test
+    fun testNoSideEffect() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf<SideEffect>()
+        assertMethodSideEffects(testClass, expected, "greet")
+    }
 
     public override fun getTestDataPath(): String {
         return "testdata"
+    }
+
+    /**
+     * This is a helper method to assert that a method has certain side-effects.
+     *
+     * @param testClass the PsiClass (nullable) that contains the method analyzed.
+     * @param expected the expected list of side-effects.
+     * @param methodName the name of the method that we want to take the side-effect.
+     */
+    private fun assertMethodSideEffects(testClass: PsiClass?, expected: List<SideEffect>, methodName: String) {
+        if (testClass != null) {
+            val method = testClass.findMethodsByName(methodName)[0] as PsiMethod
+            TestCase.assertEquals(expected, service.getSideEffects(method))
+        } else {
+            throw AssertionError("testClass was null")
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiDeclarationStatement
@@ -10,22 +10,23 @@ import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.util.containers.filterSmart
-import com.testbuddy.com.testbuddy.models.MutatesArgumentSideEffect
 import com.testbuddy.com.testbuddy.models.MutatesClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.SideEffect
 import com.testbuddy.com.testbuddy.models.ThrowsExceptionSideEffect
 
 class MethodAnalyzerService {
 
+    /**
+     * Gets the side effects of a given method. It currently
+     * recognises exceptions and class field mutations as side-effects.
+     *
+     * @param method the PsiMethod to be analyzed.
+     * @return a list of SideEffect objects based on the side-effects the method has.
+     */
     fun getSideEffects(method: PsiMethod): List<SideEffect> {
-        // If it has exception add exception thrown side-effect
-        // If it affects class fields add ModifiesClassField side-effect
-        // If it mutates the argument add mutates argument side-effect
         val exceptionSideEffects = getExceptionsThrown(method)
         val classFieldMutationSideEffects = getClassFieldsAffected(method)
-        val argumentMutationSideEffects = listOf<MutatesArgumentSideEffect>()
-        return exceptionSideEffects + classFieldMutationSideEffects + argumentMutationSideEffects
+        return exceptionSideEffects + classFieldMutationSideEffects
     }
 
     /**
@@ -67,7 +68,7 @@ class MethodAnalyzerService {
         val identifiersInMethodScope = getIdentifiersInMethodScope(method)
         val assignmentExpressions = PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java)
         val assignmentsThatAffectClassFields =
-            assignmentExpressions.filterSmart { affectsClassField(it, identifiersInMethodScope) }
+            assignmentExpressions.filter { affectsClassField(it, identifiersInMethodScope) }
         return assignmentsThatAffectClassFields.map {
             MutatesClassFieldSideEffect(
                 formatClassFieldName((it.lExpression as PsiReferenceExpression).qualifiedName)
@@ -79,7 +80,6 @@ class MethodAnalyzerService {
      * Checks whether the given assignment expression affects one of the class fields.
      *
      * @param assignment the PsiAssignmentExpression to be analyzed.
-     * @param method the PsiMethod that the assignment is part of.
      * @param identifiersInMethodScope the identifiers that this method binds.
      *                        This is passed as an argument for optimisation purposes.
      * @return true iff the assignment affects a class field.

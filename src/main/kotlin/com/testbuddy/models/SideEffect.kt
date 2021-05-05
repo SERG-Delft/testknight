@@ -4,5 +4,3 @@ abstract class SideEffect
 
 data class ThrowsExceptionSideEffect(val nameOfException: String) : SideEffect()
 data class MutatesClassFieldSideEffect(val nameOfField: String) : SideEffect()
-data class MutatesArgumentSideEffect(val nameOfArgument: String) : SideEffect()
-// data class PerformsIOSideEffect(...) NOTE: we might need this later
