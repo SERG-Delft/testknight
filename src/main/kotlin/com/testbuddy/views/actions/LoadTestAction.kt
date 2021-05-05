@@ -15,28 +15,11 @@ import com.testbuddy.services.LoadTestsService
 import java.awt.Dimension
 import javax.swing.Box
 import javax.swing.BoxLayout
-import javax.swing.Icon
 import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 
-class LoadTestAction : AnAction {
-
-    /**
-     * Default constructor for AnAction
-     */
-    constructor() : super()
-
-    /**
-     * This constructor is used to support dynamically added menu actions.
-     * It sets the text, description to be displayed for the menu item.
-     * Otherwise, the default AnAction constructor is used by the IntelliJ Platform.
-     *
-     * @param text        The text to be displayed as a menu item.
-     * @param description The description of the menu item.
-     * @param icon        The icon to be used with the menu item.
-     */
-    constructor(text: String?, description: String?, icon: Icon?) : super(text, description, icon)
+class LoadTestAction : AnAction() {
 
     /**
      * Updates the CopyPaste tab to load the test cases from the selected file.
