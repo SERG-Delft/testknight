@@ -33,7 +33,7 @@
         <action id="checklistAction" class="com.testbuddy.views.actions.LoadChecklistAction"
                 text="Add New Test Cases" description="Adds a new template test case."
                 icon="AllIcons.General.Add">
-            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="B" keymap="$default"/>
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
         </action>
     </actions>
