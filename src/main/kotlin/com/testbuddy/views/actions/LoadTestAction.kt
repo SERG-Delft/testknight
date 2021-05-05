@@ -12,7 +12,6 @@ import com.intellij.ui.content.impl.ContentImpl
 import java.awt.Dimension
 import javax.swing.Box
 import javax.swing.BoxLayout
-import javax.swing.Icon
 import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
