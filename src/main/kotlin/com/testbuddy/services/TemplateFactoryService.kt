@@ -4,9 +4,7 @@ import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.codeInsight.template.impl.ConstantNode
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiParameterList
 
 class TemplateFactoryService(private val project: Project) {
 
@@ -20,32 +18,23 @@ class TemplateFactoryService(private val project: Project) {
      */
     fun createTemplate(psiMethod: PsiMethod): Template {
 
-        // TODO throws List info
-        // TODO static
-        // TODO generics
-
         val template = tm.createTemplate("", "")
 
-        val annotations: Array<PsiAnnotation> = psiMethod.annotations
-        val returnTy = psiMethod.returnType
+        val modifiers = psiMethod.modifierList
+        val returnTy = psiMethod.returnType!!
         val identifier = psiMethod.name
-        val paramList: PsiParameterList = psiMethod.parameterList
-        val code = psiMethod.body
+        val params = psiMethod.parameterList
+        val typeParameters = psiMethod.typeParameterList!!
+        val throws = psiMethod.throwsList
+        val code = psiMethod.body!!
 
-        annotations.forEach { template.addTextSegment("${it.text}\n") }
-
-        if (returnTy != null) {
-            template.addTextSegment("${returnTy.canonicalText} ")
-        }
-
+        template.addTextSegment("${modifiers.text} ")
+        template.addTextSegment(typeParameters.text)
+        template.addTextSegment("${returnTy.canonicalText} ")
         template.addVariable("IDENTIFIER", ConstantNode(identifier), true)
-
-        template.addTextSegment(paramList.text)
-
-        if (code != null) {
-            template.addTextSegment(code.text)
-        }
-
+        template.addTextSegment(params.text)
+        template.addTextSegment(throws.text)
+        template.addTextSegment(code.text)
         template.isToReformat = true
 
         return template
