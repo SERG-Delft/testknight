@@ -116,11 +116,10 @@ class LoadTestAction : AnAction() {
          */
         override fun actionPerformed(e: ActionEvent) {
             val duplicateTestsService = event.project!!.service<DuplicateTestsService>()
-            val psiFile = event.getData(CommonDataKeys.PSI_FILE)
-            val project = event.getData(CommonDataKeys.PROJECT)
             val editor = event.getData(CommonDataKeys.EDITOR)
-            if (psiFile != null && editor != null && project != null) {
-                duplicateTestsService.addToPsi(psiFile, editor, project)
+
+            if (editor != null) {
+                duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
             }
         }
     }
