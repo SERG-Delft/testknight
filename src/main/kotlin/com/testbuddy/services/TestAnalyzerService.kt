@@ -7,12 +7,31 @@ import com.intellij.psi.util.PsiTreeUtil
 
 class TestAnalyzerService {
 
+    /**
+     * A set of recognized assertion names
+     */
     private val assertionNames = setOf(
         "assertEquals",
         "assertTrue",
-        "org.junit.jupiter.api.Assertions.assertTrue",
-        "org.junit.jupiter.api.Assertions.assertEquals"
+        "assertFalse",
+        "assertNotNull",
+        "assertNull",
+        "assertSame",
+        "assertNotSame"
     )
+
+    private val testAnnotations = setOf("Test", "ParameterizedTest")
+
+    /**
+     * Checks if a PSI method is a test method.
+     *
+     * @param method the PSI method
+     * @return true iff the method is a test method
+     */
+    fun isTestMethod(method: PsiMethod): Boolean {
+        val annotations = method.annotations.map { it.qualifiedName }.toSet()
+        return annotations.intersect(testAnnotations).isNotEmpty()
+    }
 
     /**
      * Takes a PsiMethod and returns a list of PsiElements pointing to each assertion parameter.
@@ -25,8 +44,11 @@ class TestAnalyzerService {
         val res = arrayListOf<PsiElement>()
 
         PsiTreeUtil.findChildrenOfType(psiMethod, PsiMethodCallExpression::class.java)
-            .filter { assertionNames.contains(it.methodExpression.qualifiedName) }
-            .forEach { it -> it.argumentList.expressions.forEach { res.add(it as PsiElement) } }
+            .forEach {
+                if (assertionNames.contains(it.methodExpression.qualifiedName)) {
+                    it.argumentList.expressions.forEach { res.add(it as PsiElement) }
+                }
+            }
 
         return res
     }

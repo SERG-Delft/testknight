@@ -7,12 +7,12 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.endOffset
-import com.testbuddy.com.testbuddy.services.TemplateFactoryService
+import com.testbuddy.com.testbuddy.services.TemplateCreationService
 import com.testbuddy.com.testbuddy.services.TestAnalyzerService
 
 class DuplicateTestsService(project: Project) {
 
-    private val templateFactoryService = TemplateFactoryService(project)
+    private val templateFactoryService = TemplateCreationService(project)
     private val templateManager = TemplateManager.getInstance(project)
     private val testAnalyzerService = TestAnalyzerService()
 

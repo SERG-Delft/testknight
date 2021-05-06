@@ -4,7 +4,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.services.TemplateFactoryService
+import com.testbuddy.com.testbuddy.services.TemplateCreationService
 import com.testbuddy.com.testbuddy.services.TestAnalyzerService
 import junit.framework.TestCase
 import org.junit.Before
@@ -21,7 +21,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
         val editor = this.myFixture.editor
         val project = this.myFixture.project
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)!!
-        val serv = TemplateFactoryService(project)
+        val serv = TemplateCreationService(project)
     }
 
     public override fun getTestDataPath(): String {
@@ -32,7 +32,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
     fun testBasic() {
 
         this.myFixture.configureByFile("/Tests.java")
-        val serv = TemplateFactoryService(project)
+        val serv = TemplateCreationService(project)
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("basic")[0] as PsiMethod
@@ -49,7 +49,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
     fun testModifiers() {
 
         this.myFixture.configureByFile("/Tests.java")
-        val serv = TemplateFactoryService(project)
+        val serv = TemplateCreationService(project)
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasModifiers")[0] as PsiMethod
@@ -67,7 +67,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
     fun testReturnType() {
 
         this.myFixture.configureByFile("/Tests.java")
-        val serv = TemplateFactoryService(project)
+        val serv = TemplateCreationService(project)
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasReturnTy")[0] as PsiMethod
@@ -84,7 +84,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
     fun testParams() {
 
         this.myFixture.configureByFile("/Tests.java")
-        val serv = TemplateFactoryService(project)
+        val serv = TemplateCreationService(project)
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasParams")[0] as PsiMethod
@@ -101,7 +101,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
     fun testTypeParams() {
 
         this.myFixture.configureByFile("/Tests.java")
-        val serv = TemplateFactoryService(project)
+        val serv = TemplateCreationService(project)
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasTypeParams")[0] as PsiMethod
@@ -118,7 +118,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
     fun testThrows() {
 
         this.myFixture.configureByFile("/Tests.java")
-        val serv = TemplateFactoryService(project)
+        val serv = TemplateCreationService(project)
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("throwsException")[0] as PsiMethod
@@ -135,7 +135,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
     fun testAdvanced() {
 
         this.myFixture.configureByFile("/Tests.java")
-        val templateFactoryService = TemplateFactoryService(project)
+        val templateFactoryService = TemplateCreationService(project)
         val testAnalyzerService = TestAnalyzerService()
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!

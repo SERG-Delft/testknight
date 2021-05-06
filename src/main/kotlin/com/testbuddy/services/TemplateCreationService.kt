@@ -9,7 +9,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 
-class TemplateFactoryService(private val project: Project) {
+class TemplateCreationService(private val project: Project) {
 
     private val templateManager = TemplateManager.getInstance(project)
 
