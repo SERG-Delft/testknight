@@ -20,7 +20,10 @@ class TestAnalyzerService {
         "assertNotSame"
     )
 
-    private val testAnnotations = setOf("Test", "ParameterizedTest")
+    private val testAnnotations = setOf(
+        "Test", "ParameterizedTest", "org.junit.jupiter.api.Test",
+        "org.junit.jupiter.api.ParameterizedTest", "org.junit.Test", "org.junit.ParameterizedTest"
+    )
 
     /**
      * Checks if a PSI method is a test method.
