@@ -116,7 +116,7 @@ class LoadTestAction : AnAction {
         private val event: AnActionEvent
 
         /**
-         * Constructor of the listener, which will store the even the the TestMethodData.
+         * Constructor of the listener, which will store the event of the TestMethodData.
          *
          * @param reference represents a reference of the chosen Test -> TestMethodData
          * @param event Event received when a test method is chosen.
