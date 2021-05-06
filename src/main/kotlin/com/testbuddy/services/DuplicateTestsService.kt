@@ -8,11 +8,13 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.endOffset
 import com.testbuddy.com.testbuddy.services.TemplateFactoryService
+import com.testbuddy.com.testbuddy.services.TestAnalyzerService
 
-class DuplicateTestsService(private val project: Project) {
+class DuplicateTestsService(project: Project) {
 
-    private val tfs = TemplateFactoryService(project)
-    private val tm = TemplateManager.getInstance(project)
+    private val templateFactoryService = TemplateFactoryService(project)
+    private val templateManager = TemplateManager.getInstance(project)
+    private val testAnalyzerService = TestAnalyzerService()
 
     /**
      * Duplicates the test case method under the caret.
@@ -28,11 +30,14 @@ class DuplicateTestsService(private val project: Project) {
         val containingMethod = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java)
 
         if (containingMethod != null) {
-            val template = tfs.createTemplate(containingMethod)
+            val template = templateFactoryService
+                .createAdvancedTemplate(containingMethod, testAnalyzerService.getAssertionParameters(containingMethod))
+
+            // prepare for template
             caret.moveToOffset(containingMethod.endOffset)
 
             // run the template
-            tm.startTemplate(editor, template)
+            templateManager.startTemplate(editor, template)
         }
     }
 
@@ -45,10 +50,10 @@ class DuplicateTestsService(private val project: Project) {
     fun duplicateMethod(method: PsiMethod, editor: Editor) {
 
         val caret = editor.caretModel.primaryCaret
-        val template = tfs.createTemplate(method)
+        val template = templateFactoryService.createBasicTemplate(method)
         caret.moveToOffset(method.endOffset)
 
         // run the template
-        tm.startTemplate(editor, template)
+        templateManager.startTemplate(editor, template)
     }
 }

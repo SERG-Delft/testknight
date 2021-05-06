@@ -39,4 +39,9 @@ public class PointTest {
     void throwsException() throws Exception {
         // contents
     }
+
+    @Test
+    void hasAssertion() {
+        assertEquals(2, 1+1)
+    }
 }

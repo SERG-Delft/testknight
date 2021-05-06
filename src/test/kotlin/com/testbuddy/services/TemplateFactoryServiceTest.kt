@@ -5,6 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.com.testbuddy.services.TemplateFactoryService
+import com.testbuddy.com.testbuddy.services.TestAnalyzerService
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -35,7 +36,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("basic")[0] as PsiMethod
-        val template = serv.createTemplate(methodToBeDuplicated)
+        val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test void (){\n" +
             "        // contents\n" +
@@ -52,7 +53,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasModifiers")[0] as PsiMethod
-        val template = serv.createTemplate(methodToBeDuplicated)
+        val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test\n" +
             "    public static void (){\n" +
@@ -70,7 +71,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasReturnTy")[0] as PsiMethod
-        val template = serv.createTemplate(methodToBeDuplicated)
+        val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test String (){\n" +
             "        // contents\n" +
@@ -87,7 +88,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasParams")[0] as PsiMethod
-        val template = serv.createTemplate(methodToBeDuplicated)
+        val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test void (int x, int y){\n" +
             "        // contents\n" +
@@ -104,7 +105,7 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("hasTypeParams")[0] as PsiMethod
-        val template = serv.createTemplate(methodToBeDuplicated)
+        val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test <A, B>void (){\n" +
             "        // contents\n" +
@@ -121,12 +122,31 @@ internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val methodToBeDuplicated = testClass.findMethodsByName("throwsException")[0] as PsiMethod
-        val template = serv.createTemplate(methodToBeDuplicated)
+        val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test void ()throws Exception{\n" +
             "        // contents\n" +
             "    }"
 
         TestCase.assertEquals(expected, template.templateText)
+    }
+
+    @Test
+    fun testAdvanced() {
+
+        this.myFixture.configureByFile("/Tests.java")
+        val templateFactoryService = TemplateFactoryService(project)
+        val testAnalyzerService = TestAnalyzerService()
+
+        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
+        val method = testClass.findMethodsByName("hasAssertion")[0] as PsiMethod
+        val psiElements = testAnalyzerService.getAssertionParameters(method)
+        val template = templateFactoryService.createAdvancedTemplate(method, psiElements)
+
+        val expected = "@Test void (){\n" +
+            "        assertEquals(, )\n" +
+            "    }"
+
+        assertEquals(expected, template.templateText)
     }
 }
