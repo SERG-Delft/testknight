@@ -11,6 +11,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
