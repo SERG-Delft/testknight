@@ -11,8 +11,12 @@ import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBViewport
 import com.intellij.ui.content.impl.ContentImpl
+import com.testbuddy.models.TestMethodData
+import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.LoadTestsService
 import java.awt.Dimension
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.Icon
@@ -78,7 +82,11 @@ class LoadTestAction : AnAction {
 
             mPanel.add(JBLabel(method.name))
             mPanel.add(Box.createHorizontalGlue())
-            mPanel.add(JButton("Copy"))
+
+            val copyButton = JButton("Copy")
+            copyButton.addActionListener(ButtonCopyClickListener(method, event))
+
+            mPanel.add(copyButton)
             mPanel.add(JButton("Goto"))
             // Limit size of the panel
             mPanel.minimumSize = Dimension(0, 50)
@@ -98,5 +106,39 @@ class LoadTestAction : AnAction {
         // Set the availability based on whether a project is open
         val project = e.project
         e.presentation.isEnabledAndVisible = project != null
+    }
+
+    /**
+     * Inner class which represents the Listener for the Copy Button
+     */
+    private inner class ButtonCopyClickListener : ActionListener {
+        private val reference: TestMethodData
+        private val event: AnActionEvent
+
+        /**
+         * Constructor of the listener, which will store the even the the TestMethodData.
+         *
+         * @param reference represents a reference of the chosen Test -> TestMethodData
+         * @param event Event received when a test method is chosen.
+         */
+        constructor(reference: TestMethodData, event: AnActionEvent) {
+            this.reference = reference
+            this.event = event
+        }
+
+        /**
+         * Creates a Copy of the chosen test and append it on the final part of the code.
+         *
+         * @param e Event received when the Copy Button of a specific method is used
+         */
+        override fun actionPerformed(e: ActionEvent) {
+            val duplicateTestsService = event.project!!.service<DuplicateTestsService>()
+            val psiFile = event.getData(CommonDataKeys.PSI_FILE)
+            val project = event.getData(CommonDataKeys.PROJECT)
+            val editor = event.getData(CommonDataKeys.EDITOR)
+            if (psiFile != null && editor != null && project != null) {
+                duplicateTestsService.addToPsi(psiFile, editor, project)
+            }
+        }
     }
 }
