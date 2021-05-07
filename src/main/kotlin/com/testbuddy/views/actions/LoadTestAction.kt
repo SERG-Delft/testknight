@@ -13,6 +13,7 @@ import com.intellij.ui.components.JBViewport
 import com.intellij.ui.content.impl.ContentImpl
 import com.testbuddy.models.TestMethodData
 import com.testbuddy.services.DuplicateTestsService
+import com.testbuddy.services.GotoTestService
 import com.testbuddy.services.LoadTestsService
 import java.awt.Dimension
 import java.awt.event.ActionEvent
@@ -70,7 +71,10 @@ class LoadTestAction : AnAction() {
             copyButton.addActionListener(ButtonCopyClickListener(method, event))
 
             mPanel.add(copyButton)
-            mPanel.add(JButton("Goto"))
+
+            val gotoButton = JButton("Goto")
+            gotoButton.addActionListener(ButtonGotoClickListener(method, event))
+            mPanel.add(gotoButton)
             // Limit size of the panel
             mPanel.minimumSize = Dimension(0, 50)
             mPanel.maximumSize = Dimension(Integer.MAX_VALUE, 50)
@@ -121,6 +125,37 @@ class LoadTestAction : AnAction() {
             if (editor != null) {
                 duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
             }
+        }
+    }
+
+    private inner class ButtonGotoClickListener : ActionListener {
+        private val reference: TestMethodData
+        private val event: AnActionEvent
+
+        /**
+         * Constructor of the listener, which will store the event of the TestMethodData.
+         *
+         * @param reference represents a reference of the chosen Test -> TestMethodData
+         * @param event Event received when a test method is chosen.
+         */
+        constructor(reference: TestMethodData, event: AnActionEvent) {
+            this.reference = reference
+            this.event = event
+        }
+
+        /**
+         * Goes to the chosen test of the code.
+         *
+         * @param e Event received when the Copy Button of a specific method is used
+         */
+        override fun actionPerformed(e: ActionEvent) {
+            val gotoTestService = event.project!!.service<GotoTestService>()
+            val editor = event.getData(CommonDataKeys.EDITOR)
+
+            if (editor != null) {
+                gotoTestService.gotoMethod(editor, reference)
+            }
+
         }
     }
 }
