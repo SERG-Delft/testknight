@@ -96,22 +96,13 @@ class LoadTestAction : AnAction() {
     }
 
     /**
-     * Inner class which represents the Listener for the Copy Button
+     * Inner class which represents the Listener for the Copy Button.
+     *
+     * @param reference represents a reference of the chosen Test -> TestMethodData
+     * @param event Event received when a test method is chosen.
      */
-    private inner class ButtonCopyClickListener : ActionListener {
-        private val reference: TestMethodData
-        private val event: AnActionEvent
-
-        /**
-         * Constructor of the listener, which will store the event of the TestMethodData.
-         *
-         * @param reference represents a reference of the chosen Test -> TestMethodData
-         * @param event Event received when a test method is chosen.
-         */
-        constructor(reference: TestMethodData, event: AnActionEvent) {
-            this.reference = reference
-            this.event = event
-        }
+    private inner class ButtonCopyClickListener
+    (private val reference: TestMethodData, private val event: AnActionEvent) : ActionListener {
 
         /**
          * Creates a Copy of the chosen test and append it on the final part of the code.
@@ -128,20 +119,14 @@ class LoadTestAction : AnAction() {
         }
     }
 
-    private inner class ButtonGotoClickListener : ActionListener {
-        private val reference: TestMethodData
-        private val event: AnActionEvent
-
-        /**
-         * Constructor of the listener, which will store the event of the TestMethodData.
-         *
-         * @param reference represents a reference of the chosen Test -> TestMethodData
-         * @param event Event received when a test method is chosen.
-         */
-        constructor(reference: TestMethodData, event: AnActionEvent) {
-            this.reference = reference
-            this.event = event
-        }
+    /**
+     * Inner class which represents the Listener for the Goto Button.
+     *
+     * @param reference represents a reference of the chosen Test -> TestMethodData
+     * @param event Event received when a test method is chosen.
+     */
+    private inner class ButtonGotoClickListener
+    (private val reference: TestMethodData, private val event: AnActionEvent) : ActionListener {
 
         /**
          * Goes to the chosen test of the code.
@@ -155,7 +140,6 @@ class LoadTestAction : AnAction() {
             if (editor != null) {
                 gotoTestService.gotoMethod(editor, reference)
             }
-
         }
     }
 }

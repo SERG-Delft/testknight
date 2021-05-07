@@ -4,7 +4,6 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.services.GotoTestService
 import com.testbuddy.models.TestMethodData
 import junit.framework.TestCase
 import org.junit.Before
