@@ -36,6 +36,7 @@
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="B" keymap="$default"/>
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
         </action>
+        <action id="com.testbuddy.GotoTestAction" class="com.testbuddy.GotoTestAction" text="Goto  Test Action"/>
     </actions>
 
 
