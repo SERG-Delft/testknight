@@ -2,6 +2,7 @@ package com.testbuddy.services
 
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.ScrollType
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
@@ -35,6 +36,7 @@ class DuplicateTestsService(project: Project) {
 
             // prepare for template
             caret.moveToOffset(containingMethod.endOffset)
+            editor.scrollingModel.scrollToCaret(ScrollType.CENTER)
 
             // run the template
             templateManager.startTemplate(editor, template)
@@ -52,6 +54,7 @@ class DuplicateTestsService(project: Project) {
         val caret = editor.caretModel.primaryCaret
         val template = templateFactoryService.createBasicTemplate(method)
         caret.moveToOffset(method.endOffset)
+        editor.scrollingModel.scrollToCaret(ScrollType.CENTER)
 
         // run the template
         templateManager.startTemplate(editor, template)
