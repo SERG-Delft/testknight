@@ -1,8 +1,6 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiIfStatement
-import com.intellij.psi.PsiMethod
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
 interface ChecklistGenerator<E : PsiElement> {

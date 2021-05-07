@@ -1,17 +1,17 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies
 
-import com.intellij.psi.PsiIfStatement
+import com.intellij.psi.PsiParameter
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
-class IfStatementChecklistGenerator : ChecklistGenerator<PsiIfStatement> {
+class ParameterChecklistGenerator : ChecklistGenerator<PsiParameter> {
 
     companion object Factory {
-        fun create(): IfStatementChecklistGenerator {
+        fun create(): ParameterChecklistGenerator {
             TODO("Not yet implemented")
         }
     }
 
-    override fun generateChecklist(psiElement: PsiIfStatement): List<TestingChecklistItem> {
+    override fun generateChecklist(psiElement: PsiParameter): List<TestingChecklistItem> {
         TODO("Not yet implemented")
     }
 }

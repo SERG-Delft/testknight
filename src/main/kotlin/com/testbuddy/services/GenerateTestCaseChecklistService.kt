@@ -1,39 +1,46 @@
 package com.testbuddy.com.testbuddy.services
 
-import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.project.Project
-import com.intellij.psi.*
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
+import com.intellij.psi.PsiDoWhileStatement
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiForStatement
+import com.intellij.psi.PsiIfStatement
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiParameter
+import com.intellij.psi.PsiSwitchStatement
+import com.intellij.psi.PsiTryStatement
+import com.intellij.psi.PsiWhileStatement
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.DoWhileStatementChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ForStatementChecklistGenerator
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.IfStatementChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.MethodChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ParameterChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.SwitchStatementChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.TryStatementChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.WhileStatementChecklistGenerator
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
-import org.junit.Test
 
 class GenerateTestCaseChecklistService {
 
-
     private val ifStatementChecklistGenerator = IfStatementChecklistGenerator.create()
+    private val switchStatementChecklistGenerator = SwitchStatementChecklistGenerator.create()
+    private val tryStatementChecklistGenerator = TryStatementChecklistGenerator.create()
+    private val methodChecklistGenerator = MethodChecklistGenerator.create()
+    private val parameterChecklistGenerator = ParameterChecklistGenerator.create()
+    private val whileStatementChecklistGenerator = WhileStatementChecklistGenerator.create()
+    private val forStatementChecklistGenerator = ForStatementChecklistGenerator.create()
+    private val doWhileStatementChecklistGenerator = DoWhileStatementChecklistGenerator.create()
 
     fun generateChecklist(psiElement: PsiElement): List<TestingChecklistItem> {
         return when (psiElement) {
-            is PsiIfStatement -> TODO()
-            is PsiMethod -> TODO()
-            is PsiParameter -> TODO()
+            is PsiIfStatement -> ifStatementChecklistGenerator.generateChecklist(psiElement)
+            is PsiSwitchStatement -> switchStatementChecklistGenerator.generateChecklist(psiElement)
+            is PsiTryStatement -> tryStatementChecklistGenerator.generateChecklist(psiElement)
+            is PsiMethod -> methodChecklistGenerator.generateChecklist(psiElement)
+            is PsiParameter -> parameterChecklistGenerator.generateChecklist(psiElement)
+            is PsiWhileStatement -> whileStatementChecklistGenerator.generateChecklist(psiElement)
+            is PsiForStatement -> forStatementChecklistGenerator.generateChecklist(psiElement)
+            is PsiDoWhileStatement -> doWhileStatementChecklistGenerator.generateChecklist(psiElement)
             else -> emptyList<TestingChecklistItem>()
         }
     }
-
-    /**
-     * Generate the checklist for a given element.
-     *
-     * @param psiElement the element for which the element should be generated.
-     * @param generator a function that takes a PsiElement and returns the list of checklist items. Note that the PsiElements must have
-     */
-    private fun generateChecklistForItem(
-        psiElement: PsiElement,
-        generator: (PsiElement) -> List<TestingChecklistItem>
-    ): List<TestingChecklistItem> {
-        return generator(psiElement);
-    }
-
-
 }
