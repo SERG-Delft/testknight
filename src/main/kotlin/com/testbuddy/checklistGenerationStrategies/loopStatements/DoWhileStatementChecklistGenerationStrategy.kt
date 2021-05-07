@@ -1,12 +1,14 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements
 
 import com.intellij.psi.PsiDoWhileStatement
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
-class DoWhileStatementChecklistGenerator : ChecklistGenerator<PsiDoWhileStatement> {
+class DoWhileStatementChecklistGenerationStrategy :
+    ChecklistGenerator<PsiDoWhileStatement> {
 
     companion object Factory {
-        fun create(): DoWhileStatementChecklistGenerator {
+        fun create(): DoWhileStatementChecklistGenerationStrategy {
             TODO("Not yet implemented")
         }
     }

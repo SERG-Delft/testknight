@@ -1,12 +1,14 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements
 
 import com.intellij.psi.PsiIfStatement
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
-class IfStatementChecklistGenerator : ChecklistGenerator<PsiIfStatement> {
+class IfStatementChecklistGenerationStrategy :
+    ChecklistGenerator<PsiIfStatement> {
 
     companion object Factory {
-        fun create(): IfStatementChecklistGenerator {
+        fun create(): IfStatementChecklistGenerationStrategy {
             TODO("Not yet implemented")
         }
     }

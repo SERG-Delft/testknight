@@ -3,10 +3,10 @@ package com.testbuddy.com.testbuddy.checklistGenerationStrategies
 import com.intellij.psi.PsiParameter
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
-class ParameterChecklistGenerator : ChecklistGenerator<PsiParameter> {
+class ParameterChecklistGenerationStrategy : ChecklistGenerator<PsiParameter> {
 
     companion object Factory {
-        fun create(): ParameterChecklistGenerator {
+        fun create(): ParameterChecklistGenerationStrategy {
             TODO("Not yet implemented")
         }
     }

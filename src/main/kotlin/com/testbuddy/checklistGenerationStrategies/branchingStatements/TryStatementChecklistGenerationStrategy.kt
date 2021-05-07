@@ -1,12 +1,14 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements
 
 import com.intellij.psi.PsiTryStatement
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
-class TryStatementChecklistGenerator : ChecklistGenerator<PsiTryStatement> {
+class TryStatementChecklistGenerationStrategy :
+    ChecklistGenerator<PsiTryStatement> {
 
     companion object Factory {
-        fun create(): TryStatementChecklistGenerator {
+        fun create(): TryStatementChecklistGenerationStrategy {
             TODO("Not yet implemented")
         }
     }

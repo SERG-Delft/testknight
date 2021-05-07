@@ -1,7 +1,9 @@
 package com.testbuddy.com.testbuddy.services
 
+import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiDoWhileStatement
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiForStatement
 import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiMethod
@@ -9,27 +11,45 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.DoWhileStatementChecklistGenerator
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ForStatementChecklistGenerator
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.IfStatementChecklistGenerator
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.MethodChecklistGenerator
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ParameterChecklistGenerator
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.SwitchStatementChecklistGenerator
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.TryStatementChecklistGenerator
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.WhileStatementChecklistGenerator
+import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.MethodChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ParameterChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.IfStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.SwitchStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.TryStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.DoWhileStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
 class GenerateTestCaseChecklistService {
 
-    private val ifStatementChecklistGenerator = IfStatementChecklistGenerator.create()
-    private val switchStatementChecklistGenerator = SwitchStatementChecklistGenerator.create()
-    private val tryStatementChecklistGenerator = TryStatementChecklistGenerator.create()
-    private val methodChecklistGenerator = MethodChecklistGenerator.create()
-    private val parameterChecklistGenerator = ParameterChecklistGenerator.create()
-    private val whileStatementChecklistGenerator = WhileStatementChecklistGenerator.create()
-    private val forStatementChecklistGenerator = ForStatementChecklistGenerator.create()
-    private val doWhileStatementChecklistGenerator = DoWhileStatementChecklistGenerator.create()
+    private val ifStatementChecklistGenerator = IfStatementChecklistGenerationStrategy.create()
+    private val switchStatementChecklistGenerator = SwitchStatementChecklistGenerationStrategy.create()
+    private val tryStatementChecklistGenerator = TryStatementChecklistGenerationStrategy.create()
+    private val methodChecklistGenerator = MethodChecklistGenerationStrategy.create()
+    private val parameterChecklistGenerator = ParameterChecklistGenerationStrategy.create()
+    private val whileStatementChecklistGenerator = WhileStatementChecklistGenerationStrategy.create()
+    private val forStatementChecklistGenerator = ForStatementChecklistGenerationStrategy.create()
+    private val doWhileStatementChecklistGenerator = DoWhileStatementChecklistGenerationStrategy.create()
 
+    fun generateChecklist(file: PsiFile, editor: Editor): List<TestingChecklistItem> {
+        val caret = editor.caretModel.primaryCaret
+        val offset = caret.offset
+        val element = file.findElementAt(offset)
+        val containingMethod = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java)
+
+        return if (containingMethod != null) {
+            generateChecklist(containingMethod)
+        } else { emptyList<TestingChecklistItem>() }
+    }
+
+    /**
+     * Generates the testing checklist for a given PsiElement.
+     *
+     * @param psiElement the PsiElement to generate the checklist on.
+     * @return the list of TestingChecklistItem objects representing the testing checklist item.
+     */
     fun generateChecklist(psiElement: PsiElement): List<TestingChecklistItem> {
         return when (psiElement) {
             is PsiIfStatement -> ifStatementChecklistGenerator.generateChecklist(psiElement)

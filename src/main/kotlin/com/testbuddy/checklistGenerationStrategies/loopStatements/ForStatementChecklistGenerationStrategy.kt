@@ -1,12 +1,14 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements
 
 import com.intellij.psi.PsiForStatement
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
 
-class ForStatementChecklistGenerator : ChecklistGenerator<PsiForStatement> {
+class ForStatementChecklistGenerationStrategy :
+    ChecklistGenerator<PsiForStatement> {
 
     companion object Factory {
-        fun create(): ForStatementChecklistGenerator {
+        fun create(): ForStatementChecklistGenerationStrategy {
             TODO("Not yet implemented")
         }
     }
