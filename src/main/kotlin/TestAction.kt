@@ -8,14 +8,14 @@ import com.testbuddy.services.DuplicateTestsService
 class TestAction : AnAction() {
 
     override fun actionPerformed(event: AnActionEvent) {
-        val aaa = DuplicateTestsService()
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)
         val editor = event.getData(CommonDataKeys.EDITOR)
         val project = event.getData(CommonDataKeys.PROJECT)
-        // val document = event.getData(CommonDataKeys.EDITOR).getDocument()
 
         if (psiFile != null && editor != null && project != null) {
-            aaa.addToPsi(psiFile, editor, project)
+
+            val service = DuplicateTestsService(project)
+            service.duplicateMethodUnderCaret(psiFile, editor)
         }
     }
 }

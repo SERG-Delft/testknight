@@ -2,6 +2,8 @@ package com.testbuddy.views.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.components.service
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.components.JBLabel
@@ -9,40 +11,34 @@ import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBViewport
 import com.intellij.ui.content.impl.ContentImpl
+import com.testbuddy.models.TestMethodData
+import com.testbuddy.services.DuplicateTestsService
+import com.testbuddy.services.GotoTestService
+import com.testbuddy.services.LoadTestsService
 import java.awt.Dimension
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
 import javax.swing.Box
 import javax.swing.BoxLayout
-import javax.swing.Icon
 import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 
-class LoadTestAction : AnAction {
+class LoadTestAction : AnAction() {
 
     /**
-     * Default constructor for AnAction
-     */
-    constructor() : super()
-
-    /**
-     * This constructor is used to support dynamically added menu actions.
-     * It sets the text, description to be displayed for the menu item.
-     * Otherwise, the default AnAction constructor is used by the IntelliJ Platform.
-     *
-     * @param text        The text to be displayed as a menu item.
-     * @param description The description of the menu item.
-     * @param icon        The icon to be used with the menu item.
-     */
-    constructor(text: String?, description: String?, icon: Icon?) : super(text, description, icon)
-
-    /**
-     * Updates the CopyPaste tab to add new test cases.
+     * Updates the CopyPaste tab to load the test cases from the selected file.
      * Has suppression for current skeleton code.
      *
      * @param event Event received when the associated menu item is chosen.
      */
     @Suppress("MagicNumber")
     override fun actionPerformed(event: AnActionEvent) {
+
+        // Take the load test service and use the get tests
+
+        val loadTestsService = event.project!!.service<LoadTestsService>()
+        val listMethods = loadTestsService.getTests(event.getData(CommonDataKeys.PSI_FILE)!!)
 
         val window: ToolWindow? = ToolWindowManager.getInstance(event.project!!).getToolWindow("TestBuddy")
 
@@ -55,23 +51,36 @@ class LoadTestAction : AnAction {
         val copyPasteViewport = copyPasteScroll.getComponent(0) as JBViewport
         val copyPastePanel = copyPasteViewport.getComponent(0) as JPanel
 
-        val mPanel = JPanel()
+        copyPastePanel.removeAll()
 
-        mPanel.layout = BoxLayout(mPanel, BoxLayout.LINE_AXIS)
+        for (method in listMethods) {
 
-        // Create the labels and buttons.
-        // The glue adds spacing/moves the button to the right
-        mPanel.add(JBLabel("Test case 0"))
-        mPanel.add(Box.createHorizontalGlue())
-        mPanel.add(JButton("Copy"))
-        mPanel.add(JButton("Goto"))
+            // Create the panel for each test method
 
-        // Limit size of the panel
-        mPanel.minimumSize = Dimension(0, 50)
-        mPanel.maximumSize = Dimension(Integer.MAX_VALUE, 50)
-        mPanel.setSize(-1, 50)
+            val mPanel = JPanel()
 
-        copyPastePanel.add(mPanel)
+            mPanel.layout = BoxLayout(mPanel, BoxLayout.LINE_AXIS)
+
+            // Create the labels and buttons.
+            // The glue adds spacing/moves the button to the right
+
+            mPanel.add(JBLabel(method.name))
+            mPanel.add(Box.createHorizontalGlue())
+
+            val copyButton = JButton("Copy")
+            copyButton.addActionListener(ButtonCopyClickListener(method, event))
+
+            mPanel.add(copyButton)
+
+            val gotoButton = JButton("Goto")
+            gotoButton.addActionListener(ButtonGotoClickListener(method, event))
+            mPanel.add(gotoButton)
+            // Limit size of the panel
+            mPanel.minimumSize = Dimension(0, 50)
+            mPanel.maximumSize = Dimension(Integer.MAX_VALUE, 50)
+            mPanel.setSize(-1, 50)
+            copyPastePanel.add(mPanel)
+        }
     }
 
     /**
@@ -84,5 +93,53 @@ class LoadTestAction : AnAction {
         // Set the availability based on whether a project is open
         val project = e.project
         e.presentation.isEnabledAndVisible = project != null
+    }
+
+    /**
+     * Inner class which represents the Listener for the Copy Button.
+     *
+     * @param reference represents a reference of the chosen Test -> TestMethodData
+     * @param event Event received when a test method is chosen.
+     */
+    private inner class ButtonCopyClickListener
+    (private val reference: TestMethodData, private val event: AnActionEvent) : ActionListener {
+
+        /**
+         * Creates a Copy of the chosen test and append it on the final part of the code.
+         *
+         * @param e Event received when the Copy Button of a specific method is used
+         */
+        override fun actionPerformed(e: ActionEvent) {
+            val duplicateTestsService = event.project!!.service<DuplicateTestsService>()
+            val editor = event.getData(CommonDataKeys.EDITOR)
+
+            if (editor != null) {
+                duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
+            }
+        }
+    }
+
+    /**
+     * Inner class which represents the Listener for the Goto Button.
+     *
+     * @param reference represents a reference of the chosen Test -> TestMethodData
+     * @param event Event received when a test method is chosen.
+     */
+    private inner class ButtonGotoClickListener
+    (private val reference: TestMethodData, private val event: AnActionEvent) : ActionListener {
+
+        /**
+         * Goes to the chosen test of the code.
+         *
+         * @param e Event received when the Copy Button of a specific method is used
+         */
+        override fun actionPerformed(e: ActionEvent) {
+            val gotoTestService = event.project!!.service<GotoTestService>()
+            val editor = event.getData(CommonDataKeys.EDITOR)
+
+            if (editor != null) {
+                gotoTestService.gotoMethod(editor, reference)
+            }
+        }
     }
 }

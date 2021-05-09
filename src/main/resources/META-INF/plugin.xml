@@ -11,6 +11,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
+        <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -21,12 +23,19 @@
                     factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
     </extensions>
 
-    <!---Action in CopyPaste tab which updates the CopyPaste UI -->
+
     <actions>
+        <!---Action in CopyPaste tab which updates the CopyPaste UI -->
         <action id="deployAction" class="com.testbuddy.views.actions.LoadTestAction"
                 text="Add New Test Cases" description="Adds a new template test case."
                 icon="AllIcons.General.Add">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
+            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+        </action>
+        <action id="checklistAction" class="com.testbuddy.views.actions.LoadChecklistAction"
+                text="Add New Test Cases" description="Adds a new template test case."
+                icon="AllIcons.General.Add">
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="B" keymap="$default"/>
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
         </action>
     </actions>
