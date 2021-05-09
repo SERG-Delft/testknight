@@ -12,7 +12,7 @@
   - Decide strategy to detect the method under test.
 
 
-- *Frontend:*
+- *Frontend (Cristian, Mathanrajan):*
   - Fix the inconsistency bug in the UI for the test case.
   - Create the mockups for checklist -> show them to the client.
   - Create the mockups for assertions suggestion-> show them to the client.
@@ -25,7 +25,7 @@
 
 
 
-- *Backend:*
+- *Backend (Jorge, Pavlos, Piyush):*
   - Fix the null pointer bug from the loading tests feature.
   - Fix the highlighting bug.
   - Implement the proper error handling.
