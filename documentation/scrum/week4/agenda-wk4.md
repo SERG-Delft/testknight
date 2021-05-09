@@ -20,8 +20,8 @@
   - Embed the functionality of the checklist with the UI.
   - Implement the UI for the assertions suggestions.
   - Refine the Copy Paste tab to use a Tree instead of a list of Panels.
-  - Add shortucts for the buttons (Copy Paste feature).
-  - Add shortucts for the buttons (Checklist feature).
+  - Add shortcuts for the buttons (Copy Paste feature).
+  - Add shortcuts for the buttons (Checklist feature).
 
 
 
