@@ -1,6 +1,7 @@
 package com.testbuddy.com.testbuddy.services
 
 import com.intellij.openapi.editor.Editor
+import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDoWhileStatement
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -12,6 +13,7 @@ import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ClassChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.MethodChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ParameterChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.IfStatementChecklistGenerationStrategy
@@ -25,6 +27,7 @@ import com.testbuddy.com.testbuddy.models.TestingChecklistNode
 
 class GenerateTestCaseChecklistService {
 
+    private val classChecklistGenerator = ClassChecklistGenerationStrategy.create()
     private val ifStatementChecklistGenerator = IfStatementChecklistGenerationStrategy.create()
     private val switchStatementChecklistGenerator = SwitchStatementChecklistGenerationStrategy.create()
     private val tryStatementChecklistGenerator = TryStatementChecklistGenerationStrategy.create()
@@ -54,6 +57,7 @@ class GenerateTestCaseChecklistService {
      */
     fun generateChecklist(psiElement: PsiElement): List<TestingChecklistNode> {
         return when (psiElement) {
+            is PsiClass -> classChecklistGenerator.generateChecklist(psiElement)
             is PsiIfStatement -> ifStatementChecklistGenerator.generateChecklist(psiElement)
             is PsiSwitchStatement -> switchStatementChecklistGenerator.generateChecklist(psiElement)
             is PsiTryStatement -> tryStatementChecklistGenerator.generateChecklist(psiElement)
