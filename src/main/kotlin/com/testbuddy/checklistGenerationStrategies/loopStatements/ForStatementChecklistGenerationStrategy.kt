@@ -2,10 +2,10 @@ package com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements
 
 import com.intellij.psi.PsiForStatement
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
-import com.testbuddy.com.testbuddy.models.TestingChecklistItem
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
 
 class ForStatementChecklistGenerationStrategy :
-    ChecklistGenerator<PsiForStatement> {
+    ChecklistGenerator<PsiForStatement, TestingChecklistLeaf> {
 
     companion object Factory {
         fun create(): ForStatementChecklistGenerationStrategy {
@@ -13,7 +13,7 @@ class ForStatementChecklistGenerationStrategy :
         }
     }
 
-    override fun generateChecklist(psiElement: PsiForStatement): List<TestingChecklistItem> {
+    override fun generateChecklist(psiElement: PsiForStatement): List<TestingChecklistLeaf> {
         TODO("Not yet implemented")
     }
 }

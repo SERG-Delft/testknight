@@ -2,10 +2,10 @@ package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingState
 
 import com.intellij.psi.PsiSwitchStatement
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
-import com.testbuddy.com.testbuddy.models.TestingChecklistItem
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
 
 class SwitchStatementChecklistGenerationStrategy :
-    ChecklistGenerator<PsiSwitchStatement> {
+    ChecklistGenerator<PsiSwitchStatement, TestingChecklistLeaf> {
 
     companion object Factory {
         fun create(): SwitchStatementChecklistGenerationStrategy {
@@ -13,7 +13,7 @@ class SwitchStatementChecklistGenerationStrategy :
         }
     }
 
-    override fun generateChecklist(psiElement: PsiSwitchStatement): List<TestingChecklistItem> {
+    override fun generateChecklist(psiElement: PsiSwitchStatement): List<TestingChecklistLeaf> {
         TODO("Not yet implemented")
     }
 }

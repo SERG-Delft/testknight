@@ -20,7 +20,8 @@ import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatem
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.DoWhileStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.models.TestingChecklistItem
+import com.testbuddy.com.testbuddy.models.TestingChecklist
+import com.testbuddy.com.testbuddy.models.TestingChecklistNode
 
 class GenerateTestCaseChecklistService {
 
@@ -33,7 +34,7 @@ class GenerateTestCaseChecklistService {
     private val forStatementChecklistGenerator = ForStatementChecklistGenerationStrategy.create()
     private val doWhileStatementChecklistGenerator = DoWhileStatementChecklistGenerationStrategy.create()
 
-    fun generateChecklist(file: PsiFile, editor: Editor): List<TestingChecklistItem> {
+    fun generateChecklist(file: PsiFile, editor: Editor): TestingChecklist {
         val caret = editor.caretModel.primaryCaret
         val offset = caret.offset
         val element = file.findElementAt(offset)
@@ -41,7 +42,8 @@ class GenerateTestCaseChecklistService {
 
         return if (containingMethod != null) {
             generateChecklist(containingMethod)
-        } else { emptyList<TestingChecklistItem>() }
+            TODO()
+        } else { TODO() } // empty checklist }
     }
 
     /**
@@ -50,7 +52,7 @@ class GenerateTestCaseChecklistService {
      * @param psiElement the PsiElement to generate the checklist on.
      * @return the list of TestingChecklistItem objects representing the testing checklist item.
      */
-    fun generateChecklist(psiElement: PsiElement): List<TestingChecklistItem> {
+    fun generateChecklist(psiElement: PsiElement): List<TestingChecklistNode> {
         return when (psiElement) {
             is PsiIfStatement -> ifStatementChecklistGenerator.generateChecklist(psiElement)
             is PsiSwitchStatement -> switchStatementChecklistGenerator.generateChecklist(psiElement)
@@ -60,7 +62,7 @@ class GenerateTestCaseChecklistService {
             is PsiWhileStatement -> whileStatementChecklistGenerator.generateChecklist(psiElement)
             is PsiForStatement -> forStatementChecklistGenerator.generateChecklist(psiElement)
             is PsiDoWhileStatement -> doWhileStatementChecklistGenerator.generateChecklist(psiElement)
-            else -> emptyList<TestingChecklistItem>()
+            else -> emptyList<TestingChecklistNode>()
         }
     }
 }

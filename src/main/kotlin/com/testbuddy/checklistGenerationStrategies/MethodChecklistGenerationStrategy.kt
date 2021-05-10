@@ -1,9 +1,9 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies
 
 import com.intellij.psi.PsiMethod
-import com.testbuddy.com.testbuddy.models.TestingChecklistItem
+import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
 
-class MethodChecklistGenerationStrategy : ChecklistGenerator<PsiMethod> {
+class MethodChecklistGenerationStrategy : ChecklistGenerator<PsiMethod, TestingChecklistMethodNode> {
 
     companion object Factory {
         fun create(): MethodChecklistGenerationStrategy {
@@ -11,7 +11,7 @@ class MethodChecklistGenerationStrategy : ChecklistGenerator<PsiMethod> {
         }
     }
 
-    override fun generateChecklist(psiElement: PsiMethod): List<TestingChecklistItem> {
+    override fun generateChecklist(psiElement: PsiMethod): List<TestingChecklistMethodNode> {
         TODO("Not yet implemented")
     }
 }
