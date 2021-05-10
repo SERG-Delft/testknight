@@ -52,7 +52,8 @@ class DuplicateTestsService(project: Project) {
     fun duplicateMethod(method: PsiMethod, editor: Editor) {
 
         val caret = editor.caretModel.primaryCaret
-        val template = templateFactoryService.createBasicTemplate(method)
+        val template = templateFactoryService
+            .createAdvancedTemplate(method, testAnalyzerService.getAssertionParameters(method))
         caret.moveToOffset(method.endOffset)
         editor.scrollingModel.scrollToCaret(ScrollType.CENTER)
 
