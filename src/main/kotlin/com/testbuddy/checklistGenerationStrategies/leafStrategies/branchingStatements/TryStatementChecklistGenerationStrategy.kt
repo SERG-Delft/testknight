@@ -2,7 +2,7 @@ package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingState
 
 import com.intellij.psi.PsiTryStatement
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
 class TryStatementChecklistGenerationStrategy :
     LeafChecklistGeneratorStrategy<PsiTryStatement> {
@@ -13,7 +13,7 @@ class TryStatementChecklistGenerationStrategy :
         }
     }
 
-    override fun generateChecklist(psiElement: PsiTryStatement): List<TestingChecklistLeaf> {
+    override fun generateChecklist(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
         TODO("Not yet implemented")
     }
 }

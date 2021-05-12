@@ -1,18 +1,21 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies
 
 import com.intellij.psi.PsiMethod
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
 
-class MethodChecklistGenerationStrategy :
+class MethodChecklistGenerationStrategy private constructor() :
     ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode> {
 
     companion object Factory {
         fun create(): MethodChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return MethodChecklistGenerationStrategy()
         }
     }
 
-    override fun generateChecklist(psiElement: PsiMethod): TestingChecklistMethodNode {
-        TODO("Not yet implemented")
+    override fun generateChecklist(psiMethod: PsiMethod): TestingChecklistMethodNode {
+        val name = psiMethod.name
+        val children = mutableListOf<TestingChecklistLeafNode>()
+        return TestingChecklistMethodNode(name, children, psiMethod)
     }
 }

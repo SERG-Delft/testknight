@@ -2,7 +2,7 @@ package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingState
 
 import com.intellij.psi.PsiSwitchStatement
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
 class SwitchStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiSwitchStatement> {
@@ -13,7 +13,7 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
         }
     }
 
-    override fun generateChecklist(psiElement: PsiSwitchStatement): List<TestingChecklistLeaf> {
+    override fun generateChecklist(psiElement: PsiSwitchStatement): List<TestingChecklistLeafNode> {
         TODO()
     }
 }

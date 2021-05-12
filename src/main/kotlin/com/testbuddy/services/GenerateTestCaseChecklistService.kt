@@ -1,22 +1,6 @@
 package com.testbuddy.com.testbuddy.services
 
-import com.intellij.openapi.editor.Editor
-import com.intellij.psi.*
-import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.IfStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.SwitchStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.TryStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.DoWhileStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.models.TestingChecklist
-import com.testbuddy.com.testbuddy.models.TestingChecklistNode
-
 class GenerateTestCaseChecklistService {
-
 
 //    fun generateChecklist(file: PsiFile, editor: Editor): TestingChecklist {
 //        val caret = editor.caretModel.primaryCaret
@@ -46,7 +30,8 @@ class GenerateTestCaseChecklistService {
 //            is PsiParameter -> ParameterChecklistGenerationStrategy.create().generateChecklist(psiElement)
 //            is PsiWhileStatement -> WhileStatementChecklistGenerationStrategy.create().generateChecklist(psiElement)
 //            is PsiForStatement -> ForStatementChecklistGenerationStrategy.create().generateChecklist(psiElement)
-//            is PsiDoWhileStatement -> DoWhileStatementChecklistGenerationStrategy.create().generateChecklist(psiElement)
+//            is PsiDoWhileStatement -> DoWhileStatementChecklistGenerationStrategy
+//            .create().generateChecklist(psiElement)
 //            else -> emptyList<TestingChecklistNode>()
 //        }
 //    }

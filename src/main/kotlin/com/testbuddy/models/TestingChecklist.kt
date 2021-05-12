@@ -7,7 +7,7 @@ import com.intellij.psi.PsiMethod
 data class TestingChecklist(val classChecklists: List<TestingChecklistClassNode>)
 
 abstract class TestingChecklistNode
-data class TestingChecklistLeaf(var description: String, val element: PsiElement) : TestingChecklistNode()
+data class TestingChecklistLeafNode(var description: String, val element: PsiElement) : TestingChecklistNode()
 abstract class TestingChecklistParentNode : TestingChecklistNode()
 data class TestingChecklistClassNode(
     var description: String,
@@ -16,6 +16,6 @@ data class TestingChecklistClassNode(
 ) : TestingChecklistParentNode()
 data class TestingChecklistMethodNode(
     var description: String,
-    val children: List<TestingChecklistLeaf>,
+    val children: List<TestingChecklistLeafNode>,
     val element: PsiMethod
 ) : TestingChecklistParentNode()

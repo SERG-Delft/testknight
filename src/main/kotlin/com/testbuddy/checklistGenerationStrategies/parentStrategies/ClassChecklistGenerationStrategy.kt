@@ -6,7 +6,9 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.TestingChecklistClassNode
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
 
-class ClassChecklistGenerationStrategy private constructor() :
+class ClassChecklistGenerationStrategy private constructor(
+    private val methodChecklistGenerator: ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode>
+) :
     ParentChecklistGeneratorStrategy<PsiClass, TestingChecklistClassNode> {
 
     // the factory currently just call the constructor
@@ -17,8 +19,10 @@ class ClassChecklistGenerationStrategy private constructor() :
          *
          * @return a ClassChecklistGenerationStrategy
          */
-        fun create(): ClassChecklistGenerationStrategy {
-            return ClassChecklistGenerationStrategy()
+        fun create(
+            methodChecklistGenerator: ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode>
+        ): ClassChecklistGenerationStrategy {
+            return ClassChecklistGenerationStrategy(methodChecklistGenerator)
         }
     }
 
@@ -32,7 +36,7 @@ class ClassChecklistGenerationStrategy private constructor() :
         val methodName = psiClass.name ?: "No class name found"
         val methods = PsiTreeUtil.findChildrenOfType(psiClass, PsiMethod::class.java)
         val children = mutableListOf<TestingChecklistMethodNode>()
-        val methodChecklistGenerator = MethodChecklistGenerationStrategy.create()
+        // val methodChecklistGenerator = MethodChecklistGenerationStrategy.create()
         methods.forEach { children.add(methodChecklistGenerator.generateChecklist(it)) }
         return TestingChecklistClassNode(methodName, children, psiClass)
     }

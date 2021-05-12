@@ -1,7 +1,7 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiParameter
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
 class ParameterChecklistGenerationStrategy :
     LeafChecklistGeneratorStrategy<PsiParameter> {
@@ -12,7 +12,7 @@ class ParameterChecklistGenerationStrategy :
         }
     }
 
-    override fun generateChecklist(psiElement: PsiParameter): List<TestingChecklistLeaf> {
+    override fun generateChecklist(psiElement: PsiParameter): List<TestingChecklistLeafNode> {
         TODO("Not yet implemented")
     }
 }
