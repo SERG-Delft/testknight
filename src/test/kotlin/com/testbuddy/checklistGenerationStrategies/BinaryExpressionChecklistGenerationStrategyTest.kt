@@ -82,7 +82,7 @@ internal class BinaryExpressionChecklistGenerationStrategyTest : BasePlatformTes
     }
 
     @Test
-    fun testMcdcSimple() {
+    fun testMcdc2Props() {
         val strategy = BinaryExpressionChecklistGenerationStrategy(project)
 
         val testCases = strategy.mcdc(listOf("a", "b"), "a && b")
@@ -97,7 +97,7 @@ internal class BinaryExpressionChecklistGenerationStrategyTest : BasePlatformTes
     }
 
     @Test
-    fun testMcdcComplex() {
+    fun testMcdc3Props() {
         val strategy = BinaryExpressionChecklistGenerationStrategy(project)
 
         val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)")
@@ -110,5 +110,22 @@ internal class BinaryExpressionChecklistGenerationStrategyTest : BasePlatformTes
             mapOf("a" to true, "b" to true, "c" to false)
         )
         assertEquals(4, testCases.size)
+    }
+
+    @Test
+    fun testMcdc4Props() {
+        val strategy = BinaryExpressionChecklistGenerationStrategy(project)
+
+        val testCases = strategy.mcdc(listOf("a", "b", "c", "d"), "a && (b || c || d)")
+
+        assertContainsElements(
+            testCases,
+            mapOf("a" to false, "b" to false, "c" to false, "d" to true),
+            mapOf("a" to true, "b" to false, "c" to false, "d" to true),
+            mapOf("a" to true, "b" to false, "c" to false, "d" to false),
+            mapOf("a" to true, "b" to true, "c" to false, "d" to false),
+            mapOf("a" to true, "b" to false, "c" to true, "d" to false)
+        )
+        assertEquals(5, testCases.size)
     }
 }

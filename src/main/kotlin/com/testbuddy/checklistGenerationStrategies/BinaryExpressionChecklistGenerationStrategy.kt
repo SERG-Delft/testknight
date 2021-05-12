@@ -49,7 +49,7 @@ class BinaryExpressionChecklistGenerationStrategy(val project: Project) : Checkl
         for (varI in 0 until n) {
 
             val nGroups = 2.0.pow(varI).toInt()
-            val groupSz = (2.0.pow(n - 1) / (varI + 1)).toInt()
+            val groupSz = 2.0.pow(n - (varI + 1)).toInt()
 
             var done = false
 
