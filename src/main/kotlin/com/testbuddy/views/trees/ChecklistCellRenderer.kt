@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.views
+package com.testbuddy.com.testbuddy.views.trees
 
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode

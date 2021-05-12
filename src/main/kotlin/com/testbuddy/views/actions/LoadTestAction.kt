@@ -1,16 +1,20 @@
 package com.testbuddy.views.actions
 
+import CopyPasteCellRenderer
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.ui.CheckboxTree
+import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBViewport
 import com.intellij.ui.content.impl.ContentImpl
+import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.models.TestMethodData
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService
@@ -23,6 +27,7 @@ import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
+import javax.swing.tree.DefaultMutableTreeNode
 
 class LoadTestAction : AnAction() {
 
@@ -49,9 +54,14 @@ class LoadTestAction : AnAction() {
             )
         val copyPasteTab = tabbedPane.getComponentAt(0) as JBPanelWithEmptyText
         val copyPasteScroll = copyPasteTab.getComponent(1) as JBScrollPane
-        val copyPasteViewport = copyPasteScroll.getComponent(0) as JBViewport
-        val copyPastePanel = copyPasteViewport.getComponent(0) as JPanel
+        val copyPasteViewport = copyPasteScroll.viewport
+      //  val copyPastePanel = copyPasteViewport.getComponent(0) as JPanel
+        val root = DefaultMutableTreeNode("root")
 
+        val copyTree = DefaultMutableTreeNode(CopyPasteCellRenderer())
+        panel.setViewportView(checkListTree)
+
+        toolWindowPanel.setContent(panel)
         copyPastePanel.removeAll()
 
         for (method in listMethods) {
