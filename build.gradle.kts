@@ -28,9 +28,11 @@ repositories {
     mavenCentral()
     jcenter()
 }
+
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     implementation("org.testng:testng:7.1.0")
+    implementation("io.mockk:mockk:1.9.3")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0")
 
     testImplementation(kotlin("test-junit5"))
