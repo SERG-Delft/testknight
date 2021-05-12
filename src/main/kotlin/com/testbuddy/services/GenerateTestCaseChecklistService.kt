@@ -16,6 +16,8 @@ import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.DoWhileStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistNode
 
 class GenerateTestCaseChecklistService {
@@ -48,6 +50,8 @@ class GenerateTestCaseChecklistService {
             is PsiWhileStatement -> WhileStatementChecklistGenerationStrategy.create().generateChecklist(psiElement)
             is PsiForStatement -> ForStatementChecklistGenerationStrategy.create().generateChecklist(psiElement)
             is PsiDoWhileStatement -> DoWhileStatementChecklistGenerationStrategy.create().generateChecklist(psiElement)
+            //TODO ForEachStatement
+            //TODO ThrowStatement
             else -> emptyList<TestingChecklistNode>()
         }
     }

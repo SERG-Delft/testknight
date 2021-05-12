@@ -17,13 +17,24 @@ class ClassChecklistGenerationStrategy private constructor(
         /**
          * Creates a new ClassChecklistGenerationStrategy.
          *
-         * @return a ClassChecklistGenerationStrategy
+         * @param methodChecklistGenerator the generator to be used to generate the method classes. Used mainly to allow dependency injection for testing.
+         * @return a ClassChecklistGenerationStrategy object.
          */
         fun create(
             methodChecklistGenerator: ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode>
         ): ClassChecklistGenerationStrategy {
             return ClassChecklistGenerationStrategy(methodChecklistGenerator)
         }
+
+        /**
+         * Creates a new ClassChecklistGenerationStrategy.
+         *
+         * @return a ClassChecklistGenerationStrategy object.
+         */
+        fun create(): ClassChecklistGenerationStrategy {
+            return create(MethodChecklistGenerationStrategy.create())
+        }
+
     }
 
     /**
