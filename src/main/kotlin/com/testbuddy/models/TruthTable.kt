@@ -1,6 +1,8 @@
 package com.testbuddy.com.testbuddy.models
 
 import com.udojava.evalex.Expression
+import java.util.Locale
+import kotlin.collections.HashMap
 import kotlin.math.pow
 
 class TruthTable(private val vars: List<String>, expressionString: String) {
@@ -14,7 +16,7 @@ class TruthTable(private val vars: List<String>, expressionString: String) {
             val expr = Expression(expressionString)
 
             for ((varI, variableStr) in vars.withIndex()) {
-                val variableValue = getBit(i, varI)
+                val variableValue = if (getBit(i, varI)) 1 else 0
                 expr.with(variableStr, variableValue.toBigDecimal())
             }
 
@@ -25,12 +27,17 @@ class TruthTable(private val vars: List<String>, expressionString: String) {
     /**
      * Gets the ith bit in n.
      *
-     * @param n the number
+     * @param num the number
      * @param i the index of bit to be read
      * @return the ith bit of n
      */
-    private fun getBit(n: Int, i: Int): Int {
-        return (n shr i) and 1
+    private fun getBit(num: Int, i: Int): Boolean {
+        val binStr = String.format(
+            Locale.getDefault(),
+            "%${n}s",
+            Integer.toBinaryString(num)
+        ).replace(' ', '0')
+        return binStr[i] == '1'
     }
 
     /**
@@ -52,7 +59,7 @@ class TruthTable(private val vars: List<String>, expressionString: String) {
     fun assignments(row: Int): Map<String, Boolean> {
         val res = HashMap<String, Boolean>()
         for ((varI, variable) in vars.withIndex()) {
-            res[variable] = getBit(row, varI) == 1
+            res[variable] = getBit(row, varI)
         }
         return res
     }

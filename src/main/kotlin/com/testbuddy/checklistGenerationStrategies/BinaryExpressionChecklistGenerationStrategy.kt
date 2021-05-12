@@ -7,8 +7,10 @@ import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiParenthesizedExpression
 import com.intellij.psi.PsiPolyadicExpression
 import com.testbuddy.com.testbuddy.models.TestingChecklistItem
+import com.testbuddy.com.testbuddy.models.TruthTable
 import java.util.LinkedList
 import kotlin.collections.HashMap
+import kotlin.math.pow
 
 class BinaryExpressionChecklistGenerationStrategy(val project: Project) : ChecklistGenerator<PsiPolyadicExpression> {
 
@@ -25,6 +27,50 @@ class BinaryExpressionChecklistGenerationStrategy(val project: Project) : Checkl
 
     override fun generateChecklist(psiElement: PsiPolyadicExpression): List<TestingChecklistItem> {
         return listOf()
+    }
+
+    /**
+     * Computes all of the mc/dc test cases for an expression.
+     *
+     * @param variables a list of strings containing all of the propositional variables
+     * @param expressionString the logical expression in string form
+     * @return a set of String -> Boolean maps which assign values to each proposition in the test case
+     */
+    @Suppress("NestedBlockDepth")
+    fun mcdc(variables: List<String>, expressionString: String): Set<Map<String, Boolean>> {
+
+        val n = variables.size
+        val truthTable = TruthTable(variables, expressionString)
+
+        // set of truth table rows to include
+        val rows = mutableSetOf<Int>()
+
+        // for each variable, iterate over each independence pair
+        for (varI in 0 until n) {
+
+            val nGroups = 2.0.pow(varI).toInt()
+            val groupSz = (2.0.pow(n - 1) / (varI + 1)).toInt()
+
+            var done = false
+
+            for (group in 0 until nGroups) {
+                for (pair in 0 + (group * groupSz * 2) until groupSz + (group * groupSz * 2)) {
+
+                    // get the values of the independence pair
+                    val v1 = truthTable.value(pair)
+                    val v2 = truthTable.value(pair + groupSz)
+
+                    // if their values don't match add the test cases
+                    if (v1 != v2 && !done) {
+                        rows.add(pair)
+                        rows.add(pair + groupSz)
+                        done = true
+                    }
+                }
+            }
+        }
+
+        return rows.map { truthTable.assignments(it) }.toSet()
     }
 
     /**

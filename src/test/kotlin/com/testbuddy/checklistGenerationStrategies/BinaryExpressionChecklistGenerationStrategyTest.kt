@@ -80,4 +80,35 @@ internal class BinaryExpressionChecklistGenerationStrategyTest : BasePlatformTes
         TestCase.assertEquals(assignments["PROP2"], "!a.get()")
         TestCase.assertEquals(assignments["PROP3"], "b > c")
     }
+
+    @Test
+    fun testMcdcSimple() {
+        val strategy = BinaryExpressionChecklistGenerationStrategy(project)
+
+        val testCases = strategy.mcdc(listOf("a", "b"), "a && b")
+
+        assertContainsElements(
+            testCases,
+            mapOf("a" to true, "b" to false),
+            mapOf("a" to true, "b" to true),
+            mapOf("a" to false, "b" to true)
+        )
+        assertEquals(3, testCases.size)
+    }
+
+    @Test
+    fun testMcdcComplex() {
+        val strategy = BinaryExpressionChecklistGenerationStrategy(project)
+
+        val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)")
+
+        assertContainsElements(
+            testCases,
+            mapOf("a" to false, "b" to false, "c" to true),
+            mapOf("a" to true, "b" to false, "c" to true),
+            mapOf("a" to true, "b" to false, "c" to false),
+            mapOf("a" to true, "b" to true, "c" to false)
+        )
+        assertEquals(4, testCases.size)
+    }
 }
