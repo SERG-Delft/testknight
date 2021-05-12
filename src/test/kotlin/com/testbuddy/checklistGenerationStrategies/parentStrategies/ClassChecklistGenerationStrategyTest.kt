@@ -1,9 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
 import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
