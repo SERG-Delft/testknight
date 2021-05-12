@@ -1,6 +1,7 @@
 package com.testbuddy.com.testbuddy.models
 
 import com.udojava.evalex.Expression
+import java.math.BigDecimal
 import java.util.Locale
 import kotlin.collections.HashMap
 import kotlin.math.pow
@@ -17,7 +18,7 @@ class TruthTable(private val vars: List<String>, expressionString: String) {
 
             for ((varI, variableStr) in vars.withIndex()) {
                 val variableValue = if (getBit(i, varI)) 1 else 0
-                expr.with(variableStr, variableValue.toBigDecimal())
+                expr.with(variableStr, BigDecimal(variableValue))
             }
 
             table[i] = expr.eval().toInt()

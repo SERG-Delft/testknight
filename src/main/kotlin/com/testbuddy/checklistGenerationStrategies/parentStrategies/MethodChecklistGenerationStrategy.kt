@@ -40,9 +40,11 @@ class MethodChecklistGenerationStrategy private constructor(
          */
         private fun getDefaultStructureTypesRecognized(): Array<Class<out PsiElement>> {
             return arrayOf(
-                PsiIfStatement::class.java, PsiSwitchStatement::class.java, PsiTryStatement::class.java, PsiParameter::class.java,
-                PsiWhileStatement::class.java, PsiForStatement::class.java, PsiDoWhileStatement::class.java,
-                PsiForeachStatement::class.java, PsiThrowStatement::class.java
+                PsiIfStatement::class.java, PsiSwitchStatement::class.java,
+                PsiTryStatement::class.java, PsiParameter::class.java,
+                PsiWhileStatement::class.java, PsiForStatement::class.java,
+                PsiDoWhileStatement::class.java, PsiForeachStatement::class.java,
+                PsiThrowStatement::class.java
             )
         }
     }
@@ -50,12 +52,16 @@ class MethodChecklistGenerationStrategy private constructor(
     override fun generateChecklist(psiMethod: PsiMethod): TestingChecklistMethodNode {
         val name = psiMethod.name
         val children = mutableListOf<TestingChecklistLeafNode>()
+
+        @Suppress("SpreadOperator")
         val nestedStructures = PsiTreeUtil.findChildrenOfAnyType(psiMethod, *this.nestedStructureTypesRecognized)
         val checklistGenerationService = ServiceManager.getService(GenerateTestCaseChecklistService::class.java)
 
-        nestedStructures.forEach { children.addAll(
-            checklistGenerationService.generateChecklist(it) as Collection<TestingChecklistLeafNode>
-        ) }
+        nestedStructures.forEach {
+            children.addAll(
+                checklistGenerationService.generateChecklist(it) as Collection<TestingChecklistLeafNode>
+            )
+        }
 
         return TestingChecklistMethodNode(name, children, psiMethod)
     }
