@@ -1,11 +1,11 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements
 
 import com.intellij.psi.PsiTryStatement
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
 
 class TryStatementChecklistGenerationStrategy :
-    ChecklistGenerator<PsiTryStatement, TestingChecklistLeaf> {
+    LeafChecklistGeneratorStrategy<PsiTryStatement> {
 
     companion object Factory {
         fun create(): TryStatementChecklistGenerationStrategy {

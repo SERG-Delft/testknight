@@ -1,9 +1,10 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiBinaryExpression
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
 
-class BinaryExpressionChecklistGenerationStrategy : ChecklistGenerator<PsiBinaryExpression, TestingChecklistLeaf> {
+class BinaryExpressionChecklistGenerationStrategy :
+    LeafChecklistGeneratorStrategy<PsiBinaryExpression> {
 
     companion object Factory {
         fun create(): BinaryExpressionChecklistGenerationStrategy {

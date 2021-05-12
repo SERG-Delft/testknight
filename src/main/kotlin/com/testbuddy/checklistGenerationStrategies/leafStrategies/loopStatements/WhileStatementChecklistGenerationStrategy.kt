@@ -1,11 +1,11 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements
 
 import com.intellij.psi.PsiWhileStatement
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
 
 class WhileStatementChecklistGenerationStrategy :
-    ChecklistGenerator<PsiWhileStatement, TestingChecklistLeaf> {
+    LeafChecklistGeneratorStrategy<PsiWhileStatement> {
 
     companion object Factory {
 

@@ -1,9 +1,10 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiParameter
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
 
-class ParameterChecklistGenerationStrategy : ChecklistGenerator<PsiParameter, TestingChecklistLeaf> {
+class ParameterChecklistGenerationStrategy :
+    LeafChecklistGeneratorStrategy<PsiParameter> {
 
     companion object Factory {
         fun create(): ParameterChecklistGenerationStrategy {
