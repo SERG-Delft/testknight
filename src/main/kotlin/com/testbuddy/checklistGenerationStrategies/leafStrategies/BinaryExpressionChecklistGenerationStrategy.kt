@@ -9,10 +9,10 @@ import com.intellij.psi.PsiPolyadicExpression
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.com.testbuddy.models.TruthTable
 import java.util.LinkedList
-import kotlin.collections.HashMap
 import kotlin.math.pow
 
-class BinaryExpressionChecklistGenerationStrategy(project: Project) : LeafChecklistGeneratorStrategy<PsiBinaryExpression> {
+class BinaryExpressionChecklistGenerationStrategy(project: Project) :
+    LeafChecklistGeneratorStrategy<PsiBinaryExpression> {
 
     // Set of operators that evaluate to a boolean
     private val evalToBoolOperators = setOf("GT", "LT", "GE", "LE", "NE", "EQ")
@@ -26,7 +26,20 @@ class BinaryExpressionChecklistGenerationStrategy(project: Project) : LeafCheckl
     }
 
     override fun generateChecklist(psiElement: PsiBinaryExpression): List<TestingChecklistLeafNode> {
-        return listOf()
+
+        val (simplified, assignments) = simplifyExpression(psiElement)
+
+        val testCases = mcdc(assignments.values as List<String>, simplified)
+
+        return testCases.map {
+
+            var description = "Test where "
+            for ((proposition, value) in it.entries) {
+                description += "${assignments[proposition]} is $value, "
+            }
+
+            TestingChecklistLeafNode(description, psiElement)
+        }
     }
 
     /**
