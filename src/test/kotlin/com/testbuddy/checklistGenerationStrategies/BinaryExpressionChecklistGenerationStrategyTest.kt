@@ -3,7 +3,7 @@ package com.testbuddy.checklistGenerationStrategies
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiPolyadicExpression
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.BinaryExpressionChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.BinaryExpressionChecklistGenerationStrategy
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

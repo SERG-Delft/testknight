@@ -1,11 +1,11 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements
 
 import com.intellij.psi.PsiWhileStatement
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenerator
-import com.testbuddy.com.testbuddy.models.TestingChecklistItem
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
 class WhileStatementChecklistGenerationStrategy :
-    ChecklistGenerator<PsiWhileStatement> {
+    LeafChecklistGeneratorStrategy<PsiWhileStatement> {
 
     companion object Factory {
 
@@ -14,7 +14,7 @@ class WhileStatementChecklistGenerationStrategy :
         }
     }
 
-    override fun generateChecklist(psiElement: PsiWhileStatement): List<TestingChecklistItem> {
+    override fun generateChecklist(psiElement: PsiWhileStatement): List<TestingChecklistLeafNode> {
         TODO("Not yet implemented")
     }
 }

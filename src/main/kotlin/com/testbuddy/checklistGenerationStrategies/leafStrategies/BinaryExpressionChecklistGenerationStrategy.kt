@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiBinaryExpression
@@ -6,13 +6,13 @@ import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiParenthesizedExpression
 import com.intellij.psi.PsiPolyadicExpression
-import com.testbuddy.com.testbuddy.models.TestingChecklistItem
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.com.testbuddy.models.TruthTable
 import java.util.LinkedList
 import kotlin.collections.HashMap
 import kotlin.math.pow
 
-class BinaryExpressionChecklistGenerationStrategy(val project: Project) : ChecklistGenerator<PsiPolyadicExpression> {
+class BinaryExpressionChecklistGenerationStrategy(project: Project) : LeafChecklistGeneratorStrategy<PsiBinaryExpression> {
 
     // Set of operators that evaluate to a boolean
     private val evalToBoolOperators = setOf("GT", "LT", "GE", "LE", "NE", "EQ")
@@ -25,7 +25,7 @@ class BinaryExpressionChecklistGenerationStrategy(val project: Project) : Checkl
         }
     }
 
-    override fun generateChecklist(psiElement: PsiPolyadicExpression): List<TestingChecklistItem> {
+    override fun generateChecklist(psiElement: PsiBinaryExpression): List<TestingChecklistLeafNode> {
         return listOf()
     }
 
