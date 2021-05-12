@@ -1,5 +1,6 @@
 package com.testbuddy.views
 
+import CopyPasteCellRenderer
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
@@ -8,9 +9,8 @@ import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
-import com.intellij.ui.layout.panel
 import com.intellij.ui.treeStructure.Tree
-import com.testbuddy.com.testbuddy.views.ChecklistCellRenderer
+import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode
 
@@ -69,6 +69,7 @@ class UserInterface {
         val root = DefaultMutableTreeNode("root")
 
         testCaseTree = Tree(root)
+        testCaseTree!!.cellRenderer = CopyPasteCellRenderer()
         panel.setViewportView(testCaseTree)
 
         toolWindowPanel.setContent(panel)
