@@ -35,6 +35,9 @@ dependencies {
     implementation("io.mockk:mockk:1.9.3")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0")
 
+    // evalEx
+    compile("com.udojava:EvalEx:2.5")
+
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")

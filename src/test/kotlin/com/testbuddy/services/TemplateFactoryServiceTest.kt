@@ -10,7 +10,7 @@ import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
+internal class TemplateCreationServiceTest : BasePlatformTestCase() {
 
     @Before
     public override fun setUp() {
