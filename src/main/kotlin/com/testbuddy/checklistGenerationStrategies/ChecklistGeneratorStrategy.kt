@@ -1,7 +1,6 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies
 
 import com.intellij.psi.PsiElement
-import com.testbuddy.com.testbuddy.models.TestingChecklistNode
 
 interface ChecklistGeneratorStrategy<E : PsiElement, G> {
 

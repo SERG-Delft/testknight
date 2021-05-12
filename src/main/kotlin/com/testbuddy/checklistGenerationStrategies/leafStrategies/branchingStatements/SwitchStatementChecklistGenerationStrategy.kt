@@ -4,7 +4,7 @@ import com.intellij.psi.PsiSwitchStatement
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeaf
 
-class SwitchStatementChecklistGenerationStrategy private constructor():
+class SwitchStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiSwitchStatement> {
 
     companion object Factory {

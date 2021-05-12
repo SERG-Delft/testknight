@@ -1,7 +1,6 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies
 
 import com.intellij.psi.PsiMethod
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
 
 class MethodChecklistGenerationStrategy :
