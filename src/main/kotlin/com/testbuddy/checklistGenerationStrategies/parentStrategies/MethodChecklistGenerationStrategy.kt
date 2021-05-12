@@ -5,7 +5,7 @@ import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGenera
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
 
 class MethodChecklistGenerationStrategy :
-    ChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode> {
+    ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode> {
 
     companion object Factory {
         fun create(): MethodChecklistGenerationStrategy {

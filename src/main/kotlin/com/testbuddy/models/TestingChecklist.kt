@@ -8,13 +8,14 @@ data class TestingChecklist(val classChecklists: List<TestingChecklistClassNode>
 
 abstract class TestingChecklistNode
 data class TestingChecklistLeaf(var description: String, val element: PsiElement) : TestingChecklistNode()
+abstract class TestingChecklistParentNode : TestingChecklistNode()
 data class TestingChecklistClassNode(
     var description: String,
     val children: List<TestingChecklistMethodNode>,
     val element: PsiClass
-) : TestingChecklistNode()
+) : TestingChecklistParentNode()
 data class TestingChecklistMethodNode(
     var description: String,
     val children: List<TestingChecklistLeaf>,
     val element: PsiMethod
-) : TestingChecklistNode()
+) : TestingChecklistParentNode()
