@@ -3,21 +3,21 @@ package com.testbuddy.views
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
-import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.layout.panel
+import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.com.testbuddy.views.ChecklistCellRenderer
 import java.awt.Component
-import javax.swing.BoxLayout
+import javax.swing.tree.DefaultMutableTreeNode
 
 class UserInterface {
 
     private var mainUI: JBTabbedPane? = null
-    private var testCaseUI: DialogPanel? = null
+    private var testCaseTree: Tree? = null
     private var checkListTree: CheckboxTree? = null
 
     /**
@@ -30,7 +30,7 @@ class UserInterface {
     /**
      * Creates the base UI which has scroll panel and a button which adds checklist to the panel.
      */
-    private fun createCheckList(): Component? {
+    private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
         // Setting up the action group. Currently has default values which needs to be changed later.
@@ -53,7 +53,7 @@ class UserInterface {
     /**
      * Skeleton code which returns the base scrollable panel on which we will add the other components.
      */
-    private fun getCopyPasteTab(): Component? {
+    private fun getCopyPasteTab(): Component {
 
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
@@ -65,9 +65,11 @@ class UserInterface {
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()
-        testCaseUI = panel {}
-        testCaseUI!!.layout = BoxLayout(testCaseUI, BoxLayout.PAGE_AXIS)
-        panel.setViewportView(testCaseUI)
+
+        val root = DefaultMutableTreeNode("root")
+
+        testCaseTree = Tree(root)
+        panel.setViewportView(testCaseTree)
 
         toolWindowPanel.setContent(panel)
         return toolWindowPanel
