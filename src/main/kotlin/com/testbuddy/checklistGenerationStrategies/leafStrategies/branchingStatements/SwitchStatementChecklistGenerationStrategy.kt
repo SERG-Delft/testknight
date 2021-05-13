@@ -14,6 +14,6 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
     }
 
     override fun generateChecklist(psiElement: PsiSwitchStatement): List<TestingChecklistLeafNode> {
-        TODO()
+        return emptyList()
     }
 }

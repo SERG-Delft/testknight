@@ -9,11 +9,11 @@ class ForStatementChecklistGenerationStrategy :
 
     companion object Factory {
         fun create(): ForStatementChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return ForStatementChecklistGenerationStrategy()
         }
     }
 
     override fun generateChecklist(psiElement: PsiForStatement): List<TestingChecklistLeafNode> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 }

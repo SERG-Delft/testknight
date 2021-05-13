@@ -10,11 +10,11 @@ class WhileStatementChecklistGenerationStrategy :
     companion object Factory {
 
         fun create(): WhileStatementChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return WhileStatementChecklistGenerationStrategy()
         }
     }
 
     override fun generateChecklist(psiElement: PsiWhileStatement): List<TestingChecklistLeafNode> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 }
