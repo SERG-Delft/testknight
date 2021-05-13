@@ -31,7 +31,7 @@ class LoadTestAction : AnAction() {
 
         val loadTestsService = event.project!!.service<LoadTestsService>()
         val psiFIle = event.getData(CommonDataKeys.PSI_FILE)
-        val listMethods = if (psiFIle != null) loadTestsService.getTests(psiFIle) else emptyList<TestMethodData>()
+        val listMethods  = if (psiFIle != null) loadTestsService.getTests(psiFIle) else emptyList<TestMethodData>()
 
         val window: ToolWindow? = ToolWindowManager.getInstance(event.project!!).getToolWindow("TestBuddy")
 

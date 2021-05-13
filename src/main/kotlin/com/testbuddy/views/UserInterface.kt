@@ -69,6 +69,7 @@ class UserInterface {
         val root = DefaultMutableTreeNode("root")
 
         testCaseTree = Tree(root)
+        testCaseTree!!.isRootVisible = false
         testCaseTree!!.cellRenderer = CopyPasteCellRenderer()
         panel.setViewportView(testCaseTree)
 
