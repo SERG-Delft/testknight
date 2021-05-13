@@ -1,6 +1,7 @@
 package com.testbuddy.models
 
 import com.intellij.psi.PsiElementFactory
+import com.intellij.psi.PsiExpression
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.com.testbuddy.models.PropositionalExpression
 import junit.framework.TestCase
@@ -19,7 +20,7 @@ internal class PropositionalExpressionTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testPreorderSimple() {
+    fun testSimplificationSimple() {
         val psiElementFactory = PsiElementFactory.getInstance(project)
         val expr = psiElementFactory.createExpressionFromText("a && b", null)
 
@@ -44,7 +45,7 @@ internal class PropositionalExpressionTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testPreorderArithmetic() {
+    fun testSimplificationArithmetic() {
         val psiElementFactory = PsiElementFactory.getInstance(project)
         val expr = psiElementFactory.createExpressionFromText("a && (b > c)", null)
 
@@ -56,12 +57,36 @@ internal class PropositionalExpressionTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testPreorderComplex() {
+    fun testSimplificationSingleProp() {
+        val psiElementFactory = PsiElementFactory.getInstance(project)
+
+        val expr = psiElementFactory.createExpressionFromText("a > b", null) as PsiExpression
+
+        val (simplified, assignments) = PropositionalExpression(expr).simplified()
+
+        TestCase.assertEquals("PROP0", simplified)
+        TestCase.assertEquals(assignments["PROP0"], "a > b")
+    }
+
+    @Test
+    fun testSimplificationLiteral() {
+        val psiElementFactory = PsiElementFactory.getInstance(project)
+
+        val expr = psiElementFactory.createExpressionFromText("true", null) as PsiExpression
+
+        val (simplified, assignments) = PropositionalExpression(expr).simplified()
+
+        TestCase.assertEquals("PROP0", simplified)
+        TestCase.assertEquals(assignments["PROP0"], "true")
+    }
+
+    @Test
+    fun testSimplificationComplex() {
         val psiElementFactory = PsiElementFactory.getInstance(project)
 
         val expr = psiElementFactory.createExpressionFromText(
-            "!(a == b) && (b > c) ^ (e || !a.get())",
-            null
+                "!(a == b) && (b > c) ^ (e || !a.get())",
+                null
         )
 
         val (simplified, assignments) = PropositionalExpression(expr).simplified()
@@ -71,5 +96,11 @@ internal class PropositionalExpressionTest : BasePlatformTestCase() {
         TestCase.assertEquals(assignments["PROP1"], "e")
         TestCase.assertEquals(assignments["PROP2"], "b > c")
         TestCase.assertEquals(assignments["PROP3"], "!(a == b)")
+    }
+
+    @Test
+    fun test() {
+        val psiElementFactory = PsiElementFactory.getInstance(project)
+        val expr = psiElementFactory.createExpressionFromText("a && b", null)
     }
 }

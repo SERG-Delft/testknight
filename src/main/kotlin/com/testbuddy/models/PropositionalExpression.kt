@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiParenthesizedExpression
 import com.intellij.psi.PsiPolyadicExpression
+import com.intellij.psi.impl.source.DummyHolder
 import com.intellij.psi.util.PsiPrecedenceUtil
 import java.util.LinkedList
 
@@ -65,7 +66,13 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
                 isProp(node) -> {
                     val propId = "PROP$id"; id++
                     assignments[propId] = node.text
-                    node.replace(psiElementFactory.createIdentifier(propId))
+
+                    if (node.parent is DummyHolder) {
+                        return Pair(propId, assignments)
+                    } else {
+                        node.replace(psiElementFactory.createIdentifier(propId))
+                    }
+
                 }
 
                 // for parenthesized expressions, push the inner expression

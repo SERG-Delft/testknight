@@ -17,6 +17,20 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     }
 
     @Test
+    fun testMcdc1Prop() {
+        val strategy = ConditionChecklistGenerationStrategy()
+
+        val testCases = strategy.mcdc(listOf("a"), "a")
+
+        assertContainsElements(
+                testCases,
+                mapOf("a" to true),
+                mapOf("a" to false),
+        )
+        assertEquals(3, testCases.size)
+    }
+
+    @Test
     fun testMcdc2Props() {
         val strategy = ConditionChecklistGenerationStrategy()
 
