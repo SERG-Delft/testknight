@@ -14,22 +14,28 @@ import java.awt.event.MouseEvent
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-
 /**
  * This listener checks if you pressed the copy or goto button.
- * Since the renderer isn't a live component, this is one way to make it "clickable".
+ * Since the renderer isn't a live component, this is one way to make it "live".
+ *
+ * returns true if it clicked either of those buttons.
  */
 class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) : ClickListener() {
 
+    /**
+     * Suppressing the ReturnCount warning because it makes the code messy with just 2 returns.
+     */
+    @Suppress("ReturnCount")
     override fun onClick(e: MouseEvent, clickCount: Int): Boolean {
 
-        //Find which node is being selected.
-        val path : TreePath = tree.selectionPath ?: return false
+        // Find which tree path is being selected.
+        val path: TreePath = tree.selectionPath ?: return false
 
-        if(path.lastPathComponent !is DefaultMutableTreeNode) return false
+        if (path.lastPathComponent !is DefaultMutableTreeNode) return false
 
         val node = path.lastPathComponent as DefaultMutableTreeNode
 
+        // If the node contains the userObject which is expected from a test method node.
         if (node.userObject is List<*>) {
 
             val rowBounds: Rectangle? = tree.getPathBounds(path)
@@ -39,14 +45,15 @@ class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPa
             copyBounds.location = rowBounds!!.location
             gotoBounds.location = rowBounds.location
 
-            //The panel is structured as :
-            //[label--horizontalglue----------copyButton-gotoButton]
-            val x = (rowBounds.location.x + cellRenderer.methodLabel!!.bounds.width + cellRenderer.horizontalGlue!!.bounds.width)
+            // The panel is structured as :
+            // [label--horizontalglue----------copyButton-gotoButton]
+            val x = (rowBounds.location.x +
+                    cellRenderer.methodLabel!!.bounds.width +
+                    cellRenderer.horizontalGlue!!.bounds.width)
 
-            //Update the button bound location based on the label, glue width (and copy button).
+            // Update the button bound location based on the label, glue width (and copy button).
             copyBounds.location = Point(x, copyBounds.y)
-            gotoBounds.location = Point(x+cellRenderer.copyButton!!.bounds.width, gotoBounds.y)
-
+            gotoBounds.location = Point(x + cellRenderer.copyButton!!.bounds.width, gotoBounds.y)
 
             val reference = ((node.userObject as List<*>)[0] as TestMethodData)
             val event = ((node.userObject as List<*>)[1] as AnActionEvent)

@@ -15,7 +15,6 @@ import com.testbuddy.com.testbuddy.views.trees.CopyPasteListener
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode
 
-
 class UserInterface {
 
     private var mainUI: JBTabbedPane? = null
