@@ -1,17 +1,32 @@
+package com.testbuddy.com.testbuddy.views.trees
 
 import com.intellij.ui.components.JBLabel
 import com.testbuddy.models.TestMethodData
 import java.awt.Component
-import javax.swing.Box
-import javax.swing.BoxLayout
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JTree
+import javax.swing.*
 import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeCellRenderer
+import javax.swing.tree.TreeCellRenderer
 
-class CopyPasteCellRenderer : DefaultTreeCellRenderer() {
+
+class CopyPasteCellRenderer() : JPanel(), TreeCellRenderer {
+
+    var methodLabel : JBLabel? = null
+    var copyButton : JButton? = null
+    var gotoButton : JButton? = null
+    var horizontalGlue : Component?  = null
+
+    init {
+        this.layout = BoxLayout(this, BoxLayout.LINE_AXIS)
+        methodLabel = JBLabel()
+        horizontalGlue = Box.createHorizontalGlue()
+        copyButton  = JButton("Copy")
+        gotoButton  = JButton("Goto")
+        add(methodLabel)
+        add(horizontalGlue)
+        add(copyButton)
+        add(gotoButton)
+    }
+
 
     override fun getTreeCellRendererComponent(
         tree: JTree,
@@ -23,36 +38,19 @@ class CopyPasteCellRenderer : DefaultTreeCellRenderer() {
         hasFocus: Boolean
     ): Component {
         if (value is DefaultMutableTreeNode) {
-            val mPanel = JPanel()
 
-            mPanel.layout = BoxLayout(mPanel, BoxLayout.LINE_AXIS)
+            if (value.userObject is List<*>) {
 
-            if (value.userObject is TestMethodData) {
+                val method = ((value.userObject as List<*>)[0] as TestMethodData)
 
-                val method = (value.userObject as TestMethodData)
+                methodLabel!!.text = method.name
 
-                // Create the labels and buttons.
-                // The glue adds spacing/moves the button to the right
+                return this
 
-                mPanel.add(JBLabel(method.name))
-                mPanel.add(Box.createHorizontalGlue())
-
-                val copyButton = JButton("Copy")
-                // copyButton.addActionListener(ButtonCopyClickListener(method, event))
-
-                mPanel.add(copyButton)
-
-                val gotoButton = JButton("Goto")
-
-                mPanel.add(gotoButton)
-                // Limit size of the panel
-//                mPanel.minimumSize = Dimension(0, 50)
-//                mPanel.maximumSize = Dimension(Integer.MAX_VALUE, 50)
-//                mPanel.setSize(-1, 50)
-                return mPanel
-//            copyPastePanel.add(mPanel)
             }
         }
-        return JLabel()
+        return JBLabel("TEST")
     }
+
+
 }

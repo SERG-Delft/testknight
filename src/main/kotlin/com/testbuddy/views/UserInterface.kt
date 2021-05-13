@@ -1,6 +1,5 @@
 package com.testbuddy.views
 
-import CopyPasteCellRenderer
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
@@ -11,8 +10,11 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
+import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
+import com.testbuddy.com.testbuddy.views.trees.CopyPasteListener
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode
+
 
 class UserInterface {
 
@@ -69,7 +71,16 @@ class UserInterface {
         val root = DefaultMutableTreeNode("root")
 
         testCaseTree = Tree(root)
-        testCaseTree!!.cellRenderer = CopyPasteCellRenderer()
+
+        val cellRenderer = CopyPasteCellRenderer()
+        testCaseTree!!.cellRenderer = cellRenderer
+        testCaseTree!!.isEditable = false
+        testCaseTree!!.isRootVisible = false
+        testCaseTree!!.showsRootHandles = true
+
+        val listener = CopyPasteListener(testCaseTree!!, cellRenderer)
+        listener.installOn(testCaseTree!!)
+
         panel.setViewportView(testCaseTree)
 
         toolWindowPanel.setContent(panel)
