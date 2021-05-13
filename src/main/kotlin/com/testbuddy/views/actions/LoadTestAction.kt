@@ -10,9 +10,12 @@ import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
+import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.com.testbuddy.models.TestClassData
 import com.testbuddy.services.LoadTestsService
+import org.jetbrains.annotations.NotNull
 import javax.swing.JTabbedPane
+import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
@@ -56,8 +59,9 @@ class LoadTestAction : AnAction() {
             }
             (copyPasteTree.model.root as DefaultMutableTreeNode).add(classNode)
         }
-        copyPasteTree.setExpandableItemsEnabled(true)
+
         (copyPasteTree.model as DefaultTreeModel).reload()
+        TreeUtil.expandAll(copyPasteTree)
 
 //        for (method in listMethods) {
 //
