@@ -14,6 +14,6 @@ class DoWhileStatementChecklistGenerationStrategy :
     }
 
     override fun generateChecklist(psiElement: PsiDoWhileStatement): List<TestingChecklistLeafNode> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 }

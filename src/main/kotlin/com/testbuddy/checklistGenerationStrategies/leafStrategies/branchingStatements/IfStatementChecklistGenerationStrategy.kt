@@ -14,6 +14,6 @@ class IfStatementChecklistGenerationStrategy :
     }
 
     override fun generateChecklist(psiElement: PsiIfStatement): List<TestingChecklistLeafNode> {
-        TODO("Not yet implemented")
+       return emptyList()
     }
 }
