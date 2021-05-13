@@ -71,6 +71,9 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
     }
 
 //    @Test
+//    fun testMethodGeneratesOnIfElseIfElse() {}
+
+//    @Test
 //    fun testMethodGeneratesOnSwitchStatements() {}
 
 //    @Test
