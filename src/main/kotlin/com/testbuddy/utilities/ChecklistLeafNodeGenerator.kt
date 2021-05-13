@@ -18,7 +18,6 @@ import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.com.testbuddy.models.TestingChecklistNode
 
 class ChecklistLeafNodeGenerator {
 
@@ -52,6 +51,4 @@ class ChecklistLeafNodeGenerator {
             else -> emptyList<TestingChecklistLeafNode>()
         }
     }
-
-
 }

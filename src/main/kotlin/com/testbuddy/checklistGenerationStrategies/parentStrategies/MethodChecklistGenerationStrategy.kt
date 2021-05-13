@@ -1,6 +1,5 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies
 
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.psi.PsiDoWhileStatement
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiForStatement
@@ -16,14 +15,12 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
 import com.testbuddy.com.testbuddy.utilities.ChecklistLeafNodeGenerator
-import com.testbuddy.services.GenerateTestCaseChecklistService
 
 class MethodChecklistGenerationStrategy private constructor(
     private val nestedStructureTypesRecognized: Array<Class<out PsiElement>>,
     private val checklistLeafNodeGenerator: ChecklistLeafNodeGenerator
 ) :
     ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode> {
-
 
     companion object Factory {
 
@@ -37,10 +34,10 @@ class MethodChecklistGenerationStrategy private constructor(
             nestedStructureTypesRecognized: Array<Class<out PsiElement>>,
             generator: ChecklistLeafNodeGenerator
         ): MethodChecklistGenerationStrategy {
-            return MethodChecklistGenerationStrategy(nestedStructureTypesRecognized, generator);
+            return MethodChecklistGenerationStrategy(nestedStructureTypesRecognized, generator)
         }
 
-        fun create(generator: ChecklistLeafNodeGenerator) : MethodChecklistGenerationStrategy {
+        fun create(generator: ChecklistLeafNodeGenerator): MethodChecklistGenerationStrategy {
             val recognizedStructs = getDefaultStructureTypesRecognized()
             return MethodChecklistGenerationStrategy(recognizedStructs, generator)
         }

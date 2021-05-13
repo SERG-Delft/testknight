@@ -14,6 +14,6 @@ class IfStatementChecklistGenerationStrategy :
     }
 
     override fun generateChecklist(psiElement: PsiIfStatement): List<TestingChecklistLeafNode> {
-       return emptyList()
+        return emptyList()
     }
 }

@@ -10,7 +10,6 @@ class ThrowStatementChecklistGenerationStrategy : LeafChecklistGeneratorStrategy
         fun create(): ThrowStatementChecklistGenerationStrategy {
             return ThrowStatementChecklistGenerationStrategy()
         }
-
     }
 
     override fun generateChecklist(throwStatement: PsiThrowStatement): List<TestingChecklistLeafNode> {
