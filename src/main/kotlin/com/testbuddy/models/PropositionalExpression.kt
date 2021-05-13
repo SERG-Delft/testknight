@@ -72,7 +72,6 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
                     } else {
                         node.replace(psiElementFactory.createIdentifier(propId))
                     }
-
                 }
 
                 // for parenthesized expressions, push the inner expression

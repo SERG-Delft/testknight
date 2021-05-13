@@ -23,11 +23,11 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val testCases = strategy.mcdc(listOf("a"), "a")
 
         assertContainsElements(
-                testCases,
-                mapOf("a" to true),
-                mapOf("a" to false),
+            testCases,
+            mapOf("a" to true),
+            mapOf("a" to false),
         )
-        assertEquals(3, testCases.size)
+        assertEquals(2, testCases.size)
     }
 
     @Test
