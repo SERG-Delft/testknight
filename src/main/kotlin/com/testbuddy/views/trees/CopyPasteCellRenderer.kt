@@ -50,10 +50,7 @@ class CopyPasteCellRenderer : DefaultTreeCellRenderer() {
 //                mPanel.minimumSize = Dimension(0, 50)
 //                mPanel.maximumSize = Dimension(Integer.MAX_VALUE, 50)
 //                mPanel.setSize(-1, 50)
-                return mPanel
-//            copyPastePanel.add(mPanel)
-            }
-            else if(value.userObject is TestClassData){
+            } else if (value.userObject is TestClassData) {
                 val className = (value.userObject as TestClassData)
 
                 // Create the label with the class name
@@ -67,8 +64,8 @@ class CopyPasteCellRenderer : DefaultTreeCellRenderer() {
 //                mPanel.minimumSize = Dimension(0, 50)
 //                mPanel.maximumSize = Dimension(Integer.MAX_VALUE, 50)
 //                mPanel.setSize(-1, 50)
-                return mPanel
             }
+            return mPanel
         }
         return JLabel()
     }

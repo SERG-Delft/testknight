@@ -11,7 +11,6 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.com.testbuddy.models.TestClassData
-import com.testbuddy.models.TestMethodData
 import com.testbuddy.services.LoadTestsService
 import javax.swing.JTabbedPane
 import javax.swing.tree.DefaultMutableTreeNode
@@ -47,12 +46,11 @@ class LoadTestAction : AnAction() {
         val root = copyPasteTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
 
-
         for (testClass in listClasses) {
 
             val classNode = DefaultMutableTreeNode(testClass)
-           // val listMethods = (testClass as TestClassData).methods
-            for (method in  (testClass as TestClassData).methods){
+            // val listMethods = (testClass as TestClassData).methods
+            for (method in (testClass as TestClassData).methods) {
                 val methodNode = DefaultMutableTreeNode(method)
                 classNode.add(methodNode)
             }
