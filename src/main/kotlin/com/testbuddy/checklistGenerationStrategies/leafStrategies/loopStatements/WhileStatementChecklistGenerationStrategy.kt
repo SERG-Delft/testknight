@@ -10,7 +10,7 @@ class WhileStatementChecklistGenerationStrategy :
     companion object Factory {
 
         fun create(): WhileStatementChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return WhileStatementChecklistGenerationStrategy()
         }
     }
 

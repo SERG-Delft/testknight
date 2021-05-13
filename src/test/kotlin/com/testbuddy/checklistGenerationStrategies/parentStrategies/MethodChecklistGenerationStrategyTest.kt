@@ -1,23 +1,33 @@
 package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.IfStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.SwitchStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.TryStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ThrowStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.DoWhileStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.com.testbuddy.utilities.ChecklistLeafNodeGenerator
 import com.testbuddy.services.GenerateTestCaseChecklistService
 import io.mockk.every
 import io.mockk.mockk
+import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
+import org.tukaani.xz.check.Check
 
 internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
+
 
     @Before
     public override fun setUp() {
@@ -29,8 +39,15 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
     }
 
     @Test
+    fun test() {
+        assertEquals(1,1)
+    }
+
+    @Test
     fun testMethodGeneratesOnIfStatements() {
-        val service = this.myFixture.project.getService(GenerateTestCaseChecklistService::class.java)
+        val leafNodeGenerator = ChecklistLeafNodeGenerator()
+
+        val methodGenerator = MethodChecklistGenerationStrategy.create(leafNodeGenerator)
         this.myFixture.configureByFile("/Person.java")
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
@@ -54,7 +71,7 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
                     TestingChecklistLeafNode("Test for age == 100", ifNegativeAge),
                     TestingChecklistLeafNode("Test for age < 100", ifNegativeAge)
                 )
-        service.ifStatementChecklistGenerationStrategy = ifConditionGenerator
+        leafNodeGenerator.ifStatementChecklistGenerationStrategy = ifConditionGenerator
 
         val expectedChildren = listOf(
             TestingChecklistLeafNode("Test for age < 0", ifNegativeAge),
@@ -65,8 +82,8 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
             TestingChecklistLeafNode("Test for age < 100", ifNegativeAge)
         )
         val expectedNode = TestingChecklistMethodNode("setAge", expectedChildren, methodToGenerateOn)
-        val actualNode = MethodChecklistGenerationStrategy.create().generateChecklist(methodToGenerateOn)
-        assertEquals(expectedNode,actualNode)
+        val actualNode = methodGenerator.generateChecklist(methodToGenerateOn)
+        TestCase.assertEquals(expectedNode, actualNode)
     }
 
 
@@ -98,4 +115,35 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
 //    @Test
 //    fun testMethodSuccessfullyCombinesSubChecklists() {}
+
+    private fun setupLeafNodeGenerator(generator: ChecklistLeafNodeGenerator) {
+        val ifStatementChecklistGenerationStrategy = mockk<IfStatementChecklistGenerationStrategy>()
+        val switchStatementChecklistGenerationStrategy = mockk<SwitchStatementChecklistGenerationStrategy>()
+        val tryStatementChecklistGenerationStrategy = mockk<TryStatementChecklistGenerationStrategy>()
+        val parameterChecklistGenerationStrategy = mockk<ParameterChecklistGenerationStrategy>()
+        val whileStatementChecklistGenerationStrategy = mockk<WhileStatementChecklistGenerationStrategy>()
+        val forStatementChecklistGenerationStrategy = mockk<ForStatementChecklistGenerationStrategy>()
+        val doWhileStatementChecklistGenerationStrategy = mockk<DoWhileStatementChecklistGenerationStrategy>()
+        //TODO ForEachStatement
+        val throwStatementChecklistGenerationStrategy = mockk<ThrowStatementChecklistGenerationStrategy>()
+
+        every { ifStatementChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+        every { switchStatementChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+        every { tryStatementChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+        every { parameterChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+        every { whileStatementChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+        every { forStatementChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+        every { doWhileStatementChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+        every { throwStatementChecklistGenerationStrategy.generateChecklist(any()) } returns emptyList()
+
+        generator.ifStatementChecklistGenerationStrategy = ifStatementChecklistGenerationStrategy
+        generator.switchStatementChecklistGenerationStrategy = switchStatementChecklistGenerationStrategy
+        generator.tryStatementChecklistGenerationStrategy = tryStatementChecklistGenerationStrategy
+        generator.parameterChecklistGenerationStrategy = parameterChecklistGenerationStrategy
+        generator.whileStatementChecklistGenerationStrategy = whileStatementChecklistGenerationStrategy
+        generator.forStatementChecklistGenerationStrategy = forStatementChecklistGenerationStrategy
+        generator.doWhileStatementChecklistGenerationStrategy = doWhileStatementChecklistGenerationStrategy
+        generator.throwStatementChecklistGenerationStrategy = throwStatementChecklistGenerationStrategy
+    }
+
 }

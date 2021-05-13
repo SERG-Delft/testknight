@@ -8,11 +8,11 @@ class ParameterChecklistGenerationStrategy :
 
     companion object Factory {
         fun create(): ParameterChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return ParameterChecklistGenerationStrategy()
         }
     }
 
     override fun generateChecklist(psiElement: PsiParameter): List<TestingChecklistLeafNode> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 }

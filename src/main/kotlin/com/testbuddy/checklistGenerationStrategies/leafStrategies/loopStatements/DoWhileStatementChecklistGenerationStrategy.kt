@@ -9,7 +9,7 @@ class DoWhileStatementChecklistGenerationStrategy :
 
     companion object Factory {
         fun create(): DoWhileStatementChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return DoWhileStatementChecklistGenerationStrategy()
         }
     }
 

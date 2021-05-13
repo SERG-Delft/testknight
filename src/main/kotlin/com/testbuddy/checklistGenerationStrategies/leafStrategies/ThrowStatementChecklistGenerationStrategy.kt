@@ -8,12 +8,12 @@ class ThrowStatementChecklistGenerationStrategy : LeafChecklistGeneratorStrategy
     companion object Factory {
 
         fun create(): ThrowStatementChecklistGenerationStrategy {
-            TODO()
+            return ThrowStatementChecklistGenerationStrategy()
         }
 
     }
 
     override fun generateChecklist(throwStatement: PsiThrowStatement): List<TestingChecklistLeafNode> {
-        TODO()
+        return emptyList()
     }
 }

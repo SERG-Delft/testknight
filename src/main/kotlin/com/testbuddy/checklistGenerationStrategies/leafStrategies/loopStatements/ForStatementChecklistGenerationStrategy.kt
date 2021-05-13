@@ -9,7 +9,7 @@ class ForStatementChecklistGenerationStrategy :
 
     companion object Factory {
         fun create(): ForStatementChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return ForStatementChecklistGenerationStrategy()
         }
     }
 

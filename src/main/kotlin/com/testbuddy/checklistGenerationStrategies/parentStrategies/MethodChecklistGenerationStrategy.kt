@@ -15,22 +15,34 @@ import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.com.testbuddy.utilities.ChecklistLeafNodeGenerator
 import com.testbuddy.services.GenerateTestCaseChecklistService
 
 class MethodChecklistGenerationStrategy private constructor(
-    private val nestedStructureTypesRecognized: Array<Class<out PsiElement>>
+    private val nestedStructureTypesRecognized: Array<Class<out PsiElement>>,
+    private val checklistLeafNodeGenerator: ChecklistLeafNodeGenerator
 ) :
     ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode> {
+
 
     companion object Factory {
 
         fun create(): MethodChecklistGenerationStrategy {
             val recognizedStructs = getDefaultStructureTypesRecognized()
-            return create(recognizedStructs)
+            val generationService = ChecklistLeafNodeGenerator()
+            return create(recognizedStructs, generationService)
         }
 
-        fun create(nestedStructureTypesRecognized: Array<Class<out PsiElement>>): MethodChecklistGenerationStrategy {
-            return MethodChecklistGenerationStrategy(nestedStructureTypesRecognized)
+        fun create(
+            nestedStructureTypesRecognized: Array<Class<out PsiElement>>,
+            generator: ChecklistLeafNodeGenerator
+        ): MethodChecklistGenerationStrategy {
+            return MethodChecklistGenerationStrategy(nestedStructureTypesRecognized, generator);
+        }
+
+        fun create(generator: ChecklistLeafNodeGenerator) : MethodChecklistGenerationStrategy {
+            val recognizedStructs = getDefaultStructureTypesRecognized()
+            return MethodChecklistGenerationStrategy(recognizedStructs, generator)
         }
 
         /**
@@ -55,11 +67,10 @@ class MethodChecklistGenerationStrategy private constructor(
 
         @Suppress("SpreadOperator")
         val nestedStructures = PsiTreeUtil.findChildrenOfAnyType(psiMethod, *this.nestedStructureTypesRecognized)
-        val checklistGenerationService = ServiceManager.getService(GenerateTestCaseChecklistService::class.java)
 
         nestedStructures.forEach {
             children.addAll(
-                checklistGenerationService.generateChecklist(it) as Collection<TestingChecklistLeafNode>
+                checklistLeafNodeGenerator.generateChecklist(it) as Collection<TestingChecklistLeafNode>
             )
         }
 
