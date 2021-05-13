@@ -3,7 +3,6 @@ package com.testbuddy.com.testbuddy.models
 import com.udojava.evalex.Expression
 import java.math.BigDecimal
 import java.util.Locale
-import kotlin.collections.HashMap
 import kotlin.math.pow
 
 class TruthTable(private val vars: List<String>, expressionString: String) {
