@@ -13,6 +13,7 @@
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
         <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
+        <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->

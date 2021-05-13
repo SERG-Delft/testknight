@@ -15,10 +15,10 @@ import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
-import com.testbuddy.com.testbuddy.services.GenerateTestCaseChecklistService
+import com.testbuddy.services.GenerateTestCaseChecklistService
 
 class MethodChecklistGenerationStrategy private constructor(
-    val nestedStructureTypesRecognized: Array<Class<out PsiElement>>
+    private val nestedStructureTypesRecognized: Array<Class<out PsiElement>>
 ) :
     ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode> {
 
