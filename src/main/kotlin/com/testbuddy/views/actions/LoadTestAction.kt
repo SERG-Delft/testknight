@@ -10,6 +10,7 @@ import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.com.testbuddy.models.TestClassData
 import com.testbuddy.models.TestMethodData
 import com.testbuddy.services.LoadTestsService
 import javax.swing.JTabbedPane
@@ -31,7 +32,7 @@ class LoadTestAction : AnAction() {
 
         val loadTestsService = event.project!!.service<LoadTestsService>()
         val psiFIle = event.getData(CommonDataKeys.PSI_FILE)
-        val listMethods  = if (psiFIle != null) loadTestsService.getTests(psiFIle) else emptyList<TestMethodData>()
+        val listClasses = if (psiFIle != null) loadTestsService.getTestsTree(psiFIle) else emptyList<TestClassData>()
 
         val window: ToolWindow? = ToolWindowManager.getInstance(event.project!!).getToolWindow("TestBuddy")
 
@@ -43,12 +44,21 @@ class LoadTestAction : AnAction() {
         val copyPasteScroll = copyPasteTab.getComponent(1) as JBScrollPane
         val copyPasteViewport = copyPasteScroll.viewport
         val copyPasteTree = copyPasteViewport.getComponent(0) as Tree
+        val root = copyPasteTree.model.root as DefaultMutableTreeNode
+        root.removeAllChildren()
 
-        for (method in listMethods) {
 
-            val classNode = DefaultMutableTreeNode(method)
+        for (testClass in listClasses) {
+
+            val classNode = DefaultMutableTreeNode(testClass)
+           // val listMethods = (testClass as TestClassData).methods
+            for (method in  (testClass as TestClassData).methods){
+                val methodNode = DefaultMutableTreeNode(method)
+                classNode.add(methodNode)
+            }
             (copyPasteTree.model.root as DefaultMutableTreeNode).add(classNode)
         }
+        copyPasteTree.setExpandableItemsEnabled(true)
         (copyPasteTree.model as DefaultTreeModel).reload()
 
 //        for (method in listMethods) {
