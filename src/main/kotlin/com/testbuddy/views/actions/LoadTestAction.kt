@@ -13,9 +13,7 @@ import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.com.testbuddy.models.TestClassData
 import com.testbuddy.services.LoadTestsService
-import org.jetbrains.annotations.NotNull
 import javax.swing.JTabbedPane
-import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
@@ -52,7 +50,6 @@ class LoadTestAction : AnAction() {
         for (testClass in listClasses) {
 
             val classNode = DefaultMutableTreeNode(testClass)
-            // val listMethods = (testClass as TestClassData).methods
             for (method in (testClass as TestClassData).methods) {
                 val methodNode = DefaultMutableTreeNode(method)
                 classNode.add(methodNode)
