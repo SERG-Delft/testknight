@@ -24,9 +24,11 @@ class ThrowStatementChecklistGenerationStrategy private constructor() :
      * @param psiElement the throw statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
+    @Suppress
     override fun generateChecklist(psiElement: PsiThrowStatement): List<TestingChecklistLeafNode> {
-        val newExpression = (psiElement.exception as? PsiNewExpression) ?: return emptyList()
-        val nameOfException = newExpression.classReference?.qualifiedName ?: return emptyList()
+        val newExpression = (psiElement.exception as? PsiNewExpression)
+        val nameOfException = newExpression?.classReference?.qualifiedName
+        if (newExpression == null || nameOfException == null) return emptyList()
         return listOf(TestingChecklistLeafNode("Test when $nameOfException is thrown", psiElement))
     }
 }

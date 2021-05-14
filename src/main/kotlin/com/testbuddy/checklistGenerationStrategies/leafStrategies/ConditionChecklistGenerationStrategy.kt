@@ -10,7 +10,7 @@ class ConditionChecklistGenerationStrategy : LeafChecklistGeneratorStrategy<PsiE
 
     companion object Factory {
         fun create(): ConditionChecklistGenerationStrategy {
-            TODO("Not yet implemented")
+            return ConditionChecklistGenerationStrategy()
         }
     }
 

@@ -26,9 +26,10 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
     override fun generateChecklist(psiElement: PsiSwitchStatement): List<TestingChecklistLeafNode> {
-        val reference = PsiTreeUtil.getChildOfType(psiElement, PsiReferenceExpression::class.java) ?: return emptyList()
+        val reference = PsiTreeUtil.getChildOfType(psiElement, PsiReferenceExpression::class.java)
+        val codeBlock = PsiTreeUtil.getChildOfType(psiElement, PsiCodeBlock::class.java)
+        if (reference == null || codeBlock == null) return emptyList()
         val switchVariable = reference.canonicalText
-        val codeBlock = PsiTreeUtil.getChildOfType(psiElement, PsiCodeBlock::class.java) ?: return emptyList()
         val switchLabelStatements =
             PsiTreeUtil.getChildrenOfType(codeBlock, PsiSwitchLabelStatement::class.java)
         val switchLabelRules =
