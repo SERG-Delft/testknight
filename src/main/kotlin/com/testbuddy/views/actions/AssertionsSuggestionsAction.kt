@@ -61,8 +61,7 @@ class AssertionsSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAc
 
         if (element is PsiIdentifier && checkElement != null && parentMethod != null) {
             if (testAnalyzerService.isTestMethod(parentMethod)) {
-               // println("I have found a call")
-                   // println(checkElement.methodExpression)
+                // println("I have found a call") // println(checkElement.methodExpression)
                 return true
             }
         }
