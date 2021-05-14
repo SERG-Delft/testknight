@@ -4,15 +4,17 @@ import com.intellij.openapi.project.ProjectManager
 import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiExpression
+import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiParenthesizedExpression
 import com.intellij.psi.PsiPolyadicExpression
-import com.intellij.psi.impl.source.DummyHolder
 import com.intellij.psi.util.PsiPrecedenceUtil
 import java.util.LinkedList
 
 class PropositionalExpression(private val psiExpression: PsiExpression) {
 
     private val psiElementFactory = PsiElementFactory.getInstance(ProjectManager.getInstance().defaultProject)
+    private val literalTrue = psiElementFactory.createExpressionFromText("1", null)
+    private val literalFalse = psiElementFactory.createExpressionFromText("0", null)
 
     /**
      * Return true if the precedence of the expression is less than that of an and operation
@@ -44,6 +46,7 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
      *
      * @return the expression with all propositions simplified, and a map containing the variable assignments
      */
+    @Suppress("ReturnCount") // could be refactored but the code woudl be much more complex
     fun simplified(): Pair<String, Map<String, String>> {
 
         // a copy of the expression we can use for
@@ -52,6 +55,18 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
         // this map will keep the relationships between variables in the end result and their text form in the code
         val assignments = HashMap<String, String>()
         var id = 0
+
+        // special case for the root since .replace() does not work for root elements
+        when {
+            simplifiedExpr is PsiLiteralExpression -> when (simplifiedExpr.text) {
+                "true" -> return Pair("1", assignments)
+                "false" -> return Pair("0", assignments)
+            }
+            isProp(simplifiedExpr) -> {
+                assignments["PROP0"] = simplifiedExpr.text
+                return Pair("PROP0", assignments)
+            }
+        }
 
         // stack for iterative preorder traversal
         val stack = LinkedList<PsiExpression>(); stack.push(simplifiedExpr)
@@ -62,16 +77,18 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
 
             when {
 
+                // if the expression is a literal replace it with 1/0 instead of true/false
+                node is PsiLiteralExpression -> when (node.text) {
+                    "true" -> node.replace(literalTrue)
+                    "false" -> node.replace(literalFalse)
+                }
+
                 // if the expression is a proposition replace it with an identifier
                 isProp(node) -> {
                     val propId = "PROP$id"; id++
                     assignments[propId] = node.text
 
-                    if (node.parent is DummyHolder) {
-                        return Pair(propId, assignments)
-                    } else {
-                        node.replace(psiElementFactory.createIdentifier(propId))
-                    }
+                    node.replace(psiElementFactory.createIdentifier(propId))
                 }
 
                 // for parenthesized expressions, push the inner expression
