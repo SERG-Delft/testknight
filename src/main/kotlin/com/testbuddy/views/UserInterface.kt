@@ -52,7 +52,11 @@ class UserInterface {
     }
 
     /**
-     * Skeleton code which returns the base scrollable panel on which we will add the other components.
+     * Returns a tool window panel with a action toolbar and a tree.
+     * The tree is wrapped in a scroll pane and the tree shows all the test methods and classes in a file.
+     * Only the tree with root is returned for now, the actions deal with adding other nodes to the tree.
+     *
+     * Custom tree renderer is set and a listener to check for button clicks is also attached.
      */
     private fun getCopyPasteTab(): Component {
 

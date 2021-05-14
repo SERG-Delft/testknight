@@ -47,9 +47,11 @@ class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPa
 
             // The panel is structured as :
             // [label--horizontalglue----------copyButton-gotoButton]
-            val x = (rowBounds.location.x +
+            val x = (
+                rowBounds.location.x +
                     cellRenderer.methodLabel!!.bounds.width +
-                    cellRenderer.horizontalGlue!!.bounds.width)
+                    cellRenderer.horizontalGlue!!.bounds.width
+                )
 
             // Update the button bound location based on the label, glue width (and copy button).
             copyBounds.location = Point(x, copyBounds.y)
