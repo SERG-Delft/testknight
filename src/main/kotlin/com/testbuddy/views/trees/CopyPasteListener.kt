@@ -1,6 +1,7 @@
 package com.testbuddy.com.testbuddy.views.trees
 
 import com.intellij.openapi.components.service
+import com.intellij.openapi.editor.Editor
 import com.intellij.ui.ClickListener
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.TestMethodUserObject
@@ -13,6 +14,8 @@ import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
 class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) : ClickListener() {
+
+    private var latestEditor: Editor? = null
 
     /**
      * Suppressing the ReturnCount warning because it makes the code messy with just 2 returns.
@@ -60,7 +63,12 @@ class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPa
 
             val reference = userObject.reference
             val project = userObject.project
-            val editor = userObject.editor
+
+            if (userObject.editor != null) {
+                latestEditor = userObject.editor
+            }
+
+            val editor = userObject.editor ?: latestEditor
 
             if (copyBounds.contains(e.point)) {
                 val duplicateTestsService = project!!.service<DuplicateTestsService>()

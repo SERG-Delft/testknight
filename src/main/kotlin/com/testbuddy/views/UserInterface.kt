@@ -3,7 +3,15 @@ package com.testbuddy.views
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.components.service
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.TextEditor
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
+import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiTreeChangeAdapter
+import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
@@ -12,10 +20,12 @@ import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
 import com.testbuddy.com.testbuddy.views.trees.CopyPasteListener
+import com.testbuddy.services.LoadTestsService
+import com.testbuddy.views.actions.LoadTestAction
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode
 
-class UserInterface {
+class UserInterface(val project: Project) {
 
     private var mainUI: JBTabbedPane? = null
     private var testCaseTree: Tree? = null
@@ -107,5 +117,29 @@ class UserInterface {
         mainUI!!.addTab("CopyPaste", getCopyPasteTab())
         // Function call which returns the tab for checklist
         mainUI!!.addTab("Checklist", createCheckList())
+
+        val loadTestsService = project.service<LoadTestsService>()
+
+        PsiManager.getInstance(project).addPsiTreeChangeListener(
+            object : PsiTreeChangeAdapter() {
+
+                /**
+                 * Calls the LoadTestAction to refresh the UI whenever the children classes change.
+                 *
+                 * @param event Event with the Psi tree change information.
+                 */
+                override fun childrenChanged(event: PsiTreeChangeEvent) {
+
+                    val editorList = FileEditorManager.getInstance(project).selectedEditors
+
+                    var editor: Editor? = null
+                    if (editorList.isNotEmpty()) {
+                        editor = (editorList[0] as TextEditor).editor
+                    }
+                    LoadTestAction().actionPerformed(project, event.file, editor)
+                }
+            },
+            loadTestsService
+        )
     }
 }

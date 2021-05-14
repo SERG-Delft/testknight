@@ -25,16 +25,11 @@ class LoadTestAction : AnAction() {
 
     /**
      * Updates the CopyPaste tab to load the test cases from the selected file.
-     * Has suppression for current skeleton code.
      *
      * @param event Event received when the associated menu item is chosen.
      */
-    @Suppress("MagicNumber")
     override fun actionPerformed(event: AnActionEvent) {
 
-        // Take the load test service and use the get tests
-
-        // Project not found, so return.
         val project = event.project ?: return
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)
         val editor = event.getData(CommonDataKeys.EDITOR)
@@ -42,6 +37,13 @@ class LoadTestAction : AnAction() {
         actionPerformed(project, psiFile, editor)
     }
 
+    /**
+     * Updates the CopyPaste tab to load the test cases from the selected file.
+     *
+     * @param project current open project
+     * @param psiFile PsiFile of the current open file
+     * @param editor Editor of the current open file
+     */
     fun actionPerformed(project: Project, psiFile: PsiFile?, editor: Editor?) {
 
         val loadTestsService = project.service<LoadTestsService>()
