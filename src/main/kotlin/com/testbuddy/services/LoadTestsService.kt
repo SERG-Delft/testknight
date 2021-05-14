@@ -36,7 +36,9 @@ class LoadTestsService {
         return classes.map { psiClass ->
             TestClassData(
                 psiClass.name ?: "",
-                psiClass.methods.map { TestMethodData(it.name, psiClass.name ?: "", it) },
+                psiClass.methods
+                    .filter { testAnalyzer.isTestMethod(it) }
+                    .map { TestMethodData(it.name, psiClass.name ?: "", it) },
                 psiClass
             )
         }
