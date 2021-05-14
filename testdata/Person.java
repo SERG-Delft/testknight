@@ -11,7 +11,6 @@ public class Person {
         this.age = age;
     }
 
-
     //Throws an Exception as a side-effect.
     public Person getSpouse() throws NotMarriedException {
         if(spouse == null) {
@@ -72,6 +71,95 @@ public class Person {
         String message = "Hello! My name is " + name + " and I am " + this.age + " years old";
         return message;
     }
+
+    public String getSpouseName() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } catch (NotMarriedException e) {
+            return "I am not married actually";
+        }
+    }
+
+    public String getSpouseNameNoCatch() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } finally {
+            return "For the last time, I am not married!";
+        }
+    }
+
+
+    public String getSpouseNameMultipleCatches() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } catch (NotMarriedException e) {
+            return "I am not married actually!";
+        } catch (NullPointerException e) {
+            return "I don't have a spouce!"
+        }
+    }
+
+    public String getSpouseNameCatchAndFinally() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } catch (NotMarriedException e) {
+            return "I am not married actually!";
+        } finally {
+            System.out.println("Thanks for asking!")
+        }
+    }
+
+    public String getSpouseNameIncompleteCatch() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } catch (NotMarriedException e) {
+            return "I am not married actually!";
+        } catch ( ) {
+            return "I don't have a spouce!"
+        }
+    }
+
+    public void methodWithBrokenThrows() {
+        throw 42;
+        throw new ;
+    }
+
+
+
+    public String commentOnAge() {
+        switch (this.age) {
+            case 10: return "Oh the joys of youth!";
+            case 20: return "Oh the joys of youth!";
+            case 30: return "Time to get serious...";
+            case 40: return "You are not old. You are wise";
+            default: "Hmmm?"
+        }
+    }
+
+
+    public String commentOnAgeEnhanched() {
+        switch (this.age) {
+            case 10, 20 : return "Oh the joys of youth!";
+            case 30 : return "Time to get serious...";
+            case 40 : return "You are not old. You are wise";
+        }
+    }
+
+    public String commentOnAgeEnhanchedWithRules() {
+        switch (this.age) {
+            case 10, 20 -> return "Oh the joys of youth!";
+            case 30 -> return "Time to get serious...";
+            case 40 -> return "You are not old. You are wise";
+        }
+    }
+
+
+
 
 }
 

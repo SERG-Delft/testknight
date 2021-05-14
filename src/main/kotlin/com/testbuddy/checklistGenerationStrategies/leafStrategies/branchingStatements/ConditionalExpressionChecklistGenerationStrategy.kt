@@ -1,33 +1,31 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements
+package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
-import com.intellij.psi.PsiIfStatement
-import com.intellij.psi.PsiLiteralExpression
+import com.intellij.psi.PsiConditionalExpression
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
-class IfStatementChecklistGenerationStrategy private constructor(
+class ConditionalExpressionChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
 ) :
-    LeafChecklistGeneratorStrategy<PsiIfStatement> {
+    LeafChecklistGeneratorStrategy<PsiConditionalExpression> {
 
     companion object Factory {
-        fun create(): IfStatementChecklistGenerationStrategy {
+
+        fun create(): ConditionalExpressionChecklistGenerationStrategy {
             val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
             return create(conditionChecklistGenerator)
         }
 
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-            IfStatementChecklistGenerationStrategy {
-                return IfStatementChecklistGenerationStrategy(conditionChecklistGenerator)
+            ConditionalExpressionChecklistGenerationStrategy {
+                return ConditionalExpressionChecklistGenerationStrategy(conditionChecklistGenerator)
             }
     }
 
-    override fun generateChecklist(psiElement: PsiIfStatement): List<TestingChecklistLeafNode> {
-        val condition = psiElement.condition
-        if (condition == null || condition is PsiLiteralExpression) {
-            return emptyList()
-        }
+    override fun generateChecklist(psiElement: PsiConditionalExpression): List<TestingChecklistLeafNode> {
+
+        val condition = psiElement.condition!!
         return conditionChecklistGenerator.generateChecklist(condition)
     }
 }
