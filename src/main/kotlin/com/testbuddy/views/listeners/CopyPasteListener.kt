@@ -1,9 +1,10 @@
-package com.testbuddy.com.testbuddy.views.trees
+package com.testbuddy.views.listeners
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.ui.ClickListener
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
 import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService

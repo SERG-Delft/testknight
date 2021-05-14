@@ -4,11 +4,14 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.components.service
-import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent
+import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
@@ -19,9 +22,10 @@ import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
-import com.testbuddy.com.testbuddy.views.trees.CopyPasteListener
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.views.actions.LoadTestAction
+import com.testbuddy.views.listeners.CopyPasteListener
+import org.jetbrains.annotations.NotNull
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode
 
@@ -103,6 +107,7 @@ class UserInterface(val project: Project) {
         panel.setViewportView(testCaseTree)
 
         toolWindowPanel.setContent(panel)
+
         return toolWindowPanel
     }
 
@@ -122,24 +127,45 @@ class UserInterface(val project: Project) {
 
         PsiManager.getInstance(project).addPsiTreeChangeListener(
             object : PsiTreeChangeAdapter() {
-
-                /**
-                 * Calls the LoadTestAction to refresh the UI whenever the children classes change.
-                 *
-                 * @param event Event with the Psi tree change information.
-                 */
                 override fun childrenChanged(event: PsiTreeChangeEvent) {
-
-                    val editorList = FileEditorManager.getInstance(project).selectedEditors
-
-                    var editor: Editor? = null
-                    if (editorList.isNotEmpty()) {
-                        editor = (editorList[0] as TextEditor).editor
-                    }
-                    LoadTestAction().actionPerformed(project, event.file, editor)
+                    refreshTestCaseUI(project)
                 }
             },
             loadTestsService
         )
+
+        val messageBus = project.messageBus
+        messageBus.connect()
+            .subscribe(
+                FileEditorManagerListener.FILE_EDITOR_MANAGER,
+                object : FileEditorManagerListener {
+                    override fun fileOpened(@NotNull source: FileEditorManager, @NotNull file: VirtualFile) {
+                        refreshTestCaseUI(project)
+                    }
+
+                    override fun selectionChanged(@NotNull event: FileEditorManagerEvent) {
+                        refreshTestCaseUI(project)
+                    }
+                }
+            )
+    }
+
+    companion object {
+        /**
+         * Updates the CopyPasteTab by calling the LoadTestAction.
+         * Uses the project to get editor and psi file information.
+         *
+         * @param project the current project.
+         */
+        fun refreshTestCaseUI(project: Project) {
+            val editorList = FileEditorManager.getInstance(project).selectedEditors
+
+            if (editorList.isNotEmpty()) {
+                val textEditor = editorList[0] as TextEditor
+
+                val psiFile: PsiFile? = PsiManager.getInstance(project).findFile(textEditor.file!!)
+                LoadTestAction().actionPerformed(project, psiFile, textEditor.editor)
+            }
+        }
     }
 }
