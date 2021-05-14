@@ -2,22 +2,22 @@ package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingState
 
 import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiLiteralExpression
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.BinaryExpressionChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
 class IfStatementChecklistGenerationStrategy private constructor(
-    private val conditionChecklistGenerator: BinaryExpressionChecklistGenerationStrategy
+    private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
 ):
     LeafChecklistGeneratorStrategy<PsiIfStatement> {
 
     companion object Factory {
         fun create(): IfStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator = BinaryExpressionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
             return create(conditionChecklistGenerator)
         }
 
-        fun create(conditionChecklistGenerator: BinaryExpressionChecklistGenerationStrategy):
+        fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
                 IfStatementChecklistGenerationStrategy {
             return IfStatementChecklistGenerationStrategy(conditionChecklistGenerator)
         }

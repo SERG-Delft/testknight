@@ -40,15 +40,15 @@ class ClassChecklistGenerationStrategy private constructor(
     /**
      * Generates the checklist for a given class.
      *
-     * @param psiClass the PsiClass to generate the checklist on.
+     * @param psiElement the PsiClass to generate the checklist on.
      * @return a TestingChecklistClassNode object representing the checklist for that class.
      */
-    override fun generateChecklist(psiClass: PsiClass): TestingChecklistClassNode {
-        val methodName = psiClass.name ?: "No class name found"
-        val methods = PsiTreeUtil.findChildrenOfType(psiClass, PsiMethod::class.java)
+    override fun generateChecklist(psiElement: PsiClass): TestingChecklistClassNode {
+        val methodName = psiElement.name ?: "No class name found"
+        val methods = PsiTreeUtil.findChildrenOfType(psiElement, PsiMethod::class.java)
         val children = mutableListOf<TestingChecklistMethodNode>()
         // val methodChecklistGenerator = MethodChecklistGenerationStrategy.create()
         methods.forEach { children.add(methodChecklistGenerator.generateChecklist(it)) }
-        return TestingChecklistClassNode(methodName, children, psiClass)
+        return TestingChecklistClassNode(methodName, children, psiElement)
     }
 }

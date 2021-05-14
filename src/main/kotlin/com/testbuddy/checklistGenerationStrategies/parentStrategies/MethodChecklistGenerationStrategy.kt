@@ -58,12 +58,18 @@ class MethodChecklistGenerationStrategy private constructor(
         }
     }
 
-    override fun generateChecklist(psiMethod: PsiMethod): TestingChecklistMethodNode {
-        val name = psiMethod.name
+    /**
+     * Generates the checklist for a given method.
+     *
+     * @param psiElement the method to generate on.
+     * @return a TestingChecklistMethodNode representing the checklist for the method.
+     */
+    override fun generateChecklist(psiElement: PsiMethod): TestingChecklistMethodNode {
+        val name = psiElement.name
         val children = mutableListOf<TestingChecklistLeafNode>()
 
         @Suppress("SpreadOperator")
-        val nestedStructures = PsiTreeUtil.findChildrenOfAnyType(psiMethod, *this.nestedStructureTypesRecognized)
+        val nestedStructures = PsiTreeUtil.findChildrenOfAnyType(psiElement, *this.nestedStructureTypesRecognized)
 
         nestedStructures.forEach {
             children.addAll(
@@ -71,6 +77,6 @@ class MethodChecklistGenerationStrategy private constructor(
             )
         }
 
-        return TestingChecklistMethodNode(name, children, psiMethod)
+        return TestingChecklistMethodNode(name, children, psiElement)
     }
 }

@@ -41,6 +41,26 @@ public class Person {
         this.age = age;
     }
 
+
+    public String commentOnAge() {
+        switch (this.age) {
+            case 10: return "Oh the joys of youth!";
+            case 20: return "Oh the joys of youth!";
+            case 30: return "Time to get serious...";
+            case 40: return "You are not old. You are wise";
+            default: "Hmmm?"
+        }
+    }
+
+    public String commentOnAgeEnhanched() {
+        switch (this.age) {
+            case 10, 20 -> return "Oh the joys of youth!";
+            case 30 -> return "Time to get serious...";
+            case 40 -> return "You are not old. You are wise";
+        }
+    }
+
+
     //No side effect -> should assert on return value.
     public String getName() {
         return name;
