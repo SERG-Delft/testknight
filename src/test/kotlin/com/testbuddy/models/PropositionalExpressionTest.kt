@@ -76,7 +76,7 @@ internal class PropositionalExpressionTest : BasePlatformTestCase() {
 
         val (simplified, assignments) = PropositionalExpression(expr).simplified()
 
-        TestCase.assertEquals("1 && 0", simplified)
+        TestCase.assertEquals("true && false", simplified)
     }
 
     @Test
@@ -87,7 +87,7 @@ internal class PropositionalExpressionTest : BasePlatformTestCase() {
 
         val (simplified, assignments) = PropositionalExpression(expr).simplified()
 
-        TestCase.assertEquals("1", simplified)
+        TestCase.assertEquals("true", simplified)
     }
 
     @Test

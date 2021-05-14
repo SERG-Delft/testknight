@@ -13,8 +13,6 @@ import java.util.LinkedList
 class PropositionalExpression(private val psiExpression: PsiExpression) {
 
     private val psiElementFactory = PsiElementFactory.getInstance(ProjectManager.getInstance().defaultProject)
-    private val literalTrue = psiElementFactory.createExpressionFromText("1", null)
-    private val literalFalse = psiElementFactory.createExpressionFromText("0", null)
 
     /**
      * Return true if the precedence of the expression is less than that of an and operation
@@ -59,8 +57,8 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
         // special case for the root since .replace() does not work for root elements
         when {
             simplifiedExpr is PsiLiteralExpression -> when (simplifiedExpr.text) {
-                "true" -> return Pair("1", assignments)
-                "false" -> return Pair("0", assignments)
+                "true" -> return Pair("true", assignments)
+                "false" -> return Pair("false", assignments)
             }
             isProp(simplifiedExpr) -> {
                 assignments["PROP0"] = simplifiedExpr.text
@@ -77,11 +75,8 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
 
             when {
 
-                // if the expression is a literal replace it with 1/0 instead of true/false
-                node is PsiLiteralExpression -> when (node.text) {
-                    "true" -> node.replace(literalTrue)
-                    "false" -> node.replace(literalFalse)
-                }
+                // if the expression is a literal leave it there
+                node is PsiLiteralExpression -> {}
 
                 // if the expression is a proposition replace it with an identifier
                 isProp(node) -> {

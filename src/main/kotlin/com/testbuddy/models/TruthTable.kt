@@ -1,26 +1,26 @@
 package com.testbuddy.com.testbuddy.models
 
-import com.udojava.evalex.Expression
-import java.math.BigDecimal
 import java.util.Locale
+import javax.script.ScriptEngineManager
+import javax.script.SimpleBindings
 import kotlin.math.pow
 
 class TruthTable(private val vars: List<String>, expressionString: String) {
 
-    val n = vars.size
-    private val table = arrayOfNulls<Int>(2.0.pow(n).toInt())
+    private val n = vars.size
+    private val table = arrayOfNulls<Boolean>(2.0.pow(n).toInt())
+    private val engine = ScriptEngineManager().getEngineByName("groovy")
 
     init {
         for (i in table.indices) {
 
-            val expr = Expression(expressionString)
+            val bindings = SimpleBindings()
 
-            for ((varI, variableStr) in vars.withIndex()) {
-                val variableValue = if (getBit(i, varI)) 1 else 0
-                expr.with(variableStr, BigDecimal(variableValue))
+            for ((varI, varStr) in vars.withIndex()) {
+                bindings[varStr] = getBit(i, varI)
             }
 
-            table[i] = expr.eval().toInt()
+            table[i] = engine.eval(expressionString, bindings) as Boolean?
         }
     }
 
@@ -46,7 +46,7 @@ class TruthTable(private val vars: List<String>, expressionString: String) {
      * @param row the row
      * @return the value at index i
      */
-    fun value(row: Int): Int {
+    fun value(row: Int): Boolean {
         return table[row]!!
     }
 
