@@ -23,26 +23,6 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testAllSideEffectsThrown() {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val expected = listOf(
-            ThrowsExceptionSideEffect("CannotBeThatYoungException"),
-            ThrowsExceptionSideEffect("CannotBeThatOldException"),
-            MutatesClassFieldSideEffect("this.age")
-        )
-        assertMethodSideEffects(testClass, expected, "setAge")
-    }
-
-    @Test
-    fun testOnlyExceptionSideEffectsOnlyDeclaration() {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val expected = listOf(ThrowsExceptionSideEffect("IOException"))
-        assertMethodSideEffects(testClass, expected, "save")
-    }
-
-    @Test
     fun testFieldMutationSideEffectsThisNotSpecified() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
