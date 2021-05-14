@@ -81,6 +81,48 @@ public class Person {
         }
     }
 
+    public String getSpouseNameNoCatch() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } finally {
+            return "For the last time, I am not married!";
+        }
+    }
+
+
+    public String getSpouseNameMultipleCatches() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } catch (NotMarriedException e) {
+            return "I am not married actually!";
+        } catch (NullPointerException e) {
+            return "I don't have a spouce!"
+        }
+    }
+
+    public String getSpouseNameCatchAndFinally() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } catch (NotMarriedException e) {
+            return "I am not married actually!";
+        } finally {
+            System.out.println("Thanks for asking!")
+        }
+    }
+
+    public String getSpouseNameIncompleteCatch() {
+        try {
+            Person spouce = this.getSpouse();
+            return spouce.name;
+        } catch (NotMarriedException e) {
+            return "I am not married actually!";
+        } catch ( ) {
+            return "I don't have a spouce!"
+        }
+    }
 
     public void methodWithBrokenThrows() {
         throw 42;

@@ -16,9 +16,6 @@ class TryStatementChecklistGenerationStrategy private constructor() :
     }
 
     override fun generateChecklist(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
-//        "Test with the try block running successfully"
-//"Test with the try block throwing an exception"
-        //for each PsiCatchSection extract the name of the exception
         val result = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
                 "Test with the try block running successfully",
@@ -26,7 +23,10 @@ class TryStatementChecklistGenerationStrategy private constructor() :
             )
         )
         val catches = PsiTreeUtil.findChildrenOfType(psiElement, PsiCatchSection::class.java)
-        if (catches.isEmpty()) return result
+        if (catches.isEmpty()) {
+            result.add(TestingChecklistLeafNode("Test with the try block throwing an exception", psiElement))
+            return result
+        }
         catches.forEach {
             if (it.catchType != null) result.add(
                 TestingChecklistLeafNode(
