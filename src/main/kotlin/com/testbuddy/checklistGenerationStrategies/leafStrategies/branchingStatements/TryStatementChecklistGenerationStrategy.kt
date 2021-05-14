@@ -10,11 +10,22 @@ class TryStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiTryStatement> {
 
     companion object Factory {
+        /**
+         * Creates a new TryStatementChecklistGenerationStrategy.
+         *
+         * @return a TryStatementChecklistGenerationStrategy object.
+         */
         fun create(): TryStatementChecklistGenerationStrategy {
             return TryStatementChecklistGenerationStrategy()
         }
     }
 
+    /**
+     * Generates the checklist for a given try statement.
+     *
+     * @param psiElement the try statement.
+     * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
+     */
     override fun generateChecklist(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
         val result = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(

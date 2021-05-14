@@ -158,6 +158,48 @@ public class Person {
         }
     }
 
+    public String commentOnAgeWithIfs() {
+        if (this.age <= 20) {
+            return "Oh the joys of youth!";
+        } else if (this.age <= 30) {
+            return "Time to get serious...";
+        } else {
+            return "You are not old. You are wise";
+        }
+    }
+
+    public void countToTen() {
+        int counter = 0;
+        while (counter < 11) {
+            System.out.println(counter);
+            counter++;
+        }
+    }
+
+    public void spellName() {
+        for(int i = 0; i < this.name.lenght(); i++) {
+            System.out.println(this.name.charAt(i));
+        }
+    }
+
+    public void spellWithForEach() {
+        for(char a : this.name) {
+            System.out.println(a);
+        }
+    }
+
+    public void doWhileExample() {
+        int condition = false;
+        do {
+            condition = true;
+        }
+        while (!condition);
+    }
+
+    public Person getSpouseWithTernary() throws NotMarriedException {
+        (spouse == null) ? throw new NotMarriedException() : return spouse
+    }
+
 
 
 

@@ -33,14 +33,32 @@ class ParameterChecklistGenerationStrategy private constructor(
             "String[]" to listOf("[]")
         )
 
+        /**
+         * Creates a new ParameterChecklistGenerationStrategy.
+         *
+         * @return a new ParameterChecklistGenerationStrategy object.
+         */
         fun create(): ParameterChecklistGenerationStrategy {
             return ParameterChecklistGenerationStrategy(getTypesCasesMap())
         }
 
+        /**
+         * Creates a new ParameterChecklistGenerationStrategy.
+         *
+         * @param typeChecklistCaseMap the map associating types to tests cases for them.
+         * @return a new ParameterChecklistGenerationStrategy object.
+         */
         fun create(typeChecklistCaseMap: Map<String, List<String>>): ParameterChecklistGenerationStrategy {
             return ParameterChecklistGenerationStrategy(typeChecklistCaseMap)
         }
 
+        /**
+         * Returns the default mapping between types and test cases.
+         * Now it acts as a placeholder but in the future we can
+         * change it to read from the file.
+         *
+         * @return a map associating the types with their test cases.
+         */
         private fun getTypesCasesMap(): Map<String, List<String>> {
             // the assignment here is a placeholder that we will change
             // once the different cases need to be loaded from a file.
@@ -49,6 +67,12 @@ class ParameterChecklistGenerationStrategy private constructor(
         }
     }
 
+    /**
+     * Generates the checklist for a given parameter statement.
+     *
+     * @param psiElement the parameter statement.
+     * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
+     */
     override fun generateChecklist(psiElement: PsiParameter): List<TestingChecklistLeafNode> {
         val typeOfParameter = psiElement.type.canonicalText
         val nameOfParameter = psiElement.name

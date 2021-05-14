@@ -1,5 +1,6 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies
 
+import com.intellij.psi.PsiConditionalExpression
 import com.intellij.psi.PsiDoWhileStatement
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiForStatement
@@ -23,13 +24,24 @@ class MethodChecklistGenerationStrategy private constructor(
     ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode> {
 
     companion object Factory {
-
+        /**
+         * Creates a new MethodChecklistGenerationStrategy.
+         *
+         * @return a MethodChecklistGenerationStrategy object with default settings.
+         */
         fun create(): MethodChecklistGenerationStrategy {
             val recognizedStructs = getDefaultStructureTypesRecognized()
             val generationService = ChecklistLeafNodeGenerator()
             return create(recognizedStructs, generationService)
         }
 
+        /**
+         * Creates a new MethodChecklistGenerationStrategy.
+         *
+         * @param nestedStructureTypesRecognized the types of nested structures.
+         * @param generator the ChecklistLeafGenerator to be used to generate the elements.
+         * @return a MethodChecklistGenerationStrategy object.
+         */
         fun create(
             nestedStructureTypesRecognized: Array<Class<out PsiElement>>,
             generator: ChecklistLeafNodeGenerator
@@ -37,6 +49,12 @@ class MethodChecklistGenerationStrategy private constructor(
             return MethodChecklistGenerationStrategy(nestedStructureTypesRecognized, generator)
         }
 
+        /**
+         * Creates a new MethodChecklistGenerationStrategy.
+         *
+         * @param generator the ChecklistLeafGenerator to be used to generate the elements.
+         * @return a MethodChecklistGenerationStrategy object.
+         */
         fun create(generator: ChecklistLeafNodeGenerator): MethodChecklistGenerationStrategy {
             val recognizedStructs = getDefaultStructureTypesRecognized()
             return MethodChecklistGenerationStrategy(recognizedStructs, generator)
@@ -53,7 +71,7 @@ class MethodChecklistGenerationStrategy private constructor(
                 PsiTryStatement::class.java, PsiParameter::class.java,
                 PsiWhileStatement::class.java, PsiForStatement::class.java,
                 PsiDoWhileStatement::class.java, PsiForeachStatement::class.java,
-                PsiThrowStatement::class.java
+                PsiThrowStatement::class.java, PsiConditionalExpression::class.java
             )
         }
     }

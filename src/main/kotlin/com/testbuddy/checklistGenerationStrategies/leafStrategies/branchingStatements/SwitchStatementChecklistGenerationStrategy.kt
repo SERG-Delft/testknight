@@ -14,6 +14,11 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiSwitchStatement> {
 
     companion object Factory {
+        /**
+         * Creates a new SwitchStatementChecklistGenerationStrategy.
+         *
+         * @return a new SwitchStatementChecklistGenerationStrategy object.
+         */
         fun create(): SwitchStatementChecklistGenerationStrategy {
             return SwitchStatementChecklistGenerationStrategy()
         }
@@ -57,6 +62,14 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
         return caseValues.map { "Test $switchVariable is $it" }
     }
 
+    /**
+     * Creates a textual description of the test cases derived from a "case" statement.
+     * It also supports enhanced switch statements by flattening out their values.
+     *
+     * @param caseExpression the case statement.
+     * @param switchVariable the variable of the switch statement.
+     * @return a list of descriptions for testing checklist items.
+     */
     private fun getCaseValue(caseExpression: PsiSwitchLabeledRuleStatement, switchVariable: String): List<String> {
         if (caseExpression.isDefaultCase) {
             return listOf("Test $switchVariable is different from all the switch cases")
