@@ -13,9 +13,12 @@ class UserInterfaceFactory : ToolWindowFactory {
      * @param toolWindow current tool window
      */
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val userInterface = UserInterface()
+        val userInterface = UserInterface(project)
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(userInterface.getContent(), "", false)
         toolWindow.contentManager.addContent(content)
+
+        // Load the test cases into the UI
+        UserInterface.refreshTestCaseUI(project)
     }
 }

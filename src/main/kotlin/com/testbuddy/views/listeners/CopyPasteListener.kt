@@ -1,11 +1,11 @@
-package com.testbuddy.com.testbuddy.views.trees
+package com.testbuddy.views.listeners
 
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
+import com.intellij.openapi.editor.Editor
 import com.intellij.ui.ClickListener
 import com.intellij.ui.treeStructure.Tree
-import com.testbuddy.models.TestMethodData
+import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
+import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService
 import java.awt.Point
@@ -15,6 +15,8 @@ import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
 class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) : ClickListener() {
+
+    private var latestEditor: Editor? = null
 
     /**
      * Suppressing the ReturnCount warning because it makes the code messy with just 2 returns.
@@ -37,7 +39,7 @@ class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPa
         val node = path.lastPathComponent as DefaultMutableTreeNode
 
         // If the node contains the userObject which is expected from a test method node.
-        if (node.userObject is List<*>) {
+        if (node.userObject is TestMethodUserObject) {
 
             val rowBounds: Rectangle? = tree.getPathBounds(path)
 
@@ -58,20 +60,25 @@ class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPa
             copyBounds.location = Point(x, copyBounds.y)
             gotoBounds.location = Point(x + cellRenderer.copyButton!!.bounds.width, gotoBounds.y)
 
-            val reference = ((node.userObject as List<*>)[0] as TestMethodData)
-            val event = ((node.userObject as List<*>)[1] as AnActionEvent)
+            val userObject = node.userObject as TestMethodUserObject
+
+            val reference = userObject.reference
+            val project = userObject.project
+
+            if (userObject.editor != null) {
+                latestEditor = userObject.editor
+            }
+
+            val editor = userObject.editor ?: latestEditor
 
             if (copyBounds.contains(e.point)) {
-                val duplicateTestsService = event.project!!.service<DuplicateTestsService>()
-                val editor = event.getData(CommonDataKeys.EDITOR)
-
+                val duplicateTestsService = project!!.service<DuplicateTestsService>()
                 if (editor != null) {
                     duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
                     return true
                 }
             } else if (gotoBounds.contains(e.point)) {
-                val gotoTestService = event.project!!.service<GotoTestService>()
-                val editor = event.getData(CommonDataKeys.EDITOR)
+                val gotoTestService = project!!.service<GotoTestService>()
 
                 if (editor != null) {
                     gotoTestService.gotoMethod(editor, reference)

@@ -1,8 +1,8 @@
 package com.testbuddy.com.testbuddy.views.trees
 
 import com.intellij.ui.components.JBLabel
-import com.testbuddy.com.testbuddy.models.TestClassData
-import com.testbuddy.models.TestMethodData
+import com.testbuddy.models.TestClassData
+import com.testbuddy.models.TestMethodUserObject
 import java.awt.Component
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -73,9 +73,11 @@ class CopyPasteCellRenderer : JPanel(), TreeCellRenderer {
         var returnValue = JBLabel()
         if (value is DefaultMutableTreeNode) {
 
-            if (value.userObject is List<*>) {
+            if (value.userObject is TestMethodUserObject) {
 
-                val method = ((value.userObject as List<*>)[0] as TestMethodData)
+                val userObject = (value.userObject as TestMethodUserObject)
+
+                val method = userObject.reference
 
                 methodLabel!!.text = method.name
 
