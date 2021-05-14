@@ -20,6 +20,11 @@ public class Person {
         return spouse;
     }
 
+    public void methodWithBrokenThrows() {
+        throw 42;
+        throw new ;
+    }
+
     //Affects the passed argument as a side-effect.
     public void marryTo(Person spouse) {
         this.spouse = spouse;

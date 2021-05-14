@@ -8,7 +8,7 @@ import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
 class IfStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
-):
+) :
     LeafChecklistGeneratorStrategy<PsiIfStatement> {
 
     companion object Factory {
@@ -18,9 +18,9 @@ class IfStatementChecklistGenerationStrategy private constructor(
         }
 
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-                IfStatementChecklistGenerationStrategy {
-            return IfStatementChecklistGenerationStrategy(conditionChecklistGenerator)
-        }
+            IfStatementChecklistGenerationStrategy {
+                return IfStatementChecklistGenerationStrategy(conditionChecklistGenerator)
+            }
     }
 
     override fun generateChecklist(psiElement: PsiIfStatement): List<TestingChecklistLeafNode> {

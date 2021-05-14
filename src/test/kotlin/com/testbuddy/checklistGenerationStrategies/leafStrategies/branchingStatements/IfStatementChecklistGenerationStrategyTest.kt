@@ -2,7 +2,6 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStat
 
 import org.junit.Test
 
-
 internal class IfStatementChecklistGenerationStrategyTest {
 
     @Test
@@ -13,5 +12,4 @@ internal class IfStatementChecklistGenerationStrategyTest {
 
     @Test
     fun testIfStatementGeneration() {}
-
 }

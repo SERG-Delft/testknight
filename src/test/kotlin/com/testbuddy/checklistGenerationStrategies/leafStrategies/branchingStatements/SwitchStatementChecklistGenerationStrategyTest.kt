@@ -68,11 +68,9 @@ internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTest
         TestCase.assertEquals(expected, actual)
     }
 
-
     private fun getMethod(methodName: String): PsiMethod {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
     }
-
 }
