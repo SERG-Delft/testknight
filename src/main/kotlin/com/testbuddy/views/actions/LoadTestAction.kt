@@ -4,14 +4,18 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.psi.PsiFile
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
-import com.testbuddy.com.testbuddy.models.TestClassData
+import com.testbuddy.models.TestClassData
+import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.LoadTestsService
 import javax.swing.JTabbedPane
 import javax.swing.tree.DefaultMutableTreeNode
@@ -32,9 +36,15 @@ class LoadTestAction : AnAction() {
 
         // Project not found, so return.
         val project = event.project ?: return
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
+        val editor = event.getData(CommonDataKeys.EDITOR)
+
+        actionPerformed(project, psiFile, editor)
+    }
+
+    fun actionPerformed(project: Project, psiFile: PsiFile?, editor: Editor?) {
 
         val loadTestsService = project.service<LoadTestsService>()
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
         val listClasses = if (psiFile != null) loadTestsService.getTestsTree(psiFile) else emptyList<TestClassData>()
 
         val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
@@ -54,7 +64,9 @@ class LoadTestAction : AnAction() {
 
             val classNode = DefaultMutableTreeNode(testClass)
             for (method in testClass.methods) {
-                val methodNode = DefaultMutableTreeNode(listOf(method, event))
+
+                val testUserObject = TestMethodUserObject(method, project, editor)
+                val methodNode = DefaultMutableTreeNode(testUserObject)
                 classNode.add(methodNode)
             }
             (copyPasteTree.model.root as DefaultMutableTreeNode).add(classNode)
