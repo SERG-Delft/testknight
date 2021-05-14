@@ -40,9 +40,19 @@
         </action>
     </actions>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>com.testbuddy.views.actions.AssertionsSuggestionsAction</className>
+            <category>TestBuddy intentions</category>
+        </intentionAction>
+    </extensions>
+
+
+
 
     <actions>
         <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
     </actions>
+
 
 </idea-plugin>
