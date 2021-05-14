@@ -13,7 +13,7 @@ import org.junit.Test
 
 internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
-    val generationStrategy = SwitchStatementChecklistGenerationStrategy.create()
+    private val generationStrategy = SwitchStatementChecklistGenerationStrategy.create()
 
     @Before
     public override fun setUp() {
@@ -53,6 +53,21 @@ internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTest
         val actual = generationStrategy.generateChecklist(switch!!)
         TestCase.assertEquals(expected, actual)
     }
+
+    @Test
+    fun testEnhancedSwitchStatementWithRules() {
+        val method = getMethod("commentOnAgeEnhanchedWithRules")
+        val switch = PsiTreeUtil.findChildOfType(method, PsiSwitchStatement::class.java)
+        val expected = listOf(
+            TestingChecklistLeafNode("Test this.age is 10", switch!!),
+            TestingChecklistLeafNode("Test this.age is 20", switch!!),
+            TestingChecklistLeafNode("Test this.age is 30", switch!!),
+            TestingChecklistLeafNode("Test this.age is 40", switch!!)
+        )
+        val actual = generationStrategy.generateChecklist(switch!!)
+        TestCase.assertEquals(expected, actual)
+    }
+
 
     private fun getMethod(methodName: String): PsiMethod {
         val psi = this.myFixture.file

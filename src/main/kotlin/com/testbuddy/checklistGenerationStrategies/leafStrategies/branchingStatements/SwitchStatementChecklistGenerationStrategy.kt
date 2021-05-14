@@ -7,7 +7,6 @@ import com.intellij.psi.PsiSwitchLabelStatement
 import com.intellij.psi.PsiSwitchLabeledRuleStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.util.containers.mapSmart
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
@@ -30,11 +29,13 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
         val reference = PsiTreeUtil.getChildOfType(psiElement, PsiReferenceExpression::class.java) ?: return emptyList()
         val switchVariable = reference.canonicalText
         val codeBlock = PsiTreeUtil.getChildOfType(psiElement, PsiCodeBlock::class.java) ?: return emptyList()
-        val switchLabels =
-            PsiTreeUtil.getChildrenOfType(codeBlock, PsiSwitchLabelStatement::class.java) ?: return emptyList()
-
+        val switchLabelStatements =
+            PsiTreeUtil.getChildrenOfType(codeBlock, PsiSwitchLabelStatement::class.java)
+        val switchLabelRules =
+            PsiTreeUtil.getChildrenOfType(codeBlock, PsiSwitchLabeledRuleStatement::class.java)
         val descriptions = mutableListOf<String>()
-        switchLabels.forEach { if (it != null) descriptions += getCaseValue(it, switchVariable) }
+        switchLabelStatements?.forEach { if (it != null) descriptions += getCaseValue(it, switchVariable) }
+        switchLabelRules?.forEach { if (it != null) descriptions += getCaseValue(it, switchVariable) }
         return descriptions.map { TestingChecklistLeafNode(it, psiElement) }
     }
 
@@ -47,6 +48,15 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
      * @return a list of descriptions for testing checklist items.
      */
     private fun getCaseValue(caseExpression: PsiSwitchLabelStatement, switchVariable: String): List<String> {
+        if (caseExpression.isDefaultCase) {
+            return listOf("Test $switchVariable is different from all the switch cases")
+        }
+        val caseValues =
+            PsiTreeUtil.findChildrenOfType(caseExpression, PsiLiteralExpression::class.java).mapNotNull { it.text }
+        return caseValues.map { "Test $switchVariable is $it" }
+    }
+
+    private fun getCaseValue(caseExpression: PsiSwitchLabeledRuleStatement, switchVariable: String): List<String> {
         if (caseExpression.isDefaultCase) {
             return listOf("Test $switchVariable is different from all the switch cases")
         }

@@ -54,6 +54,14 @@ public class Person {
 
     public String commentOnAgeEnhanched() {
         switch (this.age) {
+            case 10, 20 : return "Oh the joys of youth!";
+            case 30 : return "Time to get serious...";
+            case 40 : return "You are not old. You are wise";
+        }
+    }
+
+    public String commentOnAgeEnhanchedWithRules() {
+        switch (this.age) {
             case 10, 20 -> return "Oh the joys of youth!";
             case 30 -> return "Time to get serious...";
             case 40 -> return "You are not old. You are wise";
