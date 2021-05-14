@@ -36,6 +36,9 @@ class CopyPasteCellRenderer : JPanel(), TreeCellRenderer {
         copyButton = JButton("Copy")
         gotoButton = JButton("Goto")
 
+        copyButton!!.isOpaque = false
+        gotoButton!!.isOpaque = false
+
         add(methodLabel)
         add(horizontalGlue)
         add(copyButton)
