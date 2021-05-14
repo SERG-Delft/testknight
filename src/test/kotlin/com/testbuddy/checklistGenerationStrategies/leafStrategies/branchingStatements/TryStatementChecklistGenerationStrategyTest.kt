@@ -13,7 +13,7 @@ import org.junit.Test
 
 internal class TryStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
-    val generationStrategy = TryStatementChecklistGenerationStrategy.create()
+    private val generationStrategy = TryStatementChecklistGenerationStrategy.create()
 
     @Before
     public override fun setUp() {

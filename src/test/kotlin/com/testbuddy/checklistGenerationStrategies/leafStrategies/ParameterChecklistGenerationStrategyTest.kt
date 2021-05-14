@@ -1,8 +1,57 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiParameter
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import org.junit.jupiter.api.Assertions.*
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
+import junit.framework.TestCase
+import org.junit.Before
+import org.junit.Test
 
 internal class ParameterChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
+    private val generationStrategy = ParameterChecklistGenerationStrategy.create()
+
+    @Before
+    public override fun setUp() {
+        super.setUp()
+        this.myFixture.configureByFile("/Person.java")
+    }
+
+    public override fun getTestDataPath(): String {
+        return "testdata"
+    }
+
+    @Test
+    fun testKnownTypeParameters() {
+        val method = getMethod("getYearBorn")
+        val parameter = PsiTreeUtil.findChildrenOfType(method!!, PsiParameter::class.java).elementAt(0)
+        val expected = listOf(
+            TestingChecklistLeafNode("Test currentYear equal to: 1", parameter),
+            TestingChecklistLeafNode("Test currentYear equal to: 0", parameter),
+            TestingChecklistLeafNode("Test currentYear equal to: Integer.MAX_VALUE", parameter),
+            TestingChecklistLeafNode("Test currentYear equal to: Integer.MIN_VALUE", parameter),
+            TestingChecklistLeafNode("Test currentYear equal to: -42", parameter)
+        )
+        val actual = generationStrategy.generateChecklist(parameter)
+        TestCase.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testUnknownTypeParameters() {
+        val method = getMethod("marryTo")
+        val parameter = PsiTreeUtil.findChildrenOfType(method!!, PsiParameter::class.java).elementAt(0)
+        val expected = emptyList<TestingChecklistLeafNode>()
+        val actual = generationStrategy.generateChecklist(parameter)
+        TestCase.assertEquals(expected, actual)
+    }
+
+    private fun getMethod(methodName: String): PsiMethod {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
+    }
 }

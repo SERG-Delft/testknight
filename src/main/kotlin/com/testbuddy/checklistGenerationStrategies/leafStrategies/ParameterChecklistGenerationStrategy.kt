@@ -3,13 +3,15 @@ package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
 import com.intellij.psi.PsiParameter
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
-class ParameterChecklistGenerationStrategy private constructor(private val typeChecklistCaseMap: Map<String, List<String>>) :
+class ParameterChecklistGenerationStrategy private constructor(
+    private val typeChecklistCaseMap: Map<String, List<String>>
+) :
     LeafChecklistGeneratorStrategy<PsiParameter> {
 
     companion object Factory {
-        //we can use this to save some defaults so even if the users removes all the cases
-        //they can later restore to the default settings
-        //in the future we can possibly extract this to a file where we store all the "defaults"
+        // we can use this to save some defaults so even if the users removes all the cases
+        // they can later restore to the default settings
+        // in the future we can possibly extract this to a file where we store all the "defaults"
         private val defaultMap = mapOf<String, List<String>>(
             "byte" to listOf("Byte.MAX_VALUE", "Byte.MIN_VALUE"),
             "short" to listOf("Short.MAX_VALUE", "Short.MIN_VALUE"),
@@ -36,11 +38,11 @@ class ParameterChecklistGenerationStrategy private constructor(private val typeC
         }
 
         fun create(typeChecklistCaseMap: Map<String, List<String>>): ParameterChecklistGenerationStrategy {
-            return ParameterChecklistGenerationStrategy(typeChecklistCaseMap);
+            return ParameterChecklistGenerationStrategy(typeChecklistCaseMap)
         }
 
         private fun getTypesCasesMap(): Map<String, List<String>> {
-            //the assignment here is a placeholder that we will change
+            // the assignment here is a placeholder that we will change
             // once the different cases need to be loaded from a file.
             val map = defaultMap
             return map
@@ -51,6 +53,6 @@ class ParameterChecklistGenerationStrategy private constructor(private val typeC
         val typeOfParameter = psiElement.type.canonicalText
         val nameOfParameter = psiElement.name
         val casesForType = this.typeChecklistCaseMap[typeOfParameter] ?: emptyList()
-        return casesForType.map { TestingChecklistLeafNode("Test $nameOfParameter for: $it", psiElement) }
+        return casesForType.map { TestingChecklistLeafNode("Test $nameOfParameter equal to: $it", psiElement) }
     }
 }
