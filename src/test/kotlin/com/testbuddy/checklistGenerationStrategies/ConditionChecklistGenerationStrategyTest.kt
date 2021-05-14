@@ -17,6 +17,15 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     }
 
     @Test
+    fun testMcdc0prop() {
+        val strategy = ConditionChecklistGenerationStrategy()
+
+        val testCases = strategy.mcdc(listOf(), "true")
+
+        assertEmpty(testCases)
+    }
+
+    @Test
     fun testMcdc1Prop() {
         val strategy = ConditionChecklistGenerationStrategy()
 

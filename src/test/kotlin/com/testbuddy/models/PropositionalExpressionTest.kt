@@ -69,15 +69,25 @@ internal class PropositionalExpressionTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testSimplificationLiteral() {
+    fun testSimplificationLiterals() {
+        val psiElementFactory = PsiElementFactory.getInstance(project)
+
+        val expr = psiElementFactory.createExpressionFromText("true && false", null) as PsiExpression
+
+        val (simplified, assignments) = PropositionalExpression(expr).simplified()
+
+        TestCase.assertEquals("true && false", simplified)
+    }
+
+    @Test
+    fun testSimplificationSingleLiteral() {
         val psiElementFactory = PsiElementFactory.getInstance(project)
 
         val expr = psiElementFactory.createExpressionFromText("true", null) as PsiExpression
 
         val (simplified, assignments) = PropositionalExpression(expr).simplified()
 
-        TestCase.assertEquals("PROP0", simplified)
-        TestCase.assertEquals(assignments["PROP0"], "true")
+        TestCase.assertEquals("true", simplified)
     }
 
     @Test
