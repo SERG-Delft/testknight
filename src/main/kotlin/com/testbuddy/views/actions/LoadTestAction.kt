@@ -30,11 +30,14 @@ class LoadTestAction : AnAction() {
 
         // Take the load test service and use the get tests
 
-        val loadTestsService = event.project!!.service<LoadTestsService>()
+        // Project not found, so return.
+        val project = event.project ?: return
+
+        val loadTestsService = project.service<LoadTestsService>()
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)
         val listClasses = if (psiFile != null) loadTestsService.getTestsTree(psiFile) else emptyList<TestClassData>()
 
-        val window: ToolWindow? = ToolWindowManager.getInstance(event.project!!).getToolWindow("TestBuddy")
+        val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
 
         val tabbedPane = (
             (window!!.contentManager.contents[0] as ContentImpl)

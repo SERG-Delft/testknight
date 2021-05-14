@@ -22,7 +22,9 @@ class UserInterface {
     private var checkListTree: CheckboxTree? = null
 
     /**
-     * Returns the Component which will be displayed on the tool window
+     * Gets the component to be displayed on the tool window.
+     *
+     * @return The JBTabbedPane which will be shown on the tool window.
      */
     fun getContent(): JBTabbedPane? {
         return mainUI
@@ -30,6 +32,8 @@ class UserInterface {
 
     /**
      * Creates the base UI which has scroll panel and a button which adds checklist to the panel.
+     *
+     * @return The SimpleToolWindowPanel with action toolbar and scroll panel with tree for checklist.
      */
     private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
@@ -52,11 +56,13 @@ class UserInterface {
     }
 
     /**
-     * Returns a tool window panel with a action toolbar and a tree.
+     * Creates a tool window panel with a action toolbar and a tree.
      * The tree is wrapped in a scroll pane and the tree shows all the test methods and classes in a file.
      * Only the tree with root is returned for now, the actions deal with adding other nodes to the tree.
      *
-     * Custom tree renderer is set and a listener to check for button clicks is also attached.
+     * Custom tree renderer is set here and a listener to check for button clicks is also attached.
+     *
+     * @return The SimpleToolWindowPanel with action toolbar and scroll panel with tree for test cases.
      */
     private fun getCopyPasteTab(): Component {
 
@@ -90,7 +96,10 @@ class UserInterface {
         return toolWindowPanel
     }
 
-    // Constructor
+    /**
+     * Constructor which sets up the MainUI.
+     * The MainUI will be a Tabbed pane with a CopyPaste and Checklist tab.
+     */
     init {
         mainUI = JBTabbedPane(JBTabbedPane.TOP, JBTabbedPane.SCROLL_TAB_LAYOUT)
 

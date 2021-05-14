@@ -51,6 +51,14 @@ class CopyPasteCellRenderer : JPanel(), TreeCellRenderer {
      * If it is the test method, it updates the test node panel to have the test method name and return it.
      * else if it is the test class, it returns a JBLabel with the class name.
      * If none of the case match, it returns a empty JBLabel.
+     *
+     * @param tree The tree of the renderer.
+     * @param value The node which needs to be rendered.
+     * @param selected is this path selected?
+     * @param leaf is this path a leaf?
+     * @param row row of the path
+     * @param hasFocus is this path focused?
+     * @return The corresponding component based on the param: value.
      */
     override fun getTreeCellRendererComponent(
         tree: JTree,

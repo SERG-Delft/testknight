@@ -8,6 +8,11 @@ import javax.swing.tree.DefaultMutableTreeNode
 
 class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRenderer(opaque) {
 
+    /**
+     * Custom renderer for checklist tree.
+     * Renders the component if it is a DefaultMutableTreeNode(without checkbox)
+     * or if it is a CheckedTreeNode(with checkbox)
+     */
     override fun customizeRenderer(
         tree: JTree,
         value: Any,

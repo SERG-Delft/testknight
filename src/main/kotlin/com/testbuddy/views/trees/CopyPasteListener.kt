@@ -14,16 +14,17 @@ import java.awt.event.MouseEvent
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-/**
- * This listener checks if you pressed the copy or goto button.
- * Since the renderer isn't a live component, this is one way to make it "live".
- *
- * returns true if it clicked either of those buttons.
- */
 class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) : ClickListener() {
 
     /**
      * Suppressing the ReturnCount warning because it makes the code messy with just 2 returns.
+     *
+     * This listener checks if you pressed the copy or goto button.
+     * Since the renderer isn't a live component, this is one way to make it "live".
+     *
+     * @param e The mouse event received from the click
+     * @param clickCount number of clicks
+     * @return True if clicked a button, false otherwise
      */
     @Suppress("ReturnCount")
     override fun onClick(e: MouseEvent, clickCount: Int): Boolean {
