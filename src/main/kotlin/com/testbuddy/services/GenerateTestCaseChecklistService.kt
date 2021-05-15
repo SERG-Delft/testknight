@@ -7,5 +7,4 @@ class GenerateTestCaseChecklistService {
 
     var classChecklistGenerationStrategy = ClassChecklistGenerationStrategy.create()
     var methodChecklistGenerationStrategy = MethodChecklistGenerationStrategy.create()
-
 }

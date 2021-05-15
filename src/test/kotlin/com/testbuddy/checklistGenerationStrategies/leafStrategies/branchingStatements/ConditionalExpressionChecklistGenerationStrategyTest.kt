@@ -31,7 +31,7 @@ internal class ConditionalExpressionChecklistGenerationStrategyTest : BasePlatfo
         val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
         val generationStrategy = ConditionalExpressionChecklistGenerationStrategy.create(conditionGenerationStrategy)
 
-        this.myFixture.configureByFile("/BrokenClass.java")
+        this.myFixture.configureByFile("/BrokenTernary.java")
         val method = getMethod("incompleteConditionalExpression")
         val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
         val expected = emptyList<TestingChecklistLeafNode>()
@@ -50,7 +50,7 @@ internal class ConditionalExpressionChecklistGenerationStrategyTest : BasePlatfo
         val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
         val generationStrategy = ConditionalExpressionChecklistGenerationStrategy.create(conditionGenerationStrategy)
 
-        this.myFixture.configureByFile("/BrokenClass.java")
+        this.myFixture.configureByFile("/BrokenTernary.java")
         val method = getMethod("conditionalExpressionWithLiteral")
         val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
         val expected = emptyList<TestingChecklistLeafNode>()
