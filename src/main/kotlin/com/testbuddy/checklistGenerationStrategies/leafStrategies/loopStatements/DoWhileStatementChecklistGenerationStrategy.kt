@@ -24,7 +24,7 @@ class DoWhileStatementChecklistGenerationStrategy private constructor(
 
     override fun generateChecklist(psiElement: PsiDoWhileStatement): List<TestingChecklistLeafNode> {
 
-        val condition = psiElement.condition!!
+        val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
             listOf(TestingChecklistLeafNode("Test where do-while loop runs multiple times", psiElement))

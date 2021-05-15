@@ -20,5 +20,17 @@ class BrokenClass {
         return b;
     }
 
+    public int incompleteConditionalExpression(){
+        int a=5;
+        int b=10;
+        int c = null ? a:b;
+        return c;
+    }
+
+    public int conditionalExpressionWithLiteral() {
+        return true ? a : b;
+    }
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiConditionalExpression
+import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
@@ -25,7 +26,11 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
 
     override fun generateChecklist(psiElement: PsiConditionalExpression): List<TestingChecklistLeafNode> {
 
-        val condition = psiElement.condition!!
+        val condition = psiElement.condition
+
+        if (condition == null || condition is PsiLiteralExpression) {
+            return emptyList()
+        }
         return conditionChecklistGenerator.generateChecklist(condition)
     }
 }

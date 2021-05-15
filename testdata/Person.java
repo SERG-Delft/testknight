@@ -200,6 +200,12 @@ public class Person {
         (spouse == null) ? throw new NotMarriedException() : return spouse
     }
 
+    //Using Conditional Expression (Ternary Operator)
+    public void setAgeConditional(int age) throws AgeException {
+        age <=0 ? throw new CannotBeThatYoungException() : this.age = age;
+        age > 100? throw new CannotBeThatOldException() : this.age = age;
+    }
+
 
 
 

@@ -25,7 +25,7 @@ class ForStatementChecklistGenerationStrategy private constructor(
 
     override fun generateChecklist(psiElement: PsiForStatement): List<TestingChecklistLeafNode> {
 
-        val condition = psiElement.condition!!
+        val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
             listOf(TestingChecklistLeafNode("Test where for loop runs multiple times", psiElement))

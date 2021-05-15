@@ -16,10 +16,13 @@ class ForeachStatementChecklistGenerationStrategy private constructor() :
 
     override fun generateChecklist(psiElement: PsiForeachStatement): List<TestingChecklistLeafNode> {
 
+        if (psiElement.iteratedValue == null) {
+            return emptyList()
+        }
         val iteratedValue = psiElement.iteratedValue!!.text
         return listOf(
-            TestingChecklistLeafNode(description = "Test where $iteratedValue empty", psiElement),
-            TestingChecklistLeafNode(description = "Test where $iteratedValue null", psiElement),
+            TestingChecklistLeafNode(description = "Test where $iteratedValue is empty", psiElement),
+            TestingChecklistLeafNode(description = "Test where $iteratedValue is null", psiElement),
             TestingChecklistLeafNode(description = "Test where foreach loop runs multiple times", psiElement)
         )
     }
