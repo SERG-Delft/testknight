@@ -20,12 +20,12 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
-import com.testbuddy.com.testbuddy.views.listeners.CopyPasteKeyboardListener
-import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
-import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.views.actions.LoadTestAction
+import com.testbuddy.views.listeners.CopyPasteKeyboardListener
 import com.testbuddy.views.listeners.CopyPasteMouseListener
+import com.testbuddy.views.trees.ChecklistCellRenderer
+import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode

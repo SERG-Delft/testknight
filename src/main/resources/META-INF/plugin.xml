@@ -39,6 +39,11 @@
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="B" keymap="$default"/>
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
         </action>
+        <action id="DuplicateTestAction" class="com.testbuddy.views.actions.DuplicateTestUnderCaretAction"
+                text="Duplicate Test Under Caret"
+                description="Duplicates the test under caret of the current open file">
+            <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>
+        </action>
     </actions>
 
 

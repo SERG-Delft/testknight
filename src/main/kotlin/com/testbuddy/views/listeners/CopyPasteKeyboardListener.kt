@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.views.listeners
+package com.testbuddy.views.listeners
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.ScrollType
