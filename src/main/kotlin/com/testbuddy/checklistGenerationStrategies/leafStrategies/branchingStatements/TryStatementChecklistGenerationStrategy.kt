@@ -1,10 +1,10 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements
+package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiCatchSection
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.models.TestingChecklistLeafNode
 
 class TryStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiTryStatement> {

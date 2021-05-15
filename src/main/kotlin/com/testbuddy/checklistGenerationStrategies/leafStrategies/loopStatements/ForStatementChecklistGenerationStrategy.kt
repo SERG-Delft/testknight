@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements
+package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 
 import com.intellij.psi.PsiForStatement
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.models.TestingChecklistLeafNode
 
 class ForStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy

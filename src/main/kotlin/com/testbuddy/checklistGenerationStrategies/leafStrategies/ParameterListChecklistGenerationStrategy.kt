@@ -1,8 +1,8 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
+package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiParameterList
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.TestingChecklistLeafNode
 
 class ParameterListChecklistGenerationStrategy private constructor(
     private val typeChecklistCaseMap: Map<String, List<String>>

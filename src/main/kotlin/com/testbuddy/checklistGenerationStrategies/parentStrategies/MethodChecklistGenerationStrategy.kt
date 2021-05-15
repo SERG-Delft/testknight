@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies
+package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
 import com.intellij.psi.PsiConditionalExpression
 import com.intellij.psi.PsiDoWhileStatement
@@ -13,9 +13,9 @@ import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.com.testbuddy.models.TestingChecklistMethodNode
-import com.testbuddy.com.testbuddy.utilities.ChecklistLeafNodeGenerator
+import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.utilities.ChecklistLeafNodeGenerator
 
 class MethodChecklistGenerationStrategy private constructor(
     private val nestedStructureTypesRecognized: Array<Class<out PsiElement>>,

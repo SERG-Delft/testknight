@@ -6,7 +6,7 @@ import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.TestingChecklistLeafNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

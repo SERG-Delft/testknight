@@ -3,7 +3,6 @@ package com.testbuddy.models
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiExpression
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.PropositionalExpression
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

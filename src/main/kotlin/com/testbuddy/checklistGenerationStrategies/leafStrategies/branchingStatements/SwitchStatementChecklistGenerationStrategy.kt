@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements
+package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiCodeBlock
 import com.intellij.psi.PsiLiteralExpression
@@ -7,8 +7,8 @@ import com.intellij.psi.PsiSwitchLabelStatement
 import com.intellij.psi.PsiSwitchLabeledRuleStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.models.TestingChecklistLeafNode
 
 class SwitchStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiSwitchStatement> {

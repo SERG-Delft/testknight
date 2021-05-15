@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
+package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiExpression
-import com.testbuddy.com.testbuddy.models.PropositionalExpression
-import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.com.testbuddy.models.TruthTable
+import com.testbuddy.models.PropositionalExpression
+import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.TruthTable
 import kotlin.math.pow
 
 class ConditionChecklistGenerationStrategy : LeafChecklistGeneratorStrategy<PsiExpression> {

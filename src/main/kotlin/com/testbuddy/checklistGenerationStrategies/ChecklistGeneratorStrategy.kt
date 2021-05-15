@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies
+package com.testbuddy.checklistGenerationStrategies
 
 import com.intellij.psi.PsiElement
 

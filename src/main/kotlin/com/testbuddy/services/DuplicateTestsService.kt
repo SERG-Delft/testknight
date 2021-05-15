@@ -8,8 +8,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.endOffset
-import com.testbuddy.com.testbuddy.services.TemplateCreationService
-import com.testbuddy.com.testbuddy.services.TestAnalyzerService
 
 class DuplicateTestsService(project: Project) {
 

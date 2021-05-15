@@ -1,7 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import org.junit.Before
 import org.junit.Test
 

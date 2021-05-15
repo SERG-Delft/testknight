@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.models
+package com.testbuddy.models
 
 import java.util.Locale
 import javax.script.ScriptEngineManager

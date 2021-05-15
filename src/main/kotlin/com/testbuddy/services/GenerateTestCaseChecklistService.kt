@@ -1,7 +1,7 @@
 package com.testbuddy.services
 
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
 
 class GenerateTestCaseChecklistService {
 
