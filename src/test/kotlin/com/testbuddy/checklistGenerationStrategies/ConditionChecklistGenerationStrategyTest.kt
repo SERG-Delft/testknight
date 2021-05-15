@@ -86,4 +86,8 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         )
         assertEquals(5, testCases.size)
     }
+
+    @Test
+    fun testGenerateChecklist() {
+    }
 }

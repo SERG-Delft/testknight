@@ -18,16 +18,17 @@ class ConditionChecklistGenerationStrategy : LeafChecklistGeneratorStrategy<PsiE
 
         val (simplified, assignments) = PropositionalExpression(psiElement).simplified()
 
-        val testCases = mcdc(assignments.values as List<String>, simplified)
+        val testCases = mcdc(assignments.keys.toList(), simplified)
 
         return testCases.map {
 
-            var description = "Test where "
+            var description = "Test where in the condition \"${psiElement.text}\", "
             for ((proposition, value) in it.entries) {
-                description += "${assignments[proposition]} is $value, "
+                description += "\"${assignments[proposition]}\" is $value, "
             }
 
-            TestingChecklistLeafNode(description, psiElement)
+            // remove trailing comma and space
+            TestingChecklistLeafNode(description.dropLast(2), psiElement)
         }
     }
 

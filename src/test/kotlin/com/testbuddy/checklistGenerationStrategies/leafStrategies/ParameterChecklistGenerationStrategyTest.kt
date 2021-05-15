@@ -30,11 +30,11 @@ internal class ParameterChecklistGenerationStrategyTest : BasePlatformTestCase()
         val method = getMethod("getYearBorn")
         val parameter = PsiTreeUtil.findChildrenOfType(method!!, PsiParameter::class.java).elementAt(0)
         val expected = listOf(
-            TestingChecklistLeafNode("Test currentYear equal to: 1", parameter),
-            TestingChecklistLeafNode("Test currentYear equal to: 0", parameter),
-            TestingChecklistLeafNode("Test currentYear equal to: Integer.MAX_VALUE", parameter),
-            TestingChecklistLeafNode("Test currentYear equal to: Integer.MIN_VALUE", parameter),
-            TestingChecklistLeafNode("Test currentYear equal to: -42", parameter)
+            TestingChecklistLeafNode("Test method parameter \"currentYear\" equal to: 1", parameter),
+            TestingChecklistLeafNode("Test method parameter \"currentYear\" equal to: 0", parameter),
+            TestingChecklistLeafNode("Test method parameter \"currentYear\" equal to: Integer.MAX_VALUE", parameter),
+            TestingChecklistLeafNode("Test method parameter \"currentYear\" equal to: Integer.MIN_VALUE", parameter),
+            TestingChecklistLeafNode("Test method parameter \"currentYear\" equal to: -42", parameter)
         )
         val actual = generationStrategy.generateChecklist(parameter)
         TestCase.assertEquals(expected, actual)

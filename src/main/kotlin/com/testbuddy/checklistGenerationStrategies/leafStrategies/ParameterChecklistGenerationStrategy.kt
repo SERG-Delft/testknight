@@ -22,15 +22,15 @@ class ParameterChecklistGenerationStrategy private constructor(
             "char" to listOf("a", "α", "∅"),
             "boolean" to listOf("true", "false"),
             "String" to listOf("\"\"", "\"a\"", "\"hello world\"", "\"καλήν εσπέραν άρχοντες\"", "\"€\"", "\"₹\""),
-            "byte[]" to listOf("[]"),
-            "short[]" to listOf("[]"),
+            "byte[]" to listOf("[]", "null"),
+            "short[]" to listOf("[]", "null"),
             "int[]" to listOf("null", "[1,2,3,4]", "[4,3,2,1]", "[]"),
-            "long[]" to listOf("[]"),
-            "float[]" to listOf("[]"),
-            "double[]" to listOf("[]"),
-            "char[]" to listOf("[]"),
-            "boolean[]" to listOf("[]"),
-            "String[]" to listOf("[]")
+            "long[]" to listOf("[]", "null"),
+            "float[]" to listOf("[]", "null"),
+            "double[]" to listOf("[]", "null"),
+            "char[]" to listOf("[]", "null"),
+            "boolean[]" to listOf("[]", "null"),
+            "String[]" to listOf("[]", "null")
         )
 
         /**
@@ -77,6 +77,8 @@ class ParameterChecklistGenerationStrategy private constructor(
         val typeOfParameter = psiElement.type.canonicalText
         val nameOfParameter = psiElement.name
         val casesForType = this.typeChecklistCaseMap[typeOfParameter] ?: emptyList()
-        return casesForType.map { TestingChecklistLeafNode("Test $nameOfParameter equal to: $it", psiElement) }
+        return casesForType.map {
+            TestingChecklistLeafNode("Test method parameter \"$nameOfParameter\" equal to: $it", psiElement)
+        }
     }
 }
