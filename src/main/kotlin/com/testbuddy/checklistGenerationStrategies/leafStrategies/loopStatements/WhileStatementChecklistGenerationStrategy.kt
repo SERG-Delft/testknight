@@ -12,17 +12,34 @@ class WhileStatementChecklistGenerationStrategy private constructor(
 
     companion object Factory {
 
+        /**
+         * Creates a new WhileStatementChecklistGenerationStrategy.
+         *
+         * @return a new WhileStatementChecklistGenerationStrategy.
+         */
         fun create(): WhileStatementChecklistGenerationStrategy {
             val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
             return create(conditionChecklistGenerator)
         }
 
+        /**
+         * Creates a new WhileStatementChecklistGenerationStrategy.
+         *
+         * @param conditionChecklistGenerator the ConditionChecklistGenerator to use on the while loop's condition.
+         * @return a new WhileStatementChecklistGenerationStrategy.
+         */
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
             WhileStatementChecklistGenerationStrategy {
                 return WhileStatementChecklistGenerationStrategy(conditionChecklistGenerator)
             }
     }
 
+    /**
+     * Generates the checklist for a given while loop.
+     *
+     * @param psiElement the while loop PSI element for which the checklist is to be generated.
+     * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
+     */
     override fun generateChecklist(psiElement: PsiWhileStatement): List<TestingChecklistLeafNode> {
 
         val condition = psiElement.condition ?: return emptyList()

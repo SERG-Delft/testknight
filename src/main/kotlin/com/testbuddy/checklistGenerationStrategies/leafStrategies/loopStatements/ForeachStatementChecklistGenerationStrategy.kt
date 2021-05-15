@@ -9,11 +9,22 @@ class ForeachStatementChecklistGenerationStrategy private constructor() :
 
     companion object Factory {
 
+        /**
+         * Creates a new ForEachStatementChecklistGenerationStrategy.
+         *
+         * @return a new ForEachStatementChecklistGenerationStrategy.
+         */
         fun create(): ForeachStatementChecklistGenerationStrategy {
             return ForeachStatementChecklistGenerationStrategy()
         }
     }
 
+    /**
+     * Generates the checklist for a given foreach loop.
+     *
+     * @param psiElement the foreach loop PSI element for which the checklist is to be generated.
+     * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
+     */
     override fun generateChecklist(psiElement: PsiForeachStatement): List<TestingChecklistLeafNode> {
 
         if (psiElement.iteratedValue == null) {

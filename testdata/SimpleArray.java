@@ -1,3 +1,4 @@
+// a class containing an array field to test if loops generate checklists as expected.
 public class SimpleArray{
 
     private String nameOfArray;
