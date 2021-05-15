@@ -1,3 +1,5 @@
+package test;
+
 public class FirstTest {
     @Test
     public void firstTest() {

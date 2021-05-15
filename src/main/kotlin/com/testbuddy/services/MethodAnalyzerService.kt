@@ -10,9 +10,9 @@ import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.MutatesClassFieldSideEffect
-import com.testbuddy.com.testbuddy.models.SideEffect
-import com.testbuddy.com.testbuddy.models.ThrowsExceptionSideEffect
+import com.testbuddy.models.MutatesClassFieldSideEffect
+import com.testbuddy.models.SideEffect
+import com.testbuddy.models.ThrowsExceptionSideEffect
 
 class MethodAnalyzerService {
 

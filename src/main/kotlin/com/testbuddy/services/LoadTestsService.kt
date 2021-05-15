@@ -5,7 +5,6 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.services.TestAnalyzerService
 import com.testbuddy.models.TestClassData
 import com.testbuddy.models.TestMethodData
 

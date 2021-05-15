@@ -4,13 +4,11 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.services.TemplateCreationService
-import com.testbuddy.com.testbuddy.services.TestAnalyzerService
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class TemplateFactoryServiceTest : BasePlatformTestCase() {
+internal class TemplateCreationServiceTest : BasePlatformTestCase() {
 
     @Before
     public override fun setUp() {
