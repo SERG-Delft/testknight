@@ -3,25 +3,42 @@ package com.testbuddy.views
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
-import com.intellij.openapi.ui.DialogPanel
+import com.intellij.openapi.components.service
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent
+import com.intellij.openapi.fileEditor.FileEditorManagerListener
+import com.intellij.openapi.fileEditor.TextEditor
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiTreeChangeAdapter
+import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
-import com.intellij.ui.layout.panel
-import com.testbuddy.com.testbuddy.views.ChecklistCellRenderer
+import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
+import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
+import com.testbuddy.services.LoadTestsService
+import com.testbuddy.views.actions.LoadTestAction
+import com.testbuddy.views.listeners.CopyPasteListener
+import org.jetbrains.annotations.NotNull
 import java.awt.Component
-import javax.swing.BoxLayout
+import javax.swing.tree.DefaultMutableTreeNode
 
-class UserInterface {
+class UserInterface(val project: Project) {
 
     private var mainUI: JBTabbedPane? = null
-    private var testCaseUI: DialogPanel? = null
+    private var testCaseTree: Tree? = null
     private var checkListTree: CheckboxTree? = null
 
     /**
-     * Returns the Component which will be displayed on the tool window
+     * Gets the component to be displayed on the tool window.
+     *
+     * @return The JBTabbedPane which will be shown on the tool window.
      */
     fun getContent(): JBTabbedPane? {
         return mainUI
@@ -29,8 +46,10 @@ class UserInterface {
 
     /**
      * Creates the base UI which has scroll panel and a button which adds checklist to the panel.
+     *
+     * @return The SimpleToolWindowPanel with action toolbar and scroll panel with tree for checklist.
      */
-    private fun createCheckList(): Component? {
+    private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
         // Setting up the action group. Currently has default values which needs to be changed later.
@@ -51,9 +70,15 @@ class UserInterface {
     }
 
     /**
-     * Skeleton code which returns the base scrollable panel on which we will add the other components.
+     * Creates a tool window panel with a action toolbar and a tree.
+     * The tree is wrapped in a scroll pane and the tree shows all the test methods and classes in a file.
+     * Only the tree with root is returned for now, the actions deal with adding other nodes to the tree.
+     *
+     * Custom tree renderer is set here and a listener to check for button clicks is also attached.
+     *
+     * @return The SimpleToolWindowPanel with action toolbar and scroll panel with tree for test cases.
      */
-    private fun getCopyPasteTab(): Component? {
+    private fun getCopyPasteTab(): Component {
 
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
@@ -65,15 +90,31 @@ class UserInterface {
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()
-        testCaseUI = panel {}
-        testCaseUI!!.layout = BoxLayout(testCaseUI, BoxLayout.PAGE_AXIS)
-        panel.setViewportView(testCaseUI)
+
+        val root = DefaultMutableTreeNode("root")
+
+        testCaseTree = Tree(root)
+
+        val cellRenderer = CopyPasteCellRenderer()
+        testCaseTree!!.cellRenderer = cellRenderer
+        testCaseTree!!.isEditable = false
+        testCaseTree!!.isRootVisible = false
+        testCaseTree!!.showsRootHandles = true
+
+        val listener = CopyPasteListener(testCaseTree!!, cellRenderer)
+        listener.installOn(testCaseTree!!)
+
+        panel.setViewportView(testCaseTree)
 
         toolWindowPanel.setContent(panel)
+
         return toolWindowPanel
     }
 
-    // Constructor
+    /**
+     * Constructor which sets up the MainUI.
+     * The MainUI will be a Tabbed pane with a CopyPaste and Checklist tab.
+     */
     init {
         mainUI = JBTabbedPane(JBTabbedPane.TOP, JBTabbedPane.SCROLL_TAB_LAYOUT)
 
@@ -81,5 +122,50 @@ class UserInterface {
         mainUI!!.addTab("CopyPaste", getCopyPasteTab())
         // Function call which returns the tab for checklist
         mainUI!!.addTab("Checklist", createCheckList())
+
+        val loadTestsService = project.service<LoadTestsService>()
+
+        PsiManager.getInstance(project).addPsiTreeChangeListener(
+            object : PsiTreeChangeAdapter() {
+                override fun childrenChanged(event: PsiTreeChangeEvent) {
+                    refreshTestCaseUI(project)
+                }
+            },
+            loadTestsService
+        )
+
+        val messageBus = project.messageBus
+        messageBus.connect()
+            .subscribe(
+                FileEditorManagerListener.FILE_EDITOR_MANAGER,
+                object : FileEditorManagerListener {
+                    override fun fileOpened(@NotNull source: FileEditorManager, @NotNull file: VirtualFile) {
+                        refreshTestCaseUI(project)
+                    }
+
+                    override fun selectionChanged(@NotNull event: FileEditorManagerEvent) {
+                        refreshTestCaseUI(project)
+                    }
+                }
+            )
+    }
+
+    companion object {
+        /**
+         * Updates the CopyPasteTab by calling the LoadTestAction.
+         * Uses the project to get editor and psi file information.
+         *
+         * @param project the current project.
+         */
+        fun refreshTestCaseUI(project: Project) {
+            val editorList = FileEditorManager.getInstance(project).selectedEditors
+
+            if (editorList.isNotEmpty()) {
+                val textEditor = editorList[0] as TextEditor
+
+                val psiFile: PsiFile? = PsiManager.getInstance(project).findFile(textEditor.file!!)
+                LoadTestAction().actionPerformed(project, psiFile, textEditor.editor)
+            }
+        }
     }
 }
