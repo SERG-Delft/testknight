@@ -26,26 +26,21 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
         hasFocus: Boolean
     ) {
 
-        if(value is CheckedTreeNode && value.userObject is TestingChecklistLeafNode){
+        if (value is CheckedTreeNode && value.userObject is TestingChecklistLeafNode) {
             val name = (value.userObject as TestingChecklistLeafNode).description
             val renderer = textRenderer
-            renderer.append( name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-        }
+            renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+        } else if (value is DefaultMutableTreeNode) {
+            if (value.userObject is TestingChecklistClassNode) {
 
-        else if(value is DefaultMutableTreeNode)
-        {
-            if(value.userObject is TestingChecklistClassNode){
-
-                val name:String = (value.userObject as TestingChecklistClassNode).description
+                val name: String = (value.userObject as TestingChecklistClassNode).description
                 val renderer = textRenderer
                 renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-
-            }else if(value.userObject is TestingChecklistMethodNode ){
-                val name:String = (value.userObject as TestingChecklistMethodNode).description
+            } else if (value.userObject is TestingChecklistMethodNode) {
+                val name: String = (value.userObject as TestingChecklistMethodNode).description
                 val renderer = textRenderer
                 renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
             }
         }
-
     }
 }

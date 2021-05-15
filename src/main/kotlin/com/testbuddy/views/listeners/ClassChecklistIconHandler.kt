@@ -1,14 +1,11 @@
-package com.testbuddy.views.actions
+package com.testbuddy.com.testbuddy.views.listeners
 
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.openapi.components.service
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiClass
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.PsiElement
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
@@ -16,38 +13,20 @@ import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.services.GenerateTestCaseChecklistService
+import java.awt.event.MouseEvent
 import javax.swing.JTabbedPane
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
-class LoadChecklistAction : AnAction() {
+class ClassChecklistIconHandler : GutterIconNavigationHandler<PsiElement> {
 
-    /**
-     * Updates the CheckList tab to add new checklist cases.
-     *
-     * @param event Event received when the associated menu item is chosen.
-     */
+    override fun navigate(event: MouseEvent?, elemnt: PsiElement?) {
 
-    override fun actionPerformed(event: AnActionEvent) {
+        if (elemnt == null) return
 
-        val project = event.project ?: return
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
-        val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)
+        val project = elemnt.project
 
-        if (psiClass != null) {
-            actionPerformed(project, psiClass)
-        }
-    }
-
-    /**
-     * Updates the CopyPaste tab to load the test cases from the selected file.
-     *
-     * @param project current open project
-     * @param psiFile PsiFile of the current open file
-     * @param editor Editor of the current open file
-     */
-    fun actionPerformed(project: Project, psiClass: PsiClass) {
-
+        val psiClass = (elemnt.parent as PsiClass)
         val checklistService = project.service<GenerateTestCaseChecklistService>()
         val checklistClassTree = checklistService.generateClassChecklistFromClass(psiClass)
         val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
@@ -77,17 +56,5 @@ class LoadChecklistAction : AnAction() {
         (checklistTree.model.root as CheckedTreeNode).add(classNode)
         (checklistTree.model as DefaultTreeModel).reload()
         TreeUtil.expandAll(checklistTree)
-    }
-
-    /**
-     * Determines whether this menu item is available for the current context.
-     * Requires a project to be open.
-     *
-     * @param e Event received when the associated group-id menu is chosen.
-     */
-    override fun update(e: AnActionEvent) {
-        // Set the availability based on whether a project is open
-        val project = e.project
-        e.presentation.isEnabledAndVisible = project != null
     }
 }
