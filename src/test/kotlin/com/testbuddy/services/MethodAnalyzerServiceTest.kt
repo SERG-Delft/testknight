@@ -6,7 +6,6 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.com.testbuddy.models.MutatesClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.SideEffect
-import com.testbuddy.com.testbuddy.models.ThrowsExceptionSideEffect
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -60,7 +59,8 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
     private fun assertMethodSideEffects(testClass: PsiClass?, expected: List<SideEffect>, methodName: String) {
         if (testClass != null) {
             val method = testClass.findMethodsByName(methodName)[0] as PsiMethod
-            TestCase.assertEquals(expected, service.getSideEffects(method))
+            val actual = service.getSideEffects(method)
+            TestCase.assertEquals(expected, actual)
         } else {
             throw AssertionError("testClass was null")
         }

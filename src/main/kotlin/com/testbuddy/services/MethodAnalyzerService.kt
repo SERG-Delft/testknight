@@ -1,18 +1,16 @@
 package com.testbuddy.services
 
 import com.intellij.psi.PsiAssignmentExpression
+import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDeclarationStatement
-import com.intellij.psi.PsiJavaCodeReferenceElement
 import com.intellij.psi.PsiLocalVariable
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
-import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.MutatesClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.SideEffect
-import com.testbuddy.com.testbuddy.models.ThrowsExceptionSideEffect
 
 class MethodAnalyzerService {
 
@@ -37,8 +35,12 @@ class MethodAnalyzerService {
     private fun getClassFieldsAffected(method: PsiMethod): List<MutatesClassFieldSideEffect> {
         val identifiersInMethodScope = getIdentifiersInMethodScope(method)
         val assignmentExpressions = PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java)
+
+        val parentClass = PsiTreeUtil.getParentOfType(method, PsiClass::class.java)
+        val identifiersInClassScope = parentClass?.allFields?.map { it.name }?.toSet() ?: return emptyList()
+
         val assignmentsThatAffectClassFields =
-            assignmentExpressions.filter { affectsClassField(it, identifiersInMethodScope) }
+            assignmentExpressions.filter { affectsClassField(it, identifiersInMethodScope, identifiersInClassScope) }
         return assignmentsThatAffectClassFields.map {
             MutatesClassFieldSideEffect(
                 formatClassFieldName((it.lExpression as PsiReferenceExpression).qualifiedName)
@@ -56,15 +58,18 @@ class MethodAnalyzerService {
      */
     private fun affectsClassField(
         assignment: PsiAssignmentExpression,
-        identifiersInMethodScope: Set<String>
+        identifiersInMethodScope: Set<String>,
+        identifiersInClassScope: Set<String>
     ): Boolean {
         val leftExpression = assignment.lExpression
-        if (leftExpression.firstChild is PsiThisExpression) {
-            return true
+        return if (leftExpression.firstChild is PsiThisExpression) {
+            val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName.replaceFirst("this.", "")
+            identifiersInClassScope.contains(nameAffected)
+        } else {
+            val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName
+            !identifiersInMethodScope.contains(nameAffected) && identifiersInClassScope.contains(nameAffected)
         }
-        val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName
         // if the expression is not in identifiersInMethodScope then it is a side effect
-        return !identifiersInMethodScope.contains(nameAffected)
     }
 
     /**
