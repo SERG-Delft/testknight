@@ -1,6 +1,12 @@
 package com.testbuddy.com.testbuddy.models
 
-open class SideEffect(val info: String)
+import com.intellij.psi.PsiAssignmentExpression
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiMethodCallExpression
 
-data class ThrowsExceptionSideEffect(val nameOfException: String) : SideEffect(nameOfException)
-data class MutatesClassFieldSideEffect(val nameOfField: String) : SideEffect(nameOfField)
+open class SideEffect(open val info: String)
+
+open class ClassFieldMutationSideEffect(override val info: String): SideEffect(info)
+data class ReassignsClassFieldSideEffect(val nameOfField: String) : ClassFieldMutationSideEffect(nameOfField)
+data class MethodCallOnClassFieldSideEffect(val nameOfField: String, val nameOfMethod: String): ClassFieldMutationSideEffect(nameOfField)
+data class MethodCallOnArgumentSideEffect(val nameOfArgument: String, val nameOfMethod: String): SideEffect(nameOfArgument)

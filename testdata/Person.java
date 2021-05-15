@@ -73,6 +73,18 @@ public class Person {
         return message;
     }
 
+    public void nameToLowerCase() {
+        this.name.toLowerCase();
+    }
+
+    public void nameToLowerCaseStaticCall() {
+        String.toLowerCase(this.name)
+    }
+
+    public void methodCall(int a, int b) {
+        methodSecond(a,b,3);
+    }
+
 }
 
 

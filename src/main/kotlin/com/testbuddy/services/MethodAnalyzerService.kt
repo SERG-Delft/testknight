@@ -5,11 +5,15 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDeclarationStatement
 import com.intellij.psi.PsiLocalVariable
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.MutatesClassFieldSideEffect
+import com.testbuddy.com.testbuddy.models.ClassFieldMutationSideEffect
+import com.testbuddy.com.testbuddy.models.MethodCallOnArgumentSideEffect
+import com.testbuddy.com.testbuddy.models.MethodCallOnClassFieldSideEffect
+import com.testbuddy.com.testbuddy.models.ReassignsClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.SideEffect
 
 class MethodAnalyzerService {
@@ -22,8 +26,10 @@ class MethodAnalyzerService {
      * @return a list of SideEffect objects based on the side-effects the method has.
      */
     fun getSideEffects(method: PsiMethod): List<SideEffect> {
-        val classFieldMutationSideEffects = getClassFieldsAffected(method)
-        return classFieldMutationSideEffects
+        val classFieldReassignmentSideEffects = getClassFieldsAffected(method)
+        val classFieldMethodCallsSideEffects: List<ReassignsClassFieldSideEffect> = emptyList()
+        val argumentMutationSideEffects: List<MethodCallOnArgumentSideEffect> = emptyList()
+        return classFieldReassignmentSideEffects + classFieldMethodCallsSideEffects + argumentMutationSideEffects
     }
 
     /**
@@ -32,20 +38,33 @@ class MethodAnalyzerService {
      * @param method the method to be analyzed.
      * @return a list of MutatesClassFieldSideEffect objects representing the class fields that change.
      */
-    private fun getClassFieldsAffected(method: PsiMethod): List<MutatesClassFieldSideEffect> {
+    private fun getClassFieldsAffected(method: PsiMethod): List<ClassFieldMutationSideEffect> {
         val identifiersInMethodScope = getIdentifiersInMethodScope(method)
         val assignmentExpressions = PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java)
+        val methodCallExpressions = PsiTreeUtil.findChildrenOfType(method, PsiMethodCallExpression::class.java)
 
         val parentClass = PsiTreeUtil.getParentOfType(method, PsiClass::class.java)
         val identifiersInClassScope = parentClass?.allFields?.map { it.name }?.toSet() ?: return emptyList()
 
-        val assignmentsThatAffectClassFields =
-            assignmentExpressions.filter { affectsClassField(it, identifiersInMethodScope, identifiersInClassScope) }
-        return assignmentsThatAffectClassFields.map {
-            MutatesClassFieldSideEffect(
-                formatClassFieldName((it.lExpression as PsiReferenceExpression).qualifiedName)
+//        val assignmentsThatAffectClassFields =
+//            assignmentExpressions.filter { affectsClassField(it, identifiersInMethodScope, identifiersInClassScope) }
+        val classFieldsAffectedByAssignments = assignmentExpressions.flatMap {
+            getClassFieldsReassigned(
+                it,
+                identifiersInMethodScope,
+                identifiersInClassScope
             )
         }
+
+//        val classFieldsAffectedByMethodCalls =
+//            methodCallExpressions.flatMap { affectsClassField(it, identifiersInMethodScope, identifiersInClassScope) }
+
+//        return assignmentsThatAffectClassFields.map {
+//            ReassignsClassFieldSideEffect(
+//                formatClassFieldName((it.lExpression as PsiReferenceExpression).qualifiedName)
+//            )
+//        }
+        return classFieldsAffectedByAssignments
     }
 
     /**
@@ -69,7 +88,31 @@ class MethodAnalyzerService {
             val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName
             !identifiersInMethodScope.contains(nameAffected) && identifiersInClassScope.contains(nameAffected)
         }
-        // if the expression is not in identifiersInMethodScope then it is a side effect
+    }
+
+    private fun getClassFieldsReassigned(
+        assignment: PsiAssignmentExpression,
+        identifiersInMethodScope: Set<String>,
+        identifiersInClassScope: Set<String>
+    ): List<ReassignsClassFieldSideEffect> {
+        return if (affectsClassField(assignment, identifiersInMethodScope, identifiersInClassScope)) {
+            listOf(
+                ReassignsClassFieldSideEffect(
+                    formatClassFieldName((assignment.lExpression as PsiReferenceExpression).qualifiedName)
+                )
+            )
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun affectsClassField(
+        methodCall: PsiMethodCallExpression,
+        identifiersInMethodScope: Set<String>,
+        identifiersInClassScope: Set<String>
+    ): List<MethodCallOnClassFieldSideEffect> {
+        val argumentsPassedToMethod = methodCall.argumentList.expressions.map { it.text }
+        TODO()
     }
 
     /**
@@ -80,7 +123,7 @@ class MethodAnalyzerService {
      * @return the formatted version of the name.
      */
     private fun formatClassFieldName(name: String): String {
-        return if (name.startsWith("this")) {
+        return if (name.startsWith("this.")) {
             name
         } else {
             "this.$name"
@@ -106,4 +149,5 @@ class MethodAnalyzerService {
         }
         return result
     }
+
 }
