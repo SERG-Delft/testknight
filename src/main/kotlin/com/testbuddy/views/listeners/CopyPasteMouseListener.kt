@@ -14,7 +14,8 @@ import java.awt.event.MouseEvent
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class CopyPasteListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) : ClickListener() {
+class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) :
+    ClickListener() {
 
     private var latestEditor: Editor? = null
 

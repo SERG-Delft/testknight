@@ -20,11 +20,12 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.com.testbuddy.views.listeners.CopyPasteKeyboardListener
 import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.views.actions.LoadTestAction
-import com.testbuddy.views.listeners.CopyPasteListener
+import com.testbuddy.views.listeners.CopyPasteMouseListener
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode
@@ -85,7 +86,7 @@ class UserInterface(val project: Project) {
         // Setting up the action group. Currently has default values which needs to be changed later.
         val actionManager = ActionManager.getInstance()
         val actionGroup = DefaultActionGroup("ACTION_GROUP", false)
-        actionGroup.add(actionManager.getAction("deployAction"))
+        actionGroup.add(actionManager.getAction("LoadTestAction"))
         val actionToolbar: ActionToolbar = actionManager.createActionToolbar("ACTION_TOOLBAR", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
@@ -101,8 +102,10 @@ class UserInterface(val project: Project) {
         testCaseTree!!.isRootVisible = false
         testCaseTree!!.showsRootHandles = true
 
-        val listener = CopyPasteListener(testCaseTree!!, cellRenderer)
-        listener.installOn(testCaseTree!!)
+        val mouseListener = CopyPasteMouseListener(testCaseTree!!, cellRenderer)
+        val keyboardListener = CopyPasteKeyboardListener(testCaseTree!!, project)
+        mouseListener.installOn(testCaseTree!!)
+        testCaseTree!!.addKeyListener(keyboardListener)
 
         panel.setViewportView(testCaseTree)
 
