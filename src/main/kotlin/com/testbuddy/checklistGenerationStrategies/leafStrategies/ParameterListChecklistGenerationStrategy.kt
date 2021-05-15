@@ -1,12 +1,13 @@
 package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiParameter
+import com.intellij.psi.PsiParameterList
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 
-class ParameterChecklistGenerationStrategy private constructor(
+class ParameterListChecklistGenerationStrategy private constructor(
     private val typeChecklistCaseMap: Map<String, List<String>>
 ) :
-    LeafChecklistGeneratorStrategy<PsiParameter> {
+    LeafChecklistGeneratorStrategy<PsiParameterList> {
 
     companion object Factory {
         // we can use this to save some defaults so even if the users removes all the cases
@@ -38,8 +39,8 @@ class ParameterChecklistGenerationStrategy private constructor(
          *
          * @return a new ParameterChecklistGenerationStrategy object.
          */
-        fun create(): ParameterChecklistGenerationStrategy {
-            return ParameterChecklistGenerationStrategy(getTypesCasesMap())
+        fun create(): ParameterListChecklistGenerationStrategy {
+            return ParameterListChecklistGenerationStrategy(getTypesCasesMap())
         }
 
         /**
@@ -48,8 +49,8 @@ class ParameterChecklistGenerationStrategy private constructor(
          * @param typeChecklistCaseMap the map associating types to tests cases for them.
          * @return a new ParameterChecklistGenerationStrategy object.
          */
-        fun create(typeChecklistCaseMap: Map<String, List<String>>): ParameterChecklistGenerationStrategy {
-            return ParameterChecklistGenerationStrategy(typeChecklistCaseMap)
+        fun create(typeChecklistCaseMap: Map<String, List<String>>): ParameterListChecklistGenerationStrategy {
+            return ParameterListChecklistGenerationStrategy(typeChecklistCaseMap)
         }
 
         /**
@@ -68,12 +69,26 @@ class ParameterChecklistGenerationStrategy private constructor(
     }
 
     /**
+     * Generates the checklist items for a parameter list.
+     *
+     * @param psiElement the parameter list
+     * @return a list of TestingCheckListLeafNode objects corresponding to the checklist items.
+     */
+    override fun generateChecklist(psiElement: PsiParameterList): List<TestingChecklistLeafNode> {
+        val result = mutableListOf<TestingChecklistLeafNode>()
+        psiElement.parameters.forEach {
+            result.addAll(generateChecklistForParameter(it))
+        }
+        return result
+    }
+
+    /**
      * Generates the checklist for a given parameter statement.
      *
      * @param psiElement the parameter statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    override fun generateChecklist(psiElement: PsiParameter): List<TestingChecklistLeafNode> {
+    fun generateChecklistForParameter(psiElement: PsiParameter): List<TestingChecklistLeafNode> {
         val typeOfParameter = psiElement.type.canonicalText
         val nameOfParameter = psiElement.name
         val casesForType = this.typeChecklistCaseMap[typeOfParameter] ?: emptyList()

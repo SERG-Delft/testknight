@@ -20,7 +20,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.IfStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.SwitchStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.TryStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterListChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ThrowStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
@@ -158,29 +158,6 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testMethodGeneratesOnParameters() {
-        val leafNodeGenerator = ChecklistLeafNodeGenerator()
-        setUpGenerator(leafNodeGenerator)
-        val methodGenerator = MethodChecklistGenerationStrategy.create(recognizedStructs, leafNodeGenerator)
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("setFullName")
-
-        val params = PsiTreeUtil.findChildrenOfType(methodToGenerateOn, PsiParameter::class.java)
-        val firstName = params.elementAt(0)
-        val lastName = params.elementAt(1)
-
-        val paramStrategy = mockk<ParameterChecklistGenerationStrategy>()
-        every { paramStrategy.generateChecklist(firstName!!) } returns emptyList()
-        every { paramStrategy.generateChecklist(lastName!!) } returns emptyList()
-        leafNodeGenerator.parameterChecklistGenerationStrategy = paramStrategy
-
-        methodGenerator.generateChecklist(methodToGenerateOn)
-
-        verify { paramStrategy.generateChecklist(firstName) }
-        verify { paramStrategy.generateChecklist(lastName) }
-    }
-
-    @Test
     fun testMethodGeneratesOnWhileLoops() {
         val leafNodeGenerator = ChecklistLeafNodeGenerator()
         setUpGenerator(leafNodeGenerator)
@@ -294,70 +271,11 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
         verify { throwStrategy.generateChecklist(throwStatement!!) }
     }
 
-    @Test
-    fun testMethodSuccessfullyCombinesSubChecklists() {
-        val leafNodeGenerator = ChecklistLeafNodeGenerator()
-        setUpGenerator(leafNodeGenerator)
-        val methodGenerator = MethodChecklistGenerationStrategy.create(recognizedStructs, leafNodeGenerator)
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("setAge")
-
-        // Setup parameters
-        val param = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiParameter::class.java)
-        val paramStrategy = mockk<ParameterChecklistGenerationStrategy>()
-        every { paramStrategy.generateChecklist(param!!) } returns listOf(TestingChecklistLeafNode("int age", param!!))
-        // Setup ifs
-        val ifs = PsiTreeUtil.findChildrenOfType(methodToGenerateOn, PsiIfStatement::class.java)
-        val negativeAge = ifs.elementAt(0)
-        val oldAge = ifs.elementAt(1)
-        val ifStrategy = mockk<IfStatementChecklistGenerationStrategy>()
-        every { ifStrategy.generateChecklist(negativeAge) } returns listOf(
-            TestingChecklistLeafNode(
-                "age<=0",
-                negativeAge
-            )
-        )
-        every { ifStrategy.generateChecklist(oldAge) } returns listOf(TestingChecklistLeafNode("age>100", oldAge))
-        // Setup throws
-        val throwStatements = PsiTreeUtil.findChildrenOfType(methodToGenerateOn, PsiThrowStatement::class.java)
-        val cannotBeThatYoungException = throwStatements.elementAt(0)
-        val cannotBeThatOldException = throwStatements.elementAt(1)
-        val throwStrategy = mockk<ThrowStatementChecklistGenerationStrategy>()
-        every { throwStrategy.generateChecklist(cannotBeThatYoungException!!) } returns listOf(
-            TestingChecklistLeafNode(
-                "cannotBeThatYoungException",
-                cannotBeThatYoungException
-            )
-        )
-        every { throwStrategy.generateChecklist(cannotBeThatOldException!!) } returns listOf(
-            TestingChecklistLeafNode(
-                "cannotBeThatOldException",
-                cannotBeThatOldException
-            )
-        )
-
-        leafNodeGenerator.parameterChecklistGenerationStrategy = paramStrategy
-        leafNodeGenerator.ifStatementChecklistGenerationStrategy = ifStrategy
-        leafNodeGenerator.throwStatementChecklistGenerationStrategy = throwStrategy
-
-        // turn to sets to avoid ordering issues
-        val expected = setOf(
-            TestingChecklistLeafNode("int age", param!!),
-            TestingChecklistLeafNode("age<=0", negativeAge),
-            TestingChecklistLeafNode("age>100", oldAge),
-            TestingChecklistLeafNode("cannotBeThatYoungException", cannotBeThatYoungException),
-            TestingChecklistLeafNode("cannotBeThatOldException", cannotBeThatOldException)
-        )
-        val actualNode = methodGenerator.generateChecklist(methodToGenerateOn)
-        val actual = actualNode.children.toSet()
-        TestCase.assertEquals(expected, actual)
-    }
-
     private fun setUpGenerator(leafNodeGenerator: ChecklistLeafNodeGenerator) {
         val ifStrategy = mockk<IfStatementChecklistGenerationStrategy>()
         val switchStrategy = mockk<SwitchStatementChecklistGenerationStrategy>()
         val tryStrategy = mockk<TryStatementChecklistGenerationStrategy>()
-        val parameterStrategy = mockk<ParameterChecklistGenerationStrategy>()
+        val parameterStrategy = mockk<ParameterListChecklistGenerationStrategy>()
         val whileStrategy = mockk<WhileStatementChecklistGenerationStrategy>()
         val forStrategy = mockk<ForStatementChecklistGenerationStrategy>()
         val doWhileStrategy = mockk<DoWhileStatementChecklistGenerationStrategy>()
@@ -368,7 +286,7 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
         every { ifStrategy.generateChecklist(any()) } returns emptyList()
         every { switchStrategy.generateChecklist(any()) } returns emptyList()
         every { tryStrategy.generateChecklist(any()) } returns emptyList()
-        every { parameterStrategy.generateChecklist(any()) } returns emptyList()
+        every { parameterStrategy.generateChecklistForParameter(any()) } returns emptyList()
         every { whileStrategy.generateChecklist(any()) } returns emptyList()
         every { forStrategy.generateChecklist(any()) } returns emptyList()
         every { doWhileStrategy.generateChecklist(any()) } returns emptyList()

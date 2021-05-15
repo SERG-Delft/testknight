@@ -5,15 +5,15 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterListChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.models.TestingChecklistLeafNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class ParameterChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class ParameterListChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
-    private val generationStrategy = ParameterChecklistGenerationStrategy.create()
+    private val generationStrategy = ParameterListChecklistGenerationStrategy.create()
 
     @Before
     public override fun setUp() {
@@ -36,7 +36,7 @@ internal class ParameterChecklistGenerationStrategyTest : BasePlatformTestCase()
             TestingChecklistLeafNode("Test method parameter \"currentYear\" equal to: Integer.MIN_VALUE", parameter),
             TestingChecklistLeafNode("Test method parameter \"currentYear\" equal to: -42", parameter)
         )
-        val actual = generationStrategy.generateChecklist(parameter)
+        val actual = generationStrategy.generateChecklistForParameter(parameter)
         TestCase.assertEquals(expected, actual)
     }
 
@@ -45,7 +45,7 @@ internal class ParameterChecklistGenerationStrategyTest : BasePlatformTestCase()
         val method = getMethod("marryTo")
         val parameter = PsiTreeUtil.findChildrenOfType(method!!, PsiParameter::class.java).elementAt(0)
         val expected = emptyList<TestingChecklistLeafNode>()
-        val actual = generationStrategy.generateChecklist(parameter)
+        val actual = generationStrategy.generateChecklistForParameter(parameter)
         TestCase.assertEquals(expected, actual)
     }
 

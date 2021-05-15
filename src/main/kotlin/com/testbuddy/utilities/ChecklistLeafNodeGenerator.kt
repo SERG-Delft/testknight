@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiForStatement
 import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiIfStatement
-import com.intellij.psi.PsiParameter
+import com.intellij.psi.PsiParameterList
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.PsiTryStatement
@@ -17,7 +17,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.IfStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.SwitchStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.branchingStatements.TryStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterListChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ThrowStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.com.testbuddy.checklistGenerationStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
@@ -29,7 +29,7 @@ class ChecklistLeafNodeGenerator {
     var conditionalExpressionChecklistGenerationStrategy = ConditionalExpressionChecklistGenerationStrategy.create()
     var switchStatementChecklistGenerationStrategy = SwitchStatementChecklistGenerationStrategy.create()
     var tryStatementChecklistGenerationStrategy = TryStatementChecklistGenerationStrategy.create()
-    var parameterChecklistGenerationStrategy = ParameterChecklistGenerationStrategy.create()
+    var parameterChecklistGenerationStrategy = ParameterListChecklistGenerationStrategy.create()
     var whileStatementChecklistGenerationStrategy = WhileStatementChecklistGenerationStrategy.create()
     var forStatementChecklistGenerationStrategy = ForStatementChecklistGenerationStrategy.create()
     var doWhileStatementChecklistGenerationStrategy = DoWhileStatementChecklistGenerationStrategy.create()
@@ -49,7 +49,7 @@ class ChecklistLeafNodeGenerator {
                 conditionalExpressionChecklistGenerationStrategy.generateChecklist(psiElement)
             is PsiSwitchStatement -> switchStatementChecklistGenerationStrategy.generateChecklist(psiElement)
             is PsiTryStatement -> tryStatementChecklistGenerationStrategy.generateChecklist(psiElement)
-            is PsiParameter -> parameterChecklistGenerationStrategy.generateChecklist(psiElement)
+            is PsiParameterList -> parameterChecklistGenerationStrategy.generateChecklist(psiElement)
             is PsiWhileStatement -> whileStatementChecklistGenerationStrategy.generateChecklist(psiElement)
             is PsiForStatement -> forStatementChecklistGenerationStrategy.generateChecklist(psiElement)
             is PsiDoWhileStatement -> doWhileStatementChecklistGenerationStrategy.generateChecklist(psiElement)

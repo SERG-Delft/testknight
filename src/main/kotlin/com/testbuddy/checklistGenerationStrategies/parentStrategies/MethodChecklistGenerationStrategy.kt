@@ -7,7 +7,7 @@ import com.intellij.psi.PsiForStatement
 import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiParameter
+import com.intellij.psi.PsiParameterList
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.PsiTryStatement
@@ -68,7 +68,7 @@ class MethodChecklistGenerationStrategy private constructor(
         private fun getDefaultStructureTypesRecognized(): Array<Class<out PsiElement>> {
             return arrayOf(
                 PsiIfStatement::class.java, PsiSwitchStatement::class.java,
-                PsiTryStatement::class.java, PsiParameter::class.java,
+                PsiTryStatement::class.java, PsiParameterList::class.java,
                 PsiWhileStatement::class.java, PsiForStatement::class.java,
                 PsiDoWhileStatement::class.java, PsiForeachStatement::class.java,
                 PsiThrowStatement::class.java, PsiConditionalExpression::class.java

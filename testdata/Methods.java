@@ -18,7 +18,7 @@ class Methods {
                 System.out.println("is a one");
                 break;
             case 2:
-                System.out.println("is a two");
+                System.out.println("is a to");
                 break;
             default:
                 System.out.println("is default");
@@ -79,34 +79,8 @@ class Methods {
         return distances[t] - nodes.get(t).size();
     }
 
-    public void method(boolean condition, boolean second) {
-
-        if (condition) {
-
-            boolean condition = true
-
-            if (condition) {
-
-            }
-
-        }
-
-    }
-
-    public void mcdc() {
-        if (a && (b || c)) {
-            System.out.println("b1");
-        } else {
-            System.out.println("b2");
-        }
-    }
-
-    public void trycatch(int param) {
-        try {
-            System.out.println("lol");
-        } catch(Exception e) {
-            throw e
-        }
+    public void ternary() {
+        int x = (a > b) ? 1 : 2
     }
 
 }
