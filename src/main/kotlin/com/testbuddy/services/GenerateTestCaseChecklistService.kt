@@ -31,7 +31,7 @@ class GenerateTestCaseChecklistService {
      */
     fun generateClassChecklistFromMethod(psiMethod: PsiMethod): TestingChecklistClassNode {
         val methodItem = methodStrategy.generateChecklist(psiMethod)
-        val parentClass = PsiTreeUtil.getParentOfType(psiMethod, PsiMethod::class.java) as PsiClass
+        val parentClass = PsiTreeUtil.getParentOfType(psiMethod, PsiClass::class.java) as PsiClass
 
         return TestingChecklistClassNode(
             parentClass.name!!,
