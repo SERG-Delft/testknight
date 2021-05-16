@@ -6,6 +6,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
+import com.intellij.psi.PsiWhiteSpace
+import com.intellij.psi.codeStyle.CodeStyleManager
 import com.testbuddy.models.AssertionSuggestion
 import com.testbuddy.utilities.StringFormatter
 
@@ -64,8 +66,21 @@ class AssertionSuggestionService {
             // Create the PsiDocComment
             val factory = JavaPsiFacade.getInstance(project).elementFactory
             val comment = factory.createDocCommentFromText(builder.toString())
+            val whiteSpace = testMethod.nextSibling
+
             val methodBody = testMethod.body ?: return
-            WriteCommandAction.runWriteCommandAction(project) { methodBody.add(comment) }
+            if (whiteSpace != null && whiteSpace is PsiWhiteSpace) {
+                WriteCommandAction.runWriteCommandAction(project) { methodBody.add(whiteSpace) }
+                WriteCommandAction.runWriteCommandAction(project) {
+                    methodBody.add(comment).addAfter(whiteSpace, comment)
+                }
+                WriteCommandAction.runWriteCommandAction(project) { methodBody.add(whiteSpace) }
+            } else {
+                WriteCommandAction.runWriteCommandAction(project) {
+                    methodBody.add(comment).addAfter(whiteSpace, comment)
+                }
+            }
+            CodeStyleManager.getInstance(project).reformat(testMethod)
         }
     }
 
