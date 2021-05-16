@@ -10,11 +10,11 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.ClassFieldMutationSideEffect
-import com.testbuddy.com.testbuddy.models.MethodCallOnArgumentSideEffect
-import com.testbuddy.com.testbuddy.models.MethodCallOnClassFieldSideEffect
-import com.testbuddy.com.testbuddy.models.ReassignsClassFieldSideEffect
-import com.testbuddy.com.testbuddy.models.SideEffect
+import com.testbuddy.models.ClassFieldMutationSideEffect
+import com.testbuddy.models.MethodCallOnArgumentSideEffect
+import com.testbuddy.models.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.ReassignsClassFieldSideEffect
+import com.testbuddy.models.SideEffect
 
 // I plan to refactor this class in the next sprint so for now
 // I am suppressing the warning.

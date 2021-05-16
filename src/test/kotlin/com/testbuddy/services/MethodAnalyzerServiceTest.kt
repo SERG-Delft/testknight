@@ -4,10 +4,10 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.MethodCallOnArgumentSideEffect
-import com.testbuddy.com.testbuddy.models.MethodCallOnClassFieldSideEffect
-import com.testbuddy.com.testbuddy.models.ReassignsClassFieldSideEffect
-import com.testbuddy.com.testbuddy.models.SideEffect
+import com.testbuddy.models.MethodCallOnArgumentSideEffect
+import com.testbuddy.models.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.ReassignsClassFieldSideEffect
+import com.testbuddy.models.SideEffect
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
