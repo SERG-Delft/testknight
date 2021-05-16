@@ -9,7 +9,7 @@ import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.services.TestAnalyzerService
+import com.testbuddy.services.TestAnalyzerService
 
 /**
  * Implements an intention action to generate the assertions suggestions for the selected method call.
