@@ -11,7 +11,6 @@ import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
@@ -23,7 +22,8 @@ import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.views.actions.LoadTestAction
 import com.testbuddy.views.listeners.CheckedNodeListener
-import com.testbuddy.views.listeners.CopyPasteListener
+import com.testbuddy.views.listeners.CopyPasteKeyboardListener
+import com.testbuddy.views.listeners.CopyPasteMouseListener
 import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
@@ -88,7 +88,7 @@ class UserInterface(val project: Project) {
         // Setting up the action group. Currently has default values which needs to be changed later.
         val actionManager = ActionManager.getInstance()
         val actionGroup = DefaultActionGroup("ACTION_GROUP", false)
-        actionGroup.add(actionManager.getAction("deployAction"))
+        actionGroup.add(actionManager.getAction("LoadTestAction"))
         val actionToolbar: ActionToolbar = actionManager.createActionToolbar("ACTION_TOOLBAR", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
@@ -104,8 +104,10 @@ class UserInterface(val project: Project) {
         testCaseTree!!.isRootVisible = false
         testCaseTree!!.showsRootHandles = true
 
-        val listener = CopyPasteListener(testCaseTree!!, cellRenderer)
-        listener.installOn(testCaseTree!!)
+        val mouseListener = CopyPasteMouseListener(testCaseTree!!, cellRenderer)
+        val keyboardListener = CopyPasteKeyboardListener(testCaseTree!!, project)
+        mouseListener.installOn(testCaseTree!!)
+        testCaseTree!!.addKeyListener(keyboardListener)
 
         panel.setViewportView(testCaseTree)
 
@@ -166,7 +168,8 @@ class UserInterface(val project: Project) {
             if (editorList.isNotEmpty()) {
                 val textEditor = editorList[0] as TextEditor
 
-                val psiFile: PsiFile? = PsiManager.getInstance(project).findFile(textEditor.file!!)
+                // Don't update UI if psiFile couldn't be found.
+                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
                 LoadTestAction().actionPerformed(project, psiFile, textEditor.editor)
             }
         }

@@ -34,12 +34,8 @@ class LoadChecklistAction : AnAction() {
 
     override fun actionPerformed(event: AnActionEvent) {
 
-        val project = event.project ?: return
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
-
-        val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)
-        actionPerformed(project, psiClass as PsiElement)
-    }
+        // Return if the ToolWindow couldn't be found
+        val window = ToolWindowManager.getInstance(event.project!!).getToolWindow("TestBuddy") ?: return
 
     /**
      * Updates the Checklist tab to load the test cases from the selected class.
@@ -58,20 +54,14 @@ class LoadChecklistAction : AnAction() {
         }
         val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
         val tabbedPane = (
-            (window!!.contentManager.contents[0] as ContentImpl)
+            (window.contentManager.contents[0] as ContentImpl)
                 .component as JTabbedPane
             )
-        val checklistTab = tabbedPane.getComponentAt(1) as JBPanelWithEmptyText
-        val checklistScroll = checklistTab.getComponent(1) as JBScrollPane
-        val checklistViewport = checklistScroll.viewport
-        val checklistTree = checklistViewport.getComponent(0) as CheckboxTree
-        val root = checklistTree.model.root as DefaultMutableTreeNode
-        root.removeAllChildren()
 
-        val classNode = CheckedTreeNode(ChecklistUserObject(checklistClassTree!!, 0))
-
-        // All userObjects start with check count 0
-        for (method in checklistClassTree.children) {
+        val copyPasteTab = tabbedPane.getComponentAt(1) as JBPanelWithEmptyText
+        val copyPasteScroll = copyPasteTab.getComponent(1) as JBScrollPane
+        val copyPasteViewport = copyPasteScroll.viewport
+        val checklistTree = copyPasteViewport.view as CheckboxTree
 
             val methodNode = CheckedTreeNode(ChecklistUserObject(method, 0))
 
@@ -89,13 +79,16 @@ class LoadChecklistAction : AnAction() {
 
     /**
      * Determines whether this menu item is available for the current context.
-     * Requires a project to be open.
+     * Requires a project to be open and psiFile and Editor to be accessible from the action event.
      *
      * @param e Event received when the associated group-id menu is chosen.
      */
     override fun update(e: AnActionEvent) {
-        // Set the availability based on whether a project is open
-        val project = e.project
-        e.presentation.isEnabledAndVisible = project != null
+        // Set the availability based on whether the project, psiFile and editor is not null
+        e.presentation.isEnabled = (
+            e.project != null &&
+                e.getData(CommonDataKeys.PSI_FILE) != null &&
+                e.getData(CommonDataKeys.EDITOR) != null
+            )
     }
 }

@@ -4,10 +4,11 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 
 /**
- * Custom user object which gets passed into testListTree which contains information used by the tree nodes.
+ * The user object which is stored inside the node of the test case tree.
+ * Contains additional information such as the current project and current editor (which can be null)
  *
- * @param reference TestMethodData of the test method.
- * @param project The current project if open.
- * @param editor The current editor if open.
+ * @param reference reference to the TestMethodData
+ * @param project Current project, can be null.
+ * @param editor Current editor, can be null.
  */
 data class TestMethodUserObject(val reference: TestMethodData, val project: Project?, val editor: Editor?)

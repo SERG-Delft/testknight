@@ -209,6 +209,56 @@ public class Person {
 
 
 
+    public void nameToLowerCase() {
+        this.name.toLowerCase();
+    }
+
+    public void nameToLowerCaseStaticCall() {
+        String.toLowerCase(this.name)
+    }
+
+    public void methodCallWithoutThis() {
+        name.methodSecond();
+    }
+
+    public void methodCallWithThis() {
+        this.name.methodSecond();
+    }
+
+    public void methodCallOnShadowedField(String name) {
+        name.methodSecond(3,2);
+    }
+
+    public void methodCallWithThisAndWithout() {
+        this.spouse.mysteriousMethod(name)
+    }
+
+    public void multipleMethodCall() {
+        this.name.toLowerCase();
+        this.spouse.mysteriousMethod(name);
+    }
+
+    public void reversesList(ArrayList<Person> list) {
+        list.reverse();
+    }
+
+    public void reversesListWithArgument(ArrayList<Person> list) {
+        reverse(list);
+    }
+
+    public void addToList(ArrayList<Person> list, Person person) {
+        list.add(person);
+    }
+
+    public void listEditor(ArrayList<Person> list, Person person) {
+        list.add(person);
+        reverse(list);
+    }
+
+    public void reverseName(String name) {
+        name.reverse();
+    }
+
 }
 
 
