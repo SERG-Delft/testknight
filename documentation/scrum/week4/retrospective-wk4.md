@@ -14,10 +14,10 @@
 - *Frontend (Cristian, Mathanrajan):*
     - [x] Fix the inconsistency bug in the UI for the test case.
     - [x] Create the mockups for checklist -> show them to the client.
-    - [x] Create the mockups for assertions suggestion-> show them to the client.
+    - [x] Create the mockups for assertion suggestion-> show them to the client.
     - [x] Create the mockups for coverage -> show them to the client.
-    - [x]  Embed the functionality of the checklist with the UI.
-    - [x] Implement the UI for the assertions suggestions.
+    - [x] Embed the functionality of the checklist with the UI.
+    - [x] Implement the UI for the assertion suggestions.
     - [x] Refine the Copy Paste tab to use a Tree instead of a list of Panels.
     - [x] Add shortcuts for the buttons (Copy Paste feature).
     - [x] Add shortcuts for the buttons (Checklist feature).
@@ -30,7 +30,7 @@
     - [x] Implement the proper error handling.
     - [x] Implement the checklist generator.
     - [x] Implement the getting the method under test functionality.
-    - [x] Implement the assertions suggestions.
+    - [x] Implement the assertion suggestions.
     - [x] Implement foundations for coverage feature.
     - [x] Design the argument mutation side effect for the assertion suggestion.
 
@@ -41,7 +41,7 @@
     - It was generally difficult to understand and find the proper documentation for different tasks.
     - We have also done the peer review, so we think that it will help us for improving the atmosphere in the team
 - **UI Team (Cristian, Mathan):**
-    - This week we made the mockups for Assertion suggestion, code coverage, and checklist generation on Monday. It took a little bit more than we expected, since
+    - This week we made the mockups for assertion suggestion, code coverage, and checklist generation on Monday. It took a little bit more than we expected, since
     - We worked on changing the UI for the test case tab from JPanels to Tree. One of the main problems we faced here was understanding how to create a custom renderer for tree works. From what we understood, the renderer doesn't create any live components, meaning you cannot interact with the components which were rendered by the renderer. So, in order to make the components "live", we attached listeners to the tree which checks for mouse clicks. If the mouse click was on top of a button, the respective button action is done.
     - Mathan - Most of my development time was spent on figuring out how to retrieve a specific object, say the current editor, from the objects I can currently access. Since the APIs are quite complex and there are multiple ways to access an object, figuring out the proper way through which I can access an object took some time. I also worked on adding hotkeys for the test case tab and the copy-paste tab. They didn't take a lot of time to implement as I learned how listeners worked while working on making the Tree structure for the test case tab.
     - Cristian - I also worked on the implementation of the checklist, since we have to connect the backend functionality with the UI part. The most time-consuming part was to find proper documentation and try to reformat the previous tree structure and its renderers. On the other hand, I have worked on the assertion suggestion feature, for which I could find a lot of possibilities for integrating it with the IntelliJ UI. For instance, you can have an intention action lists for which you can find the documentation and how it works in the settings panel of the IntelliJ
