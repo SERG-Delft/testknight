@@ -1,6 +1,6 @@
 package com.testbuddy.com.testbuddy.utilities
 
-class StringFormatter {
+class StringFormatter private constructor() {
 
     companion object {
         /**
@@ -17,7 +17,6 @@ class StringFormatter {
             }
         }
 
-
         /**
          * Formats the name of the field that is affected so that
          * all fields have the form "this.nameOfField".
@@ -33,5 +32,4 @@ class StringFormatter {
             }
         }
     }
-
 }

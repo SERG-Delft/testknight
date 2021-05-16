@@ -18,7 +18,7 @@ data class MethodCallOnClassFieldSideEffect(val nameOfField: String, val nameOfM
     override fun toAssertionSuggestion(): AssertionSuggestion {
         return AssertionSuggestion(
             "Assert that method \"$nameOfMethod\" " +
-                    "modifies field \"$nameOfField\" properly."
+                "modifies field \"$nameOfField\" properly."
         )
     }
 }
@@ -28,7 +28,7 @@ data class MethodCallOnParameterSideEffect(val nameOfParameter: String, val name
     override fun toAssertionSuggestion(): AssertionSuggestion {
         return AssertionSuggestion(
             "Assert that method \"$nameOfMethod\" " +
-                    "modifies parameter \"$nameOfParameter\" properly."
+                "modifies parameter \"$nameOfParameter\" properly."
         )
     }
 }

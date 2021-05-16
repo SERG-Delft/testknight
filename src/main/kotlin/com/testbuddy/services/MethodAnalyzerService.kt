@@ -19,7 +19,7 @@ import com.testbuddy.models.SideEffect
 
 // I plan to refactor this class in the next sprint so for now
 // I am suppressing the warning.
-//@Suppress("TooManyFunctions")
+// @Suppress("TooManyFunctions")
 class MethodAnalyzerService {
 
     /**
@@ -164,7 +164,9 @@ class MethodAnalyzerService {
         return if (affectsClassField(assignment, identifiersInMethodScope, identifiersInClassScope)) {
             listOf(
                 ReassignsClassFieldSideEffect(
-                    StringFormatter.formatClassFieldName((assignment.lExpression as PsiReferenceExpression).qualifiedName)
+                    StringFormatter.formatClassFieldName(
+                        (assignment.lExpression as PsiReferenceExpression).qualifiedName
+                    )
                 )
             )
         } else {
@@ -254,5 +256,4 @@ class MethodAnalyzerService {
         }
         return result
     }
-
 }
