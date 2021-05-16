@@ -66,7 +66,9 @@ class AssertionSuggestionService {
             // Create the PsiDocComment
             val factory = JavaPsiFacade.getInstance(project).elementFactory
             val comment = factory.createDocCommentFromText(builder.toString())
-            val whiteSpace = testMethod.nextSibling
+
+            // Spacing based on user allocated spaces between previous method and current method
+            val whiteSpace = testMethod.prevSibling
 
             val methodBody = testMethod.body ?: return
             if (whiteSpace != null && whiteSpace is PsiWhiteSpace) {
