@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod

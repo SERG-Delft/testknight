@@ -1,6 +1,32 @@
-package com.testbuddy.com.testbuddy.models
+package com.testbuddy.models
 
-open class SideEffect(val info: String)
+abstract class SideEffect(open val info: String) {
+    abstract fun toAssertionSuggestion(): AssertionSuggestion
+}
 
-data class ThrowsExceptionSideEffect(val nameOfException: String) : SideEffect(nameOfException)
-data class MutatesClassFieldSideEffect(val nameOfField: String) : SideEffect(nameOfField)
+abstract class ClassFieldMutationSideEffect(override val info: String) : SideEffect(info)
+data class ReassignsClassFieldSideEffect(val nameOfField: String) : ClassFieldMutationSideEffect(nameOfField) {
+    override fun toAssertionSuggestion(): AssertionSuggestion {
+        return AssertionSuggestion("Assert that \"$nameOfField\" is re-assigned properly.")
+    }
+}
+
+data class MethodCallOnClassFieldSideEffect(val nameOfField: String, val nameOfMethod: String) :
+    ClassFieldMutationSideEffect(nameOfField) {
+    override fun toAssertionSuggestion(): AssertionSuggestion {
+        return AssertionSuggestion(
+            "Assert that method \"$nameOfMethod\" " +
+                "modifies field \"$nameOfField\" properly."
+        )
+    }
+}
+
+data class MethodCallOnParameterSideEffect(val nameOfParameter: String, val nameOfMethod: String) :
+    SideEffect(nameOfParameter) {
+    override fun toAssertionSuggestion(): AssertionSuggestion {
+        return AssertionSuggestion(
+            "Assert that method \"$nameOfMethod\" " +
+                "modifies parameter \"$nameOfParameter\" properly."
+        )
+    }
+}
