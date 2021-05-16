@@ -1,10 +1,10 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.models.MethodCallOnClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.ReassignsClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.SideEffect
 import junit.framework.TestCase
@@ -26,7 +26,6 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
     fun testFieldMutationSideEffectsThisNotSpecified() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val assignmentExpression = PsiTreeUtil.findChildOfType(psi, PsiAssignmentExpression::class.java)
         val expected = listOf(ReassignsClassFieldSideEffect("this.name"))
         assertMethodSideEffects(testClass, expected, "setFullName")
     }
@@ -35,7 +34,6 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
     fun testOnlyArgumentMutationSideEffectsThisSpecified() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val assignmentExpression = PsiTreeUtil.findChildOfType(psi, PsiAssignmentExpression::class.java)
         val expected = listOf(ReassignsClassFieldSideEffect("this.name"))
         assertMethodSideEffects(testClass, expected, "setName")
     }
@@ -48,20 +46,50 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         assertMethodSideEffects(testClass, expected, "greet")
     }
 
-//    @Test
+    //    @Test
 //    fun testMethodCallOnParameter() {}
 //
 //    @Test
 //    fun testMethodCallWithParameterPassed() {}
 //
-//    @Test
-//    fun testMethodCallOnClassField() {
-//    val psi = this.myFixture.file
-//    val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-//    val assignmentExpression = PsiTreeUtil.findChildOfType(psi, PsiAssignmentExpression::class.java)
-//    val expected = listOf(ReassignsClassFieldSideEffect("this.name"))
-//    assertMethodSideEffects(testClass, expected, "methodCall")
-//    }
+    @Test
+    fun testMethodCallOnClassFieldWithoutThis() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(MethodCallOnClassFieldSideEffect("this.name", "methodSecond"))
+        assertMethodSideEffects(testClass, expected, "methodCall")
+    }
+
+    @Test
+    fun testMethodCallOnClassFieldWithThis() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(MethodCallOnClassFieldSideEffect("this.name", "methodSecond"))
+        assertMethodSideEffects(testClass, expected, "methodCallWithThis")
+    }
+
+    @Test
+    fun testMethodCallWithClassFieldArguments() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnClassFieldSideEffect("this.spouse", "mysteriousMethod"),
+            MethodCallOnClassFieldSideEffect("this.name", "mysteriousMethod")
+        )
+        assertMethodSideEffects(testClass, expected, "methodCallWithThisAndWithout")
+    }
+
+    @Test
+    fun testMultipleMethodCalls() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnClassFieldSideEffect("this.name", "toLowerCase"),
+            MethodCallOnClassFieldSideEffect("this.spouse", "mysteriousMethod"),
+            MethodCallOnClassFieldSideEffect("this.name", "mysteriousMethod")
+        )
+        assertMethodSideEffects(testClass, expected, "multipleMethodCall")
+    }
 //
 //    @Test
 //    fun testMethodCallWithClassFieldPassed() {}

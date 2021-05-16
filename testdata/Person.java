@@ -81,8 +81,22 @@ public class Person {
         String.toLowerCase(this.name)
     }
 
-    public void methodCall(int a, int b) {
-        methodSecond(a,b,3);
+    public void methodCallWithoutThis(int a, int b) {
+        name.methodSecond(3,2);
+    }
+
+    public void methodCallWithThis(int a, int b) {
+        this.name.methodSecond(3,2);
+    }
+
+    public void methodCallWithThisAndWithout(int a, int b) {
+        this.spouse.mysteriousMethod(name, b)
+    }
+
+    public void multipleMethodCall(int a, int b) {
+        this.name.toLowerCase();
+        this.spouse.mysteriousMethod(name, b);
+        add(a,b);
     }
 
 }

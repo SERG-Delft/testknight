@@ -46,8 +46,6 @@ class MethodAnalyzerService {
         val parentClass = PsiTreeUtil.getParentOfType(method, PsiClass::class.java)
         val identifiersInClassScope = parentClass?.allFields?.map { it.name }?.toSet() ?: return emptyList()
 
-//        val assignmentsThatAffectClassFields =
-//            assignmentExpressions.filter { affectsClassField(it, identifiersInMethodScope, identifiersInClassScope) }
         val classFieldsAffectedByAssignments = assignmentExpressions.flatMap {
             getClassFieldsReassigned(
                 it,
@@ -56,15 +54,16 @@ class MethodAnalyzerService {
             )
         }
 
-//        val classFieldsAffectedByMethodCalls =
-//            methodCallExpressions.flatMap { affectsClassField(it, identifiersInMethodScope, identifiersInClassScope) }
+        val classFieldsAffectedByMethodCalls =
+            methodCallExpressions.flatMap {
+                classFieldsAffectedByMethodCall(
+                    it,
+                    identifiersInMethodScope,
+                    identifiersInClassScope
+                )
+            }
 
-//        return assignmentsThatAffectClassFields.map {
-//            ReassignsClassFieldSideEffect(
-//                formatClassFieldName((it.lExpression as PsiReferenceExpression).qualifiedName)
-//            )
-//        }
-        return classFieldsAffectedByAssignments
+        return classFieldsAffectedByAssignments + classFieldsAffectedByMethodCalls
     }
 
     /**
@@ -106,13 +105,49 @@ class MethodAnalyzerService {
         }
     }
 
-    private fun affectsClassField(
+    private fun classFieldsAffectedByMethodCall(
         methodCall: PsiMethodCallExpression,
         identifiersInMethodScope: Set<String>,
         identifiersInClassScope: Set<String>
     ): List<MethodCallOnClassFieldSideEffect> {
-        val argumentsPassedToMethod = methodCall.argumentList.expressions.map { it.text }
-        TODO()
+        val methodName = methodCall.methodExpression.qualifiedName
+        //if it contains
+        val arguments = mutableListOf<String>()
+        if (methodName.contains(".")) {
+            val argumentAppliedOn = methodName.subSequence(0, methodName.lastIndexOf(".")) as String
+            arguments.add(argumentAppliedOn)
+        }
+        methodCall.argumentList.expressions.forEach { arguments.add(it.text) }
+        val argumentsThatAffectClassFields = arguments.filter {
+            isClassField(it, identifiersInMethodScope, identifiersInClassScope)
+        }
+        return argumentsThatAffectClassFields.map {
+            MethodCallOnClassFieldSideEffect(
+                formatClassFieldName(it),
+                formatMethodName(methodName)
+            )
+        }
+    }
+
+    private fun isClassField(
+        identifier: String,
+        identifiersInMethodScope: Set<String>,
+        identifiersInClassScope: Set<String>
+    ): Boolean {
+        return if (identifier.contains("this.")) {
+            val newName = identifier.replaceFirst("this.", "")
+            !identifiersInMethodScope.contains(newName) && identifiersInClassScope.contains(newName)
+        } else {
+            !identifiersInMethodScope.contains(identifier) && identifiersInClassScope.contains(identifier)
+        }
+    }
+
+    private fun formatMethodName(methodName: String): String {
+        return if (methodName.contains(".")) {
+            methodName.substring(methodName.lastIndexOf(".") + 1)
+        } else {
+            methodName
+        }
     }
 
     /**
