@@ -50,7 +50,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction>
-            <className>com.testbuddy.views.actions.AssertionsSuggestionsAction</className>
+            <className>com.testbuddy.views.actions.AssertionSuggestionsAction</className>
             <category>TestBuddy intentions</category>
         </intentionAction>
     </extensions>

@@ -16,7 +16,7 @@ import com.testbuddy.services.TestAnalyzerService
 /**
  * Implements an intention action to generate the assertions suggestions for the selected method call.
  */
-class AssertionsSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAction {
+class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAction {
 
     /**
      * If this action is applicable, then the "Generate assertion suggestions" text will be shown in the dropdown menu
