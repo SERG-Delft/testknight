@@ -4,10 +4,10 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.ui.ClickListener
 import com.intellij.ui.treeStructure.Tree
-import com.testbuddy.com.testbuddy.views.trees.CopyPasteCellRenderer
 import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService
+import com.testbuddy.views.trees.CopyPasteCellRenderer
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.MouseEvent

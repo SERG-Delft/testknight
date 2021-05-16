@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.views.trees
+package com.testbuddy.views.trees
 
 import com.intellij.ui.components.JBLabel
 import com.testbuddy.models.TestClassData
