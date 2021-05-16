@@ -1,11 +1,11 @@
 package com.testbuddy.com.testbuddy.services
 
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
-import com.intellij.psi.javadoc.PsiDocComment
 import com.testbuddy.com.testbuddy.models.AssertionSuggestion
 import com.testbuddy.com.testbuddy.utilities.StringFormatter
 import com.testbuddy.services.MethodAnalyzerService
@@ -13,10 +13,12 @@ import com.testbuddy.services.TestAnalyzerService
 
 class AssertionSuggestionService {
 
+    private val testAnalyzerService = TestAnalyzerService()
+
     /**
      * Returns a list of assertion suggestions based on the given method.
      * Works iff the testMethod given is a test method.
-     * If it is not, the method does nothing.
+     * If it is not, the method returns an empty list.
      *
      * @param testMethod the test method.
      * @param methodCall the method call to the method under test.
@@ -28,7 +30,6 @@ class AssertionSuggestionService {
         methodCall: PsiMethodCallExpression,
         project: Project
     ): List<AssertionSuggestion> {
-        val testAnalyzerService = project.service<TestAnalyzerService>()
         return if (testAnalyzerService.isTestMethod(testMethod)) {
             val methodAnalyzerService = project.service<MethodAnalyzerService>()
             val methodUnderTest = methodCall.resolveMethod() ?: return emptyList()
@@ -47,24 +48,26 @@ class AssertionSuggestionService {
      * @param methodCall the method call to the method under test.
      * @param project the current project.
      */
+    @Suppress("ReturnCount")
     fun appendAssertionsAsComments(testMethod: PsiMethod, methodCall: PsiMethodCallExpression, project: Project) {
-        val testAnalyzerService = project.service<TestAnalyzerService>()
         if (testAnalyzerService.isTestMethod(testMethod)) {
             // Create the assertion suggestions.
             val methodAnalyzerService = project.service<MethodAnalyzerService>()
             val methodUnderTest = methodCall.resolveMethod() ?: return
             val assertions = this.getAssertions(methodUnderTest, methodAnalyzerService)
+            if (assertions.isEmpty()) return
 
             // Create the message to be appended
             val builder = StringBuilder()
             builder.append("/**\n")
-            assertions.forEach { builder.append("* ${it.message} \n") }
-            builder.append("/*")
+            assertions.forEach { builder.append("* ${it.message}\n") }
+            builder.append("*/")
 
             // Create the PsiDocComment
             val factory = JavaPsiFacade.getInstance(project).elementFactory
-            val comment: PsiDocComment = factory.createDocCommentFromText(builder.toString())
-            testMethod.add(comment)
+            val comment = factory.createDocCommentFromText(builder.toString())
+            val methodBody = testMethod.body ?: return
+            WriteCommandAction.runWriteCommandAction(project) { methodBody.add(comment) }
         }
     }
 
@@ -95,7 +98,8 @@ class AssertionSuggestionService {
      * @return a list of AssertionSuggestion objects.
      */
     private fun getAssertionOnOutput(method: PsiMethod): List<AssertionSuggestion> {
-        val methodType = method.returnType?.getCanonicalText() ?: return emptyList()
+        val methodType = method.returnType?.getCanonicalText()
+        if (methodType == null || methodType == "void") return emptyList()
         val methodName = StringFormatter.formatMethodName(method.name)
         return listOf(AssertionSuggestion("Assert that \"$methodName\" returns the proper \"$methodType\"."))
     }
