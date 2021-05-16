@@ -51,7 +51,7 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
                     }
                 }
 
-                val name = getDescription(value.userObject as TestingChecklistNode)
+                val name = getDescription((value.userObject as ChecklistUserObject).checklistNode)
                 renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
 
                 if (checklistNode !is TestingChecklistLeafNode) {
@@ -71,9 +71,9 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
     private fun getDescription(node: TestingChecklistNode): String {
         var name: String = ""
         when (node) {
+            is TestingChecklistLeafNode -> name = node.description
             is TestingChecklistMethodNode -> name = node.description
             is TestingChecklistClassNode -> name = node.description
-            is TestingChecklistLeafNode -> name = node.description
         }
         return name
     }

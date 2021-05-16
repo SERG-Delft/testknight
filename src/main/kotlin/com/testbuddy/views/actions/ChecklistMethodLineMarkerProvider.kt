@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.PsiMethod
+import com.testbuddy.services.TestAnalyzerService
 import com.testbuddy.views.listeners.MethodChecklistIconHandler
 
 /**
@@ -14,13 +15,17 @@ import com.testbuddy.views.listeners.MethodChecklistIconHandler
  */
 class ChecklistMethodLineMarkerProvider : LineMarkerProvider {
 
+    private val testAnalyzerService = TestAnalyzerService()
+
     /**
      * The method which creates the Line Marker for the method
      * @param element PsiElement for which we have to build the Line Marker
      */
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
 
-        if (element is PsiIdentifier && element.parent is PsiMethod) {
+        if (element is PsiIdentifier && element.parent is PsiMethod &&
+            !testAnalyzerService.isTestMethod(element.parent as PsiMethod)
+        ) {
             return LineMarkerInfo(
                 element, element.textRange, AllIcons.General.Add, null,
                 MethodChecklistIconHandler(), GutterIconRenderer.Alignment.RIGHT
