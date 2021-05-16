@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.TemplateManager

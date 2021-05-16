@@ -4,6 +4,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.models.TestClassData
 import com.testbuddy.models.TestMethodData
 import junit.framework.TestCase
 import org.junit.Before
@@ -68,16 +69,40 @@ internal class LoadTestsServiceTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testLoadTestsEmptyTestFile() {
-        this.myFixture.configureByFile("/EmptyTest.java")
-        val result = service.getTests(this.myFixture.file)
-        TestCase.assertEquals(listOf<TestMethodData>(), result)
-    }
+    fun testLoadTestsTreeFromTestClassWithTwoTests() {
+        this.myFixture.configureByFile("/TwoTestClassesTest.java")
+        val psi = this.myFixture.file
+        val testClasses = PsiTreeUtil.findChildrenOfType(psi, PsiClass::class.java)
+        val firstClass = testClasses.elementAt(0)
+        val secondClass = testClasses.elementAt(1)
+        val result = service.getTestsTree(psi)
 
-    @Test
-    fun testLoadTestsEmptyFile() {
-        this.myFixture.configureByFile("/EmptyFile.java")
-        val result = service.getTests(this.myFixture.file)
-        TestCase.assertEquals(listOf<TestMethodData>(), result)
+        val expected = listOf(
+            TestClassData(
+                "FirstTest",
+                listOf(
+                    TestMethodData(
+                        "firstTest",
+                        "FirstTest",
+                        firstClass.findMethodsByName("firstTest")[0] as PsiMethod
+                    )
+                ),
+                firstClass
+            ),
+
+            TestClassData(
+                "SecondTest",
+                listOf(
+                    TestMethodData(
+                        "secondTest",
+                        "SecondTest",
+                        secondClass.findMethodsByName("secondTest")[0] as PsiMethod
+                    )
+                ),
+                secondClass
+            )
+        )
+
+        TestCase.assertEquals(expected, result)
     }
 }

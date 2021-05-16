@@ -1,13 +1,14 @@
 package com.testbuddy.services
 
+import com.intellij.openapi.Disposable
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.services.TestAnalyzerService
+import com.testbuddy.models.TestClassData
 import com.testbuddy.models.TestMethodData
 
-class LoadTestsService {
+class LoadTestsService : Disposable {
 
     private val testAnalyzer = TestAnalyzerService()
 
@@ -22,5 +23,31 @@ class LoadTestsService {
         return methods.filter { testAnalyzer.isTestMethod(it) }.map {
             TestMethodData(it.name, (it.parent as PsiClass).name ?: "", it)
         }
+    }
+
+    /**
+     * Extract all test methods in a PSI file in the form of a tree.
+     *
+     * @param file the PSI file
+     * @return a list of TestClassData corresponding to the classes in the file
+     */
+    fun getTestsTree(file: PsiFile): List<TestClassData> {
+        val classes = PsiTreeUtil.findChildrenOfType(file, PsiClass::class.java)
+        return classes.map { psiClass ->
+            TestClassData(
+                psiClass.name ?: "",
+                psiClass.methods
+                    .filter { testAnalyzer.isTestMethod(it) }
+                    .map { TestMethodData(it.name, psiClass.name ?: "", it) },
+                psiClass
+            )
+        }
+    }
+
+    /**
+     * Overridden function for Disposable. Doesn't require anything to be disposed.
+     */
+    override fun dispose() {
+        // No specific dispose function is required.
     }
 }

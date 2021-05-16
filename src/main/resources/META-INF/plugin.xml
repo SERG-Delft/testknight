@@ -13,6 +13,8 @@
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
         <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
+        <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
+        <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -26,23 +28,51 @@
 
     <actions>
         <!---Action in CopyPaste tab which updates the CopyPaste UI -->
-        <action id="deployAction" class="com.testbuddy.views.actions.LoadTestAction"
-                text="Add New Test Cases" description="Adds a new template test case."
-                icon="AllIcons.General.Add">
-            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
-            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+        <action id="LoadTestAction" class="com.testbuddy.views.actions.LoadTestAction"
+                text="Load Test Cases from Current File"
+                description="Loads all the test cases from the current open file in the editor"
+                icon="AllIcons.Actions.Refresh">
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="D" keymap="$default"/>
         </action>
         <action id="checklistAction" class="com.testbuddy.views.actions.LoadChecklistAction"
-                text="Add New Test Cases" description="Adds a new template test case."
-                icon="AllIcons.General.Add">
-            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="B" keymap="$default"/>
-            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+                text="Load Checklist for Class from Current File" description="Adds a new template test case."
+                icon="AllIcons.Actions.Refresh">
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="G" keymap="$default"/>
+        </action>
+        <action id="DuplicateTestAction" class="com.testbuddy.views.actions.DuplicateTestUnderCaretAction"
+                text="Duplicate Test Under Caret"
+                description="Duplicates the test under caret of the current open file">
+            <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>
+        </action>
+        <action id="GenerateChecklistAction" class="com.testbuddy.views.actions.GenerateChecklistUnderCaretAction"
+                text="Generate Checklist for Method/Class Under Caret"
+                description="Generates the checklist for the method/class under caret of the current open file.">
+            <keyboard-shortcut first-keystroke="control shift G" keymap="$default"/>
         </action>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>com.testbuddy.views.actions.AssertionSuggestionsAction</className>
+            <category>TestBuddy intentions</category>
+        </intentionAction>
+    </extensions>
+
+
 
 
     <actions>
         <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.views.actions.ChecklistClassLineMarkerProvider"
+        />
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.views.actions.ChecklistMethodLineMarkerProvider"
+        />
+    </extensions>
 
 </idea-plugin>
