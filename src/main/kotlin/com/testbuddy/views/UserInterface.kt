@@ -11,7 +11,6 @@ import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
@@ -166,7 +165,8 @@ class UserInterface(val project: Project) {
             if (editorList.isNotEmpty()) {
                 val textEditor = editorList[0] as TextEditor
 
-                val psiFile: PsiFile? = PsiManager.getInstance(project).findFile(textEditor.file!!)
+                // Don't update UI if psiFile couldn't be found.
+                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
                 LoadTestAction().actionPerformed(project, psiFile, textEditor.editor)
             }
         }

@@ -11,27 +11,31 @@ class DuplicateTestUnderCaretAction : AnAction() {
     /**
      * Updates the CheckList tab to add new checklist cases.
      *
+     *
      * @param event Event received when the associated menu item is chosen.
      */
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project!!
         val duplicateTestsService = project.service<DuplicateTestsService>()
 
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
-        val editor = event.getData(CommonDataKeys.EDITOR)
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE)!!
+        val editor = event.getData(CommonDataKeys.EDITOR)!!
 
-        duplicateTestsService.duplicateMethodUnderCaret(psiFile!!, editor!!)
+        duplicateTestsService.duplicateMethodUnderCaret(psiFile, editor)
     }
 
     /**
      * Determines whether this menu item is available for the current context.
-     * Requires a project to be open.
+     * Requires a project to be open and psiFile and Editor to be accessible from the action event.
      *
      * @param e Event received when the associated group-id menu is chosen.
      */
     override fun update(e: AnActionEvent) {
-        // Set the availability based on whether a project is open
-        val project = e.project
-        e.presentation.isEnabledAndVisible = project != null
+        // Set the availability based on whether the project, psiFile and editor is not null
+        e.presentation.isEnabled = (
+            e.project != null &&
+                e.getData(CommonDataKeys.PSI_FILE) != null &&
+                e.getData(CommonDataKeys.EDITOR) != null
+            )
     }
 }
