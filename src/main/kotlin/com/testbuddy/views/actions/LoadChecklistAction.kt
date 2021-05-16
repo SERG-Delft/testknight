@@ -12,15 +12,13 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.CheckboxTree
-import com.intellij.ui.CheckboxTreeHelper
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
-import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistNode
 import com.testbuddy.services.GenerateTestCaseChecklistService
 import javax.swing.JTabbedPane
 import javax.swing.tree.DefaultMutableTreeNode
@@ -69,21 +67,16 @@ class LoadChecklistAction : AnAction() {
         val checklistTree = checklistViewport.getComponent(0) as CheckboxTree
         val root = checklistTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
-        val list = CheckboxTreeHelper.getCheckedNodes(CheckedTreeNode::class.java, null, checklistTree!!.model)
-        println(list.size)
 
-        val classNode = CheckedTreeNode(checklistClassTree)
+        val classNode = CheckedTreeNode(ChecklistUserObject(checklistClassTree!!, 0))
 
-        for (method in checklistClassTree!!.children) {
+        // All userObjects start with check count 0
+        for (method in checklistClassTree.children) {
 
-            val methodNode = CheckedTreeNode(method)
-            val x = Tree.NodeFilter<TestingChecklistNode> { true }
-            println(
-                "CHECKLIST ITEM: ${CheckboxTreeHelper.getCheckedNodes<TestingChecklistNode>
-                (TestingChecklistNode::class.java, x, checklistTree.model).size}"
-            )
+            val methodNode = CheckedTreeNode(ChecklistUserObject(method, 0))
+
             for (item in method.children) {
-                val itemNode = CheckedTreeNode(item)
+                val itemNode = CheckedTreeNode(ChecklistUserObject(item, 0))
                 itemNode.isChecked = false
                 methodNode.add(itemNode)
             }

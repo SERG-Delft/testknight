@@ -64,7 +64,7 @@ class UserInterface(val project: Project) {
         val root = CheckedTreeNode("root")
 
         checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
-        checkListTree!!.addCheckboxTreeListener(CheckedNodeListener(checkListTree!!))
+        checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
 
         panel.setViewportView(checkListTree)
 
