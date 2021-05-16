@@ -34,11 +34,11 @@ class LoadChecklistAction : AnAction() {
 
     override fun actionPerformed(event: AnActionEvent) {
 
-        val project = event.project ?: return
+        val project = event.project!!
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)
 
-        val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)
-        actionPerformed(project, psiClass as PsiElement)
+        val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java) ?: return
+        actionPerformed(project, psiClass)
     }
 
     /**
@@ -94,8 +94,10 @@ class LoadChecklistAction : AnAction() {
      * @param e Event received when the associated group-id menu is chosen.
      */
     override fun update(e: AnActionEvent) {
-        // Set the availability based on whether a project is open
-        val project = e.project
-        e.presentation.isEnabledAndVisible = project != null
+        // Set the availability based on whether the project, psiFile and editor is not null
+        e.presentation.isEnabled = (
+            e.project != null &&
+                e.getData(CommonDataKeys.PSI_FILE) != null
+            )
     }
 }
