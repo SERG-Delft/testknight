@@ -10,6 +10,7 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.com.testbuddy.utilities.StringFormatter
 import com.testbuddy.models.ClassFieldMutationSideEffect
 import com.testbuddy.models.MethodCallOnClassFieldSideEffect
 import com.testbuddy.models.MethodCallOnParameterSideEffect
@@ -18,7 +19,7 @@ import com.testbuddy.models.SideEffect
 
 // I plan to refactor this class in the next sprint so for now
 // I am suppressing the warning.
-@Suppress("TooManyFunctions")
+//@Suppress("TooManyFunctions")
 class MethodAnalyzerService {
 
     /**
@@ -37,6 +38,9 @@ class MethodAnalyzerService {
     // method calls for detecting argument mutations
     /**
      * Finds all the arguments affected by the method.
+     *
+     * @param method the method to analyze.
+     * @return a list of MethodCallOnParameterSideEffect objects representing the found side-effects.
      */
     private fun getArgumentsAffected(method: PsiMethod): List<MethodCallOnParameterSideEffect> {
         val parametersInMethodScope = getParametersOfMethod(method)
@@ -55,6 +59,13 @@ class MethodAnalyzerService {
         }
     }
 
+    /**
+     * Gets all the arguments affected by a method call.
+     *
+     * @param methodCall the method call to be analyzed.
+     * @param parametersInMethodScope the parameters in scope of the method.
+     * @param identifiersInClassScope the identifiers in class scope.
+     */
     private fun getArgumentsAffectedByMethodCall(
         methodCall: PsiMethodCallExpression,
         parametersInMethodScope: Set<String>,
@@ -73,7 +84,7 @@ class MethodAnalyzerService {
         return argumentsThatAreMethodParameters.map {
             MethodCallOnParameterSideEffect(
                 it,
-                formatMethodName(methodName)
+                StringFormatter.formatMethodName(methodName)
             )
         }
     }
@@ -153,7 +164,7 @@ class MethodAnalyzerService {
         return if (affectsClassField(assignment, identifiersInMethodScope, identifiersInClassScope)) {
             listOf(
                 ReassignsClassFieldSideEffect(
-                    formatClassFieldName((assignment.lExpression as PsiReferenceExpression).qualifiedName)
+                    StringFormatter.formatClassFieldName((assignment.lExpression as PsiReferenceExpression).qualifiedName)
                 )
             )
         } else {
@@ -186,8 +197,8 @@ class MethodAnalyzerService {
         }
         return argumentsThatAreClassFields.map {
             MethodCallOnClassFieldSideEffect(
-                formatClassFieldName(it),
-                formatMethodName(methodName)
+                StringFormatter.formatClassFieldName(it),
+                StringFormatter.formatMethodName(methodName)
             )
         }
     }
@@ -244,34 +255,4 @@ class MethodAnalyzerService {
         return result
     }
 
-    // methods for string formatting
-
-    /**
-     * Formats the name of the method to be of the form: "methodName".
-     *
-     * @param methodName the full name of the method.
-     * @return a String representing the formatted method name.
-     */
-    private fun formatMethodName(methodName: String): String {
-        return if (methodName.contains(".")) {
-            methodName.substring(methodName.lastIndexOf(".") + 1)
-        } else {
-            methodName
-        }
-    }
-
-    /**
-     * Formats the name of the field that is affected so that
-     * all fields have the form "this.nameOfField".
-     *
-     * @param name the name of the field.
-     * @return the formatted version of the name.
-     */
-    private fun formatClassFieldName(name: String): String {
-        return if (name.startsWith("this.")) {
-            name
-        } else {
-            "this.$name"
-        }
-    }
 }
