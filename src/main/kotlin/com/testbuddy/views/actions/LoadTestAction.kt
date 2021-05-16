@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiFile
 import com.intellij.ui.components.JBPanelWithEmptyText
@@ -14,7 +13,6 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
-import com.testbuddy.models.TestClassData
 import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.LoadTestsService
 import javax.swing.JTabbedPane
@@ -30,9 +28,9 @@ class LoadTestAction : AnAction() {
      */
     override fun actionPerformed(event: AnActionEvent) {
 
-        val project = event.project ?: return
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
-        val editor = event.getData(CommonDataKeys.EDITOR)
+        val project = event.project!!
+        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return
+        val editor = event.getData(CommonDataKeys.EDITOR)!!
 
         actionPerformed(project, psiFile, editor)
     }
@@ -44,21 +42,22 @@ class LoadTestAction : AnAction() {
      * @param psiFile PsiFile of the current open file
      * @param editor Editor of the current open file
      */
-    fun actionPerformed(project: Project, psiFile: PsiFile?, editor: Editor?) {
+    fun actionPerformed(project: Project, psiFile: PsiFile, editor: Editor) {
 
         val loadTestsService = project.service<LoadTestsService>()
-        val listClasses = if (psiFile != null) loadTestsService.getTestsTree(psiFile) else emptyList<TestClassData>()
+        val listClasses = loadTestsService.getTestsTree(psiFile)
 
-        val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
+        // Return if the ToolWindow couldn't be found
+        val window = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy") ?: return
 
         val tabbedPane = (
-            (window!!.contentManager.contents[0] as ContentImpl)
+            (window.contentManager.contents[0] as ContentImpl)
                 .component as JTabbedPane
             )
         val copyPasteTab = tabbedPane.getComponentAt(0) as JBPanelWithEmptyText
         val copyPasteScroll = copyPasteTab.getComponent(1) as JBScrollPane
         val copyPasteViewport = copyPasteScroll.viewport
-        val copyPasteTree = copyPasteViewport.getComponent(0) as Tree
+        val copyPasteTree = copyPasteViewport.view as Tree
         val root = copyPasteTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
 
@@ -80,13 +79,16 @@ class LoadTestAction : AnAction() {
 
     /**
      * Determines whether this menu item is available for the current context.
-     * Requires a project to be open.
+     * Requires a project to be open and psiFile and Editor to be accessible from the action event.
      *
      * @param e Event received when the associated group-id menu is chosen.
      */
     override fun update(e: AnActionEvent) {
-        // Set the availability based on whether a project is open
-        val project = e.project
-        e.presentation.isEnabledAndVisible = project != null
+        // Set the availability based on whether the project, psiFile and editor is not null
+        e.presentation.isEnabled = (
+            e.project != null &&
+                e.getData(CommonDataKeys.PSI_FILE) != null &&
+                e.getData(CommonDataKeys.EDITOR) != null
+            )
     }
 }

@@ -27,9 +27,10 @@
 
     <actions>
         <!---Action in CopyPaste tab which updates the CopyPaste UI -->
-        <action id="deployAction" class="com.testbuddy.views.actions.LoadTestAction"
-                text="Add New Test Cases" description="Adds a new template test case."
-                icon="AllIcons.General.Add">
+        <action id="LoadTestAction" class="com.testbuddy.views.actions.LoadTestAction"
+                text="Load Test Cases from Current File"
+                description="Loads all the test cases from the current open file in the editor"
+                icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
         </action>
@@ -38,6 +39,11 @@
                 icon="AllIcons.General.Add">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="B" keymap="$default"/>
             <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+        </action>
+        <action id="DuplicateTestAction" class="com.testbuddy.views.actions.DuplicateTestUnderCaretAction"
+                text="Duplicate Test Under Caret"
+                description="Duplicates the test under caret of the current open file">
+            <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>
         </action>
     </actions>
 
