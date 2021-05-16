@@ -45,7 +45,7 @@ class AssertionsSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAc
      * @param project Project which have to be edited.
      * @param editor  Editor of the project source.
      * @param element PsiElement which is selected.
-     * @return `true` f this intention action is available for the selected code part, 'false' otherwise.
+     * @return `true` if this intention action is available for the selected code part, 'false' otherwise.
      */
     @Suppress("ReturnCount")
     override fun isAvailable(project: Project, editor: Editor, element: PsiElement): Boolean {
