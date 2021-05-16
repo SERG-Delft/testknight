@@ -31,19 +31,22 @@
                 text="Load Test Cases from Current File"
                 description="Loads all the test cases from the current open file in the editor"
                 icon="AllIcons.Actions.Refresh">
-            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>
-            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="D" keymap="$default"/>
         </action>
         <action id="checklistAction" class="com.testbuddy.views.actions.LoadChecklistAction"
-                text="Add New Test Cases" description="Adds a new template test case."
-                icon="AllIcons.General.Add">
-            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="B" keymap="$default"/>
-            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>
+                text="Load Checklist for Class from Current File" description="Adds a new template test case."
+                icon="AllIcons.Actions.Refresh">
+            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="G" keymap="$default"/>
         </action>
         <action id="DuplicateTestAction" class="com.testbuddy.views.actions.DuplicateTestUnderCaretAction"
                 text="Duplicate Test Under Caret"
                 description="Duplicates the test under caret of the current open file">
             <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>
+        </action>
+        <action id="GenerateChecklistAction" class="com.testbuddy.views.actions.GenerateChecklistUnderCaretAction"
+                text="Generate Checklist for Method/Class Under Caret"
+                description="Generates the checklist for the method/class under caret of the current open file.">
+            <keyboard-shortcut first-keystroke="control shift G" keymap="$default"/>
         </action>
     </actions>
 
