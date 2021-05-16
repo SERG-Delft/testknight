@@ -8,13 +8,18 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.ui.CheckboxTreeHelper
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.models.TestingChecklistClassNode
+import com.testbuddy.models.TestingChecklistNode
 import com.testbuddy.services.GenerateTestCaseChecklistService
 import javax.swing.JTabbedPane
 import javax.swing.tree.DefaultMutableTreeNode
@@ -32,24 +37,26 @@ class LoadChecklistAction : AnAction() {
 
         val project = event.project ?: return
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)
-        val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)
 
-        if (psiClass != null) {
-            actionPerformed(project, psiClass)
-        }
+        val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)
+        actionPerformed(project, psiClass as PsiElement)
     }
 
     /**
-     * Updates the CopyPaste tab to load the test cases from the selected file.
+     * Updates the Checklist tab to load the test cases from the selected class.
      *
      * @param project current open project
-     * @param psiFile PsiFile of the current open file
-     * @param editor Editor of the current open file
+     * @param psiElement PsiElement of the chosen element
      */
-    fun actionPerformed(project: Project, psiClass: PsiClass) {
+    fun actionPerformed(project: Project, psiElement: PsiElement) {
 
         val checklistService = project.service<GenerateTestCaseChecklistService>()
-        val checklistClassTree = checklistService.generateClassChecklistFromClass(psiClass)
+        var checklistClassTree: TestingChecklistClassNode? = null
+        if (psiElement is PsiClass) {
+            checklistClassTree = checklistService.generateClassChecklistFromClass(psiElement)
+        } else if (psiElement is PsiMethod) {
+            checklistClassTree = checklistService.generateClassChecklistFromMethod(psiElement)
+        }
         val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
         val tabbedPane = (
             (window!!.contentManager.contents[0] as ContentImpl)
@@ -60,13 +67,20 @@ class LoadChecklistAction : AnAction() {
         val checklistViewport = checklistScroll.viewport
         val checklistTree = checklistViewport.getComponent(0) as Tree
         val root = checklistTree.model.root as DefaultMutableTreeNode
-        // root.removeAllChildren()
+        root.removeAllChildren()
+        val list = CheckboxTreeHelper.getCheckedNodes(CheckedTreeNode::class.java, null, checklistTree!!.model)
+        println(list.size)
 
-        val classNode = DefaultMutableTreeNode(checklistClassTree)
+        val classNode = CheckedTreeNode(checklistClassTree)
 
-        for (method in checklistClassTree.children) {
+        for (method in checklistClassTree!!.children) {
 
-            val methodNode = DefaultMutableTreeNode(method)
+            val methodNode = CheckedTreeNode(method)
+            val x = Tree.NodeFilter<TestingChecklistNode> { true }
+            println(
+                "CHECKLIST ITEM: ${CheckboxTreeHelper.getCheckedNodes<TestingChecklistNode>
+                (TestingChecklistNode::class.java, x, checklistTree.model).size}"
+            )
             for (item in method.children) {
                 val itemNode = CheckedTreeNode(item)
                 itemNode.isChecked = false

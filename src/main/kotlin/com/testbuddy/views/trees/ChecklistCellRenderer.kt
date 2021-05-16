@@ -7,14 +7,12 @@ import com.testbuddy.models.TestingChecklistClassNode
 import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TestingChecklistMethodNode
 import javax.swing.JTree
-import javax.swing.tree.DefaultMutableTreeNode
 
 class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRenderer(opaque) {
 
     /**
      * Custom renderer for checklist tree.
-     * Renders the component if it is a DefaultMutableTreeNode(without checkbox)
-     * or if it is a CheckedTreeNode(with checkbox)
+     * Renders the component if it is a CheckedTreeNode
      */
     override fun customizeRenderer(
         tree: JTree,
@@ -26,21 +24,21 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
         hasFocus: Boolean
     ) {
 
-        if (value is CheckedTreeNode && value.userObject is TestingChecklistLeafNode) {
-            val name = (value.userObject as TestingChecklistLeafNode).description
+        if (value is CheckedTreeNode) {
             val renderer = textRenderer
-            renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-        } else if (value is DefaultMutableTreeNode) {
-            if (value.userObject is TestingChecklistClassNode) {
-
-                val name: String = (value.userObject as TestingChecklistClassNode).description
-                val renderer = textRenderer
-                renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+            var name: String = "no description"
+            if (value.userObject is TestingChecklistLeafNode) {
+                name = (value.userObject as TestingChecklistLeafNode).description
+            } else if (value.userObject is TestingChecklistClassNode) {
+                name = (value.userObject as TestingChecklistClassNode).description
+                checkbox.isVisible = false
+                checkbox.isEnabled = false
             } else if (value.userObject is TestingChecklistMethodNode) {
-                val name: String = (value.userObject as TestingChecklistMethodNode).description
-                val renderer = textRenderer
-                renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                name = (value.userObject as TestingChecklistMethodNode).description
+                checkbox.isVisible = false
+                checkbox.isEnabled = false
             }
+            renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
         }
     }
 }
