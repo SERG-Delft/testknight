@@ -11,8 +11,8 @@ import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.models.ClassFieldMutationSideEffect
-import com.testbuddy.models.MethodCallOnArgumentSideEffect
 import com.testbuddy.models.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.MethodCallOnParameterSideEffect
 import com.testbuddy.models.ReassignsClassFieldSideEffect
 import com.testbuddy.models.SideEffect
 
@@ -38,7 +38,7 @@ class MethodAnalyzerService {
     /**
      * Finds all the arguments affected by the method.
      */
-    private fun getArgumentsAffected(method: PsiMethod): List<MethodCallOnArgumentSideEffect> {
+    private fun getArgumentsAffected(method: PsiMethod): List<MethodCallOnParameterSideEffect> {
         val parametersInMethodScope = getParametersOfMethod(method)
 
         val methodCallExpressions = PsiTreeUtil.findChildrenOfType(method, PsiMethodCallExpression::class.java)
@@ -59,7 +59,7 @@ class MethodAnalyzerService {
         methodCall: PsiMethodCallExpression,
         parametersInMethodScope: Set<String>,
         identifiersInClassScope: Set<String>
-    ): List<MethodCallOnArgumentSideEffect> {
+    ): List<MethodCallOnParameterSideEffect> {
         val methodName = methodCall.methodExpression.qualifiedName
         val arguments = mutableListOf<String>()
         if (methodName.contains(".")) {
@@ -70,7 +70,12 @@ class MethodAnalyzerService {
         val argumentsThatAreMethodParameters = arguments.filter {
             !isClassField(it, parametersInMethodScope, identifiersInClassScope)
         }
-        return argumentsThatAreMethodParameters.map { MethodCallOnArgumentSideEffect(it, formatMethodName(methodName)) }
+        return argumentsThatAreMethodParameters.map {
+            MethodCallOnParameterSideEffect(
+                it,
+                formatMethodName(methodName)
+            )
+        }
     }
 
     // methods for detecting class field mutations

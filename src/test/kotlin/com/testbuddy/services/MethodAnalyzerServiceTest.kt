@@ -4,8 +4,8 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.models.MethodCallOnArgumentSideEffect
 import com.testbuddy.models.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.MethodCallOnParameterSideEffect
 import com.testbuddy.models.ReassignsClassFieldSideEffect
 import com.testbuddy.models.SideEffect
 import junit.framework.TestCase
@@ -52,7 +52,7 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(
-            MethodCallOnArgumentSideEffect("list", "reverse")
+            MethodCallOnParameterSideEffect("list", "reverse")
         )
         assertMethodSideEffects(testClass, expected, "reversesList")
     }
@@ -62,7 +62,7 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(
-            MethodCallOnArgumentSideEffect("list", "reverse")
+            MethodCallOnParameterSideEffect("list", "reverse")
         )
         assertMethodSideEffects(testClass, expected, "reversesListWithArgument")
     }
@@ -72,8 +72,8 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(
-            MethodCallOnArgumentSideEffect("list", "add"),
-            MethodCallOnArgumentSideEffect("person", "add")
+            MethodCallOnParameterSideEffect("list", "add"),
+            MethodCallOnParameterSideEffect("person", "add")
         )
         assertMethodSideEffects(testClass, expected, "addToList")
     }
@@ -83,9 +83,9 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(
-            MethodCallOnArgumentSideEffect("list", "add"),
-            MethodCallOnArgumentSideEffect("person", "add"),
-            MethodCallOnArgumentSideEffect("list", "reverse")
+            MethodCallOnParameterSideEffect("list", "add"),
+            MethodCallOnParameterSideEffect("person", "add"),
+            MethodCallOnParameterSideEffect("list", "reverse")
         )
         assertMethodSideEffects(testClass, expected, "listEditor")
     }
@@ -95,7 +95,7 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = listOf(
-            MethodCallOnArgumentSideEffect("name", "reverse")
+            MethodCallOnParameterSideEffect("name", "reverse")
         )
         assertMethodSideEffects(testClass, expected, "reverseName")
     }
