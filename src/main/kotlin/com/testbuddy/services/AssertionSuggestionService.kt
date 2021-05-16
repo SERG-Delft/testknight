@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
@@ -6,10 +6,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
-import com.testbuddy.com.testbuddy.models.AssertionSuggestion
-import com.testbuddy.com.testbuddy.utilities.StringFormatter
-import com.testbuddy.services.MethodAnalyzerService
-import com.testbuddy.services.TestAnalyzerService
+import com.testbuddy.models.AssertionSuggestion
+import com.testbuddy.utilities.StringFormatter
 
 class AssertionSuggestionService {
 

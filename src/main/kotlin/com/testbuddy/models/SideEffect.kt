@@ -1,7 +1,5 @@
 package com.testbuddy.models
 
-import com.testbuddy.com.testbuddy.models.AssertionSuggestion
-
 abstract class SideEffect(open val info: String) {
     abstract fun toAssertionSuggestion(): AssertionSuggestion
 }

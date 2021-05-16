@@ -10,16 +10,13 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.utilities.StringFormatter
 import com.testbuddy.models.ClassFieldMutationSideEffect
 import com.testbuddy.models.MethodCallOnClassFieldSideEffect
 import com.testbuddy.models.MethodCallOnParameterSideEffect
 import com.testbuddy.models.ReassignsClassFieldSideEffect
 import com.testbuddy.models.SideEffect
+import com.testbuddy.utilities.StringFormatter
 
-// I plan to refactor this class in the next sprint so for now
-// I am suppressing the warning.
-// @Suppress("TooManyFunctions")
 class MethodAnalyzerService {
 
     /**

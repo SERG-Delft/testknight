@@ -1,3 +1,3 @@
-package com.testbuddy.com.testbuddy.models
+package com.testbuddy.models
 
 data class AssertionSuggestion(var message: String)

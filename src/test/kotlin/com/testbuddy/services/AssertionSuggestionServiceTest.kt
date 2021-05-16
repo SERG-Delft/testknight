@@ -5,7 +5,6 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.services.AssertionSuggestionService
 import org.junit.Before
 import org.junit.Test
 

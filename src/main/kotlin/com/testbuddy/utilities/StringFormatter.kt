@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.utilities
+package com.testbuddy.utilities
 
 class StringFormatter private constructor() {
 
