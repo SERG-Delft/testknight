@@ -16,6 +16,9 @@ import com.testbuddy.com.testbuddy.models.MethodCallOnClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.ReassignsClassFieldSideEffect
 import com.testbuddy.com.testbuddy.models.SideEffect
 
+// I plan to refactor this class in the next sprint so for now
+// I am suppressing the warning.
+@Suppress("TooManyFunctions")
 class MethodAnalyzerService {
 
     /**
@@ -27,10 +30,50 @@ class MethodAnalyzerService {
      */
     fun getSideEffects(method: PsiMethod): List<SideEffect> {
         val classFieldReassignmentSideEffects = getClassFieldsAffected(method)
-        val classFieldMethodCallsSideEffects: List<ReassignsClassFieldSideEffect> = emptyList()
-        val argumentMutationSideEffects: List<MethodCallOnArgumentSideEffect> = emptyList()
-        return classFieldReassignmentSideEffects + classFieldMethodCallsSideEffects + argumentMutationSideEffects
+        val argumentMutationSideEffects = getArgumentsAffected(method)
+        return classFieldReassignmentSideEffects + argumentMutationSideEffects
     }
+
+    // method calls for detecting argument mutations
+    /**
+     * Finds all the arguments affected by the method.
+     */
+    private fun getArgumentsAffected(method: PsiMethod): List<MethodCallOnArgumentSideEffect> {
+        val parametersInMethodScope = getParametersOfMethod(method)
+
+        val methodCallExpressions = PsiTreeUtil.findChildrenOfType(method, PsiMethodCallExpression::class.java)
+
+        val parentClass = PsiTreeUtil.getParentOfType(method, PsiClass::class.java)
+        val identifiersInClassScope = parentClass?.allFields?.map { it.name }?.toSet() ?: return emptyList()
+
+        return methodCallExpressions.flatMap {
+            getArgumentsAffectedByMethodCall(
+                it,
+                parametersInMethodScope,
+                identifiersInClassScope
+            )
+        }
+    }
+
+    private fun getArgumentsAffectedByMethodCall(
+        methodCall: PsiMethodCallExpression,
+        parametersInMethodScope: Set<String>,
+        identifiersInClassScope: Set<String>
+    ): List<MethodCallOnArgumentSideEffect> {
+        val methodName = methodCall.methodExpression.qualifiedName
+        val arguments = mutableListOf<String>()
+        if (methodName.contains(".")) {
+            val argumentAppliedOn = methodName.subSequence(0, methodName.lastIndexOf(".")) as String
+            arguments.add(argumentAppliedOn)
+        }
+        methodCall.argumentList.expressions.forEach { arguments.add(it.text) }
+        val argumentsThatAreMethodParameters = arguments.filter {
+            !isClassField(it, parametersInMethodScope, identifiersInClassScope)
+        }
+        return argumentsThatAreMethodParameters.map { MethodCallOnArgumentSideEffect(it, formatMethodName(methodName)) }
+    }
+
+    // methods for detecting class field mutations
 
     /**
      * Finds all the class fields affected by the method.
@@ -56,7 +99,7 @@ class MethodAnalyzerService {
 
         val classFieldsAffectedByMethodCalls =
             methodCallExpressions.flatMap {
-                classFieldsAffectedByMethodCall(
+                getClassFieldsAffectedByMethodCall(
                     it,
                     identifiersInMethodScope,
                     identifiersInClassScope
@@ -89,6 +132,14 @@ class MethodAnalyzerService {
         }
     }
 
+    /**
+     * Returns all the class fields re-assigned by an assignment.
+     *
+     * @param assignment the assignment.
+     * @param identifiersInMethodScope the identifiers in the method scope.
+     * @param identifiersInClassScope the identifiers in the method scope.
+     * @return a list of ReassignsClassFieldSideEffect objects representing the reassignments.
+     */
     private fun getClassFieldsReassigned(
         assignment: PsiAssignmentExpression,
         identifiersInMethodScope: Set<String>,
@@ -105,23 +156,30 @@ class MethodAnalyzerService {
         }
     }
 
-    private fun classFieldsAffectedByMethodCall(
+    /**
+     * Finds all the class fields affected by a method call.
+     *
+     * @param methodCall the method call.
+     * @param identifiersInMethodScope the identifiers in the method scope.
+     * @param identifiersInClassScope  the identifiers in the class scope.
+     * @return a list of MethodCallOnClassFieldSideEffect objects representing the mutated fields.
+     */
+    private fun getClassFieldsAffectedByMethodCall(
         methodCall: PsiMethodCallExpression,
         identifiersInMethodScope: Set<String>,
         identifiersInClassScope: Set<String>
     ): List<MethodCallOnClassFieldSideEffect> {
         val methodName = methodCall.methodExpression.qualifiedName
-        //if it contains
         val arguments = mutableListOf<String>()
         if (methodName.contains(".")) {
             val argumentAppliedOn = methodName.subSequence(0, methodName.lastIndexOf(".")) as String
             arguments.add(argumentAppliedOn)
         }
         methodCall.argumentList.expressions.forEach { arguments.add(it.text) }
-        val argumentsThatAffectClassFields = arguments.filter {
+        val argumentsThatAreClassFields = arguments.filter {
             isClassField(it, identifiersInMethodScope, identifiersInClassScope)
         }
-        return argumentsThatAffectClassFields.map {
+        return argumentsThatAreClassFields.map {
             MethodCallOnClassFieldSideEffect(
                 formatClassFieldName(it),
                 formatMethodName(methodName)
@@ -129,6 +187,14 @@ class MethodAnalyzerService {
         }
     }
 
+    /**
+     * Checks whether an identifier is a class field.
+     *
+     * @param identifier the name of the identifier.
+     * @param identifiersInMethodScope the identifiers in the method scope.
+     * @param identifiersInClassScope the identifiers in the class scope.
+     * @return true iff identifier is a class field.
+     */
     private fun isClassField(
         identifier: String,
         identifiersInMethodScope: Set<String>,
@@ -142,27 +208,15 @@ class MethodAnalyzerService {
         }
     }
 
-    private fun formatMethodName(methodName: String): String {
-        return if (methodName.contains(".")) {
-            methodName.substring(methodName.lastIndexOf(".") + 1)
-        } else {
-            methodName
-        }
-    }
+    // utility methods
 
-    /**
-     * Formats the name of the field that is affected so that
-     * all fields have the form "this.nameOfField".
-     *
-     * @param name the name of the field.
-     * @return the formatted version of the name.
-     */
-    private fun formatClassFieldName(name: String): String {
-        return if (name.startsWith("this.")) {
-            name
-        } else {
-            "this.$name"
+    private fun getParametersOfMethod(method: PsiMethod): Set<String> {
+        val result = mutableSetOf<String>()
+        val parameterNames = PsiTreeUtil.findChildrenOfType(method, PsiParameter::class.java).map { it.name }
+        for (name in parameterNames) {
+            result.add(name)
         }
+        return result
     }
 
     /**
@@ -185,4 +239,34 @@ class MethodAnalyzerService {
         return result
     }
 
+    // methods for string formatting
+
+    /**
+     * Formats the name of the method to be of the form: "methodName".
+     *
+     * @param methodName the full name of the method.
+     * @return a String representing the formatted method name.
+     */
+    private fun formatMethodName(methodName: String): String {
+        return if (methodName.contains(".")) {
+            methodName.substring(methodName.lastIndexOf(".") + 1)
+        } else {
+            methodName
+        }
+    }
+
+    /**
+     * Formats the name of the field that is affected so that
+     * all fields have the form "this.nameOfField".
+     *
+     * @param name the name of the field.
+     * @return the formatted version of the name.
+     */
+    private fun formatClassFieldName(name: String): String {
+        return if (name.startsWith("this.")) {
+            name
+        } else {
+            "this.$name"
+        }
+    }
 }
