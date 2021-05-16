@@ -22,6 +22,7 @@ import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.views.actions.LoadTestAction
+import com.testbuddy.views.listeners.CheckedNodeListener
 import com.testbuddy.views.listeners.CopyPasteListener
 import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
@@ -63,7 +64,7 @@ class UserInterface(val project: Project) {
         val root = CheckedTreeNode("root")
 
         checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
-        // checkListTree!!.addCheckboxTreeListener(ChecklistTreeListener())
+        checkListTree!!.addCheckboxTreeListener(CheckedNodeListener(checkListTree!!))
 
         panel.setViewportView(checkListTree)
 

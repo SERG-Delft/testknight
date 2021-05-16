@@ -11,6 +11,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckboxTreeHelper
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBPanelWithEmptyText
@@ -65,7 +66,7 @@ class LoadChecklistAction : AnAction() {
         val checklistTab = tabbedPane.getComponentAt(1) as JBPanelWithEmptyText
         val checklistScroll = checklistTab.getComponent(1) as JBScrollPane
         val checklistViewport = checklistScroll.viewport
-        val checklistTree = checklistViewport.getComponent(0) as Tree
+        val checklistTree = checklistViewport.getComponent(0) as CheckboxTree
         val root = checklistTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
         val list = CheckboxTreeHelper.getCheckedNodes(CheckedTreeNode::class.java, null, checklistTree!!.model)
