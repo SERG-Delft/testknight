@@ -52,4 +52,14 @@
         <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
     </actions>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.views.actions.ChecklistClassLineMarkerProvider"
+        />
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.views.actions.ChecklistMethodLineMarkerProvider"
+        />
+    </extensions>
+
 </idea-plugin>
