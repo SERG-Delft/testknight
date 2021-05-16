@@ -2,6 +2,7 @@ package com.testbuddy.views.actions
 
 import com.intellij.codeInsight.intention.IntentionAction
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
@@ -9,6 +10,7 @@ import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.services.AssertionSuggestionService
 import com.testbuddy.services.TestAnalyzerService
 
 /**
@@ -29,7 +31,7 @@ class AssertionsSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAc
      * @return the intention family name.
      */
     override fun getFamilyName(): String {
-        return "AssertionSuggestionIntention"
+        return "Assertion suggestion generator"
     }
 
     /**
@@ -48,10 +50,7 @@ class AssertionsSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAc
     @Suppress("ReturnCount")
     override fun isAvailable(project: Project, editor: Editor, element: PsiElement): Boolean {
 
-        // println("isAvailable")
-
         if (element == null) {
-            // println("kaiwkaiwk")
             return false
         }
 
@@ -61,7 +60,6 @@ class AssertionsSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAc
 
         if (element is PsiIdentifier && checkElement != null && parentMethod != null) {
             if (testAnalyzerService.isTestMethod(parentMethod)) {
-                // println("I have found a call") // println(checkElement.methodExpression)
                 return true
             }
         }
@@ -77,9 +75,11 @@ class AssertionsSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAc
      */
     override fun invoke(project: Project, editor: Editor, element: PsiElement) {
 
-        println("invoke")
+        val parentMethod = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java)
+        val checkElement = PsiTreeUtil.getParentOfType(element, PsiMethodCallExpression::class.java)
 
-        // /Here the code from the assertions service
+        val assertionsService = project.service<AssertionSuggestionService>()
+        assertionsService.appendAssertionsAsComments(parentMethod!!, checkElement!!, project)
     }
 
     /**

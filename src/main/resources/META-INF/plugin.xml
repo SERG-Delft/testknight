@@ -14,6 +14,7 @@
         <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
         <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
         <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
+        <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
