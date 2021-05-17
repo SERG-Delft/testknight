@@ -85,4 +85,16 @@ internal class GenerateTestCaseChecklistServiceTest : BasePlatformTestCase() {
 
         TestCase.assertEquals(1, output.children.size)
     }
+
+    @Test
+    fun testChecklistGenerationDoesNotWorkOnTestMethods() {
+        myFixture.configureByFile("/PointTest.java")
+        val serv = GenerateTestCaseChecklistService()
+        val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
+        val psiMethod = psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod
+
+        val output = serv.generateClassChecklistFromMethod(psiMethod)
+
+        TestCase.assertEquals(0, output.children.size)
+    }
 }
