@@ -2,6 +2,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiExpression
 import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.PropositionalExpression
 import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TruthTable
@@ -109,10 +110,14 @@ class ConditionChecklistGenerationStrategy private constructor(
         assignments: Map<String, String>
     ): List<TestingChecklistLeafNode> {
         return testCases.map {
-
-            var description = "Test where in the condition \"${psiElement.text}\", "
+            var description = TestingChecklistMessageBundleHandler
+                .message("conditionBaseMessage", psiElement.text)
             for ((proposition, value) in it.entries) {
-                description += "\"${assignments[proposition]}\" is $value, "
+                description += TestingChecklistMessageBundleHandler.message(
+                    "conditionAssignmentMessage",
+                    assignments[proposition]!!,
+                    value
+                )
             }
 
             // remove trailing comma and space

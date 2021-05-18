@@ -3,9 +3,9 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStat
 import com.intellij.psi.PsiCatchSection
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.TestingChecklistMessageBundleHandler
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class TryStatementChecklistGenerationStrategy private constructor(
@@ -135,10 +135,15 @@ class TryStatementChecklistGenerationStrategy private constructor(
     private fun generateBinaryCase(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
         return listOf(
             TestingChecklistLeafNode(
-                TestingChecklistMessageBundleHandler.message("tryBlockSuccess"),
+                TestingChecklistMessageBundleHandler
+                    .message("tryBlockSuccess"),
                 psiElement
             ),
-            TestingChecklistLeafNode(TestingChecklistMessageBundleHandler.message("tryBlockGeneralException"), psiElement)
+            TestingChecklistLeafNode(
+                TestingChecklistMessageBundleHandler
+                    .message("tryBlockGeneralException"),
+                psiElement
+            )
         )
     }
 }

@@ -3,6 +3,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatement
 import com.intellij.psi.PsiDoWhileStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class DoWhileStatementChecklistGenerationStrategy private constructor(
@@ -47,6 +48,12 @@ class DoWhileStatementChecklistGenerationStrategy private constructor(
         val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
-            listOf(TestingChecklistLeafNode("Test where do-while loop runs multiple times", psiElement))
+            listOf(
+                TestingChecklistLeafNode(
+                    TestingChecklistMessageBundleHandler
+                        .message("doWhileMultipleTimes"),
+                    psiElement
+                )
+            )
     }
 }
