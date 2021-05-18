@@ -20,7 +20,7 @@ class ForStatementChecklistGenerationStrategy private constructor(
         fun create(): ForStatementChecklistGenerationStrategy {
             val conditionChecklistGenerator =
                 ConditionChecklistGenerationStrategy
-                    .createMcDcConditionCoverageGenerationStrategy()
+                    .createWithMcDcConditionCoverage()
             return create(conditionChecklistGenerator)
         }
 

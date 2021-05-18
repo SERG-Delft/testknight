@@ -22,7 +22,7 @@ class ConditionChecklistGenerationStrategy private constructor(
          *
          * @return a ConditionChecklistGenerationStrategy object.
          */
-        fun createMcDcConditionCoverageGenerationStrategy(): ConditionChecklistGenerationStrategy {
+        fun createWithMcDcConditionCoverage(): ConditionChecklistGenerationStrategy {
             return ConditionChecklistGenerationStrategy(ConditionCoverageType.MCDC)
         }
 
@@ -32,7 +32,7 @@ class ConditionChecklistGenerationStrategy private constructor(
          *
          * @return a ConditionChecklistGenerationStrategy object.
          */
-        fun createBranchConditionCoverageGenerationStrategy(): ConditionChecklistGenerationStrategy {
+        fun createWithBranchConditionCoverage(): ConditionChecklistGenerationStrategy {
             return ConditionChecklistGenerationStrategy(ConditionCoverageType.BRANCH)
         }
 
@@ -44,14 +44,14 @@ class ConditionChecklistGenerationStrategy private constructor(
          * "BRANCH" and "MCDC". Anything else will result to a InvalidConfigurationException.
          * @return a ConditionChecklistGenerationStrategy object.
          */
-        fun createConditionGenerationStrategyFromString(
+        fun createFromString(
             conditionCoverageType: String
         ): ConditionChecklistGenerationStrategy {
             val validTypes = ConditionCoverageType.values().map { it.name }.toSet()
             return if (validTypes.contains(conditionCoverageType)) {
                 when (ConditionCoverageType.valueOf(conditionCoverageType)) {
-                    ConditionCoverageType.MCDC -> createMcDcConditionCoverageGenerationStrategy()
-                    ConditionCoverageType.BRANCH -> createBranchConditionCoverageGenerationStrategy()
+                    ConditionCoverageType.MCDC -> createWithMcDcConditionCoverage()
+                    ConditionCoverageType.BRANCH -> createWithBranchConditionCoverage()
                 }
             } else {
                 throw InvalidConfigurationException("condition coverage type", conditionCoverageType)

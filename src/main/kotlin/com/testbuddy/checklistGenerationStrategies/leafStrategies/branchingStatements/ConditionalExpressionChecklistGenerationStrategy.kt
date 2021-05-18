@@ -23,7 +23,7 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
         fun create(): ConditionalExpressionChecklistGenerationStrategy {
             val conditionChecklistGenerator =
                 ConditionChecklistGenerationStrategy
-                    .createConditionGenerationStrategyFromString(
+                    .createFromString(
                         getConditionCoverageType()
                     )
             return create(conditionChecklistGenerator)
@@ -36,9 +36,9 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
          * @return a new ConditionalExpressionChecklistGenerationStrategy.
          */
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-                ConditionalExpressionChecklistGenerationStrategy {
-            return ConditionalExpressionChecklistGenerationStrategy(conditionChecklistGenerator)
-        }
+            ConditionalExpressionChecklistGenerationStrategy {
+                return ConditionalExpressionChecklistGenerationStrategy(conditionChecklistGenerator)
+            }
 
         /**
          * Returns the configured condition coverage type.
@@ -46,9 +46,9 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
          * @return a string representing the configured condition coverage.
          */
         private fun getConditionCoverageType(): String {
-            //This is currently a placeholder, when we add
-            //configuration files the conditionCoverageType
-            //will be read from there.
+            // This is currently a placeholder, when we add
+            // configuration files the conditionCoverageType
+            // will be read from there.
             val conditionCoverageType = defaultConditionCoverageType
             return conditionCoverageType
         }

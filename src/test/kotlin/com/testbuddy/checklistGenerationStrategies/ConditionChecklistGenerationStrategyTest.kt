@@ -26,7 +26,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc0prop() {
-        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
         val testCases = strategy.mcdc(listOf(), "true")
 
@@ -35,7 +35,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc1Prop() {
-        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
         val testCases = strategy.mcdc(listOf("a"), "a")
 
@@ -49,7 +49,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc2Props() {
-        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
         val testCases = strategy.mcdc(listOf("a", "b"), "a && b")
 
@@ -64,7 +64,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc3Props() {
-        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
         val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)")
 
@@ -80,7 +80,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc4Props() {
-        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
         val testCases = strategy.mcdc(listOf("a", "b", "c", "d"), "a && (b || c || d)")
 
@@ -97,7 +97,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testBranchCoverage() {
-        val strategy = ConditionChecklistGenerationStrategy.createBranchConditionCoverageGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createWithBranchConditionCoverage()
         this.myFixture.configureByFile("/Person.java")
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
@@ -113,7 +113,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testCreationFromValidString() {
-        val strategy = ConditionChecklistGenerationStrategy.createConditionGenerationStrategyFromString("BRANCH")
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("BRANCH")
         this.myFixture.configureByFile("/Person.java")
         val psi = this.myFixture.file
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
@@ -130,7 +130,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     @Test
     fun testCreationFromInvalidString() {
         assertFailsWith<InvalidConfigurationException> {
-            ConditionChecklistGenerationStrategy.createConditionGenerationStrategyFromString(
+            ConditionChecklistGenerationStrategy.createFromString(
                 "Foo"
             )
         }
