@@ -13,9 +13,11 @@ data class TestingChecklistClassNode(
     var description: String,
     val children: List<TestingChecklistMethodNode>,
     val element: PsiClass
+//    val parent: TestingChecklist
 ) : TestingChecklistParentNode()
 data class TestingChecklistMethodNode(
     var description: String,
     val children: List<TestingChecklistLeafNode>,
     val element: PsiMethod
+//    val parent: TestingChecklistClassNode?
 ) : TestingChecklistParentNode()

@@ -2,6 +2,7 @@ package com.testbuddy.views.listeners
 
 import com.intellij.ui.CheckboxTreeListener
 import com.intellij.ui.CheckedTreeNode
+import com.testbuddy.models.ChecklistNode
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.TestingChecklistLeafNode
 
@@ -14,22 +15,22 @@ class CheckedNodeListener : CheckboxTreeListener {
 
     override fun nodeStateChanged(node: CheckedTreeNode) {
 
-        if (node.userObject is ChecklistUserObject) {
-            val userObject = node.userObject as ChecklistUserObject
+        if (node.userObject is ChecklistNode) {
+            val userObject = node.userObject as ChecklistNode
 
-            if (userObject.checklistNode is TestingChecklistLeafNode) {
+            if (userObject.isItem) {
                 if (node.isChecked) {
                     val parent = (node.parent as CheckedTreeNode)
-                    (parent.userObject as ChecklistUserObject).checkCount += 1
+                    (parent.userObject as ChecklistNode).checkCount += 1
 
                     val grandParent = (parent.parent as CheckedTreeNode)
-                    (grandParent.userObject as ChecklistUserObject).checkCount += 1
+                    (grandParent.userObject as ChecklistNode).checkCount += 1
                 } else {
                     val parent = (node.parent as CheckedTreeNode)
-                    (parent.userObject as ChecklistUserObject).checkCount -= 1
+                    (parent.userObject as ChecklistNode).checkCount -= 1
 
                     val grandParent = (parent.parent as CheckedTreeNode)
-                    (grandParent.userObject as ChecklistUserObject).checkCount -= 1
+                    (grandParent.userObject as ChecklistNode).checkCount -= 1
                 }
             }
         }

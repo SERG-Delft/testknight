@@ -17,6 +17,7 @@ import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.models.ChecklistNode
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.TestingChecklistClassNode
 import com.testbuddy.services.GenerateTestCaseChecklistService
@@ -68,23 +69,46 @@ class LoadChecklistAction : AnAction() {
         val root = checklistTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
 
-        val classNode = CheckedTreeNode(ChecklistUserObject(checklistClassTree!!, 0))
+//        val classNode = CheckedTreeNode(ChecklistUserObject(checklistClassTree!!, 0))
+//
+//
+//        // All userObjects start with check count 0
+//        for (method in checklistClassTree.children) {
+//
+//            val methodNode = CheckedTreeNode(ChecklistUserObject(method, 0))
+//
+//            for (item in method.children) {
+//                val itemNode = CheckedTreeNode(ChecklistUserObject(item, 0))
+//                itemNode.isChecked = false
+//                methodNode.add(itemNode)
+//            }
+//            classNode.add(methodNode)
+//        }
+//        (checklistTree.model.root as CheckedTreeNode).add(classNode)
+
+        //version 2
+
+        val classNode = CheckedTreeNode(ChecklistNode(checklistClassTree!!.description, checklistClassTree!!.element, 0, false))
+
 
         // All userObjects start with check count 0
         for (method in checklistClassTree.children) {
 
-            val methodNode = CheckedTreeNode(ChecklistUserObject(method, 0))
+            val methodNode = CheckedTreeNode(ChecklistNode(method!!.description, method!!.element, 0, false))
 
             for (item in method.children) {
-                val itemNode = CheckedTreeNode(ChecklistUserObject(item, 0))
+                val itemNode = CheckedTreeNode(ChecklistNode(item!!.description, item!!.element, 0, true))
                 itemNode.isChecked = false
                 methodNode.add(itemNode)
             }
             classNode.add(methodNode)
         }
         (checklistTree.model.root as CheckedTreeNode).add(classNode)
+
         (checklistTree.model as DefaultTreeModel).reload()
         TreeUtil.expandAll(checklistTree)
+
+
     }
 
     /**

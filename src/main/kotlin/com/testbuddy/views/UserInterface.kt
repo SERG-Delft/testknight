@@ -15,6 +15,7 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.services.ChecklistTree
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.listeners.CheckListKeyboardListener
@@ -49,6 +50,7 @@ class UserInterface(val project: Project) {
      */
     private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
+        //val tree = ser.......
 
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
@@ -58,8 +60,11 @@ class UserInterface(val project: Project) {
         val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
+        val service = project.service<ChecklistTree>()
         val panel = JBScrollPane()
         val root = CheckedTreeNode("root")
+
+        service.initTree()
 
         checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())

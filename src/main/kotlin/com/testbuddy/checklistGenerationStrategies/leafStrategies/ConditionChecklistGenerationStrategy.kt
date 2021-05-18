@@ -28,7 +28,7 @@ class ConditionChecklistGenerationStrategy : LeafChecklistGeneratorStrategy<PsiE
             }
 
             // remove trailing comma and space
-            TestingChecklistLeafNode(description.dropLast(2), psiElement)
+            TestingChecklistLeafNode(description.dropLast(2), psiElement,)
         }
     }
 
