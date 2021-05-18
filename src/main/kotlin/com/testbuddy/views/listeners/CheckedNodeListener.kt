@@ -18,7 +18,7 @@ class CheckedNodeListener : CheckboxTreeListener {
         if (node.userObject is ChecklistNode) {
             val userObject = node.userObject as ChecklistNode
 
-            if (userObject.isItem) {
+            if (userObject.depth ==1) {
                 if (node.isChecked) {
                     val parent = (node.parent as CheckedTreeNode)
                     (parent.userObject as ChecklistNode).checkCount += 1

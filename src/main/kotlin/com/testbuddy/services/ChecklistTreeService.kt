@@ -1,6 +1,15 @@
-package com.testbuddy.services;
+package com.testbuddy.services
 
-import com.intellij.ui.CheckboxTree;
+import com.intellij.ui.CheckboxTree
+import com.testbuddy.models.ChecklistNode
 
-public class ChecklistTreeService {
+class ChecklistTreeService {
+//    var dataTree: ChecklistTree?
+//    var uiTree: CheckboxTree?
+//
+//    fun initTree()
+//    {
+//
+//    }
+
 }

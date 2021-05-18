@@ -67,7 +67,7 @@ class LoadChecklistAction : AnAction() {
         val checklistViewport = checklistScroll.viewport
         val checklistTree = checklistViewport.getComponent(0) as CheckboxTree
         val root = checklistTree.model.root as DefaultMutableTreeNode
-        root.removeAllChildren()
+       // root.removeAllChildren()
 
 //        val classNode = CheckedTreeNode(ChecklistUserObject(checklistClassTree!!, 0))
 //

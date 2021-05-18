@@ -64,7 +64,7 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
                         val userObject = value.userObject as ChecklistNode
 
 
-                            if(!userObject.isItem) {
+                            if(userObject.depth!=3) {
                                 checkbox.isVisible = false
                                 checkbox.isEnabled = false
                             }
@@ -73,7 +73,7 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
                         val name = userObject.description
                         renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
 
-                        if(!userObject.isItem) {
+                        if(userObject.depth!=3) {
                             val countString = " ${userObject.checkCount} item(s) checked."
                             renderer.append(countString, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
                         }
