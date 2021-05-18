@@ -1,5 +1,7 @@
 package com.testbuddy.models
 
+import com.testbuddy.messageBundleHandlers.AssertionSuggestionMessageBundleHandler
+
 abstract class SideEffect(open val info: String) {
     abstract fun toAssertionSuggestion(): AssertionSuggestion
 }
@@ -7,7 +9,7 @@ abstract class SideEffect(open val info: String) {
 abstract class ClassFieldMutationSideEffect(override val info: String) : SideEffect(info)
 data class ReassignsClassFieldSideEffect(val nameOfField: String) : ClassFieldMutationSideEffect(nameOfField) {
     override fun toAssertionSuggestion(): AssertionSuggestion {
-        return AssertionSuggestion("Assert that \"$nameOfField\" is re-assigned properly.")
+        return AssertionSuggestion(AssertionSuggestionMessageBundleHandler.message("fieldReassignment", nameOfField))
     }
 }
 
@@ -15,8 +17,11 @@ data class MethodCallOnClassFieldSideEffect(val nameOfField: String, val nameOfM
     ClassFieldMutationSideEffect(nameOfField) {
     override fun toAssertionSuggestion(): AssertionSuggestion {
         return AssertionSuggestion(
-            "Assert that method \"$nameOfMethod\" " +
-                "modifies field \"$nameOfField\" properly."
+            AssertionSuggestionMessageBundleHandler
+                .message(
+                    "methodFieldModification",
+                    nameOfMethod, nameOfField
+                )
         )
     }
 }
@@ -25,8 +30,11 @@ data class MethodCallOnParameterSideEffect(val nameOfParameter: String, val name
     SideEffect(nameOfParameter) {
     override fun toAssertionSuggestion(): AssertionSuggestion {
         return AssertionSuggestion(
-            "Assert that method \"$nameOfMethod\" " +
-                "modifies parameter \"$nameOfParameter\" properly."
+            AssertionSuggestionMessageBundleHandler
+                .message(
+                    "methodParameterModification",
+                    nameOfMethod, nameOfParameter
+                )
         )
     }
 }

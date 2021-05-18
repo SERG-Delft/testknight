@@ -5,9 +5,9 @@ import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
 @NonNls
-private const val BUNDLE = "messages.TestingChecklistMessageBundle"
+private const val BUNDLE = "messages.AssertionSuggestionMessageBundle"
 
-object TestingChecklistMessageBundleHandler : AbstractBundle(BUNDLE) {
+object AssertionSuggestionMessageBundleHandler : AbstractBundle(BUNDLE) {
 
     @Suppress("SpreadOperator")
     @JvmStatic
