@@ -5,6 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.UsefulTestCase
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.highlightResolutionStrategies.ConstructorArgsStrategy
 import com.testbuddy.services.TestAnalyzerService
 import org.junit.Before
 import org.junit.Test
@@ -27,8 +28,7 @@ internal class ConstructorArgsStrategyTest : BasePlatformTestCase() {
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val testMethod = testClass.findMethodsByName("translateTest")[0] as PsiMethod
 
-        val toBeChangedTxt = testAnalyzerService.getConstructorArgs(testMethod)
-            .map { it.text }
+        val toBeChangedTxt = ConstructorArgsStrategy.getElements(testMethod).map { it.text }
 
         assertContainsElements(toBeChangedTxt, "0", "0", "1", "2")
         UsefulTestCase.assertSize(4, toBeChangedTxt)
