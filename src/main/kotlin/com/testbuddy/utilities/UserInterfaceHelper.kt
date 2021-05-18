@@ -48,13 +48,11 @@ class UserInterfaceHelper private constructor() {
         /**
          * Gets the Tab in the TestBuddy tool window with the given tab name.
          *
-         * Suppressing return count because of multiple return nulls which are necessary.
          * @param project Current open project.
          * @param tabName Name of the tab which needs to be returned.
          * @return The first tab with the name mentioned in tabName.
          *         If no such tab is found, returns null.
          */
-        @SuppressWarnings("ReturnCount")
         private fun getTab(project: Project, tabName: String): JBPanelWithEmptyText? {
 
             val window = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy") ?: return null
