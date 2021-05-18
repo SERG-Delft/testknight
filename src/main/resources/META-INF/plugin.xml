@@ -7,6 +7,7 @@
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
+    <depends>Coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
