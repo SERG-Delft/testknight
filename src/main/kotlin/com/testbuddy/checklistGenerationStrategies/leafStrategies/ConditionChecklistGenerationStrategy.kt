@@ -1,6 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiExpression
+import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.PropositionalExpression
 import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TruthTable
@@ -33,6 +34,28 @@ class ConditionChecklistGenerationStrategy private constructor(
          */
         fun createBranchConditionCoverageGenerationStrategy(): ConditionChecklistGenerationStrategy {
             return ConditionChecklistGenerationStrategy(ConditionCoverageType.BRANCH)
+        }
+
+        /**
+         * Creates a new ConditionChecklistGenerationStrategy
+         * from the name of the the condition coverage type defined.
+         *
+         * @param conditionCoverageType the type of condition coverage. The only ones accepted are
+         * "BRANCH" and "MCDC". Anything else will result to a InvalidConfigurationException.
+         * @return a ConditionChecklistGenerationStrategy object.
+         */
+        fun createConditionGenerationStrategyFromString(
+            conditionCoverageType: String
+        ): ConditionChecklistGenerationStrategy {
+            val validTypes = ConditionCoverageType.values().map { it.name }.toSet()
+            return if (validTypes.contains(conditionCoverageType)) {
+                when (ConditionCoverageType.valueOf(conditionCoverageType)) {
+                    ConditionCoverageType.MCDC -> createMcDcConditionCoverageGenerationStrategy()
+                    ConditionCoverageType.BRANCH -> createBranchConditionCoverageGenerationStrategy()
+                }
+            } else {
+                throw InvalidConfigurationException("condition coverage type", conditionCoverageType)
+            }
         }
     }
 

@@ -6,10 +6,12 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertFailsWith
 
 internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
@@ -107,5 +109,30 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         )
         val results = strategy.generateChecklist(condition!!)
         TestCase.assertEquals(expected, results)
+    }
+
+    @Test
+    fun testCreationFromValidString() {
+        val strategy = ConditionChecklistGenerationStrategy.createConditionGenerationStrategyFromString("BRANCH")
+        this.myFixture.configureByFile("/Person.java")
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
+        val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
+        val expected = listOf(
+            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is true", condition!!),
+            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is false", condition!!),
+        )
+        val results = strategy.generateChecklist(condition!!)
+        TestCase.assertEquals(expected, results)
+    }
+
+    @Test
+    fun testCreationFromInvalidString() {
+        assertFailsWith<InvalidConfigurationException> {
+            ConditionChecklistGenerationStrategy.createConditionGenerationStrategyFromString(
+                "Foo"
+            )
+        }
     }
 }
