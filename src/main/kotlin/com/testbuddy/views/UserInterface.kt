@@ -3,12 +3,10 @@ package com.testbuddy.views
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.components.service
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
@@ -145,10 +143,6 @@ class UserInterface(val project: Project) {
             .subscribe(
                 FileEditorManagerListener.FILE_EDITOR_MANAGER,
                 object : FileEditorManagerListener {
-                    override fun fileOpened(@NotNull source: FileEditorManager, @NotNull file: VirtualFile) {
-                        UserInterfaceHelper.refreshTestCaseUI(project)
-                    }
-
                     override fun selectionChanged(@NotNull event: FileEditorManagerEvent) {
                         UserInterfaceHelper.refreshTestCaseUI(project)
                     }
