@@ -47,7 +47,6 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
      * @param element PsiElement which is selected.
      * @return `true` if this intention action is available for the selected code part, 'false' otherwise.
      */
-    @Suppress("ReturnCount")
     override fun isAvailable(project: Project, editor: Editor, element: PsiElement): Boolean {
 
         if (element == null) {

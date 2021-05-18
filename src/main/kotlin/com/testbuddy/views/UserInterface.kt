@@ -1,16 +1,12 @@
 package com.testbuddy.views
 
 import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.components.service
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
@@ -20,7 +16,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.services.LoadTestsService
-import com.testbuddy.views.actions.LoadTestAction
+import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.listeners.CheckListKeyboardListener
 import com.testbuddy.views.listeners.CheckedNodeListener
 import com.testbuddy.views.listeners.CopyPasteKeyboardListener
@@ -54,11 +50,12 @@ class UserInterface(val project: Project) {
     private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
-        // Setting up the action group. Currently has default values which needs to be changed later.
+        // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
-        val actionGroup = DefaultActionGroup("ACTION_GROUP", false)
+        val actionGroup = DefaultActionGroup("ChecklistTabActions", false)
         actionGroup.add(actionManager.getAction("checklistAction"))
-        val actionToolbar: ActionToolbar = actionManager.createActionToolbar("ACTION_TOOLBAR", actionGroup, true)
+        actionGroup.add(actionManager.getAction("ClearChecklistAction"))
+        val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()
@@ -86,11 +83,12 @@ class UserInterface(val project: Project) {
 
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
-        // Setting up the action group. Currently has default values which needs to be changed later.
+        // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
-        val actionGroup = DefaultActionGroup("ACTION_GROUP", false)
+        val actionGroup = DefaultActionGroup("CopyPasteTabActions", false)
         actionGroup.add(actionManager.getAction("LoadTestAction"))
-        val actionToolbar: ActionToolbar = actionManager.createActionToolbar("ACTION_TOOLBAR", actionGroup, true)
+        actionGroup.add(actionManager.getAction("ClearTestAction"))
+        val actionToolbar = actionManager.createActionToolbar("CopyPasteToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()
@@ -134,7 +132,7 @@ class UserInterface(val project: Project) {
         PsiManager.getInstance(project).addPsiTreeChangeListener(
             object : PsiTreeChangeAdapter() {
                 override fun childrenChanged(event: PsiTreeChangeEvent) {
-                    refreshTestCaseUI(project)
+                    UserInterfaceHelper.refreshTestCaseUI(project)
                 }
             },
             loadTestsService
@@ -145,34 +143,10 @@ class UserInterface(val project: Project) {
             .subscribe(
                 FileEditorManagerListener.FILE_EDITOR_MANAGER,
                 object : FileEditorManagerListener {
-                    override fun fileOpened(@NotNull source: FileEditorManager, @NotNull file: VirtualFile) {
-                        refreshTestCaseUI(project)
-                    }
-
                     override fun selectionChanged(@NotNull event: FileEditorManagerEvent) {
-                        refreshTestCaseUI(project)
+                        UserInterfaceHelper.refreshTestCaseUI(project)
                     }
                 }
             )
-    }
-
-    companion object {
-        /**
-         * Updates the CopyPasteTab by calling the LoadTestAction.
-         * Uses the project to get editor and psi file information.
-         *
-         * @param project the current project.
-         */
-        fun refreshTestCaseUI(project: Project) {
-            val editorList = FileEditorManager.getInstance(project).selectedEditors
-
-            if (editorList.isNotEmpty()) {
-                val textEditor = editorList[0] as TextEditor
-
-                // Don't update UI if psiFile couldn't be found.
-                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
-                LoadTestAction().actionPerformed(project, psiFile, textEditor.editor)
-            }
-        }
     }
 }

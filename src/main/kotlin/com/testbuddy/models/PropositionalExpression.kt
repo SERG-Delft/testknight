@@ -44,7 +44,6 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
      *
      * @return the expression with all propositions simplified, and a map containing the variable assignments
      */
-    @Suppress("ReturnCount") // could be refactored but the code woudl be much more complex
     fun simplified(): Pair<String, Map<String, String>> {
 
         // a copy of the expression we can use for

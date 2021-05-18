@@ -27,19 +27,33 @@
 
 
     <actions>
-        <!---Action in CopyPaste tab which updates the CopyPaste UI -->
-        <action id="LoadTestAction" class="com.testbuddy.views.actions.LoadTestAction"
+        <!---Actions in CopyPaste tab -->
+        <action id="LoadTestAction" class="com.testbuddy.views.actions.testcases.LoadTestAction"
                 text="Load Test Cases from Current File"
                 description="Loads all the test cases from the current open file in the editor"
                 icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="D" keymap="$default"/>
         </action>
+        <action id="ClearTestAction" class="com.testbuddy.views.actions.testcases.ClearTestAction"
+                text="Clear Test Cases UI"
+                description="Clears the tree which holds all the test case information."
+                icon="AllIcons.General.Remove">
+            <keyboard-shortcut first-keystroke="control alt C" second-keystroke="D" keymap="$default"/>
+        </action>
+        <!---Actions in CheckList tab -->
         <action id="checklistAction" class="com.testbuddy.views.actions.LoadChecklistAction"
                 text="Load Checklist for Class from Current File" description="Adds a new template test case."
                 icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="G" keymap="$default"/>
         </action>
-        <action id="DuplicateTestAction" class="com.testbuddy.views.actions.DuplicateTestUnderCaretAction"
+        <action id="ClearChecklistAction" class="com.testbuddy.views.actions.ClearChecklistAction"
+                text="Clear Checklist UI"
+                description="Clears the tree which holds all the checklist information."
+                icon="AllIcons.General.Remove">
+            <keyboard-shortcut first-keystroke="control alt C" second-keystroke="G" keymap="$default"/>
+        </action>
+        <!---Actions for hotkeys-->
+        <action id="DuplicateTestAction" class="com.testbuddy.views.actions.testcases.DuplicateTestUnderCaretAction"
                 text="Duplicate Test Under Caret"
                 description="Duplicates the test under caret of the current open file">
             <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>

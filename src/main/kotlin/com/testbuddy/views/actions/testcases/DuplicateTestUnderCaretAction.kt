@@ -1,4 +1,4 @@
-package com.testbuddy.views.actions
+package com.testbuddy.views.actions.testcases
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -9,8 +9,7 @@ import com.testbuddy.services.DuplicateTestsService
 class DuplicateTestUnderCaretAction : AnAction() {
 
     /**
-     * Updates the CheckList tab to add new checklist cases.
-     *
+     * Duplicates the test case under caret.
      *
      * @param event Event received when the associated menu item is chosen.
      */
