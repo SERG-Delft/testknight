@@ -9,6 +9,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
+import com.testbuddy.views.actions.testcases.ClearTestAction
 import com.testbuddy.views.actions.testcases.LoadTestAction
 import javax.swing.JTabbedPane
 import javax.swing.JViewport
@@ -22,30 +23,38 @@ class UserInterfaceHelper private constructor() {
          * @param project the current project.
          */
         fun refreshTestCaseUI(project: Project) {
-            val editorList = FileEditorManager.getInstance(project).selectedEditors
+            val textEditor = FileEditorManager.getInstance(project).selectedEditor as TextEditor?
 
+            val actionManager = ActionManager.getInstance()
+            val clearTestAction =
+                (actionManager.getAction("ClearTestAction") ?: return) as ClearTestAction
 
-            if (editorList.isNotEmpty()) {
-                val textEditor = editorList[0] as TextEditor
+            if (textEditor != null) {
+                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!)
 
-                // Don't update UI if psiFile couldn't be found.
-                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
+                if (psiFile == null) {
+                    clearTestAction.actionPerformed(project)
+                } else {
+                    val loadTestAction =
+                        (actionManager.getAction("LoadTestAction") ?: return) as LoadTestAction
 
-                val loadTestAction =
-                    (ActionManager.getInstance().getAction("LoadTestAction") ?: return) as LoadTestAction
-
-                loadTestAction.actionPerformed(project, psiFile, textEditor.editor)
+                    loadTestAction.actionPerformed(project, psiFile, textEditor.editor)
+                }
+            } else {
+                clearTestAction.actionPerformed(project)
             }
         }
 
         /**
          * Gets the Tab in the TestBuddy tool window with the given tab name.
          *
+         * Suppressing return count because of multiple return nulls which are necessary.
          * @param project Current open project.
          * @param tabName Name of the tab which needs to be returned.
          * @return The first tab with the name mentioned in tabName.
          *         If no such tab is found, returns null.
          */
+        @SuppressWarnings("ReturnCount")
         private fun getTab(project: Project, tabName: String): JBPanelWithEmptyText? {
 
             val window = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy") ?: return null

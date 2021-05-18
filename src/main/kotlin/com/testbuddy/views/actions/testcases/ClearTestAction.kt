@@ -2,6 +2,7 @@ package com.testbuddy.views.actions.testcases
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.project.Project
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.utilities.UserInterfaceHelper
 import javax.swing.tree.DefaultMutableTreeNode
@@ -15,7 +16,15 @@ class ClearTestAction : AnAction() {
      * @param event Event received when the associated menu item is chosen.
      */
     override fun actionPerformed(event: AnActionEvent) {
-        val project = event.project!!
+        actionPerformed(event.project!!)
+    }
+
+    /**
+     * Clears the CopyPaste tree.
+     *
+     * @param project current open project.
+     */
+    fun actionPerformed(project: Project) {
         val viewport = UserInterfaceHelper.getTabViewport(project, "CopyPaste") ?: return
         val copyPasteTree = viewport.view as Tree
         val root = copyPasteTree.model.root as DefaultMutableTreeNode
