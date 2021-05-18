@@ -73,6 +73,12 @@
         <codeInsight.lineMarkerProvider language="JAVA"
                                         implementationClass="com.testbuddy.views.actions.ChecklistMethodLineMarkerProvider"
         />
+    
     </extensions>
+
+    <applicationListeners>
+        <listener class="com.testbuddy.CoverageListener"
+                  topic="com.intellij.execution.ExecutionListener"/>
+    </applicationListeners>
 
 </idea-plugin>
