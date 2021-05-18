@@ -18,7 +18,9 @@ class DoWhileStatementChecklistGenerationStrategy private constructor(
          * @return a new DoWhileStatementChecklistGenerationStrategy.
          */
         fun create(): DoWhileStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator =
+                ConditionChecklistGenerationStrategy
+                    .createMcDcConditionCoverageGenerationStrategy()
             return create(conditionChecklistGenerator)
         }
 

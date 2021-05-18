@@ -1,7 +1,13 @@
 package com.testbuddy.checklistGenerationStrategies
 
+import com.intellij.psi.PsiBinaryExpression
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.models.TestingChecklistLeafNode
+import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
@@ -18,7 +24,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc0prop() {
-        val strategy = ConditionChecklistGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
 
         val testCases = strategy.mcdc(listOf(), "true")
 
@@ -27,7 +33,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc1Prop() {
-        val strategy = ConditionChecklistGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
 
         val testCases = strategy.mcdc(listOf("a"), "a")
 
@@ -41,7 +47,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc2Props() {
-        val strategy = ConditionChecklistGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
 
         val testCases = strategy.mcdc(listOf("a", "b"), "a && b")
 
@@ -56,7 +62,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc3Props() {
-        val strategy = ConditionChecklistGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
 
         val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)")
 
@@ -72,7 +78,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testMcdc4Props() {
-        val strategy = ConditionChecklistGenerationStrategy()
+        val strategy = ConditionChecklistGenerationStrategy.createMcDcConditionCoverageGenerationStrategy()
 
         val testCases = strategy.mcdc(listOf("a", "b", "c", "d"), "a && (b || c || d)")
 
@@ -88,6 +94,18 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     }
 
     @Test
-    fun testGenerateChecklist() {
+    fun testBranchCoverage() {
+        val strategy = ConditionChecklistGenerationStrategy.createBranchConditionCoverageGenerationStrategy()
+        this.myFixture.configureByFile("/Person.java")
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
+        val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
+        val expected = listOf(
+            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is true", condition!!),
+            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is false", condition!!),
+        )
+        val results = strategy.generateChecklist(condition!!)
+        TestCase.assertEquals(expected, results)
     }
 }

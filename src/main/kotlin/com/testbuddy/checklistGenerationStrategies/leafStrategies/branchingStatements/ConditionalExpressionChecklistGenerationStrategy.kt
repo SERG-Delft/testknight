@@ -19,7 +19,9 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
          * @return a new ConditionalExpressionChecklistGenerationStrategy.
          */
         fun create(): ConditionalExpressionChecklistGenerationStrategy {
-            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator =
+                ConditionChecklistGenerationStrategy
+                    .createMcDcConditionCoverageGenerationStrategy()
             return create(conditionChecklistGenerator)
         }
 

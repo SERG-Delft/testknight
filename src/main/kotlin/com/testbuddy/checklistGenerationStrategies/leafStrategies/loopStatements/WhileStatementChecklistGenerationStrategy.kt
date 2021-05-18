@@ -18,7 +18,9 @@ class WhileStatementChecklistGenerationStrategy private constructor(
          * @return a new WhileStatementChecklistGenerationStrategy.
          */
         fun create(): WhileStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator =
+                ConditionChecklistGenerationStrategy
+                    .createMcDcConditionCoverageGenerationStrategy()
             return create(conditionChecklistGenerator)
         }
 

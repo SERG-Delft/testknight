@@ -18,7 +18,9 @@ class IfStatementChecklistGenerationStrategy private constructor(
          * @return a new IfStatementChecklistGenerationStrategy.
          */
         fun create(): IfStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator =
+                ConditionChecklistGenerationStrategy
+                    .createMcDcConditionCoverageGenerationStrategy()
             return create(conditionChecklistGenerator)
         }
 
