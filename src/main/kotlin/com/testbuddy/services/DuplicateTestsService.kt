@@ -30,7 +30,7 @@ class DuplicateTestsService(project: Project) {
 
         if (containingMethod != null) {
             val template = templateFactoryService
-                .createAdvancedTemplate(containingMethod, testAnalyzerService.getAssertionParameters(containingMethod))
+                .createAdvancedTemplate(containingMethod, testAnalyzerService.getAssertionArgs(containingMethod))
 
             // prepare for template
             caret.moveToOffset(containingMethod.endOffset)
@@ -51,7 +51,7 @@ class DuplicateTestsService(project: Project) {
 
         val caret = editor.caretModel.primaryCaret
         val template = templateFactoryService
-            .createAdvancedTemplate(method, testAnalyzerService.getAssertionParameters(method))
+            .createAdvancedTemplate(method, testAnalyzerService.getAssertionArgs(method))
         caret.moveToOffset(method.endOffset)
         editor.scrollingModel.scrollToCaret(ScrollType.CENTER)
 

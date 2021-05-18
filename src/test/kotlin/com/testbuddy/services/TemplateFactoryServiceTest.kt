@@ -138,7 +138,7 @@ internal class TemplateCreationServiceTest : BasePlatformTestCase() {
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val method = testClass.findMethodsByName("hasAssertion")[0] as PsiMethod
-        val psiElements = testAnalyzerService.getAssertionParameters(method)
+        val psiElements = testAnalyzerService.getAssertionArgs(method)
         val template = templateFactoryService.createAdvancedTemplate(method, psiElements)
 
         val expected = "@Test void (){\n" +
