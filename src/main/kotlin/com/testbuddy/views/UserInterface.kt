@@ -1,7 +1,6 @@
 package com.testbuddy.views
 
 import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -53,11 +52,12 @@ class UserInterface(val project: Project) {
     private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
-        // Setting up the action group. Currently has default values which needs to be changed later.
+        // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
-        val actionGroup = DefaultActionGroup("ACTION_GROUP", false)
+        val actionGroup = DefaultActionGroup("ChecklistTabActions", false)
         actionGroup.add(actionManager.getAction("checklistAction"))
-        val actionToolbar: ActionToolbar = actionManager.createActionToolbar("ACTION_TOOLBAR", actionGroup, true)
+        actionGroup.add(actionManager.getAction("ClearChecklistAction"))
+        val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()
@@ -85,11 +85,12 @@ class UserInterface(val project: Project) {
 
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
-        // Setting up the action group. Currently has default values which needs to be changed later.
+        // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
-        val actionGroup = DefaultActionGroup("ACTION_GROUP", false)
+        val actionGroup = DefaultActionGroup("CopyPasteTabActions", false)
         actionGroup.add(actionManager.getAction("LoadTestAction"))
-        val actionToolbar: ActionToolbar = actionManager.createActionToolbar("ACTION_TOOLBAR", actionGroup, true)
+        actionGroup.add(actionManager.getAction("ClearTestAction"))
+        val actionToolbar = actionManager.createActionToolbar("CopyPasteToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()

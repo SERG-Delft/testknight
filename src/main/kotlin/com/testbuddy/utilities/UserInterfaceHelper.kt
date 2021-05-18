@@ -24,7 +24,6 @@ class UserInterfaceHelper private constructor() {
         fun refreshTestCaseUI(project: Project) {
             val editorList = FileEditorManager.getInstance(project).selectedEditors
 
-            ActionManager.getInstance().getAction("myAct")
 
             if (editorList.isNotEmpty()) {
                 val textEditor = editorList[0] as TextEditor
@@ -40,10 +39,14 @@ class UserInterfaceHelper private constructor() {
         }
 
         /**
-         * Gets the viewport
+         * Gets the Tab in the TestBuddy tool window with the given tab name.
+         *
+         * @param project Current open project.
+         * @param tabName Name of the tab which needs to be returned.
+         * @return The first tab with the name mentioned in tabName.
+         *         If no such tab is found, returns null.
          */
-        @SuppressWarnings("ReturnCount")
-        fun getTab(project: Project, tabName: String): JBPanelWithEmptyText? {
+        private fun getTab(project: Project, tabName: String): JBPanelWithEmptyText? {
 
             val window = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy") ?: return null
 
@@ -56,6 +59,14 @@ class UserInterfaceHelper private constructor() {
             return tabbedPane.getComponentAt(tabIndex) as JBPanelWithEmptyText
         }
 
+        /**
+         * Gets the viewport of the tab in the TestBuddy tool window with the given tab name.
+         *
+         * @param project Current open project.
+         * @param tabName Name of the tab which needs to be returned.
+         * @return The viewport of the first tab with the name mentioned in tabName.
+         *         If no such tab is found, returns null.
+         */
         fun getTabViewport(project: Project, tabName: String): JViewport? {
             val tab = getTab(project, tabName) ?: return null
             val tabScrollPane = tab.getComponent(1) as JBScrollPane
