@@ -10,6 +10,7 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiTreeChangeAdapter
 import com.intellij.psi.PsiTreeChangeEvent
+import com.intellij.psi.impl.source.PsiMethodImpl
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
@@ -21,10 +22,12 @@ import com.testbuddy.views.listeners.CheckListKeyboardListener
 import com.testbuddy.views.listeners.CheckedNodeListener
 import com.testbuddy.views.listeners.CopyPasteKeyboardListener
 import com.testbuddy.views.listeners.CopyPasteMouseListener
+import com.testbuddy.views.listeners.PsiTreeListener
 import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
+import java.util.*
 import javax.swing.tree.DefaultMutableTreeNode
 
 class UserInterface(val project: Project) {
@@ -129,14 +132,7 @@ class UserInterface(val project: Project) {
 
         val loadTestsService = project.service<LoadTestsService>()
 
-        PsiManager.getInstance(project).addPsiTreeChangeListener(
-            object : PsiTreeChangeAdapter() {
-                override fun childrenChanged(event: PsiTreeChangeEvent) {
-                    UserInterfaceHelper.refreshTestCaseUI(project)
-                }
-            },
-            loadTestsService
-        )
+        PsiManager.getInstance(project).addPsiTreeChangeListener(PsiTreeListener(project), loadTestsService)
 
         val messageBus = project.messageBus
         messageBus.connect()
