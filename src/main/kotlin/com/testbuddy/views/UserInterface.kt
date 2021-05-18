@@ -7,7 +7,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.openapi.vfs.VirtualFile
@@ -20,7 +19,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.services.LoadTestsService
-import com.testbuddy.views.actions.LoadTestAction
+import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.listeners.CheckListKeyboardListener
 import com.testbuddy.views.listeners.CheckedNodeListener
 import com.testbuddy.views.listeners.CopyPasteKeyboardListener
@@ -134,7 +133,7 @@ class UserInterface(val project: Project) {
         PsiManager.getInstance(project).addPsiTreeChangeListener(
             object : PsiTreeChangeAdapter() {
                 override fun childrenChanged(event: PsiTreeChangeEvent) {
-                    refreshTestCaseUI(project)
+                    UserInterfaceHelper.refreshTestCaseUI(project)
                 }
             },
             loadTestsService
@@ -146,33 +145,13 @@ class UserInterface(val project: Project) {
                 FileEditorManagerListener.FILE_EDITOR_MANAGER,
                 object : FileEditorManagerListener {
                     override fun fileOpened(@NotNull source: FileEditorManager, @NotNull file: VirtualFile) {
-                        refreshTestCaseUI(project)
+                        UserInterfaceHelper.refreshTestCaseUI(project)
                     }
 
                     override fun selectionChanged(@NotNull event: FileEditorManagerEvent) {
-                        refreshTestCaseUI(project)
+                        UserInterfaceHelper.refreshTestCaseUI(project)
                     }
                 }
             )
-    }
-
-    companion object {
-        /**
-         * Updates the CopyPasteTab by calling the LoadTestAction.
-         * Uses the project to get editor and psi file information.
-         *
-         * @param project the current project.
-         */
-        fun refreshTestCaseUI(project: Project) {
-            val editorList = FileEditorManager.getInstance(project).selectedEditors
-
-            if (editorList.isNotEmpty()) {
-                val textEditor = editorList[0] as TextEditor
-
-                // Don't update UI if psiFile couldn't be found.
-                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
-                LoadTestAction().actionPerformed(project, psiFile, textEditor.editor)
-            }
-        }
     }
 }

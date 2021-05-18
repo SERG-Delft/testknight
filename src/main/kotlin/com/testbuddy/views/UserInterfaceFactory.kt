@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
+import com.testbuddy.utilities.UserInterfaceHelper
 
 class UserInterfaceFactory : ToolWindowFactory {
     /**
@@ -19,6 +20,6 @@ class UserInterfaceFactory : ToolWindowFactory {
         toolWindow.contentManager.addContent(content)
 
         // Load the test cases into the UI
-        UserInterface.refreshTestCaseUI(project)
+        UserInterfaceHelper.refreshTestCaseUI(project)
     }
 }

@@ -1,0 +1,65 @@
+package com.testbuddy.utilities
+
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.TextEditor
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.psi.PsiManager
+import com.intellij.ui.components.JBPanelWithEmptyText
+import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.content.impl.ContentImpl
+import com.testbuddy.views.actions.testcases.LoadTestAction
+import javax.swing.JTabbedPane
+import javax.swing.JViewport
+
+class UserInterfaceHelper private constructor() {
+    companion object {
+        /**
+         * Updates the CopyPasteTab by calling the LoadTestAction.
+         * Uses the project to get editor and psi file information.
+         *
+         * @param project the current project.
+         */
+        fun refreshTestCaseUI(project: Project) {
+            val editorList = FileEditorManager.getInstance(project).selectedEditors
+
+            ActionManager.getInstance().getAction("myAct")
+
+            if (editorList.isNotEmpty()) {
+                val textEditor = editorList[0] as TextEditor
+
+                // Don't update UI if psiFile couldn't be found.
+                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
+
+                val loadTestAction =
+                    (ActionManager.getInstance().getAction("LoadTestAction") ?: return) as LoadTestAction
+
+                loadTestAction.actionPerformed(project, psiFile, textEditor.editor)
+            }
+        }
+
+        /**
+         * Gets the viewport
+         */
+        @SuppressWarnings("ReturnCount")
+        fun getTab(project: Project, tabName: String): JBPanelWithEmptyText? {
+
+            val window = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy") ?: return null
+
+            val tabbedPane = (
+                (window.contentManager.contents[0] as ContentImpl)
+                    .component as JTabbedPane
+                )
+            val tabIndex = tabbedPane.indexOfTab(tabName)
+            if (tabIndex == -1) return null
+            return tabbedPane.getComponentAt(tabIndex) as JBPanelWithEmptyText
+        }
+
+        fun getTabViewport(project: Project, tabName: String): JViewport? {
+            val tab = getTab(project, tabName) ?: return null
+            val tabScrollPane = tab.getComponent(1) as JBScrollPane
+            return tabScrollPane.viewport
+        }
+    }
+}

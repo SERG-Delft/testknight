@@ -1,4 +1,4 @@
-package com.testbuddy.views.actions
+package com.testbuddy.views.actions.testcases
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
