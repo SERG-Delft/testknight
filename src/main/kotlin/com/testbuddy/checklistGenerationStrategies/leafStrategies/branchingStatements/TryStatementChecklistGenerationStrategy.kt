@@ -3,6 +3,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStat
 import com.intellij.psi.PsiCatchSection
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.TestingChecklistMessageBundleHandler
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
@@ -96,19 +97,27 @@ class TryStatementChecklistGenerationStrategy private constructor(
     private fun generateCasePerException(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
         val result = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
-                "Test with the try block running successfully",
+                TestingChecklistMessageBundleHandler.message("tryBlockSuccess"),
                 psiElement
             )
         )
         val catches = PsiTreeUtil.findChildrenOfType(psiElement, PsiCatchSection::class.java)
         if (catches.isEmpty()) {
-            result.add(TestingChecklistLeafNode("Test with the try block throwing an exception", psiElement))
+            result.add(
+                TestingChecklistLeafNode(
+                    TestingChecklistMessageBundleHandler.message("tryBlockGeneralException"),
+                    psiElement
+                )
+            )
             return result
         }
         catches.forEach {
             if (it.catchType != null) result.add(
                 TestingChecklistLeafNode(
-                    "Test with the try block throwing a ${it.catchType!!.canonicalText}",
+                    TestingChecklistMessageBundleHandler.message(
+                        "tryBlockThrowsSpecifException",
+                        it.catchType!!.canonicalText
+                    ),
                     it
                 )
             )
@@ -126,10 +135,10 @@ class TryStatementChecklistGenerationStrategy private constructor(
     private fun generateBinaryCase(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
         return listOf(
             TestingChecklistLeafNode(
-                "Test with the try block running successfully",
+                TestingChecklistMessageBundleHandler.message("tryBlockSuccess"),
                 psiElement
             ),
-            TestingChecklistLeafNode("Test with the try block throwing an exception", psiElement)
+            TestingChecklistLeafNode(TestingChecklistMessageBundleHandler.message("tryBlockGeneralException"), psiElement)
         )
     }
 }
