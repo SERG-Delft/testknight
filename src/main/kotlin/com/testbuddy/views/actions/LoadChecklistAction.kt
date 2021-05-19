@@ -12,18 +12,14 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.CheckboxTree
-import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
-import com.intellij.util.ui.tree.TreeUtil
-import com.testbuddy.models.ChecklistNode
-import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.TestingChecklistClassNode
+import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.GenerateTestCaseChecklistService
 import javax.swing.JTabbedPane
 import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeModel
 
 class LoadChecklistAction : AnAction() {
 
@@ -67,7 +63,13 @@ class LoadChecklistAction : AnAction() {
         val checklistViewport = checklistScroll.viewport
         val checklistTree = checklistViewport.getComponent(0) as CheckboxTree
         val root = checklistTree.model.root as DefaultMutableTreeNode
-       // root.removeAllChildren()
+        // root.removeAllChildren()
+
+        val checklistTreeService = project.service<ChecklistTreeService>()
+        if (checklistClassTree != null) {
+            checklistTreeService.addChecklist(checklistClassTree)
+            checklistTreeService.print()
+        }
 
 //        val classNode = CheckedTreeNode(ChecklistUserObject(checklistClassTree!!, 0))
 //
@@ -86,29 +88,28 @@ class LoadChecklistAction : AnAction() {
 //        }
 //        (checklistTree.model.root as CheckedTreeNode).add(classNode)
 
-        //version 2
+        // version 2
 
-        val classNode = CheckedTreeNode(ChecklistNode(checklistClassTree!!.description, checklistClassTree!!.element, 0, false))
-
-
-        // All userObjects start with check count 0
-        for (method in checklistClassTree.children) {
-
-            val methodNode = CheckedTreeNode(ChecklistNode(method!!.description, method!!.element, 0, false))
-
-            for (item in method.children) {
-                val itemNode = CheckedTreeNode(ChecklistNode(item!!.description, item!!.element, 0, true))
-                itemNode.isChecked = false
-                methodNode.add(itemNode)
-            }
-            classNode.add(methodNode)
-        }
-        (checklistTree.model.root as CheckedTreeNode).add(classNode)
-
-        (checklistTree.model as DefaultTreeModel).reload()
-        TreeUtil.expandAll(checklistTree)
-
-
+//        val classNode = CheckedTreeNode(ChecklistNode(checklistClassTree!!.description,
+        //        checklistClassTree!!.element, 0, false))
+//
+//
+//        // All userObjects start with check count 0
+//        for (method in checklistClassTree.children) {
+//
+//            val methodNode = CheckedTreeNode(ChecklistNode(method!!.description, method!!.element, 0, false))
+//
+//            for (item in method.children) {
+//                val itemNode = CheckedTreeNode(ChecklistNode(item!!.description, item!!.element, 0, true))
+//                itemNode.isChecked = false
+//                methodNode.add(itemNode)
+//            }
+//            classNode.add(methodNode)
+//        }
+//        (checklistTree.model.root as CheckedTreeNode).add(classNode)
+//
+//        (checklistTree.model as DefaultTreeModel).reload()
+//        TreeUtil.expandAll(checklistTree)
     }
 
     /**

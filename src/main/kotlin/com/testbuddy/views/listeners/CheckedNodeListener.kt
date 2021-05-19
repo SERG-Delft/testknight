@@ -3,8 +3,6 @@ package com.testbuddy.views.listeners
 import com.intellij.ui.CheckboxTreeListener
 import com.intellij.ui.CheckedTreeNode
 import com.testbuddy.models.ChecklistNode
-import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistLeafNode
 
 /**
 * Custom CheckboxTreelistener which support counting the selected items.
@@ -18,7 +16,7 @@ class CheckedNodeListener : CheckboxTreeListener {
         if (node.userObject is ChecklistNode) {
             val userObject = node.userObject as ChecklistNode
 
-            if (userObject.depth ==1) {
+            if (userObject.depth == 1) {
                 if (node.isChecked) {
                     val parent = (node.parent as CheckedTreeNode)
                     (parent.userObject as ChecklistNode).checkCount += 1

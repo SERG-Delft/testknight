@@ -3,7 +3,12 @@ package com.testbuddy.views.trees
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.SimpleTextAttributes
-import com.testbuddy.models.*
+import com.testbuddy.models.ChecklistUserObject
+import com.testbuddy.models.TestingChecklistClassNode
+import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.models.TestingChecklistNode
+import com.testbuddy.models.TestingChecklistParentNode
 import javax.swing.JTree
 
 /**
@@ -57,28 +62,50 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
 //        }
 
         // Version 2
-//ChecklistNode(var description: String, val element: PsiElement, var checkCount: Int, val isItem: Boolean)
+// ChecklistNode(var description: String, val element: PsiElement, var checkCount: Int, val isItem: Boolean)
+//        if (value is CheckedTreeNode) {
+//            val renderer = textRenderer
+//            if (value.userObject is ChecklistNode) {
+//                val userObject = value.userObject as ChecklistNode
+//
+//                if (userObject.depth != 3) {
+//                    checkbox.isVisible = false
+//                    checkbox.isEnabled = false
+//                }
+//
+//                val name = userObject.description
+//                renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+//
+//                if (userObject.depth != 3) {
+//                    val countString = " ${userObject.checkCount} item(s) checked."
+//                    renderer.append(countString, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
+//                }
+//            }
+//        }
+
         if (value is CheckedTreeNode) {
-                    val renderer = textRenderer
-                    if (value.userObject is ChecklistNode) {
-                        val userObject = value.userObject as ChecklistNode
+            val renderer = textRenderer
+            if (value.userObject is ChecklistUserObject) {
 
+                val userObject = value.userObject as ChecklistUserObject
+                val checklistNode = userObject.checklistNode
 
-                            if(userObject.depth!=3) {
-                                checkbox.isVisible = false
-                                checkbox.isEnabled = false
-                            }
-
-
-                        val name = userObject.description
-                        renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-
-                        if(userObject.depth!=3) {
-                            val countString = " ${userObject.checkCount} item(s) checked."
-                            renderer.append(countString, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
-                        }
+                when (checklistNode) {
+                    is TestingChecklistParentNode -> {
+                        checkbox.isVisible = false
+                        checkbox.isEnabled = false
                     }
                 }
+
+                val name = getDescription((value.userObject as ChecklistUserObject).checklistNode)
+                renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+
+                if (checklistNode !is TestingChecklistLeafNode) {
+                    val countString = " ${(checklistNode).checked} item(s) checked."
+                    renderer.append(countString, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
+                }
+            }
+        }
     }
 
     /**
