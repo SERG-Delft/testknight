@@ -259,6 +259,14 @@ public class Person {
         name.reverse();
     }
 
+    public void callWithLiteral(String name) {
+        name.append("hello")
+    }
+
+    public void sayMyAge(String msg, int age) {
+        msg.append(age)
+    }
+
 }
 
 
