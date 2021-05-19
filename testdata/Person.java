@@ -267,6 +267,18 @@ public class Person {
         msg.append(age)
     }
 
+    public void powMyAgeStatic() {
+        Math.pow(age, 2)
+    }
+
+    public void powMyAge() {
+        pow(age, 2)
+    }
+
+    public void setter() {
+        this.setName("hello");
+    }
+
 }
 
 

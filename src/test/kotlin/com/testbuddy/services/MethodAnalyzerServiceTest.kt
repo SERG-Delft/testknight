@@ -23,21 +23,21 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         this.myFixture.configureByFile("/Person.java")
     }
 
-//    @Test
-//    fun testFieldMutationSideEffectsThisNotSpecified() {
-//        val psi = this.myFixture.file
-//        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-//        val expected = listOf(ReassignsClassFieldSideEffect("this.name"))
-//        assertMethodSideEffects(testClass, expected, "setFullName")
-//    }
+    @Test
+    fun testFieldMutationSideEffectsThisNotSpecified() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(ReassignsClassFieldSideEffect("name"))
+        assertMethodSideEffects(testClass, expected, "setFullName")
+    }
 
-//    @Test
-//    fun testOnlyArgumentMutationSideEffectsThisSpecified() {
-//        val psi = this.myFixture.file
-//        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-//        val expected = listOf(ReassignsClassFieldSideEffect("this.name"))
-//        assertMethodSideEffects(testClass, expected, "setName")
-//    }
+    @Test
+    fun testOnlyArgumentMutationSideEffectsThisSpecified() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(ReassignsClassFieldSideEffect("name"))
+        assertMethodSideEffects(testClass, expected, "setName")
+    }
 
     @Test
     fun testNoSideEffect() {
@@ -110,45 +110,71 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         assertMethodSideEffects(testClass, expected, "reverseName")
     }
 
-//    @Test
-//    fun testMethodCallOnClassFieldWithoutThis() {
-//        val psi = this.myFixture.file
-//        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-//        val expected = listOf(MethodCallOnClassFieldSideEffect("this.name", "methodSecond"))
-//        assertMethodSideEffects(testClass, expected, "methodCallWithoutThis")
-//    }
-//
-//    @Test
-//    fun testMethodCallOnClassFieldWithThis() {
-//        val psi = this.myFixture.file
-//        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-//        val expected = listOf(MethodCallOnClassFieldSideEffect("this.name", "methodSecond"))
-//        assertMethodSideEffects(testClass, expected, "methodCallWithThis")
-//    }
-//
-//    @Test
-//    fun testMethodCallWithClassFieldArguments() {
-//        val psi = this.myFixture.file
-//        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-//        val expected = listOf(
-//            MethodCallOnClassFieldSideEffect("this.spouse", "mysteriousMethod"),
-//            MethodCallOnClassFieldSideEffect("this.name", "mysteriousMethod")
-//        )
-//        assertMethodSideEffects(testClass, expected, "methodCallWithThisAndWithout")
-//    }
+    @Test
+    fun testMethodCallOnClassFieldWithoutThis() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(MethodCallOnClassFieldSideEffect("name", "methodSecond"))
+        assertMethodSideEffects(testClass, expected, "methodCallWithoutThis")
+    }
 
-//    @Test
-//    fun testMultipleMethodCalls() {
-//        val psi = this.myFixture.file
-//        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-//        val expected = listOf(
-//            MethodCallOnClassFieldSideEffect("this.name", "toLowerCase"),
-//            MethodCallOnClassFieldSideEffect("this.spouse", "mysteriousMethod"),
-//            MethodCallOnClassFieldSideEffect("this.name", "mysteriousMethod")
-//        )
-//        assertMethodSideEffects(testClass, expected, "multipleMethodCall")
-//    }
+    @Test
+    fun testMethodCallOnClassFieldWithThis() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(MethodCallOnClassFieldSideEffect("name", "methodSecond"))
+        assertMethodSideEffects(testClass, expected, "methodCallWithThis")
+    }
 
+    @Test
+    fun testMethodCallWithClassFieldArguments() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnClassFieldSideEffect("spouse", "mysteriousMethod"),
+            MethodCallOnClassFieldSideEffect("name", "mysteriousMethod")
+        )
+        assertMethodSideEffects(testClass, expected, "methodCallWithThisAndWithout")
+    }
+
+    @Test
+    fun testMultipleMethodCalls() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnClassFieldSideEffect("name", "toLowerCase"),
+            MethodCallOnClassFieldSideEffect("spouse", "mysteriousMethod"),
+            MethodCallOnClassFieldSideEffect("name", "mysteriousMethod")
+        )
+        assertMethodSideEffects(testClass, expected, "multipleMethodCall")
+    }
+
+    @Test
+    fun testPrimitiveClassFieldPassed() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = emptyList<SideEffect>()
+        assertMethodSideEffects(testClass, expected, "powMyAge")
+    }
+
+    @Test
+    fun testStaticCall() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = emptyList<SideEffect>()
+        assertMethodSideEffects(testClass, expected, "powMyAgeStatic")
+    }
+
+
+    @Test
+    fun testMethodCallOnThis() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnClassFieldSideEffect("this", "setName"),
+        )
+        assertMethodSideEffects(testClass, expected, "setter")
+    }
 
     @Test
     fun testLiteralPassedAsArgument() {
