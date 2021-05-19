@@ -15,6 +15,7 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.com.testbuddy.views.listeners.ChecklistSelectionListener
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.listeners.CheckListKeyboardListener
@@ -64,6 +65,8 @@ class UserInterface(val project: Project) {
         checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
         checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
+        checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
+
         panel.setViewportView(checkListTree)
 
         toolWindowPanel.setContent(panel)
