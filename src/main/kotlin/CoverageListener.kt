@@ -2,20 +2,27 @@ package com.testbuddy
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.execution.ExecutionListener
+import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
-import com.testbuddy.com.testbuddy.PreviousCoverageData
+import com.intellij.openapi.components.service
+import com.testbuddy.com.testbuddy.services.CoverageDataService
 
 class CoverageListener : ExecutionListener {
 
-    override fun processStarting(executorId: String, env: ExecutionEnvironment) {
+    override fun processTerminated(
+        executorId: String,
+        env: ExecutionEnvironment,
+        handler: ProcessHandler,
+        exitCode: Int
+    ) {
 
-        val covDataManager = CoverageDataManager.getInstance(env.project)
-        val suite = covDataManager.currentSuitesBundle
-
-        // if we are running with coverage update the previous coverage data
         if (executorId == "Coverage") {
-            PreviousCoverageData.previousSuite = suite
-            if (suite != null) PreviousCoverageData.previousData = covDataManager.currentSuitesBundle.coverageData
+            val covDataManager = CoverageDataManager.getInstance(env.project)
+            val suite = covDataManager.currentSuitesBundle
+            val data = suite.coverageData
+
+            val service = env.project.service<CoverageDataService>()
+            service.updateCoverage(suite, data)
         }
     }
 }
