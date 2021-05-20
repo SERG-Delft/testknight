@@ -42,7 +42,11 @@ class CoverageDataService {
     }
 
     /**
-     * getDiff for both types of supported views
+     * Method to modify the classCoveragesMap field.
+     * This holds the CoverageDiffObject object for each class in the project relevant to previous and current suite.
+     * This object holds data on each line, namely if it is-
+     * 1) covered in the suite associated with the latest run
+     * 2) covered in the suite associated with the previous run
      */
     fun getDiffLines(project: Project) {
         var allLines = emptySet<Int>()
@@ -71,6 +75,12 @@ class CoverageDataService {
         }
     }
 
+    /**
+     * Helper method to extract set of all lines and lines covered in current suite.
+     *
+     * @param classData classData object to extract corresponding lineData information.
+     * @return a pair of set of all lines and set of lines covered by existing suite.
+     */
     private fun getTotalLinesAndNewlyCoveredLines(classData: ClassData?): Pair<Set<Int>, Set<Int>> {
         val allLineSet = mutableSetOf<Int>()
         val coveredNowSet = mutableSetOf<Int>()
@@ -85,6 +95,12 @@ class CoverageDataService {
         return Pair(allLineSet, coveredNowSet)
     }
 
+    /**
+     * Helper method to extract set of all lines and lines covered in current suite.
+     *
+     * @param classData classData object to extract corresponding lineData information.
+     * @return a set of all lines covered by previous suite.
+     */
     private fun getLinesCoveredPreviously(classData: ClassData?): Set<Int> {
         val coveredPrevSet = mutableSetOf<Int>()
         if (classData == null) return emptySet()
