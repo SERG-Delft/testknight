@@ -31,7 +31,7 @@ internal class ClassChecklistGenerationStrategyTest : BasePlatformTestCase() {
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = TestingChecklistClassNode(
             "EmtpyClass",
-            emptyList<TestingChecklistMethodNode>(),
+            mutableListOf<TestingChecklistMethodNode>(),
             testClass!!
         )
         val actual = generator.generateChecklist(testClass)
@@ -48,19 +48,19 @@ internal class ClassChecklistGenerationStrategyTest : BasePlatformTestCase() {
         val methodsInClass = PsiTreeUtil.findChildrenOfType(testClass, PsiMethod::class.java)
 
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(0)) } returns
-            TestingChecklistMethodNode("add", emptyList(), methodsInClass.elementAt(0))
+            TestingChecklistMethodNode("add", mutableListOf(), methodsInClass.elementAt(0))
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(1)) } returns
-            TestingChecklistMethodNode("sub", emptyList(), methodsInClass.elementAt(1))
+            TestingChecklistMethodNode("sub", mutableListOf(), methodsInClass.elementAt(1))
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(2)) } returns
-            TestingChecklistMethodNode("mult", emptyList(), methodsInClass.elementAt(2))
+            TestingChecklistMethodNode("mult", mutableListOf(), methodsInClass.elementAt(2))
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(3)) } returns
-            TestingChecklistMethodNode("div", emptyList(), methodsInClass.elementAt(3))
+            TestingChecklistMethodNode("div", mutableListOf(), methodsInClass.elementAt(3))
 
-        val expectedChildren = listOf(
-            TestingChecklistMethodNode("add", emptyList(), methodsInClass.elementAt(0)),
-            TestingChecklistMethodNode("sub", emptyList(), methodsInClass.elementAt(1)),
-            TestingChecklistMethodNode("mult", emptyList(), methodsInClass.elementAt(2)),
-            TestingChecklistMethodNode("div", emptyList(), methodsInClass.elementAt(3))
+        val expectedChildren = mutableListOf(
+            TestingChecklistMethodNode("add", mutableListOf(), methodsInClass.elementAt(0)),
+            TestingChecklistMethodNode("sub", mutableListOf(), methodsInClass.elementAt(1)),
+            TestingChecklistMethodNode("mult", mutableListOf(), methodsInClass.elementAt(2)),
+            TestingChecklistMethodNode("div", mutableListOf(), methodsInClass.elementAt(3))
         )
 
         val expected = TestingChecklistClassNode(
