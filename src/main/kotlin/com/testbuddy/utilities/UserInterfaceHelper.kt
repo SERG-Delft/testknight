@@ -63,6 +63,7 @@ class UserInterfaceHelper private constructor() {
                 )
             val tabIndex = tabbedPane.indexOfTab(tabName)
             if (tabIndex == -1) return null
+
             return tabbedPane.getComponentAt(tabIndex) as JBPanelWithEmptyText
         }
 
@@ -78,6 +79,24 @@ class UserInterfaceHelper private constructor() {
             val tab = getTab(project, tabName) ?: return null
             val tabScrollPane = tab.getComponent(1) as JBScrollPane
             return tabScrollPane.viewport
+        }
+
+        /**
+         * Opens the Tab in the TestBuddy tool window with the given tab name.
+         *
+         * @param project Current open project.
+         * @param tabName Name of the tab which needs to be returned.
+         */
+        fun showTab(project: Project, tabName: String) {
+            val window = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy") ?: return
+            val tabbedPane = (
+                (window.contentManager.contents[0] as ContentImpl)
+                    .component as JTabbedPane
+                )
+            val tabIndex = tabbedPane.indexOfTab(tabName)
+            if (tabIndex == -1) return
+            window.show()
+            tabbedPane.selectedIndex = tabIndex
         }
     }
 }

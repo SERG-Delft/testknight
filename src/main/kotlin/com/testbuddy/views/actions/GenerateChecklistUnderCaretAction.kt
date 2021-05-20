@@ -1,11 +1,13 @@
 package com.testbuddy.views.actions
 
+import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.utilities.UserInterfaceHelper
 
 class GenerateChecklistUnderCaretAction : AnAction() {
 
@@ -24,10 +26,12 @@ class GenerateChecklistUnderCaretAction : AnAction() {
         val containingMethod = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java)
         val containingClass = PsiTreeUtil.getParentOfType(element, PsiClass::class.java)
 
-        if (containingMethod != null) {
-            LoadChecklistAction().actionPerformed(project, containingMethod)
-        } else if (containingClass != null) {
-            LoadChecklistAction().actionPerformed(project, containingClass)
+        val checklistAction = ActionManager.getInstance().getAction("checklistAction") as LoadChecklistAction
+
+        if (containingMethod != null && checklistAction.actionPerformed(project, containingMethod)) {
+            UserInterfaceHelper.showTab(project, "Checklist")
+        } else if (containingClass != null && checklistAction.actionPerformed(project, containingClass)) {
+            UserInterfaceHelper.showTab(project, "Checklist")
         }
     }
 
