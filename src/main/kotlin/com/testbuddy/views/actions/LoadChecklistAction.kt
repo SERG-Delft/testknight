@@ -35,8 +35,11 @@ class LoadChecklistAction : AnAction() {
      *
      * @param project current open project
      * @param psiElement PsiElement of the chosen element
+     *
+     * @return True if the UI got updated. False otherwise.
      */
-    fun actionPerformed(project: Project, psiElement: PsiElement, refresh: Boolean = false) {
+
+    fun actionPerformed(project: Project, psiElement: PsiElement, refresh: Boolean = false): Boolean {
 
         val checklistService = project.service<GenerateTestCaseChecklistService>()
         var checklistClassTree: TestingChecklistClassNode? = null
@@ -54,6 +57,8 @@ class LoadChecklistAction : AnAction() {
         if (checklistClassTree != null) {
             checklistTreeService.addChecklist(checklistClassTree)
         }
+
+        return true
     }
 
     /**

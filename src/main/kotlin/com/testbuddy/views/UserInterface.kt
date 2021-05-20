@@ -8,8 +8,6 @@ import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.psi.PsiManager
-import com.intellij.psi.PsiTreeChangeAdapter
-import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
@@ -20,8 +18,10 @@ import com.testbuddy.services.LoadTestsService
 import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.listeners.CheckListKeyboardListener
 import com.testbuddy.views.listeners.CheckedNodeListener
+import com.testbuddy.views.listeners.ChecklistSelectionListener
 import com.testbuddy.views.listeners.CopyPasteKeyboardListener
 import com.testbuddy.views.listeners.CopyPasteMouseListener
+import com.testbuddy.views.listeners.PsiTreeListener
 import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
@@ -67,6 +67,7 @@ class UserInterface(val project: Project) {
         checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
         checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
+        checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
         service.initTrees(checkListTree!!)
         panel.setViewportView(checkListTree)
 
@@ -133,14 +134,7 @@ class UserInterface(val project: Project) {
 
         val loadTestsService = project.service<LoadTestsService>()
 
-        PsiManager.getInstance(project).addPsiTreeChangeListener(
-            object : PsiTreeChangeAdapter() {
-                override fun childrenChanged(event: PsiTreeChangeEvent) {
-                    UserInterfaceHelper.refreshTestCaseUI(project)
-                }
-            },
-            loadTestsService
-        )
+        PsiManager.getInstance(project).addPsiTreeChangeListener(PsiTreeListener(project), loadTestsService)
 
         val messageBus = project.messageBus
         messageBus.connect()

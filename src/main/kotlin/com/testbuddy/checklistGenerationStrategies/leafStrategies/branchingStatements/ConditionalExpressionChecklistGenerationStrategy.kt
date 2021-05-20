@@ -13,13 +13,19 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
 
     companion object Factory {
 
+        private const val defaultConditionCoverageType = "MCDC"
+
         /**
          * Creates a new ConditionalExpressionChecklistGenerationStrategy.
          *
          * @return a new ConditionalExpressionChecklistGenerationStrategy.
          */
         fun create(): ConditionalExpressionChecklistGenerationStrategy {
-            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator =
+                ConditionChecklistGenerationStrategy
+                    .createFromString(
+                        getConditionCoverageType()
+                    )
             return create(conditionChecklistGenerator)
         }
 
@@ -33,6 +39,19 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
             ConditionalExpressionChecklistGenerationStrategy {
                 return ConditionalExpressionChecklistGenerationStrategy(conditionChecklistGenerator)
             }
+
+        /**
+         * Returns the configured condition coverage type.
+         *
+         * @return a string representing the configured condition coverage.
+         */
+        private fun getConditionCoverageType(): String {
+            // This is currently a placeholder, when we add
+            // configuration files the conditionCoverageType
+            // will be read from there.
+            val conditionCoverageType = defaultConditionCoverageType
+            return conditionCoverageType
+        }
     }
 
     /**
@@ -45,7 +64,7 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
 
         val condition = psiElement.condition
 
-        if (condition == null || condition is PsiLiteralExpression) {
+        if (condition is PsiLiteralExpression) {
             return emptyList()
         }
         return conditionChecklistGenerator.generateChecklist(condition)
