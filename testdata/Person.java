@@ -275,6 +275,18 @@ public class Person {
         pow(age, 2)
     }
 
+    public void passParameterTwice(Person spouse) {
+        mysteriousMethod(spouse, spouse)
+    }
+
+    public void chainedMethodCallOnArgument() {}
+
+    public void chainedMethodCallOnThis() {}
+
+    public void chainedStaticMethodCall() {
+        Math.pow(age, 2).mysteriousMethod("name")
+    }
+
     public void setter() {
         this.setName("hello");
     }

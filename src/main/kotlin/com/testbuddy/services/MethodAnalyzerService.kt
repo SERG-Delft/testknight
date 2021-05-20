@@ -36,7 +36,7 @@ class MethodAnalyzerService {
     fun getSideEffects(method: PsiMethod): List<SideEffect> {
         val classFieldReassignmentSideEffects = getClassFieldsAffected(method)
         val argumentMutationSideEffects = getArgumentsAffected(method)
-        return classFieldReassignmentSideEffects + argumentMutationSideEffects
+        return (classFieldReassignmentSideEffects + argumentMutationSideEffects).distinct()
     }
 
     // method calls for detecting argument mutations

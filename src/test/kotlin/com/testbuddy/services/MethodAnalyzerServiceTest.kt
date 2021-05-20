@@ -186,6 +186,16 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         assertMethodSideEffects(testClass, expected, "callWithLiteral")
     }
 
+    @Test
+    fun testDuplicateSideEffectsAreRemoved() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnParameterSideEffect("spouse", "mysteriousMethod"),
+        )
+        assertMethodSideEffects(testClass, expected, "passParameterTwice")
+    }
+
     public override fun getTestDataPath(): String {
         return "testdata"
     }
