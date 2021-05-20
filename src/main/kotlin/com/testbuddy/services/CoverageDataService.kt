@@ -1,13 +1,11 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.project.Project
 import com.intellij.rt.coverage.data.ProjectData
 
-class CoverageDataService(val project: Project) {
-
-    private val covDataManager = CoverageDataManager.getInstance(project)
+class CoverageDataService {
 
     private var previousData: ProjectData? = null
     private var previousSuite: CoverageSuitesBundle? = null
@@ -31,7 +29,8 @@ class CoverageDataService(val project: Project) {
      *
      * @return a ProjectData which is null if no coverage suite is selected
      */
-    fun getCurrentSuiteData(): ProjectData? {
+    fun getCurrentSuiteData(project: Project): ProjectData? {
+        val covDataManager = CoverageDataManager.getInstance(project)
         val suite = covDataManager.currentSuitesBundle
         return suite.coverageData
     }
