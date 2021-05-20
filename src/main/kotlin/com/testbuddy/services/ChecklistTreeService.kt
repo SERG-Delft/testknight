@@ -13,20 +13,35 @@ import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
 
 class ChecklistTreeService {
-    lateinit var uiTree: CheckboxTree
-    lateinit var dataTree: TestingChecklist
 
+    private lateinit var uiTree: CheckboxTree
+    private lateinit var dataTree: TestingChecklist
+
+    /**
+     * This method initialize the trees, it acts like a constructor.
+     *
+     * @param uiTree the CheckboxTree which have to be initialized
+     */
     fun initTrees(uiTree: CheckboxTree) {
         dataTree = TestingChecklist(mutableListOf())
         this.uiTree = uiTree
     }
 
+    /**
+     * This method resets the tree and all the previous information is lost.
+     */
     fun resetTree() {
         dataTree = TestingChecklist(mutableListOf())
         val root = uiTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
     }
 
+    /**
+     * This method returns true if it finds the element in the given method, false otherwise.
+     *
+     * @param dataMethod the TestingChecklistMethodNode for which we have to check if the element exists
+     * @param itemNode the TestingChecklistLeafNode which we have to find
+     */
     private fun findElement(
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
@@ -48,6 +63,15 @@ class ChecklistTreeService {
         return foundItem
     }
 
+    /**
+     * This method builds the UI for a checklist item
+     *
+     * @param foundItem the Boolean which represents if the item was found or not
+     * @param uiTreeClassNode: the TreeNode which represents the class reference of the UI
+     * @param uiTreeClassNode: the TreeNode which represents the method reference of the UI
+     * @param dataMethod the TestingChecklistMethodNode which represents the method of the tree
+     * @param itemNode the TestingChecklistLeafNode which we have to be append to the tree
+     */
     private fun buildUiItem(
         foundItem: Boolean,
         uiTreeClassNode: TreeNode,
@@ -55,7 +79,7 @@ class ChecklistTreeService {
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
     ) {
-        if (foundItem == false && dataMethod.children.size != 0) {
+        if (!foundItem && dataMethod.children.size != 0) {
             dataMethod.children.add(itemNode)
 
             val newItemNode = CheckedTreeNode(ChecklistUserObject(itemNode, 0))
@@ -65,6 +89,13 @@ class ChecklistTreeService {
         }
     }
 
+    /**
+     * This method returns true if it finds the method in the given class, false otherwise.
+     *
+     * @param uiTreeClassNode: the TreeNode which represents the reference of the UI
+     * @param dataClass the TestingChecklistClassNode for which we have to check if the method exists
+     * @param methodNode the TestingChecklistMethodNode which we have to find
+     */
     private fun findMethod(
         uiTreeClassNode: TreeNode,
         dataClass: TestingChecklistClassNode,
@@ -88,6 +119,13 @@ class ChecklistTreeService {
         return foundMethod
     }
 
+    /**
+     * This method builds the UI for a checklist class
+     *
+     * @param uiTreeClassNode: the TreeNode which represents the class reference of the UI
+     * @param dataClass the TestingChecklistClassNode which represents the class of the tree
+     * @param methodNode the TestingChecklistMethodNode which we have to be append to the tree
+     */
     private fun buildUiClass(
         uiTreeClassNode: TreeNode,
         dataClass: TestingChecklistClassNode,
@@ -103,7 +141,14 @@ class ChecklistTreeService {
         (uiTreeClassNode as CheckedTreeNode).add(uiTreeMethod)
     }
 
-    private fun checkMethods(
+    /**
+     * This method builds the UI for the checklist methods of a checklist class
+     *
+     * @param uiTreeClassNode: the TreeNode which represents the class reference of the UI
+     * @param dataClass the TestingChecklistClassNode which represents the class of the tree
+     * @param newNode the TestingChecklistClassNode which we have to be append to the tree
+     */
+    private fun buildUiMethods(
         uiTreeClassNode: TreeNode,
         dataClass: TestingChecklistClassNode,
         newNode: TestingChecklistClassNode
@@ -117,9 +162,10 @@ class ChecklistTreeService {
     }
 
     /**
-     * This method will return true if it can find the class, false otherwise
-     * @param uiTreeRoot CheckedTreeNode
-     * @param newNode
+     * This method returns true if it finds the class in the local tree, false otherwise.
+     *
+     * @param uiTreeRoot the CheckedTreeNode which represents the reference of the UI root tree
+     * @param newNode the TestingChecklistClassNode which we have to be find it in the local tree
      */
     private fun findClass(uiTreeRoot: CheckedTreeNode, newNode: TestingChecklistClassNode): Boolean {
 
@@ -131,7 +177,7 @@ class ChecklistTreeService {
             if (dataClass.element == newNode.element) {
                 foundClass = true
                 dataClass.description = newNode.description
-                checkMethods(uiTreeClassNode, dataClass, newNode)
+                buildUiMethods(uiTreeClassNode, dataClass, newNode)
             }
             break
         }
@@ -146,7 +192,7 @@ class ChecklistTreeService {
 
         val uiTreeRoot = uiTree.model.root as CheckedTreeNode
 
-        // not finding the method, create new classs
+        // not finding the method, create new class
         if (!findClass(uiTreeRoot, newNode)) {
             dataTree.classChecklists.add(newNode)
             val classNode = CheckedTreeNode(ChecklistUserObject(newNode, 0))
@@ -168,18 +214,18 @@ class ChecklistTreeService {
     }
 
     /**
-     * This function print the tree on the terminal. It is very useful for debugging
+     * This function return a String which represents the tree.
      */
-    fun print() {
-        println(" am here")
-        println(dataTree.classChecklists.size)
+    fun print(): String {
+        var printString: String = ""
         for (dataClass in dataTree.classChecklists) {
-            //  println(" a2m here")
             for (dataMethod in dataClass.children) {
                 for (dataItem in dataMethod.children) {
-                    println(dataClass.description + " " + dataMethod.description + " " + dataItem.description)
+                    printString = printString + dataClass.description + " " + dataMethod.description
+                    printString = printString + " " + dataItem.description + "\n"
                 }
             }
         }
+        return printString
     }
 }

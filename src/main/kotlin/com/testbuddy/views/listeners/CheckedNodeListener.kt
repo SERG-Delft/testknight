@@ -12,6 +12,11 @@ import com.testbuddy.models.TestingChecklistLeafNode
 */
 class CheckedNodeListener : CheckboxTreeListener {
 
+    /**
+     * This method just makes the changes for the number of checked nodes for the selected node.
+     *
+     * @param node the selected CheckedTreeNode for which we have to do the changes in the checked attribute
+     */
     override fun nodeStateChanged(node: CheckedTreeNode) {
 
         if (node.userObject is ChecklistUserObject) {

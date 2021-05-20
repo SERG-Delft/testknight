@@ -53,7 +53,6 @@ class LoadChecklistAction : AnAction() {
 
         if (checklistClassTree != null) {
             checklistTreeService.addChecklist(checklistClassTree)
-            checklistTreeService.print()
         }
     }
 
