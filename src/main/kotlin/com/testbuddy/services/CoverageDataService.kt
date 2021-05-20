@@ -5,7 +5,9 @@ import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
+import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.ProjectData
+import com.testbuddy.com.testbuddy.models.CoverageDiffObject
 
 class CoverageDataService {
 
@@ -13,7 +15,7 @@ class CoverageDataService {
     private var previousSuite: CoverageSuitesBundle? = null
     private var currentData: ProjectData? = null
     private var currentSuite: CoverageSuitesBundle? = null
-    // private var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
+    private var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
 
     /**
      * Updates coverage at the end of every execution of runWithCoverage.
@@ -43,19 +45,55 @@ class CoverageDataService {
      * getDiff for both types of supported views
      */
     fun getDiffLines(project: Project) {
-//        previousData.classes["Point"].lines
-
-        if (previousData == null || currentData == null) { return }
+        var allLines = emptySet<Int>()
+        var coveredPrev = emptySet<Int>()
+        var coveredNow = emptySet<Int>()
+        if (previousData == null || currentData == null) {
+            return
+        }
 
         // gets all relevant classes in current project (not imports and org.junit or javax classes)
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll().mapNotNull { it.name }
 
-        print(classesInProject[0])
+        classesInProject.forEach {
+            if (currentData!!.classes.contains(it)) {
+                val classData = currentData!!.classes[it]
+                allLines = getTotalLinesAndNewlyCoveredLines(classData).first
+                coveredNow = getTotalLinesAndNewlyCoveredLines(classData).second
+            }
 
-//        classesInProject.forEach {
-//            if(previousData.classes != null) {
-//            if(previousData.classes.contains(it))
-//        }
+            if (previousData!!.classes.contains(it)) {
+                coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it])
+            }
+
+            classCoveragesMap[it] = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        }
+    }
+
+    private fun getTotalLinesAndNewlyCoveredLines(classData: ClassData?): Pair<Set<Int>, Set<Int>> {
+        val allLineSet = mutableSetOf<Int>()
+        val coveredNowSet = mutableSetOf<Int>()
+        if (classData == null) return Pair(emptySet<Int>(), emptySet<Int>())
+        val size = classData.lines.size
+        for (i in 0 until size) {
+            if (classData.getLineData(i) != null) {
+                allLineSet.add(i)
+                if (classData.getLineData(i).hits > 0) coveredNowSet.add(i)
+            }
+        }
+        return Pair(allLineSet, coveredNowSet)
+    }
+
+    private fun getLinesCoveredPreviously(classData: ClassData?): Set<Int> {
+        val coveredPrevSet = mutableSetOf<Int>()
+        if (classData == null) return emptySet()
+        val size = classData.lines.size
+        for (i in 0 until size) {
+            if (classData.getLineData(i) != null) {
+                if (classData.getLineData(i).hits > 0) coveredPrevSet.add(i)
+            }
+        }
+        return coveredPrevSet
     }
 }
