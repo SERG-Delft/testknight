@@ -26,7 +26,7 @@ class StringFormatter private constructor() {
          */
         fun formatClassFieldName(name: String): String {
             return if (name.startsWith("this.")) {
-                name.replaceFirst("this.","")
+                name.replaceFirst("this.", "")
             } else {
                 name
             }

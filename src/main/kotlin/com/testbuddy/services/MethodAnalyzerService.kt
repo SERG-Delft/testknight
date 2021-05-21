@@ -11,20 +11,15 @@ import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiThisExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCall
-import com.testbuddy.models.ClassFieldMutationSideEffect
-import com.testbuddy.models.MethodCallOnClassFieldSideEffect
-import com.testbuddy.models.MethodCallOnParameterSideEffect
-import com.testbuddy.models.ReassignsClassFieldSideEffect
-import com.testbuddy.models.SideEffect
+import com.testbuddy.models.sideEffectAnalysis.Assignment
+import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
+import com.testbuddy.models.sideEffectAnalysis.ReassignsClassFieldSideEffect
+import com.testbuddy.models.sideEffectAnalysis.SideEffect
 import com.testbuddy.utilities.StringFormatter
 
 class MethodAnalyzerService {
-
-    private val primitives = setOf(
-        "byte", "short", "int", "long",
-        "float", "double", "char", "boolean",
-        "!UNKNOWN"
-    )
 
     /**
      * Gets the side effects of a given method. It currently
@@ -52,63 +47,15 @@ class MethodAnalyzerService {
         val identifiersInClassScope = getIdentifiersInClassScope(method)
 
         return methodCallExpressions.flatMap {
-            getArgumentsAffectedByMethodCall(
-                it,
+            MethodCall.create(it).getMethodCallSideEffects<MethodCallOnParameterSideEffect>(
                 parametersInMethodScope,
-                identifiersInClassScope
-            )
-        }
-    }
-
-    /**
-     * Gets all the arguments affected by a method call.
-     *
-     * @param methodCallExpression the method call to be analyzed.
-     * @param parametersInMethodScope the parameters in scope of the method.
-     * @param identifiersInClassScope the identifiers in class scope.
-     */
-    private fun getArgumentsAffectedByMethodCall(
-        methodCallExpression: PsiMethodCallExpression,
-        parametersInMethodScope: Map<String, String>,
-        identifiersInClassScope: Map<String, String>,
-    ): List<MethodCallOnParameterSideEffect> {
-        val methodCall = MethodCall.create(methodCallExpression)
-        val argumentsThatAreMethodParameters = methodCall.args.filter {
-            !isClassField(it, parametersInMethodScope, identifiersInClassScope)
-        }
-        val argumentsWithReferenceTypes =
-            argumentsThatAreMethodParameters.filter { !primitives.contains(identifiersInClassScope[it]) }
-        return argumentsWithReferenceTypes.map {
-            MethodCallOnParameterSideEffect(
-                it,
-                StringFormatter.formatMethodName(methodCall.name)
-            )
-        }
-    }
-
-    /**
-     * Finds all the class fields affected by a method call.
-     *
-     * @param methodCallExpression the method call.
-     * @param identifiersInMethodScope the identifiers in the method scope.
-     * @param identifiersInClassScope  the identifiers in the class scope.
-     * @return a list of MethodCallOnClassFieldSideEffect objects representing the mutated fields.
-     */
-    private fun getClassFieldsAffectedByMethodCall(
-        methodCallExpression: PsiMethodCallExpression,
-        identifiersInMethodScope: Map<String, String>,
-        identifiersInClassScope: Map<String, String>
-    ): List<MethodCallOnClassFieldSideEffect> {
-        val methodCall = MethodCall.create(methodCallExpression)
-        val argumentsThatAreClassFields = methodCall.args.filter {
-            isClassField(it, identifiersInMethodScope, identifiersInClassScope)
-        }
-        val argumentsThatAreReferences = argumentsThatAreClassFields.filter { !primitives.contains(identifiersInClassScope[it]) }
-        return argumentsThatAreReferences.map {
-            MethodCallOnClassFieldSideEffect(
-                StringFormatter.formatClassFieldName(it),
-                StringFormatter.formatMethodName(methodCall.name)
-            )
+                identifiersInClassScope,
+                { fieldName: String,
+                  paramsInMethodScope: Map<String, String>,
+                  idsInClassScope: Map<String, String> ->
+                    !isClassField(fieldName, paramsInMethodScope, idsInClassScope)
+                }
+            ) { fieldName: String, methodName: String -> MethodCallOnParameterSideEffect(fieldName, methodName) }
         }
     }
 
@@ -141,7 +88,7 @@ class MethodAnalyzerService {
      * @param method the PsiMethod to analyze.
      * @return a set containing the names of the identifiers.
      */
-    private fun getIdentifiersInMethodScope(method: PsiMethod): Map<String,String> {
+    private fun getIdentifiersInMethodScope(method: PsiMethod): Map<String, String> {
         val localVariablesOfMethod = getLocalVariablesOfMethod(method)
         val parametersOfMethod = getParametersOfMethod(method)
         val result = mutableMapOf<String, String>()
@@ -159,7 +106,6 @@ class MethodAnalyzerService {
         return result
     }
 
-
     private fun getLocalVariablesOfMethod(method: PsiMethod): Map<String, String> {
         val result = mutableMapOf<String, String>()
         val declarations = PsiTreeUtil.findChildrenOfType(method, PsiDeclarationStatement::class.java)
@@ -175,6 +121,7 @@ class MethodAnalyzerService {
         val result = mutableMapOf<String, String>()
         parentClass.allFields.forEach {
             result[it.name] = it.type.canonicalText
+            result["this.${it.name}"] = it.type.canonicalText
         }
         result["this"] = parentClass.name ?: "!UNKNOWN"
         return result
@@ -195,8 +142,7 @@ class MethodAnalyzerService {
         val identifiersInClassScope = getIdentifiersInClassScope(method)
 
         val classFieldsAffectedByAssignments = assignmentExpressions.flatMap {
-            getClassFieldsReassigned(
-                it,
+            Assignment.create(it).getClassFieldsReassigned(
                 identifiersInMethodScope,
                 identifiersInClassScope
             )
@@ -204,63 +150,13 @@ class MethodAnalyzerService {
 
         val classFieldsAffectedByMethodCalls =
             methodCallExpressions.flatMap {
-                getClassFieldsAffectedByMethodCall(
-                    it,
+                MethodCall.create(it).getMethodCallSideEffects<MethodCallOnClassFieldSideEffect>(
                     identifiersInMethodScope,
-                    identifiersInClassScope
-                )
+                    identifiersInClassScope,
+                    this::isClassField
+                ) { fieldName: String, methodName: String -> MethodCallOnClassFieldSideEffect(fieldName, methodName) }
             }
 
         return classFieldsAffectedByAssignments + classFieldsAffectedByMethodCalls
     }
-
-    /**
-     * Checks whether the given assignment expression affects one of the class fields.
-     *
-     * @param assignment the PsiAssignmentExpression to be analyzed.
-     * @param identifiersInMethodScope the identifiers that this method binds.
-     *                        This is passed as an argument for optimisation purposes.
-     * @return true iff the assignment affects a class field.
-     */
-    private fun affectsClassField(
-        assignment: PsiAssignmentExpression,
-        identifiersInMethodScope: Map<String, String>,
-        identifiersInClassScope: Map<String, String>
-    ): Boolean {
-        val leftExpression = assignment.lExpression
-        return if (leftExpression.firstChild is PsiThisExpression) {
-            val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName.replaceFirst("this.", "")
-            identifiersInClassScope.contains(nameAffected)
-        } else {
-            val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName
-            !identifiersInMethodScope.contains(nameAffected) && identifiersInClassScope.contains(nameAffected)
-        }
-    }
-
-    /**
-     * Returns all the class fields re-assigned by an assignment.
-     *
-     * @param assignment the assignment.
-     * @param identifiersInMethodScope the identifiers in the method scope.
-     * @param identifiersInClassScope the identifiers in the method scope.
-     * @return a list of ReassignsClassFieldSideEffect objects representing the reassignments.
-     */
-    private fun getClassFieldsReassigned(
-        assignment: PsiAssignmentExpression,
-        identifiersInMethodScope: Map<String, String>,
-        identifiersInClassScope: Map<String, String>
-    ): List<ReassignsClassFieldSideEffect> {
-        return if (affectsClassField(assignment, identifiersInMethodScope, identifiersInClassScope)) {
-            listOf(
-                ReassignsClassFieldSideEffect(
-                    StringFormatter.formatClassFieldName(
-                        (assignment.lExpression as PsiReferenceExpression).qualifiedName
-                    )
-                )
-            )
-        } else {
-            emptyList()
-        }
-    }
-
 }
