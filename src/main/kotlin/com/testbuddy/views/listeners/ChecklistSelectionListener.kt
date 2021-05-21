@@ -29,7 +29,7 @@ import javax.swing.event.TreeSelectionListener
  */
 class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
 
-    private var editor: Editor = (FileEditorManager.getInstance(project).selectedEditor as TextEditor?)!!.editor
+    private var editor: Editor? = null
     private var highlighterList: MutableList<RangeHighlighter> = mutableListOf()
 
     /**
@@ -47,22 +47,25 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
     override fun valueChanged(event: TreeSelectionEvent) {
 
         for (highlighter in highlighterList) {
-            editor.markupModel.removeHighlighter(highlighter)
+            editor?.markupModel?.removeHighlighter(highlighter)
         }
 
-        val component = event.newLeadSelectionPath.lastPathComponent
+        val textEditor = (FileEditorManager.getInstance(project).selectedEditor as TextEditor?) ?: return
+        editor = textEditor.editor
+
+        val component = (event.newLeadSelectionPath ?: return).lastPathComponent ?: return
         if (component is CheckedTreeNode) {
             val userObject = (component.userObject as ChecklistUserObject).checklistNode
 
             val element = getElement(userObject) ?: return
 
-            if (isElementInEditor(editor, element)) {
+            if (isElementInEditor(editor!!, element)) {
 
                 val myKey = DefaultLanguageHighlighterColors.INLINE_PARAMETER_HINT_HIGHLIGHTED
 
                 // Create highlight and add to the highlight list.
                 highlighterList.add(
-                    editor.markupModel.addRangeHighlighter(
+                    editor!!.markupModel.addRangeHighlighter(
                         myKey,
                         element.startOffset,
                         element.endOffset,
@@ -72,8 +75,8 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
                 )
 
                 // Goto the offset
-                editor.caretModel.primaryCaret.moveToOffset(element.startOffset)
-                editor.scrollingModel.scrollToCaret(ScrollType.CENTER)
+                editor!!.caretModel.primaryCaret.moveToOffset(element.startOffset)
+                editor!!.scrollingModel.scrollToCaret(ScrollType.CENTER)
             }
         }
     }

@@ -34,6 +34,7 @@ class ChecklistTreeService {
         dataTree = TestingChecklist(mutableListOf())
         val root = uiTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
+        (uiTree.model as DefaultTreeModel).reload()
     }
 
     /**
