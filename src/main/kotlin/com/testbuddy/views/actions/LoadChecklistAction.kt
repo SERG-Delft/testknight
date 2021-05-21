@@ -12,6 +12,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.models.TestingChecklistClassNode
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.GenerateTestCaseChecklistService
+import com.testbuddy.services.TestAnalyzerService
 
 class LoadChecklistAction : AnAction() {
 
@@ -42,10 +43,11 @@ class LoadChecklistAction : AnAction() {
     fun actionPerformed(project: Project, psiElement: PsiElement, refresh: Boolean = false): Boolean {
 
         val checklistService = project.service<GenerateTestCaseChecklistService>()
+        val checkTestService = TestAnalyzerService()
         var checklistClassTree: TestingChecklistClassNode? = null
-        if (psiElement is PsiClass) {
+        if (psiElement is PsiClass && !checkTestService.isTestClass(psiElement)) {
             checklistClassTree = checklistService.generateClassChecklistFromClass(psiElement)
-        } else if (psiElement is PsiMethod) {
+        } else if (psiElement is PsiMethod && !checkTestService.isTestMethod(psiElement)) {
             checklistClassTree = checklistService.generateClassChecklistFromMethod(psiElement)
         }
 
