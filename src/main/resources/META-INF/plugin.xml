@@ -15,7 +15,6 @@
         <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
         <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
-
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
     </extensions>
 
