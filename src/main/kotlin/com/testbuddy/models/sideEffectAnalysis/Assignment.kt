@@ -2,7 +2,6 @@ package com.testbuddy.models.sideEffectAnalysis
 
 import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiReferenceExpression
-import com.intellij.psi.PsiThisExpression
 import com.testbuddy.utilities.StringFormatter
 
 data class Assignment(val nameAffected: String) {
@@ -10,13 +9,8 @@ data class Assignment(val nameAffected: String) {
     companion object Factory {
         fun create(psiAssignmentExpression: PsiAssignmentExpression): Assignment {
             val leftExpression = psiAssignmentExpression.lExpression
-            return if (leftExpression.firstChild is PsiThisExpression) {
-                val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName//.replaceFirst("this.", "")
-                Assignment(nameAffected)
-            } else {
-                val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName
-                Assignment(nameAffected)
-            }
+            val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName
+            return Assignment(nameAffected)
         }
     }
 
@@ -32,7 +26,8 @@ data class Assignment(val nameAffected: String) {
         identifiersInMethodScope: Map<String, String>,
         identifiersInClassScope: Map<String, String>
     ): Boolean {
-        return !identifiersInMethodScope.contains(this.nameAffected) && identifiersInClassScope.contains(this.nameAffected)
+        return !identifiersInMethodScope.contains(this.nameAffected) &&
+                identifiersInClassScope.contains(this.nameAffected)
     }
 
     /**
@@ -58,6 +53,4 @@ data class Assignment(val nameAffected: String) {
             emptyList()
         }
     }
-
-
 }

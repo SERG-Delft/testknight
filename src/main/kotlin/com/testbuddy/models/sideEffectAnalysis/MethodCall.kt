@@ -38,14 +38,14 @@ data class MethodCall(val name: String, val args: List<String>) {
      * @param mapToResult the function to be used to create the final result.
      * @return a list of side-effects of type E.
      */
-     fun <E : SideEffect> getMethodCallSideEffects(
+    fun <E : SideEffect> getMethodCallSideEffects(
         identifiersInMethodScope: Map<String, String>,
         identifiersInClassScope: Map<String, String>,
-        fieldsFilter: (String, Map<String, String>, Map<String, String>) -> Boolean,
+        fieldsFilter: (String, Map<String, String>) -> Boolean,
         mapToResult: (String, String) -> E,
     ): List<E> {
         val argumentsThatAreClassFields = this.args.filter {
-            fieldsFilter(it, identifiersInMethodScope, identifiersInClassScope)
+            fieldsFilter(it, identifiersInMethodScope)
         }
         val argumentsThatAreReferences =
             argumentsThatAreClassFields.filter { !primitives.contains(identifiersInClassScope[it]) }
@@ -56,5 +56,4 @@ data class MethodCall(val name: String, val args: List<String>) {
             )
         }
     }
-
 }
