@@ -121,7 +121,7 @@ class UserInterface(val project: Project) {
     }
 
     /**
-     * Creates a tool window panel with a action toolbar.
+     * Creates a tool window panel with a action toolbar for Coverage tab.
      *
      * @return The SimpleToolWindowPanel with action toolbar and
      * scroll panel where the coverage statistics will be shown.
@@ -134,6 +134,10 @@ class UserInterface(val project: Project) {
         val actionManager = ActionManager.getInstance()
         val actionGroup = DefaultActionGroup("CoverageActions", false)
         actionGroup.add(actionManager.getAction("LoadCoverageAction"))
+        actionGroup.add(actionManager.getAction("ShowCoverageDiffAction"))
+        actionGroup.addSeparator()
+        actionGroup.add(actionManager.getAction("ShowIntegratedView"))
+        actionGroup.add(actionManager.getAction("HideIntegratedView"))
         val actionToolbar = actionManager.createActionToolbar("CoverageToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 

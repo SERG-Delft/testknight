@@ -5,7 +5,6 @@ import com.intellij.coverage.view.CoverageView
 import com.intellij.coverage.view.CoverageViewManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.components.JBPanelWithEmptyText
@@ -22,7 +21,7 @@ class LoadCoverageAction : AnAction() {
      */
     override fun actionPerformed(e: AnActionEvent) {
 
-        val project = e.project ?: return
+        val project = e.project!!
         val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
         val tabbedPane = (
             (window!!.contentManager.contents[0] as ContentImpl)
@@ -52,10 +51,6 @@ class LoadCoverageAction : AnAction() {
      */
     override fun update(e: AnActionEvent) {
         // Set the availability based on whether the project, psiFile and editor is not null
-        e.presentation.isEnabled = (
-            e.project != null &&
-                e.getData(CommonDataKeys.PSI_FILE) != null &&
-                e.getData(CommonDataKeys.EDITOR) != null
-            )
+        e.presentation.isEnabled = e.project != null
     }
 }

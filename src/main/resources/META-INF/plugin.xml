@@ -69,6 +69,20 @@
                 text="Load Coverage" description="Adds the coverage statistics."
                 icon="AllIcons.Actions.Refresh">
         </action>
+        <action id="ShowCoverageDiffAction" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
+                text="Show Diff View" description="Shows the difference in coverage in a diff view."
+                icon="AllIcons.Actions.Diff">
+        </action>
+        <!--        Class will be changed after backend has been connected-->
+        <action id="ShowIntegratedView" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
+                text="Show Integrated View" description="Shows the coverage line markers in the editor."
+                icon="AllIcons.General.InspectionsEye">
+        </action>
+        <!--        Class will be changed after backend has been connected-->
+        <action id="HideIntegratedView" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
+                text="Hide Integrated View" description="Hides the coverage line markers in the editor."
+                icon="AllIcons.Diff.Remove">
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
