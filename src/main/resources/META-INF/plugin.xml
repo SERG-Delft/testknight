@@ -52,6 +52,9 @@
                 description="Generates the checklist for the method/class under caret of the current open file.">
             <keyboard-shortcut first-keystroke="control shift G" keymap="$default"/>
         </action>
+        <action id="com.testbuddy.com.testbuddy.views.actions.ShowDiffCovHighlights"
+                class="com.testbuddy.views.actions.ShowDiffCovHighlights"
+                text="Show Coverage Diff"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
