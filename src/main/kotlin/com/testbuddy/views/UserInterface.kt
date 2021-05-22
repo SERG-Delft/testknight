@@ -12,7 +12,6 @@ import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
-import com.intellij.ui.components.Panel
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.LoadTestsService
@@ -124,9 +123,10 @@ class UserInterface(val project: Project) {
     /**
      * Creates a tool window panel with a action toolbar.
      *
-     * @return The SimpleToolWindowPanel with action toolbar and scroll panel where the coverage statistics will be shown.
+     * @return The SimpleToolWindowPanel with action toolbar and
+     * scroll panel where the coverage statistics will be shown.
      */
-    private fun createCoverage(): Component{
+    private fun createCoverage(): Component {
 
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
@@ -141,7 +141,6 @@ class UserInterface(val project: Project) {
         toolWindowPanel.setContent(panel)
 
         return toolWindowPanel
-
     }
 
     /**
@@ -157,7 +156,6 @@ class UserInterface(val project: Project) {
         mainUI!!.addTab("Checklist", createCheckList())
         // Function call which returns the tab for coverage
         mainUI!!.addTab("Coverage", createCoverage())
-
 
         val loadTestsService = project.service<LoadTestsService>()
 

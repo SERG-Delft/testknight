@@ -13,8 +13,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import javax.swing.JTabbedPane
 
-
-class LoadCoverageAction: AnAction() {
+class LoadCoverageAction : AnAction() {
 
     /**
      * Updates the Coverage tab to load the statistics from the testing suite.
@@ -26,38 +25,37 @@ class LoadCoverageAction: AnAction() {
         val project = e.project ?: return
         val window: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy")
         val tabbedPane = (
-                (window!!.contentManager.contents[0] as ContentImpl)
-                    .component as JTabbedPane
-                )
+            (window!!.contentManager.contents[0] as ContentImpl)
+                .component as JTabbedPane
+            )
         val coverageTab = tabbedPane.getComponentAt(2) as JBPanelWithEmptyText
         val coverageScroll = coverageTab.getComponent(1) as JBScrollPane
         val coverageViewport = coverageScroll.viewport
 
-
         val content = try {
             val instance = CoverageDataManager.getInstance(project) ?: return
-            val stateBean =  CoverageViewManager.StateBean()
+            val stateBean = CoverageViewManager.StateBean()
             CoverageView(project, instance, stateBean)
-        }catch (e: Exception){
+        } catch (e: IllegalArgumentException) {
+            println(e)
             return
         }
 
         coverageViewport.view = content
     }
 
-
     /**
-    * Determines whether this menu item is available for the current context.
-    * Requires a project to be open and psiFile and Editor to be accessible from the action event.
-    *
-    * @param e Event received when the associated group-id menu is chosen.
-    */
+     * Determines whether this menu item is available for the current context.
+     * Requires a project to be open and psiFile and Editor to be accessible from the action event.
+     *
+     * @param e Event received when the associated group-id menu is chosen.
+     */
     override fun update(e: AnActionEvent) {
         // Set the availability based on whether the project, psiFile and editor is not null
         e.presentation.isEnabled = (
-                e.project != null &&
-                        e.getData(CommonDataKeys.PSI_FILE) != null &&
-                        e.getData(CommonDataKeys.EDITOR) != null
-                )
+            e.project != null &&
+                e.getData(CommonDataKeys.PSI_FILE) != null &&
+                e.getData(CommonDataKeys.EDITOR) != null
+            )
     }
 }
