@@ -70,7 +70,6 @@
         <intentionAction>
             <className>com.testbuddy.views.actions.AssertionSuggestionsAction</className>
             <category>TestBuddy intentions</category>
-            <descriptionDirectoryName>"intentionDescriptions"</descriptionDirectoryName>
 
         </intentionAction>
     </extensions>
