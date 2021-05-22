@@ -60,9 +60,6 @@
         </intentionAction>
     </extensions>
 
-
-
-
     <actions>
         <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
     </actions>
@@ -78,9 +75,9 @@
     
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.testbuddy.CoverageListener"
-                  topic="com.intellij.execution.ExecutionListener"/>
-    </applicationListeners>
+    <projectListeners>
+        <listener class="com.testbuddy.InitializationListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </projectListeners>
 
 </idea-plugin>

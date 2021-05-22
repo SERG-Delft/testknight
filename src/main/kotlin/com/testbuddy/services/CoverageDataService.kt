@@ -2,6 +2,7 @@ package com.testbuddy.services
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
@@ -9,13 +10,13 @@ import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.ProjectData
 import com.testbuddy.com.testbuddy.models.CoverageDiffObject
 
-class CoverageDataService {
+class CoverageDataService : Disposable {
 
     private var previousData: ProjectData? = null
     private var previousSuite: CoverageSuitesBundle? = null
     private var currentData: ProjectData? = null
     private var currentSuite: CoverageSuitesBundle? = null
-    private var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
+    var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
 
     /**
      * Updates coverage at the end of every execution of runWithCoverage.
@@ -111,5 +112,9 @@ class CoverageDataService {
             }
         }
         return coveredPrevSet
+    }
+
+    override fun dispose() {
+        // just use default garbage collection
     }
 }
