@@ -60,6 +60,10 @@
                 class="com.testbuddy.views.actions.HideDiffCovHighlights"
                 text="Hide Coverage Diff"
                 description="Hide coverage diff gutter highlighters"/>
+        <action id="com.testbuddy.com.testbuddy.views.actions.RefreshDiffHighlights"
+                class="com.testbuddy.views.actions.RefreshDiffHighlights"
+                text="Refresh Coverage Diff"
+                description="Refresh coverage diff gutter highlighters"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">

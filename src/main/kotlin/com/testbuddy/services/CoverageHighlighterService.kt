@@ -49,6 +49,17 @@ class CoverageHighlighterService(val project: Project) {
     }
 
     /**
+     * Update the coverage diff highlights.
+     *
+     * @param editor the editor
+     * @param className the class name
+     */
+    fun refreshHighlights(editor: Editor, className: String) {
+        hideHighlights(editor)
+        showHighlights(editor, className)
+    }
+
+    /**
      * Add a gutter highlight in an editor.
      *
      * @param editor the editor
