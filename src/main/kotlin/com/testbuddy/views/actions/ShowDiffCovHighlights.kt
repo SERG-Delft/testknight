@@ -11,10 +11,12 @@ import com.testbuddy.services.CoverageHighlighterService
 class ShowDiffCovHighlights : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        val project = e.project ?: return
-        val editor = e.getData(CommonDataKeys.EDITOR) ?: return
-        val psiFile = e.getData(CommonDataKeys.PSI_FILE) ?: return
-        val className = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.name ?: return
+        val project = e.project
+        val editor = e.getData(CommonDataKeys.EDITOR)
+        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
+        val className = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.name
+
+        if (project == null || editor == null || className == null) return
 
         val coverageHighlighterService = project.service<CoverageHighlighterService>()
 

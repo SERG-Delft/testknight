@@ -4,8 +4,6 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
-import com.intellij.psi.PsiClass
-import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.services.CoverageHighlighterService
 
 class HideDiffCovHighlights : AnAction() {
