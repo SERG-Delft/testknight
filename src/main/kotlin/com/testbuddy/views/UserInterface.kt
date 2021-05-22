@@ -12,6 +12,7 @@ import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
+import com.intellij.ui.components.Panel
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.LoadTestsService
@@ -55,7 +56,7 @@ class UserInterface(val project: Project) {
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
         val actionGroup = DefaultActionGroup("ChecklistTabActions", false)
-        actionGroup.add(actionManager.getAction("checklistAction"))
+        actionGroup.add(actionManager.getAction("ChecklistAction"))
         actionGroup.add(actionManager.getAction("ClearChecklistAction"))
         val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
@@ -121,6 +122,29 @@ class UserInterface(val project: Project) {
     }
 
     /**
+     * Creates a tool window panel with a action toolbar.
+     *
+     * @return The SimpleToolWindowPanel with action toolbar and scroll panel where the coverage statistics will be shown.
+     */
+    private fun createCoverage(): Component{
+
+        val toolWindowPanel = SimpleToolWindowPanel(true)
+
+        // Setting up the action groups for the toolbar
+        val actionManager = ActionManager.getInstance()
+        val actionGroup = DefaultActionGroup("CoverageActions", false)
+        actionGroup.add(actionManager.getAction("LoadCoverageAction"))
+        val actionToolbar = actionManager.createActionToolbar("CoverageToolbar", actionGroup, true)
+        toolWindowPanel.toolbar = actionToolbar.component
+
+        val panel = JBScrollPane()
+        toolWindowPanel.setContent(panel)
+
+        return toolWindowPanel
+
+    }
+
+    /**
      * Constructor which sets up the MainUI.
      * The MainUI will be a Tabbed pane with a CopyPaste and Checklist tab.
      */
@@ -131,6 +155,9 @@ class UserInterface(val project: Project) {
         mainUI!!.addTab("CopyPaste", getCopyPasteTab())
         // Function call which returns the tab for checklist
         mainUI!!.addTab("Checklist", createCheckList())
+        // Function call which returns the tab for coverage
+        mainUI!!.addTab("Coverage", createCoverage())
+
 
         val loadTestsService = project.service<LoadTestsService>()
 

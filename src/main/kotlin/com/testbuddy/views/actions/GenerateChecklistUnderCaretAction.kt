@@ -26,7 +26,7 @@ class GenerateChecklistUnderCaretAction : AnAction() {
         val containingMethod = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java)
         val containingClass = PsiTreeUtil.getParentOfType(element, PsiClass::class.java)
 
-        val checklistAction = ActionManager.getInstance().getAction("checklistAction") as LoadChecklistAction
+        val checklistAction = ActionManager.getInstance().getAction("ChecklistAction") as LoadChecklistAction
 
         if (containingMethod != null && checklistAction.actionPerformed(project, containingMethod)) {
             UserInterfaceHelper.showTab(project, "Checklist")
