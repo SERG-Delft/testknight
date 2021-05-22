@@ -3,15 +3,14 @@ package com.testbuddy.com.testbuddy.extensions
 import com.intellij.coverage.LineMarkerRendererWithErrorStripe
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.LineMarkerRendererEx.Position
-import com.intellij.openapi.project.Project
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Rectangle
 
-class DiffCoverageLineMarkerRenderer(val project: Project) : LineMarkerRendererWithErrorStripe {
+class DiffCoverageLineMarkerRenderer(private val color: Color) : LineMarkerRendererWithErrorStripe {
 
     override fun paint(editor: Editor, g: Graphics, r: Rectangle) {
-        g.color = Color.CYAN
+        g.color = color
         g.fillRect(r.x, r.y, r.width, +r.height)
     }
 
