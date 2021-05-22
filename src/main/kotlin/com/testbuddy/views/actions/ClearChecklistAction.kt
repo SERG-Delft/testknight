@@ -2,11 +2,9 @@ package com.testbuddy.views.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.intellij.ui.treeStructure.Tree
-import com.testbuddy.utilities.UserInterfaceHelper
-import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeModel
+import com.testbuddy.services.ChecklistTreeService
 
 class ClearChecklistAction : AnAction() {
 
@@ -25,11 +23,8 @@ class ClearChecklistAction : AnAction() {
      * @param project current open project.
      */
     fun actionPerformed(project: Project) {
-        val viewport = UserInterfaceHelper.getTabViewport(project, "Checklist") ?: return
-        val checklistTree = viewport.view as Tree
-        val root = checklistTree.model.root as DefaultMutableTreeNode
-        root.removeAllChildren()
-        (checklistTree.model as DefaultTreeModel).reload()
+        val checklistTreeService = project.service<ChecklistTreeService>()
+        checklistTreeService.resetTree()
     }
 
     /**

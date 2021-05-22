@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
 import com.testbuddy.services.DuplicateTestsService
+import com.testbuddy.utilities.UserInterfaceHelper
 
 class DuplicateTestUnderCaretAction : AnAction() {
 
@@ -20,7 +21,9 @@ class DuplicateTestUnderCaretAction : AnAction() {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)!!
         val editor = event.getData(CommonDataKeys.EDITOR)!!
 
-        duplicateTestsService.duplicateMethodUnderCaret(psiFile, editor)
+        if (duplicateTestsService.duplicateMethodUnderCaret(psiFile, editor)) {
+            UserInterfaceHelper.showTab(psiFile.project, "CopyPaste")
+        }
     }
 
     /**

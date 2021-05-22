@@ -121,7 +121,7 @@ class ConditionChecklistGenerationStrategy private constructor(
             }
 
             // remove trailing comma and space
-            TestingChecklistLeafNode(description.dropLast(2), psiElement)
+            TestingChecklistLeafNode(description.dropLast(2), psiElement,)
         }
     }
 

@@ -2,6 +2,7 @@ package com.testbuddy.views.trees
 
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
+import com.intellij.ui.ColoredTreeCellRenderer
 import com.intellij.ui.SimpleTextAttributes
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.TestingChecklistClassNode
@@ -9,6 +10,7 @@ import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TestingChecklistMethodNode
 import com.testbuddy.models.TestingChecklistNode
 import com.testbuddy.models.TestingChecklistParentNode
+import java.awt.Color
 import javax.swing.JTree
 
 /**
@@ -41,9 +43,10 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
         if (value is CheckedTreeNode) {
             val renderer = textRenderer
             if (value.userObject is ChecklistUserObject) {
-                val userObject = value.userObject as ChecklistUserObject
 
+                val userObject = value.userObject as ChecklistUserObject
                 val checklistNode = userObject.checklistNode
+
                 when (checklistNode) {
                     is TestingChecklistParentNode -> {
                         checkbox.isVisible = false
@@ -55,11 +58,54 @@ class ChecklistCellRenderer(opaque: Boolean) : CheckboxTree.CheckboxTreeCellRend
                 renderer.append(name, SimpleTextAttributes.REGULAR_ATTRIBUTES)
 
                 if (checklistNode !is TestingChecklistLeafNode) {
-                    val countString = " ${userObject.checkCount} item(s) checked."
-                    renderer.append(countString, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
+                    val countCheckedNodes = checklistNode.checked
+                    val countChildrenNodes = getChildCount(userObject.checklistNode as TestingChecklistParentNode)
+                    val countBoxes = " $countCheckedNodes/" + "$countChildrenNodes item(s) checked."
+
+                    colorItemsStatistics(countCheckedNodes, countChildrenNodes, renderer, countBoxes)
                 }
             }
         }
+    }
+
+    /**
+     * Sets the color for the items statistics(grey/green)
+     */
+    @Suppress("MagicNumber")
+    private fun colorItemsStatistics(
+        countCheckedNodes: Int,
+        countChildrenNodes: Int,
+        renderer: ColoredTreeCellRenderer,
+        countBoxes: String
+    ) {
+        val red = 22
+        val green = 102
+        val blue = 20
+        if (countCheckedNodes == countChildrenNodes && countChildrenNodes != 0) {
+            renderer.append(
+                countBoxes,
+                SimpleTextAttributes(SimpleTextAttributes.STYLE_ITALIC, Color(red, green, blue))
+            )
+        } else {
+            renderer.append(countBoxes, SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES)
+        }
+    }
+
+    /**
+     * Gets the number of the boxes from the children
+     * @param node TestingChecklistParentNode for which we have to compute the number of checklist
+     */
+    private fun getChildCount(node: TestingChecklistParentNode): Int {
+        var count: Int = 0
+        when (node) {
+            is TestingChecklistMethodNode -> count += node.children.size
+            is TestingChecklistClassNode -> {
+                for (child in node.children) {
+                    count += getChildCount(child)
+                }
+            }
+        }
+        return count
     }
 
     /**

@@ -37,13 +37,13 @@ class GenerateTestCaseChecklistService {
 
         if (testAnalyzerService.isTestMethod(psiMethod)) return TestingChecklistClassNode(
             parentClass.name!!,
-            emptyList(),
+            mutableListOf(),
             parentClass
         )
 
         return TestingChecklistClassNode(
             parentClass.name!!,
-            listOf(methodItem),
+            mutableListOf(methodItem),
             parentClass
         )
     }

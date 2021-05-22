@@ -15,6 +15,7 @@
         <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
         <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
+        <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -41,7 +42,7 @@
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="D" keymap="$default"/>
         </action>
         <!---Actions in CheckList tab -->
-        <action id="checklistAction" class="com.testbuddy.views.actions.LoadChecklistAction"
+        <action id="ChecklistAction" class="com.testbuddy.views.actions.LoadChecklistAction"
                 text="Load Checklist for Class from Current File" description="Adds a new template test case."
                 icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="G" keymap="$default"/>
@@ -63,12 +64,32 @@
                 description="Generates the checklist for the method/class under caret of the current open file.">
             <keyboard-shortcut first-keystroke="control shift G" keymap="$default"/>
         </action>
+        <!---Actions in Coverage tab -->
+        <action id="LoadCoverageAction" class="com.testbuddy.views.actions.LoadCoverageAction"
+                text="Load Coverage" description="Adds the coverage statistics."
+                icon="AllIcons.Actions.Refresh">
+        </action>
+        <action id="ShowCoverageDiffAction" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
+                text="Show Diff View" description="Shows the difference in coverage in a diff view."
+                icon="AllIcons.Actions.Diff">
+        </action>
+        <!--        Class will be changed after backend has been connected-->
+        <action id="ShowIntegratedView" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
+                text="Show Integrated View" description="Shows the coverage line markers in the editor."
+                icon="AllIcons.General.InspectionsEye">
+        </action>
+        <!--        Class will be changed after backend has been connected-->
+        <action id="HideIntegratedView" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
+                text="Hide Integrated View" description="Hides the coverage line markers in the editor."
+                icon="AllIcons.Diff.Remove">
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction>
             <className>com.testbuddy.views.actions.AssertionSuggestionsAction</className>
             <category>TestBuddy intentions</category>
+
         </intentionAction>
     </extensions>
 
