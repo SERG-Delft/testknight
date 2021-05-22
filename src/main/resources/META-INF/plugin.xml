@@ -8,23 +8,6 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
 
-    <description>
-        <![CDATA[
-      Intention action that suggests converting a ternary operator into an 'if' block.<br>
-      Adds entry to <b>Preferences | Editor | Intentions | SDK Intentions<b>.
-    ]]>
-    </description>
-    <change-notes>
-        <![CDATA[
-      <ul>
-        <li><b>2.0.0</b> Convert to Gradle.</li>
-        <li><b>1.4.0</b> Refactor resources, general cleanup.</li>
-        <li><b>1.3.0</b> Release 2018.3 and earlier.</li>
-      </ul>
-    ]]>
-    </change-notes>
-
-
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
