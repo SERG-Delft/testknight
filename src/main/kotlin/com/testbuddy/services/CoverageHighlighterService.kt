@@ -1,5 +1,6 @@
 package com.testbuddy.services
 
+import com.intellij.diff.comparison.isEquals
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.HighlighterLayer
@@ -11,7 +12,7 @@ import java.awt.Color
 @Suppress("MagicNumber")
 class CoverageHighlighterService(val project: Project) {
 
-    private val highlights = mapOf<Editor, MutableSet<RangeHighlighter>>()
+    private val highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
     private val covDataService = project.service<CoverageDataService>()
 
     private val deletedColor = Color(237, 71, 71)
@@ -41,7 +42,6 @@ class CoverageHighlighterService(val project: Project) {
      * Hide all diff-coverage highlights in the given editor and class.
      *
      * @param editor the editor
-     * @param className the class name
      */
     fun hideHighlights(editor: Editor) {
         highlights[editor]?.forEach { editor.markupModel.removeHighlighter(it) }
@@ -62,9 +62,8 @@ class CoverageHighlighterService(val project: Project) {
             HighlighterLayer.LAST
         )
 
-        var editorHighlights = highlights[editor]
-        if (editorHighlights == null) editorHighlights = mutableSetOf()
-        editorHighlights.add(hl)
+        if (highlights[editor] == null) highlights[editor] = mutableSetOf()
+        highlights[editor]!!.add(hl)
 
         hl.lineMarkerRenderer = DiffCoverageLineMarkerRenderer(color)
     }

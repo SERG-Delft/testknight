@@ -54,7 +54,12 @@
         </action>
         <action id="com.testbuddy.com.testbuddy.views.actions.ShowDiffCovHighlights"
                 class="com.testbuddy.views.actions.ShowDiffCovHighlights"
-                text="Show Coverage Diff"/>
+                text="Show Coverage Diff"
+                description="Show coverage diff gutter highlighters"/>
+        <action id="com.testbuddy.com.testbuddy.views.actions.HideDiffCovHighlights"
+                class="com.testbuddy.views.actions.HideDiffCovHighlights"
+                text="Hide Coverage Diff"
+                description="Hide coverage diff gutter highlighters"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
