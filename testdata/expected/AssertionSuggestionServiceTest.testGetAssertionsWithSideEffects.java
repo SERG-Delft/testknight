@@ -4,11 +4,6 @@ public class MixedTestAndNoTestMethods {
     public void test() {
         getAnInt();
         doNothing();
-
-        /**
-         * Assert that "getAnInt" returns the proper "int".
-         */
-
     }
 
     @Test
@@ -16,6 +11,12 @@ public class MixedTestAndNoTestMethods {
         String noun = "Testing";
         String adverb = "awesome";
         methodUnderTest(noun, adverb);
+
+        /**
+         * Assert that method "append" modifies argument "noun" properly.
+         * Assert that method "append" modifies argument "adverb" properly.
+         */
+
     }
 
     public void methodUnderTest(String a, String b) {

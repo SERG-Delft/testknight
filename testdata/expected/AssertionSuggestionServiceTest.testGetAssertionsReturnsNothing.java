@@ -6,6 +6,17 @@ public class MixedTestAndNoTestMethods {
         doNothing();
     }
 
+    @Test
+    public void testMethod() {
+        String noun = "Testing";
+        String adverb = "awesome";
+        methodUnderTest(noun, adverb);
+    }
+
+    public void methodUnderTest(String a, String b) {
+        a.append(" is ", b);
+    }
+
     public int getAnInt() {
         return 1;
     }
