@@ -1,0 +1,29 @@
+package com.testbuddy.com.testbuddy.extensions
+
+import com.intellij.coverage.LineMarkerRendererWithErrorStripe
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.markup.LineMarkerRendererEx.Position
+import com.intellij.openapi.project.Project
+import com.testbuddy.services.CoverageDataService
+import java.awt.Color
+import java.awt.Graphics
+import java.awt.Rectangle
+
+
+class DiffCoverageLineMarkerRenderer(val project: Project) : LineMarkerRendererWithErrorStripe {
+
+    private val covDataService = CoverageDataService()
+
+    override fun paint(editor: Editor, g: Graphics, r: Rectangle) {
+        g.color = Color.CYAN
+        g.fillRect(r.x, r.y, r.width, +r.height)
+    }
+
+    override fun getPosition(): Position {
+        return Position.LEFT
+    }
+
+    override fun getErrorStripeColor(editor: Editor?): Color {
+        return Color.CYAN
+    }
+}
