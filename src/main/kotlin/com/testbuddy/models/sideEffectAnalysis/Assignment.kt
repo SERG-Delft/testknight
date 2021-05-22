@@ -27,7 +27,7 @@ data class Assignment(val nameAffected: String) {
         identifiersInClassScope: Map<String, String>
     ): Boolean {
         return !identifiersInMethodScope.contains(this.nameAffected) &&
-                identifiersInClassScope.contains(this.nameAffected)
+            identifiersInClassScope.contains(this.nameAffected)
     }
 
     /**

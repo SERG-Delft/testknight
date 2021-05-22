@@ -195,6 +195,44 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         assertMethodSideEffects(testClass, expected, "passParameterTwice")
     }
 
+    @Test
+    fun testChainedMethodCallOnArgument() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnParameterSideEffect("string", "reverse"),
+        )
+        assertMethodSideEffects(testClass, expected, "chainedMethodCallOnArgument")
+    }
+
+    @Test
+    fun testChainedMethodCallOnThis() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnClassFieldSideEffect("this", "method"),
+        )
+        assertMethodSideEffects(testClass, expected, "chainedMethodCallOnThis")
+    }
+
+    @Test
+    fun testChainedMethodCallOnThisField() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            MethodCallOnClassFieldSideEffect("name", "append"),
+        )
+        assertMethodSideEffects(testClass, expected, "chainedMethodCallOnThisField")
+    }
+
+    @Test
+    fun testChainedStaticMethodCall() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = emptyList<SideEffect>()
+        assertMethodSideEffects(testClass, expected, "chainedStaticMethodCall")
+    }
+
     public override fun getTestDataPath(): String {
         return "testdata"
     }

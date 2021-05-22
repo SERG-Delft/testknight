@@ -6,11 +6,11 @@ import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCall
 import com.testbuddy.models.sideEffectAnalysis.Assignment
+import com.testbuddy.models.sideEffectAnalysis.Class
 import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
 import com.testbuddy.models.sideEffectAnalysis.Method
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
-import com.testbuddy.models.sideEffectAnalysis.Class
 import com.testbuddy.models.sideEffectAnalysis.SideEffect
 
 class MethodAnalyzerService {
@@ -39,6 +39,7 @@ class MethodAnalyzerService {
         val methodUnderAnalysis = Method.createFromMethod(method)
         val methodCalls = PsiTreeUtil
             .findChildrenOfType(method, PsiMethodCallExpression::class.java)
+            .filter { methodFilter(it) }
             .map { MethodCall.create(it) }
         val parentClass = Class.createClassFromMethod(method)
 
@@ -47,8 +48,8 @@ class MethodAnalyzerService {
                 methodUnderAnalysis.parameters,
                 parentClass.fields,
                 {
-                        fieldName: String,
-                        paramsInMethodScope: Map<String, String>,
+                    fieldName: String,
+                    paramsInMethodScope: Map<String, String>,
                     ->
                     !parentClass.isClassField(fieldName, paramsInMethodScope)
                 }
@@ -70,7 +71,9 @@ class MethodAnalyzerService {
         val assignments =
             PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java).map { Assignment.create(it) }
         val methodCalls =
-            PsiTreeUtil.findChildrenOfType(method, PsiMethodCallExpression::class.java).map { MethodCall.create(it) }
+            PsiTreeUtil.findChildrenOfType(method, PsiMethodCallExpression::class.java)
+                .filter { methodFilter(it) }
+                .map { MethodCall.create(it) }
         val parentClass = Class.createClassFromMethod(method)
 
         val classFieldsAffectedByAssignments = assignments.flatMap {
@@ -86,8 +89,8 @@ class MethodAnalyzerService {
                     methodUnderAnalysis.identifiersInScope,
                     parentClass.fields,
                     {
-                            fieldName: String,
-                            paramsInMethodScope: Map<String, String>,
+                        fieldName: String,
+                        paramsInMethodScope: Map<String, String>,
                         ->
                         parentClass.isClassField(fieldName, paramsInMethodScope)
                     }
@@ -95,5 +98,23 @@ class MethodAnalyzerService {
             }
 
         return classFieldsAffectedByAssignments + classFieldsAffectedByMethodCalls
+    }
+
+    private fun methodFilter(psiMethodCallExpression: PsiMethodCallExpression): Boolean {
+        return !isChained(psiMethodCallExpression) && !isStatic(psiMethodCallExpression)
+    }
+
+    private fun isChained(psiMethodCallExpression: PsiMethodCallExpression): Boolean {
+        val textualMethodCall = psiMethodCallExpression.text
+        val charArray = textualMethodCall.toCharArray()
+        var counter = 0
+        for (i in 1 until charArray.size) {
+            if (charArray[i] == ')' && charArray[i - 1] == '(') counter++
+        }
+        return counter > 1
+    }
+
+    private fun isStatic(psiMethodCallExpression: PsiMethodCallExpression): Boolean {
+        return psiMethodCallExpression.text.matches(Regex("[A-Z]{1}.*"))
     }
 }
