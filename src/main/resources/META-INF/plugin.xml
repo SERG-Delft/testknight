@@ -19,6 +19,8 @@
         <projectService serviceImplementation="com.testbuddy.services.CoverageDataService"/>
         <projectService serviceImplementation="com.testbuddy.services.CoverageHighlighterService"/>
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->

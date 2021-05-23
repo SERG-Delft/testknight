@@ -4,10 +4,9 @@ import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.codeInsight.template.impl.ConstantNode
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
-import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
+import com.testbuddy.models.HighlightedTextData
 
 class TemplateCreationService(private val project: Project) {
 
@@ -62,33 +61,33 @@ class TemplateCreationService(private val project: Project) {
      * and of the provided PsiElements are variables to be replaced.
      *
      * @param psiMethod the PSI method to base the template off of
-     * @param psiElements a list of PsiElements to be replaced
+     * @param highlights a list of PsiElements to be replaced
      */
-    fun createAdvancedTemplate(psiMethod: PsiMethod, psiElements: List<PsiElement>): Template {
+    fun createAdvancedTemplate(psiMethod: PsiMethod, highlights: List<HighlightedTextData>): Template {
 
         // if the list of psiElements provided is empty just treat it like a basicTemplate
-        if (psiElements.isEmpty()) {
+        if (highlights.isEmpty()) {
             return createBasicTemplate(psiMethod)
         }
 
         val template = createSignatureTemplate(psiMethod)
         val code = psiMethod.body!!
 
-        val startSubstring = code.text.substring(0, psiElements[0].startOffset - code.startOffset)
+        val startSubstring = code.text.substring(0, highlights[0].startOffset - code.startOffset)
         template.addTextSegment(startSubstring)
 
-        for (i in 0..psiElements.size - 2) {
-            template.addVariable("CHG$i", ConstantNode(psiElements[i].text), true)
+        for (i in 0..highlights.size - 2) {
+            template.addVariable("CHG$i", ConstantNode(highlights[i].text), true)
 
-            val start = psiElements[i].endOffset - code.startOffset
-            val end = psiElements[i + 1].startOffset - code.startOffset
+            val start = highlights[i].endOffset - code.startOffset
+            val end = highlights[i + 1].startOffset - code.startOffset
 
             val substring = code.text.substring(start, end)
             template.addTextSegment(substring)
         }
 
-        template.addVariable("CHG${psiElements.lastIndex}", ConstantNode(psiElements.last().text), true)
-        val endSubstring = code.text.substring(psiElements.last().endOffset - code.startOffset, code.text.length)
+        template.addVariable("CHG${highlights.lastIndex}", ConstantNode(highlights.last().text), true)
+        val endSubstring = code.text.substring(highlights.last().endOffset - code.startOffset, code.text.length)
         template.addTextSegment(endSubstring)
 
         return template
