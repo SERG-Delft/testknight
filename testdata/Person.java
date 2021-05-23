@@ -104,7 +104,7 @@ public class Person {
 
     public String getSpouseNameCatchAndFinally() {
         try {
-            Person spouce = this.getSpouse();
+            Person spouce = this.getSpηγ ouse();
             return spouce.name;
         } catch (NotMarriedException e) {
             return "I am not married actually!";
@@ -177,7 +177,7 @@ public class Person {
     }
 
     public void spellName() {
-        for(int i = 0; i < this.name.lenght(); i++) {
+        for(int i = 0; i < this.name.length(); i++) {
             System.out.println(this.name.charAt(i));
         }
     }
@@ -258,6 +258,19 @@ public class Person {
     public void reverseName(String name) {
         name.reverse();
     }
+
+    public int mysteriousMethodWithArray(int[] a) {
+        return a;
+    }
+
+    public int multipleStructs(int[] a) {
+        int condition = false;
+        do {
+            condition = true;
+        }
+        while (!condition);
+    }
+
 
 }
 
