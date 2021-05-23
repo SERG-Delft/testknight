@@ -18,6 +18,7 @@ import com.testbuddy.services.LoadTestsService
 import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.listeners.CheckListKeyboardListener
 import com.testbuddy.views.listeners.CheckedNodeListener
+import com.testbuddy.views.listeners.ChecklistMouseListener
 import com.testbuddy.views.listeners.ChecklistSelectionListener
 import com.testbuddy.views.listeners.CopyPasteKeyboardListener
 import com.testbuddy.views.listeners.CopyPasteMouseListener
@@ -50,7 +51,6 @@ class UserInterface(val project: Project) {
      */
     private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
-        // val tree = ser.......
 
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
@@ -65,9 +65,13 @@ class UserInterface(val project: Project) {
         val root = CheckedTreeNode("root")
 
         checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
+        val mouseListener = ChecklistMouseListener(checkListTree!!, project)
+        checkListTree!!.addMouseListener(mouseListener)
+
         checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
         checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
         checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
+
         service.initTrees(checkListTree!!)
         panel.setViewportView(checkListTree)
 
