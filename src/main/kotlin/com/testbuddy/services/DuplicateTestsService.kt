@@ -22,7 +22,7 @@ class DuplicateTestsService(project: Project) {
     /**
      * List of active highlight resolution strategies
      */
-    private val highlightResolutionStrategies = listOf(
+    val highlightResolutionStrategies = listOf(
         AssertionArgsStrategy,
         ConstructorArgsStrategy,
         MagicNumberStrategy
@@ -31,7 +31,7 @@ class DuplicateTestsService(project: Project) {
     /**
      * Gets a list of PSI elements to be highlighted ordered by priority of their resolution strategy
      */
-    private fun getHighlights(psiMethod: PsiMethod): List<PsiElement> {
+    fun getHighlights(psiMethod: PsiMethod): List<PsiElement> {
 
         val highlights = mutableListOf<PsiElement>()
         highlightResolutionStrategies.forEach { highlights.addAll(it.getElements(psiMethod)) }
