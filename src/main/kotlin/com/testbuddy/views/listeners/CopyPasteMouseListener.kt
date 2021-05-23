@@ -20,8 +20,6 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
     private var latestEditor: Editor? = null
 
     /**
-     * Suppressing the ReturnCount warning because it makes the code messy with just 2 returns.
-     *
      * This listener checks if you pressed the copy or goto button.
      * Since the renderer isn't a live component, this is one way to make it "live".
      *
@@ -29,7 +27,6 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
      * @param clickCount number of clicks
      * @return True if clicked a button, false otherwise
      */
-    @Suppress("ReturnCount")
     override fun onClick(e: MouseEvent, clickCount: Int): Boolean {
 
         // Find which tree path is being selected.

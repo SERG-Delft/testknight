@@ -2,6 +2,7 @@ package com.testbuddy.views.listeners
 
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.psi.PsiElement
+import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.actions.LoadChecklistAction
 import java.awt.event.MouseEvent
 
@@ -19,6 +20,8 @@ class ClassChecklistIconHandler : GutterIconNavigationHandler<PsiElement> {
     override fun navigate(event: MouseEvent?, element: PsiElement?) {
         if (element == null) return
         val project = element.project
-        LoadChecklistAction().actionPerformed(project, element.parent)
+        if (LoadChecklistAction().actionPerformed(project, element.parent)) {
+            UserInterfaceHelper.showTab(project, "Checklist")
+        }
     }
 }

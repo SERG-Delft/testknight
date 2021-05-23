@@ -62,12 +62,12 @@ class DuplicateTestsService(project: Project) {
      * @param file the PSI file.
      * @param editor represents the current instance of a text editor.
      */
-    fun duplicateMethodUnderCaret(file: PsiFile, editor: Editor) {
+    fun duplicateMethodUnderCaret(file: PsiFile, editor: Editor): Boolean {
 
         val caret = editor.caretModel.primaryCaret
         val offset = caret.offset
         val element = file.findElementAt(offset)
-        val method = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java) ?: return
+        val method = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java) ?: return false
 
         val template = templateCreationService.createAdvancedTemplate(method, getHighlights(method))
 
@@ -77,6 +77,8 @@ class DuplicateTestsService(project: Project) {
 
         // run the template
         templateManager.startTemplate(editor, template)
+
+        return true
     }
 
     /**

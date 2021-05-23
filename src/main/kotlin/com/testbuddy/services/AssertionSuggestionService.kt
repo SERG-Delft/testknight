@@ -48,7 +48,6 @@ class AssertionSuggestionService {
      * @param methodCall the method call to the method under test.
      * @param project the current project.
      */
-    @Suppress("ReturnCount")
     fun appendAssertionsAsComments(testMethod: PsiMethod, methodCall: PsiMethodCallExpression, project: Project) {
         if (testAnalyzerService.isTestMethod(testMethod)) {
             // Create the assertion suggestions.

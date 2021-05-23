@@ -4,6 +4,7 @@ import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class IfStatementChecklistGenerationStrategy private constructor(
@@ -12,13 +13,19 @@ class IfStatementChecklistGenerationStrategy private constructor(
     LeafChecklistGeneratorStrategy<PsiIfStatement> {
 
     companion object Factory {
+
+        private const val defaultConditionCoverageType = "MCDC"
+
         /**
          * Creates a new IfStatementChecklistGenerationStrategy.
          *
          * @return a new IfStatementChecklistGenerationStrategy.
          */
+        @Throws(InvalidConfigurationException::class)
         fun create(): IfStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator =
+                ConditionChecklistGenerationStrategy
+                    .createFromString(getConditionCoverageType())
             return create(conditionChecklistGenerator)
         }
 
@@ -32,6 +39,19 @@ class IfStatementChecklistGenerationStrategy private constructor(
             IfStatementChecklistGenerationStrategy {
                 return IfStatementChecklistGenerationStrategy(conditionChecklistGenerator)
             }
+
+        /**
+         * Returns the configured condition coverage type.
+         *
+         * @return a string representing the configured condition coverage.
+         */
+        private fun getConditionCoverageType(): String {
+            // This is currently a placeholder, when we add
+            // configuration files the conditionCoverageType
+            // will be read from there.
+            val conditionCoverageType = defaultConditionCoverageType
+            return conditionCoverageType
+        }
     }
 
     /**
