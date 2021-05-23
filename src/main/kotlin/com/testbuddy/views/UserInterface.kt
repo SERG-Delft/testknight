@@ -51,7 +51,6 @@ class UserInterface(val project: Project) {
      */
     private fun createCheckList(): Component {
         val toolWindowPanel = SimpleToolWindowPanel(true)
-        // val tree = ser.......
 
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
@@ -68,7 +67,6 @@ class UserInterface(val project: Project) {
         checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         val mouseListener = ChecklistMouseListener(checkListTree!!, project)
         checkListTree!!.addMouseListener(mouseListener)
-        checkListTree!!.isEditable = true
 
         checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
         checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
