@@ -7,6 +7,7 @@
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
+    <depends>Coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
@@ -15,7 +16,11 @@
         <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
         <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
+        <projectService serviceImplementation="com.testbuddy.services.CoverageDataService"/>
+        <projectService serviceImplementation="com.testbuddy.services.CoverageHighlighterService"/>
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -83,6 +88,18 @@
                 text="Hide Integrated View" description="Hides the coverage line markers in the editor."
                 icon="AllIcons.Diff.Remove">
         </action>
+        <action id="com.testbuddy.com.testbuddy.views.actions.ShowDiffCovHighlights"
+                class="com.testbuddy.views.actions.ShowDiffCovHighlights"
+                text="Show Coverage Diff"
+                description="Show coverage diff gutter highlighters"/>
+        <action id="com.testbuddy.com.testbuddy.views.actions.HideDiffCovHighlights"
+                class="com.testbuddy.views.actions.HideDiffCovHighlights"
+                text="Hide Coverage Diff"
+                description="Hide coverage diff gutter highlighters"/>
+        <action id="com.testbuddy.com.testbuddy.views.actions.RefreshDiffHighlights"
+                class="com.testbuddy.views.actions.RefreshDiffHighlights"
+                text="Refresh Coverage Diff"
+                description="Refresh coverage diff gutter highlighters"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -92,9 +109,6 @@
 
         </intentionAction>
     </extensions>
-
-
-
 
     <actions>
         <action id="com.testbuddy.TestAction" class="com.testbuddy.TestAction" text="Test Action"/>
@@ -108,6 +122,12 @@
         <codeInsight.lineMarkerProvider language="JAVA"
                                         implementationClass="com.testbuddy.views.actions.ChecklistMethodLineMarkerProvider"
         />
+
     </extensions>
+
+    <projectListeners>
+        <listener class="com.testbuddy.InitializationListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </projectListeners>
 
 </idea-plugin>
