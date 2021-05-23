@@ -3,8 +3,6 @@ package com.testbuddy.com.testbuddy.highlightResolutionStrategies
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.refactoring.suggested.endOffset
-import com.intellij.refactoring.suggested.startOffset
 import com.testbuddy.models.HighlightedTextData
 
 object AssertionArgsStrategy : HighlightResolutionStrategy {
@@ -32,7 +30,7 @@ object AssertionArgsStrategy : HighlightResolutionStrategy {
             .forEach { methodCall ->
                 if (assertionNames.contains(methodCall.methodExpression.qualifiedName)) {
                     methodCall.argumentList.expressions.forEach {
-                        res.add(HighlightedTextData(it.startOffset, it.endOffset, it.text))
+                        res.add(HighlightedTextData(it))
                     }
                 }
             }
