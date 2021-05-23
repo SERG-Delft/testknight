@@ -16,30 +16,6 @@ class AssertionSuggestionService {
 
     private val testAnalyzerService = TestAnalyzerService()
 
-//    /**
-//     * Returns a list of assertion suggestions based on the given method.
-//     * Works iff the testMethod given is a test method.
-//     * If it is not, the method returns an empty list.
-//     *
-//     * @param testMethod the test method.
-//     * @param methodCall the method call to the method under test.
-//     * @param project the current project.
-//     * @return a list of AssertionSuggestions for the given method under test.
-//     */
-//    fun getAssertions(
-//        testMethod: PsiMethod,
-//        methodCall: PsiMethodCallExpression,
-//        project: Project
-//    ): List<AssertionSuggestion> {
-//        return if (testAnalyzerService.isTestMethod(testMethod)) {
-//            val methodAnalyzerService = project.service<MethodAnalyzerService>()
-//            val methodUnderTest = methodCall.resolveMethod() ?: return emptyList()
-//            this.getAssertions(methodUnderTest, methodAnalyzerService)
-//        } else {
-//            emptyList()
-//        }
-//    }
-
     /**
      * Append a list of assertion suggestions as a comment in the end
      * of the given method. Works iff the testMethod given is a test method.
