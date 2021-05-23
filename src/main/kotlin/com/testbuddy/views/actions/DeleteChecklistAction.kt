@@ -15,7 +15,7 @@ import java.awt.event.ActionListener
 class DeleteChecklistAction(private val node: CheckedTreeNode, private val project: Project) : ActionListener {
 
     override fun actionPerformed(e: ActionEvent) {
-        
+
         val service = project.service<ChecklistTreeService>()
 
         if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Delete") {
