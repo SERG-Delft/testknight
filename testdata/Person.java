@@ -185,7 +185,7 @@ public class Person {
     }
 
     public void spellName() {
-        for (int i = 0; i < this.name.lenght(); i++) {
+        for (int i = 0; i < this.name.length(); i++) {
             System.out.println(this.name.charAt(i));
         }
     }
