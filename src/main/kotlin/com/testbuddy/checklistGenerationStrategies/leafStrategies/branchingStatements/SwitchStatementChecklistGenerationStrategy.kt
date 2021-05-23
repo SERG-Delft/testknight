@@ -8,6 +8,7 @@ import com.intellij.psi.PsiSwitchLabeledRuleStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class SwitchStatementChecklistGenerationStrategy private constructor() :
@@ -55,11 +56,11 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
      */
     private fun getCaseValue(caseExpression: PsiSwitchLabelStatement, switchVariable: String): List<String> {
         if (caseExpression.isDefaultCase) {
-            return listOf("Test $switchVariable is different from all the switch cases")
+            return listOf(TestingChecklistMessageBundleHandler.message("switchVariableDefault", switchVariable))
         }
         val caseValues =
             PsiTreeUtil.findChildrenOfType(caseExpression, PsiLiteralExpression::class.java).mapNotNull { it.text }
-        return caseValues.map { "Test $switchVariable is $it" }
+        return caseValues.map { TestingChecklistMessageBundleHandler.message("switchVariableCase", switchVariable, it) }
     }
 
     /**
@@ -72,10 +73,10 @@ class SwitchStatementChecklistGenerationStrategy private constructor() :
      */
     private fun getCaseValue(caseExpression: PsiSwitchLabeledRuleStatement, switchVariable: String): List<String> {
         if (caseExpression.isDefaultCase) {
-            return listOf("Test $switchVariable is different from all the switch cases")
+            return listOf(TestingChecklistMessageBundleHandler.message("switchVariableDefault", switchVariable))
         }
         val caseValues =
             PsiTreeUtil.findChildrenOfType(caseExpression, PsiLiteralExpression::class.java).mapNotNull { it.text }
-        return caseValues.map { "Test $switchVariable is $it" }
+        return caseValues.map { TestingChecklistMessageBundleHandler.message("switchVariableCase", switchVariable, it) }
     }
 }

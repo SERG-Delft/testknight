@@ -2,6 +2,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiNewExpression
 import com.intellij.psi.PsiThrowStatement
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class ThrowStatementChecklistGenerationStrategy private constructor() :
@@ -29,6 +30,11 @@ class ThrowStatementChecklistGenerationStrategy private constructor() :
         val newExpression = (psiElement.exception as? PsiNewExpression)
         val nameOfException = newExpression?.classReference?.qualifiedName
         if (newExpression == null || nameOfException == null) return emptyList()
-        return listOf(TestingChecklistLeafNode("Test when $nameOfException is thrown", psiElement))
+        return listOf(
+            TestingChecklistLeafNode(
+                TestingChecklistMessageBundleHandler.message("throw", nameOfException),
+                psiElement
+            )
+        )
     }
 }

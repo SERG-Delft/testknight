@@ -10,6 +10,7 @@ import com.testbuddy.models.TestingChecklistMethodNode
 
 class GenerateTestCaseChecklistService {
 
+    private val testAnalyzerService = TestAnalyzerService()
     private var classStrategy = ClassChecklistGenerationStrategy.create()
     private var methodStrategy = MethodChecklistGenerationStrategy.create()
 
@@ -30,12 +31,19 @@ class GenerateTestCaseChecklistService {
      * @return a TestingChecklistClassNode containing only the method specified in the parameter
      */
     fun generateClassChecklistFromMethod(psiMethod: PsiMethod): TestingChecklistClassNode {
+
         val methodItem = methodStrategy.generateChecklist(psiMethod)
         val parentClass = PsiTreeUtil.getParentOfType(psiMethod, PsiClass::class.java) as PsiClass
 
+        if (testAnalyzerService.isTestMethod(psiMethod)) return TestingChecklistClassNode(
+            parentClass.name!!,
+            mutableListOf(),
+            parentClass
+        )
+
         return TestingChecklistClassNode(
             parentClass.name!!,
-            listOf(methodItem),
+            mutableListOf(methodItem),
             parentClass
         )
     }

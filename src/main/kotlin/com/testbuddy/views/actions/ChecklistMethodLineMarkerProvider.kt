@@ -27,7 +27,12 @@ class ChecklistMethodLineMarkerProvider : LineMarkerProvider {
             !testAnalyzerService.isTestMethod(element.parent as PsiMethod)
         ) {
             return LineMarkerInfo(
-                element, element.textRange, AllIcons.General.Add, null,
+                element, element.textRange, AllIcons.General.Add,
+                { element: PsiElement ->
+                    buildString {
+                        append("Generate checklist")
+                    }
+                },
                 MethodChecklistIconHandler(), GutterIconRenderer.Alignment.RIGHT
             )
         }

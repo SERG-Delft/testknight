@@ -1,4 +1,4 @@
-package com.testbuddy.views.actions
+package com.testbuddy.views.actions.testcases
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -6,16 +6,12 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiFile
-import com.intellij.ui.components.JBPanelWithEmptyText
-import com.intellij.ui.components.JBScrollPane
-import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.LoadTestsService
-import javax.swing.JTabbedPane
+import com.testbuddy.utilities.UserInterfaceHelper
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 
@@ -47,16 +43,7 @@ class LoadTestAction : AnAction() {
         val loadTestsService = project.service<LoadTestsService>()
         val listClasses = loadTestsService.getTestsTree(psiFile)
 
-        // Return if the ToolWindow couldn't be found
-        val window = ToolWindowManager.getInstance(project).getToolWindow("TestBuddy") ?: return
-
-        val tabbedPane = (
-            (window.contentManager.contents[0] as ContentImpl)
-                .component as JTabbedPane
-            )
-        val copyPasteTab = tabbedPane.getComponentAt(0) as JBPanelWithEmptyText
-        val copyPasteScroll = copyPasteTab.getComponent(1) as JBScrollPane
-        val copyPasteViewport = copyPasteScroll.viewport
+        val copyPasteViewport = UserInterfaceHelper.getTabViewport(project, "CopyPaste") ?: return
         val copyPasteTree = copyPasteViewport.view as Tree
         val root = copyPasteTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
