@@ -40,11 +40,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiParenthesizedExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
-                "Test where in the condition \"(a > b)\", \"a > b\" is false",
+                "Test where \"a > b\" is false",
                 expr!!
             ),
             TestingChecklistLeafNode(
-                "Test where in the condition \"(a > b)\", \"a > b\" is true",
+                "Test where \"a > b\" is true",
                 expr!!
             )
         )
@@ -62,11 +62,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiReferenceExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
-                "Test where in the condition \"condition\", \"condition\" is false",
+                "Test where \"condition\" is false",
                 expr!!
             ),
             TestingChecklistLeafNode(
-                "Test where in the condition \"condition\", \"condition\" is true",
+                "Test where \"condition\" is true",
                 expr!!
             )
         )
@@ -143,11 +143,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val doWhile = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiDoWhileStatement::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
-                "Test where in the condition \"!condition\", \"!condition\" is false",
+                "Test where \"!condition\" is false",
                 expr!!
             ),
             TestingChecklistLeafNode(
-                "Test where in the condition \"!condition\", \"!condition\" is true",
+                "Test where \"!condition\" is true",
                 expr!!
             ),
             TestingChecklistLeafNode(
@@ -170,6 +170,10 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
                 "Test where this.name is empty",
+                expr!!
+            ),
+            TestingChecklistLeafNode(
+                "Test where this.name has one element",
                 expr!!
             ),
             TestingChecklistLeafNode(
@@ -196,11 +200,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val bin = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiBinaryExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
-                "Test where in the condition \"i < this.name.length()\", \"i < this.name.length()\" is false",
+                "Test where \"i < this.name.length()\" is false",
                 bin!!
             ),
             TestingChecklistLeafNode(
-                "Test where in the condition \"i < this.name.length()\", \"i < this.name.length()\" is true",
+                "Test where \"i < this.name.length()\" is true",
                 bin!!
             ),
             TestingChecklistLeafNode(
@@ -223,11 +227,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val whileStatement = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiWhileStatement::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             TestingChecklistLeafNode(
-                "Test where in the condition \"counter < 11\", \"counter < 11\" is false",
+                "Test where \"counter < 11\" is false",
                 expr!!
             ),
             TestingChecklistLeafNode(
-                "Test where in the condition \"counter < 11\", \"counter < 11\" is true",
+                "Test where \"counter < 11\" is true",
                 expr!!
             ),
             TestingChecklistLeafNode(
@@ -268,11 +272,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
                 param!!
             ),
             TestingChecklistLeafNode(
-                "Test where in the condition \"!condition\", \"!condition\" is false",
+                "Test where \"!condition\" is false",
                 expr!!
             ),
             TestingChecklistLeafNode(
-                "Test where in the condition \"!condition\", \"!condition\" is true",
+                "Test where \"!condition\" is true",
                 expr!!
             ),
             TestingChecklistLeafNode(
