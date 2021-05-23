@@ -12,6 +12,7 @@ import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
 
+@Suppress("TooManyFunctions")
 class ChecklistTreeService {
 
     private lateinit var uiTree: CheckboxTree
@@ -209,6 +210,137 @@ class ChecklistTreeService {
                 }
                 classNode.add(methodNode)
             }
+        }
+        (uiTree.model as DefaultTreeModel).reload()
+        TreeUtil.expandAll(uiTree)
+    }
+
+    /**
+     * Gets the index of the item from a method
+     *
+     * @param deleteItem the TestingChecklistLeafNode which we have to find the index
+     * @param methodNode the TestingChecklistMethodNode for which we have to return the index of the item
+     */
+    private fun getIndexItem(
+        deleteItem: TestingChecklistLeafNode,
+        methodNode: TestingChecklistMethodNode
+    ): Int {
+        for (i in 0 until methodNode.children.size) {
+            val itemNode = methodNode.children[i]
+            if (itemNode.element == deleteItem.element && itemNode.description == deleteItem.description) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    /**
+     * Gets the index of the method from a class
+     *
+     * @param deleteMethod the TestingChecklistMethodNode which we have to find the index
+     * @param classNode the TestingChecklistClassNode for which we have to return the index of the item
+     */
+    private fun getIndexMethod(
+        deleteMethod: TestingChecklistMethodNode,
+        classNode: TestingChecklistClassNode
+    ): Int {
+
+        for (i in 0 until classNode.children.size) {
+            val methodNode = classNode.children[i]
+            if (methodNode.element == deleteMethod.element) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    /**
+     * Gets the index of the class from the entire checklist
+     *
+     * @param deleteClass the TestingChecklistClassNode which we have to find the index
+     */
+    private fun getIndexClass(deleteClass: TestingChecklistClassNode): Int {
+
+        for (l in 0 until dataTree.classChecklists.size) {
+            val dataClass = dataTree.classChecklists[l]
+            if (dataClass.element == deleteClass.element) {
+                return l
+            }
+        }
+        return -1
+    }
+
+    /**
+     * Delete the item from the tree
+     *
+     * @param deleteItem the TestingChecklistLeafNode which we have to delete it
+     * @param deleteMethod the TestingChecklistMethodNode which contains the item
+     * @param deleteClass the TestingChecklistClassNode which contains the method
+     */
+    fun deleteItem(
+        deleteItem: TestingChecklistLeafNode,
+        deleteMethod: TestingChecklistMethodNode,
+        deleteClass: TestingChecklistClassNode
+    ) {
+        val uiTreeRoot = uiTree.model.root as CheckedTreeNode
+        val indexClass = getIndexClass(deleteClass)
+        if (indexClass == -1) { return }
+
+        val classNode = dataTree.classChecklists[indexClass]
+        val uiTreeClass = uiTreeRoot.getChildAt(indexClass) as CheckedTreeNode
+
+        val indexMethod = getIndexMethod(deleteMethod, classNode)
+        if (indexMethod == -1) { return }
+        val methodNode = classNode.children[indexMethod]
+        val uiTreeMethod = uiTreeClass.getChildAt(indexMethod) as CheckedTreeNode
+
+        val indexItem = getIndexItem(deleteItem, methodNode)
+        if (indexItem == -1) { return }
+
+        methodNode.children.removeAt(indexItem)
+        uiTreeMethod.remove(indexItem)
+        (uiTree.model as DefaultTreeModel).reload()
+        TreeUtil.expandAll(uiTree)
+    }
+
+    /**
+     * Delete the method from the tree
+     *
+     * @param deleteMethod the TestingChecklistMethodNode which we have to delete it
+     * @param deleteClass the TestingChecklistClassNode which contains the method
+     */
+    fun deleteMethod(
+        deleteMethod: TestingChecklistMethodNode,
+        deleteClass: TestingChecklistClassNode
+    ) {
+        val uiTreeRoot = uiTree.model.root as CheckedTreeNode
+        val indexClass = getIndexClass(deleteClass)
+        if (indexClass == -1) { return }
+
+        val classNode = dataTree.classChecklists[indexClass]
+        val uiTreeClass = uiTreeRoot.getChildAt(indexClass) as CheckedTreeNode
+        val indexMethod = getIndexMethod(deleteMethod, classNode)
+
+        if (indexMethod == -1) { return }
+        classNode.children.removeAt(indexMethod)
+        uiTreeClass.remove(indexMethod)
+
+        (uiTree.model as DefaultTreeModel).reload()
+        TreeUtil.expandAll(uiTree)
+    }
+
+    /**
+     * Delete the delete from the tree
+     *
+     * @param deleteClass the TestingChecklistClassNode which we have to delete it
+     */
+    fun deleteClass(deleteClass: TestingChecklistClassNode) {
+
+        val uiTreeRoot = uiTree.model.root as CheckedTreeNode
+        val index = getIndexClass(deleteClass)
+        if (index > -1) {
+            uiTreeRoot.remove(index)
+            dataTree.classChecklists.removeAt(index)
         }
         (uiTree.model as DefaultTreeModel).reload()
         TreeUtil.expandAll(uiTree)
