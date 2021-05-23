@@ -49,7 +49,7 @@ internal class GenerateTestCaseChecklistServiceTest : BasePlatformTestCase() {
         val method = psiClass!!.findMethodsByName("dijkstra")[0] as PsiMethod
 
         val output = serv.generateMethodChecklist(method)
-        TestCase.assertEquals(15, output.children.size) // initial offset without scrolling is 0
+        TestCase.assertEquals(16, output.children.size) // initial offset without scrolling is 0
     }
 
     @Test
@@ -84,5 +84,17 @@ internal class GenerateTestCaseChecklistServiceTest : BasePlatformTestCase() {
         val output = serv.generateClassChecklistFromMethod(psiMethod)
 
         TestCase.assertEquals(1, output.children.size)
+    }
+
+    @Test
+    fun testChecklistGenerationDoesNotWorkOnTestMethods() {
+        myFixture.configureByFile("/PointTest.java")
+        val serv = GenerateTestCaseChecklistService()
+        val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
+        val psiMethod = psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod
+
+        val output = serv.generateClassChecklistFromMethod(psiMethod)
+
+        TestCase.assertEquals(0, output.children.size)
     }
 }

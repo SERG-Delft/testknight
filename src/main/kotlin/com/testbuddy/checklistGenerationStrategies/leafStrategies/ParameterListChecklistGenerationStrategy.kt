@@ -2,6 +2,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiParameterList
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class ParameterListChecklistGenerationStrategy private constructor(
@@ -93,7 +94,14 @@ class ParameterListChecklistGenerationStrategy private constructor(
         val nameOfParameter = psiElement.name
         val casesForType = this.typeChecklistCaseMap[typeOfParameter] ?: emptyList()
         return casesForType.map {
-            TestingChecklistLeafNode("Test method parameter \"$nameOfParameter\" equal to: $it", psiElement)
+            TestingChecklistLeafNode(
+                TestingChecklistMessageBundleHandler.message(
+                    "parameterBaseMessage",
+                    nameOfParameter,
+                    it
+                ),
+                psiElement
+            )
         }
     }
 }

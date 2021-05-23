@@ -2,6 +2,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatement
 
 import com.intellij.psi.PsiForeachStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class ForeachStatementChecklistGenerationStrategy private constructor() :
@@ -32,9 +33,32 @@ class ForeachStatementChecklistGenerationStrategy private constructor() :
         }
         val iteratedValue = psiElement.iteratedValue!!.text
         return listOf(
-            TestingChecklistLeafNode(description = "Test where $iteratedValue is empty", psiElement),
-            TestingChecklistLeafNode(description = "Test where $iteratedValue is null", psiElement),
-            TestingChecklistLeafNode(description = "Test where foreach loop runs multiple times", psiElement)
+            TestingChecklistLeafNode(
+                description = TestingChecklistMessageBundleHandler.message(
+                    "forEachEmpty",
+                    iteratedValue
+                ),
+                psiElement
+            ),
+            TestingChecklistLeafNode(
+                description = TestingChecklistMessageBundleHandler.message(
+                    "forEachOnce",
+                    iteratedValue
+                ),
+                psiElement
+            ),
+            TestingChecklistLeafNode(
+                description = TestingChecklistMessageBundleHandler.message(
+                    "forEachNull",
+                    iteratedValue
+                ),
+                psiElement
+            ),
+            TestingChecklistLeafNode(
+                description = TestingChecklistMessageBundleHandler
+                    .message("forEachMultiple"),
+                psiElement
+            )
         )
     }
 }

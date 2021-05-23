@@ -17,8 +17,5 @@ class UserInterfaceFactory : ToolWindowFactory {
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(userInterface.getContent(), "", false)
         toolWindow.contentManager.addContent(content)
-
-        // Load the test cases into the UI
-        UserInterface.refreshTestCaseUI(project)
     }
 }

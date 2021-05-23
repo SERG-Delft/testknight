@@ -83,4 +83,13 @@ class Methods {
         int x = (a > b) ? 1 : 2
     }
 
+
+    public void twoBranchesNoParameter() {
+        boolean condition = true && false || true;
+        if (condition) {
+            System.out.println("true");
+        } else {
+            System.out.println("false");
+        }
+    }
 }

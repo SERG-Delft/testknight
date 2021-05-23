@@ -13,7 +13,7 @@ public class Person {
 
     //Throws an Exception as a side-effect.
     public Person getSpouse() throws NotMarriedException {
-        if(spouse == null) {
+        if (spouse == null) {
             throw new NotMarriedException();
         }
         return spouse;
@@ -119,34 +119,42 @@ public class Person {
             return spouce.name;
         } catch (NotMarriedException e) {
             return "I am not married actually!";
-        } catch ( ) {
+        } catch () {
             return "I don't have a spouce!"
         }
     }
 
     public void methodWithBrokenThrows() {
         throw 42;
-        throw new ;
+        throw new;
     }
 
 
 
     public String commentOnAge() {
         switch (this.age) {
-            case 10: return "Oh the joys of youth!";
-            case 20: return "Oh the joys of youth!";
-            case 30: return "Time to get serious...";
-            case 40: return "You are not old. You are wise";
-            default: "Hmmm?"
+            case 10:
+                return "Oh the joys of youth!";
+            case 20:
+                return "Oh the joys of youth!";
+            case 30:
+                return "Time to get serious...";
+            case 40:
+                return "You are not old. You are wise";
+            default:
+                "Hmmm?"
         }
     }
 
 
     public String commentOnAgeEnhanched() {
         switch (this.age) {
-            case 10, 20 : return "Oh the joys of youth!";
-            case 30 : return "Time to get serious...";
-            case 40 : return "You are not old. You are wise";
+            case 10, 20:
+                return "Oh the joys of youth!";
+            case 30:
+                return "Time to get serious...";
+            case 40:
+                return "You are not old. You are wise";
         }
     }
 
@@ -177,13 +185,13 @@ public class Person {
     }
 
     public void spellName() {
-        for(int i = 0; i < this.name.lenght(); i++) {
+        for (int i = 0; i < this.name.length(); i++) {
             System.out.println(this.name.charAt(i));
         }
     }
 
     public void spellWithForEach() {
-        for(char a : this.name) {
+        for (char a : this.name) {
             System.out.println(a);
         }
     }
@@ -197,13 +205,13 @@ public class Person {
     }
 
     public Person getSpouseWithTernary() throws NotMarriedException {
-        (spouse == null) ? throw new NotMarriedException() : return spouse
+        (spouse == null) ? throw new NotMarriedException() :return spouse
     }
 
     //Using Conditional Expression (Ternary Operator)
     public void setAgeConditional(int age) throws AgeException {
-        age <=0 ? throw new CannotBeThatYoungException() : this.age = age;
-        age > 100? throw new CannotBeThatOldException() : this.age = age;
+        age <= 0 ? throw new CannotBeThatYoungException() :this.age = age;
+        age > 100 ? throw new CannotBeThatOldException() :this.age = age;
     }
 
 
@@ -226,7 +234,7 @@ public class Person {
     }
 
     public void methodCallOnShadowedField(String name) {
-        name.methodSecond(3,2);
+        name.methodSecond(3, 2);
     }
 
     public void methodCallWithThisAndWithout() {
@@ -258,6 +266,60 @@ public class Person {
     public void reverseName(String name) {
         name.reverse();
     }
+
+    public void callWithLiteral(String name) {
+        name.append("hello")
+    }
+
+    public void sayMyAge(String msg, int age) {
+        msg.append(age)
+    }
+
+    public void powMyAgeStatic() {
+        Math.pow(age, 2)
+    }
+
+    public void powMyAge() {
+        pow(age, 2)
+    }
+
+    public void passParameterTwice(Person spouse) {
+        mysteriousMethod(spouse, spouse)
+    }
+
+    public void chainedMethodCallOnArgument(String string) {
+        string.reverse().append()
+    }
+
+    public void chainedMethodCallOnThis() {
+        this.method().someOtherMethod()
+    }
+
+    public void chainedMethodCallOnThisField() {
+        this.name.append().reverse()
+    }
+
+    public void chainedStaticMethodCall() {
+        Math.pow(age, 2).mysteriousMethod("name")
+    }
+
+
+    public void setter() {
+        this.setName("hello");
+    }
+
+    public int mysteriousMethodWithArray(int[] a) {
+        return a;
+    }
+
+    public int multipleStructs(int[] a) {
+        int condition = false;
+        do {
+            condition = true;
+        }
+        while (!condition);
+    }
+
 
 }
 

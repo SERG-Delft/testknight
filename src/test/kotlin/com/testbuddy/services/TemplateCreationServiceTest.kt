@@ -4,6 +4,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.highlightResolutionStrategies.AssertionArgsStrategy
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -134,11 +135,10 @@ internal class TemplateCreationServiceTest : BasePlatformTestCase() {
 
         this.myFixture.configureByFile("/Tests.java")
         val templateFactoryService = TemplateCreationService(project)
-        val testAnalyzerService = TestAnalyzerService()
 
         val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
         val method = testClass.findMethodsByName("hasAssertion")[0] as PsiMethod
-        val psiElements = testAnalyzerService.getAssertionParameters(method)
+        val psiElements = AssertionArgsStrategy.getElements(method)
         val template = templateFactoryService.createAdvancedTemplate(method, psiElements)
 
         val expected = "@Test void (){\n" +

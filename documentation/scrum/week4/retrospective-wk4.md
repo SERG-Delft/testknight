@@ -1,4 +1,4 @@
-# Sprint retrospective: Week 3
+# Sprint retrospective: Week 4
 
 - **Scrum Master:** Cristian Botocan
 - **Note Taker:** Mathanrajan Sundarrajan

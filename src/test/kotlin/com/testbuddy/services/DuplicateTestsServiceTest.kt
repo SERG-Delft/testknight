@@ -5,6 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import junit.framework.TestCase
 import org.junit.Before
 import org.junit.jupiter.api.Test
 
@@ -62,5 +63,50 @@ class DuplicateTestsServiceTest : BasePlatformTestCase() {
                 "/expected/DuplicateTestsServiceTest.testDuplicateMethod.java"
             )
         }
+    }
+
+    @Test
+    fun testDuplicates() {
+
+        this.myFixture.configureByFile("/TestDuplication.java")
+
+        val service = DuplicateTestsService(project)
+        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
+        val methodToBeDuplicated = testClass.findMethodsByName("duplicate")[0] as PsiMethod
+
+        val highlights = service.getHighlights(methodToBeDuplicated).map { it.text }
+        val expectedHl = listOf("0", "1")
+
+        TestCase.assertEquals(expectedHl, highlights)
+    }
+
+    @Test
+    fun testContaining() {
+
+        this.myFixture.configureByFile("/TestDuplication.java")
+
+        val service = DuplicateTestsService(project)
+        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
+        val methodToBeDuplicated = testClass.findMethodsByName("containing")[0] as PsiMethod
+
+        val highlights = service.getHighlights(methodToBeDuplicated).map { it.text }
+        val expectedHl = listOf("0", "1", "2")
+
+        TestCase.assertEquals(expectedHl, highlights)
+    }
+
+    @Test
+    fun testNestedContaining() {
+
+        this.myFixture.configureByFile("/TestDuplication.java")
+
+        val service = DuplicateTestsService(project)
+        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
+        val methodToBeDuplicated = testClass.findMethodsByName("nestedContains")[0] as PsiMethod
+
+        val highlights = service.getHighlights(methodToBeDuplicated).map { it.text }
+        val expectedHl = listOf("0", "1", "2", "3", "dar()")
+
+        TestCase.assertEquals(expectedHl, highlights)
     }
 }

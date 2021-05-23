@@ -33,15 +33,18 @@ class LoadTestsService : Disposable {
      */
     fun getTestsTree(file: PsiFile): List<TestClassData> {
         val classes = PsiTreeUtil.findChildrenOfType(file, PsiClass::class.java)
-        return classes.map { psiClass ->
-            TestClassData(
-                psiClass.name ?: "",
-                psiClass.methods
-                    .filter { testAnalyzer.isTestMethod(it) }
-                    .map { TestMethodData(it.name, psiClass.name ?: "", it) },
-                psiClass
-            )
-        }
+
+        return classes
+            .filter { testAnalyzer.isTestClass(it) }
+            .map { psiClass ->
+                TestClassData(
+                    psiClass.name ?: "",
+                    psiClass.methods
+                        .filter { testAnalyzer.isTestMethod(it) }
+                        .map { TestMethodData(it.name, psiClass.name ?: "", it) },
+                    psiClass
+                )
+            }
     }
 
     /**

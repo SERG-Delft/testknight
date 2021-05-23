@@ -81,7 +81,7 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
             )
         leafNodeGenerator.ifStatementChecklistGenerationStrategy = ifConditionGenerator
 
-        val expectedChildren = listOf(
+        val expectedChildren = mutableListOf(
             TestingChecklistLeafNode("Test for age < 0", ifNegativeAge),
             TestingChecklistLeafNode("Test for age == 0", ifNegativeAge),
             TestingChecklistLeafNode("Test for age > 0", ifNegativeAge),

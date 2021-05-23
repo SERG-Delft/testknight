@@ -6,9 +6,11 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertFailsWith
 
 internal class TryStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
@@ -89,6 +91,24 @@ internal class TryStatementChecklistGenerationStrategyTest : BasePlatformTestCas
         )
         val actual = generationStrategy.generateChecklist(tryStatement!!)
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testTryMultipleCatchesBinaryGeneration() {
+        val generationStrategy = TryStatementChecklistGenerationStrategy.createFromString("BinaryCaseGeneration")
+        val method = getMethod("getSpouseNameMultipleCatches")
+        val tryStatement = PsiTreeUtil.findChildOfType(method, PsiTryStatement::class.java)
+        val expected = listOf(
+            TestingChecklistLeafNode("Test with the try block running successfully", tryStatement!!),
+            TestingChecklistLeafNode("Test with the try block throwing an exception", tryStatement!!)
+        )
+        val actual = generationStrategy.generateChecklist(tryStatement!!)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testInvalidStringForCreation() {
+        assertFailsWith<InvalidConfigurationException> { TryStatementChecklistGenerationStrategy.createFromString("Foo") }
     }
 
     private fun getMethod(methodName: String): PsiMethod {

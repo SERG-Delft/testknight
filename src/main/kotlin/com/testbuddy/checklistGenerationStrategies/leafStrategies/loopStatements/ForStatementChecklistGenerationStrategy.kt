@@ -3,6 +3,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatement
 import com.intellij.psi.PsiForStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class ForStatementChecklistGenerationStrategy private constructor(
@@ -18,7 +19,9 @@ class ForStatementChecklistGenerationStrategy private constructor(
          * @return a new ForStatementChecklistGenerationStrategy.
          */
         fun create(): ForStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator = ConditionChecklistGenerationStrategy.create()
+            val conditionChecklistGenerator =
+                ConditionChecklistGenerationStrategy
+                    .createWithMcDcConditionCoverage()
             return create(conditionChecklistGenerator)
         }
 
@@ -45,6 +48,11 @@ class ForStatementChecklistGenerationStrategy private constructor(
         val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
-            listOf(TestingChecklistLeafNode("Test where for loop runs multiple times", psiElement))
+            listOf(
+                TestingChecklistLeafNode(
+                    TestingChecklistMessageBundleHandler.message("forLoopMultiple"),
+                    psiElement
+                )
+            )
     }
 }
