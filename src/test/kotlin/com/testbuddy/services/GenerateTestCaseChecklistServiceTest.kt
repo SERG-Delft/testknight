@@ -49,7 +49,7 @@ internal class GenerateTestCaseChecklistServiceTest : BasePlatformTestCase() {
         val method = psiClass!!.findMethodsByName("dijkstra")[0] as PsiMethod
 
         val output = serv.generateMethodChecklist(method)
-        TestCase.assertEquals(15, output.children.size) // initial offset without scrolling is 0
+        TestCase.assertEquals(16, output.children.size) // initial offset without scrolling is 0
     }
 
     @Test

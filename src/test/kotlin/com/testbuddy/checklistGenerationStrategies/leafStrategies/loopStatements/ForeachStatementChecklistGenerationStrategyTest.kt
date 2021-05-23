@@ -49,6 +49,7 @@ internal class ForeachStatementChecklistGenerationStrategyTest : BasePlatformTes
         val foreachStatement = PsiTreeUtil.findChildOfType(method, PsiForeachStatement::class.java)
         val expected = listOf(
             TestingChecklistLeafNode(description = "Test where getArrayOfInts() is empty", foreachStatement as PsiElement),
+            TestingChecklistLeafNode(description = "Test where getArrayOfInts() has one element", foreachStatement as PsiElement),
             TestingChecklistLeafNode(description = "Test where getArrayOfInts() is null", foreachStatement as PsiElement),
             TestingChecklistLeafNode(description = "Test where foreach loop runs multiple times", foreachStatement as PsiElement)
         )

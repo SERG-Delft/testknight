@@ -130,6 +130,7 @@ public class Person {
     }
 
 
+
     public String commentOnAge() {
         switch (this.age) {
             case 10:
@@ -212,6 +213,8 @@ public class Person {
         age <= 0 ? throw new CannotBeThatYoungException() :this.age = age;
         age > 100 ? throw new CannotBeThatOldException() :this.age = age;
     }
+
+
 
 
     public void nameToLowerCase() {
@@ -304,6 +307,19 @@ public class Person {
     public void setter() {
         this.setName("hello");
     }
+
+    public int mysteriousMethodWithArray(int[] a) {
+        return a;
+    }
+
+    public int multipleStructs(int[] a) {
+        int condition = false;
+        do {
+            condition = true;
+        }
+        while (!condition);
+    }
+
 
 }
 

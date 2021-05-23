@@ -1,7 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiExpression
-import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.PropositionalExpression
 import com.testbuddy.models.TestingChecklistLeafNode
@@ -110,8 +110,15 @@ class ConditionChecklistGenerationStrategy private constructor(
         assignments: Map<String, String>
     ): List<TestingChecklistLeafNode> {
         return testCases.map {
-            var description = TestingChecklistMessageBundleHandler
-                .message("conditionBaseMessage", psiElement.text)
+
+            var description = if (it.size == 1) {
+                TestingChecklistMessageBundleHandler
+                    .message("conditionSingleMessage", psiElement.text)
+            } else {
+                TestingChecklistMessageBundleHandler
+                    .message("conditionBaseMessage", psiElement.text)
+            }
+
             for ((proposition, value) in it.entries) {
                 description += TestingChecklistMessageBundleHandler.message(
                     "conditionAssignmentMessage",
