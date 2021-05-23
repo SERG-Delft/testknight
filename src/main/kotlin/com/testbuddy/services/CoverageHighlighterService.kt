@@ -1,7 +1,9 @@
 package com.testbuddy.services
 
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diff.DiffColors
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.project.Project
@@ -12,11 +14,13 @@ import java.awt.Color
 class CoverageHighlighterService(val project: Project) {
 
     private val highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
-    private val isHighlighted = hashMapOf<Editor, Boolean>()
     private val covDataService = project.service<CoverageDataService>()
 
     private val deletedColor = Color(237, 71, 71)
     private val includedColor = Color(64, 120, 68)
+
+    private val diffIncludedColor = Color(64, 120, 68)
+    private val diffExcludedColor = Color(237, 71, 71)
 
     /**
      * Display a all diff-coverage highlights in a given editor and class.
@@ -24,7 +28,7 @@ class CoverageHighlighterService(val project: Project) {
      * @param editor the editor
      * @param className the class Name
      */
-    fun showHighlights(editor: Editor, className: String) {
+    private fun showHighlights(editor: Editor, className: String) {
 
         covDataService.getDiffLines(project)
         val covDiffObject = covDataService.classCoveragesMap[className] ?: return
@@ -39,13 +43,39 @@ class CoverageHighlighterService(val project: Project) {
     }
 
     /**
+     * Applies the diff-coverage highlights to the editors to the diff view.
+     *
+     * @param leftEditor the left side editor for old coverage information
+     * @param rightEditor the right side editor for new coverage information
+     * @param className the class Name
+     */
+    fun showHighlightsInDiff(leftEditor: Editor, rightEditor: Editor, className: String) {
+
+        covDataService.getDiffLines(project)
+        val covDiffObject = covDataService.classCoveragesMap[className] ?: return
+
+        for (line in covDiffObject.coveredPrev) {
+            addGutterHighlighter(leftEditor, line, diffIncludedColor, DiffColors.DIFF_INSERTED)
+        }
+        for (line in (covDiffObject.allLines - covDiffObject.coveredPrev)) {
+            addGutterHighlighter(leftEditor, line, diffExcludedColor, DiffColors.DIFF_CONFLICT)
+        }
+
+        for (line in covDiffObject.coveredNow) {
+            addGutterHighlighter(rightEditor, line, diffIncludedColor, DiffColors.DIFF_INSERTED)
+        }
+        for (line in (covDiffObject.allLines - covDiffObject.coveredNow)) {
+            addGutterHighlighter(rightEditor, line, diffExcludedColor, DiffColors.DIFF_CONFLICT)
+        }
+    }
+
+    /**
      * Hide all diff-coverage highlights in the given editor and class.
      *
      * @param editor the editor
      */
     fun hideHighlights(editor: Editor) {
         highlights[editor]?.forEach { editor.markupModel.removeHighlighter(it) }
-        isHighlighted[editor] = false
     }
 
     /**
@@ -65,20 +95,23 @@ class CoverageHighlighterService(val project: Project) {
      * @param editor the editor
      * @param lineNum the line number
      * @param color the color
+     * @param attributeKey the text attribute key
      */
-    private fun addGutterHighlighter(editor: Editor, lineNum: Int, color: Color) {
-
-        if (isHighlighted[editor] == true) return
+    private fun addGutterHighlighter(
+        editor: Editor,
+        lineNum: Int,
+        color: Color,
+        attributeKey: TextAttributesKey? = null
+    ) {
 
         val hl = editor.markupModel.addLineHighlighter(
-            null,
+            attributeKey,
             lineNum - 1,
             HighlighterLayer.LAST
         )
 
         if (highlights[editor] == null) highlights[editor] = mutableSetOf()
         highlights[editor]!!.add(hl)
-        isHighlighted[editor] = true
 
         hl.lineMarkerRenderer = DiffCoverageLineMarkerRenderer(color)
     }

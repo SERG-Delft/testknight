@@ -78,28 +78,14 @@
                 text="Show Diff View" description="Shows the difference in coverage in a diff view."
                 icon="AllIcons.Actions.Diff">
         </action>
-        <!--        Class will be changed after backend has been connected-->
-        <action id="ShowIntegratedView" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
-                text="Show Integrated View" description="Shows the coverage line markers in the editor."
+        <action id="ShowIntegratedView" class="com.testbuddy.views.actions.RefreshDiffHighlights"
+                text="Show Newly Covered Lines" description="Shows the coverage line markers in the editor."
                 icon="AllIcons.General.InspectionsEye">
         </action>
-        <!--        Class will be changed after backend has been connected-->
-        <action id="HideIntegratedView" class="com.testbuddy.views.actions.ShowCoverageDiffAction"
-                text="Hide Integrated View" description="Hides the coverage line markers in the editor."
+        <action id="HideIntegratedView" class="com.testbuddy.views.actions.HideDiffCovHighlights"
+                text="Hide Newly Covered Lines" description="Hides the coverage line markers in the editor."
                 icon="AllIcons.Diff.Remove">
         </action>
-        <action id="com.testbuddy.com.testbuddy.views.actions.ShowDiffCovHighlights"
-                class="com.testbuddy.views.actions.ShowDiffCovHighlights"
-                text="Show Coverage Diff"
-                description="Show coverage diff gutter highlighters"/>
-        <action id="com.testbuddy.com.testbuddy.views.actions.HideDiffCovHighlights"
-                class="com.testbuddy.views.actions.HideDiffCovHighlights"
-                text="Hide Coverage Diff"
-                description="Hide coverage diff gutter highlighters"/>
-        <action id="com.testbuddy.com.testbuddy.views.actions.RefreshDiffHighlights"
-                class="com.testbuddy.views.actions.RefreshDiffHighlights"
-                text="Refresh Coverage Diff"
-                description="Refresh coverage diff gutter highlighters"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">

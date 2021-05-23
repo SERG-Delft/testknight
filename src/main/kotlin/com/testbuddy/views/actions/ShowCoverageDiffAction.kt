@@ -4,10 +4,14 @@ import com.intellij.diff.tools.util.side.TwosideContentPanel
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.ui.WindowWrapper
 import com.intellij.openapi.ui.WindowWrapperBuilder
+import com.intellij.psi.PsiClass
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.components.JBScrollPane
+import com.testbuddy.services.CoverageHighlighterService
 
 class ShowCoverageDiffAction : AnAction() {
 
@@ -20,11 +24,17 @@ class ShowCoverageDiffAction : AnAction() {
 
         val editor = e.getData(CommonDataKeys.EDITOR)!!
         val vFile = e.getData(CommonDataKeys.VIRTUAL_FILE)!!
+        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
+        val className = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.name ?: return
 
         val editorFactory = EditorFactory.getInstance()
 
+        val coverageHighlighterService = e.project!!.service<CoverageHighlighterService>()
+
         val leftEditor = editorFactory.createEditor(editor.document, null, vFile, true)
         val rightEditor = editorFactory.createEditor(editor.document, null, vFile, true)
+
+        coverageHighlighterService.showHighlightsInDiff(leftEditor, rightEditor, className)
 
         val twoSidePanel = TwosideContentPanel(mutableListOf(leftEditor.component, rightEditor.component))
 
@@ -46,7 +56,7 @@ class ShowCoverageDiffAction : AnAction() {
 
     /**
      * Determines whether this menu item is available for the current context.
-     * Requires a project to be open and VirtualFile and Editor to be accessible from the action event.
+     * Requires a project to be open and PsiFile, VirtualFile and Editor to be accessible from the action event.
      *
      * @param e Event received when the associated group-id menu is chosen.
      */
@@ -55,7 +65,8 @@ class ShowCoverageDiffAction : AnAction() {
         e.presentation.isEnabled = (
             e.project != null &&
                 e.getData(CommonDataKeys.EDITOR) != null &&
-                e.getData(CommonDataKeys.VIRTUAL_FILE) != null
+                e.getData(CommonDataKeys.VIRTUAL_FILE) != null &&
+                e.getData(CommonDataKeys.PSI_FILE) != null
             )
     }
 }
