@@ -1,7 +1,7 @@
 package com.testbuddy.com.testbuddy.highlightResolutionStrategies
 
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
+import com.testbuddy.models.HighlightedTextData
 
 interface HighlightResolutionStrategy {
 
@@ -16,5 +16,5 @@ interface HighlightResolutionStrategy {
      * @param psiMethod the method
      * @return a list of PSI elements to be highlighted
      */
-    fun getElements(psiMethod: PsiMethod): List<PsiElement>
+    fun getElements(psiMethod: PsiMethod): List<HighlightedTextData>
 }

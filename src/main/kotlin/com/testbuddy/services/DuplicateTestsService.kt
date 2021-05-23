@@ -4,15 +4,14 @@ import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ScrollType
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.endOffset
-import com.intellij.refactoring.suggested.startOffset
 import com.testbuddy.com.testbuddy.highlightResolutionStrategies.AssertionArgsStrategy
 import com.testbuddy.com.testbuddy.highlightResolutionStrategies.ConstructorArgsStrategy
 import com.testbuddy.com.testbuddy.highlightResolutionStrategies.MagicNumberStrategy
+import com.testbuddy.models.HighlightedTextData
 
 class DuplicateTestsService(project: Project) {
 
@@ -31,9 +30,9 @@ class DuplicateTestsService(project: Project) {
     /**
      * Gets a list of PSI elements to be highlighted ordered by priority of their resolution strategy
      */
-    fun getHighlights(psiMethod: PsiMethod): List<PsiElement> {
+    fun getHighlights(psiMethod: PsiMethod): List<HighlightedTextData> {
 
-        val highlights = mutableListOf<PsiElement>()
+        val highlights = mutableListOf<HighlightedTextData>()
         highlightResolutionStrategies.forEach { highlights.addAll(it.getElements(psiMethod)) }
 
         if (highlights.size == 0) return highlights
@@ -41,7 +40,7 @@ class DuplicateTestsService(project: Project) {
         highlights.sortBy { it.endOffset }
 
         // interval scheduling algorithm, find largest subset of non-overlapping highlights
-        val res = mutableListOf<PsiElement>()
+        val res = mutableListOf<HighlightedTextData>()
         res.add(highlights[0])
         var lastAdded = highlights[0]
 
