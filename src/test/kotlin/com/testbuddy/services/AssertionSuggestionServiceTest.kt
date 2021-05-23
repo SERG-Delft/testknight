@@ -19,6 +19,22 @@ internal class AssertionSuggestionServiceTest : BasePlatformTestCase() {
     }
 
     @Test
+    fun testGetAssertionsWithSideEffects() {
+        this.myFixture.configureByFile("/MixedTestAndNoTestMethods.java")
+        val psi = this.myFixture.file
+        val project = this.myFixture.project
+
+        val service = AssertionSuggestionService()
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testMethod = testClass!!.findMethodsByName("testMethod")[0] as PsiMethod
+        val methodUnderTestCall = PsiTreeUtil.findChildOfType(testMethod!!, PsiMethodCallExpression::class.java)
+        service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
+        this.myFixture.checkResultByFile(
+            "/expected/AssertionSuggestionServiceTest.testGetAssertionsWithSideEffects.java"
+        )
+    }
+
+    @Test
     fun testGetAssertionsOnReturnType() {
         this.myFixture.configureByFile("/MixedTestAndNoTestMethods.java")
         val psi = this.myFixture.file
