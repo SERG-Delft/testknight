@@ -12,6 +12,7 @@ import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 import com.testbuddy.com.testbuddy.highlightResolutionStrategies.AssertionArgsStrategy
 import com.testbuddy.com.testbuddy.highlightResolutionStrategies.ConstructorArgsStrategy
+import com.testbuddy.com.testbuddy.highlightResolutionStrategies.MagicNumberStrategy
 
 class DuplicateTestsService(project: Project) {
 
@@ -21,7 +22,11 @@ class DuplicateTestsService(project: Project) {
     /**
      * List of active highlight resolution strategies
      */
-    private val highlightResolutionStrategies = listOf(AssertionArgsStrategy, ConstructorArgsStrategy)
+    private val highlightResolutionStrategies = listOf(
+        AssertionArgsStrategy,
+        ConstructorArgsStrategy,
+        MagicNumberStrategy
+    )
 
     /**
      * Gets a list of PSI elements to be highlighted ordered by priority of their resolution strategy
@@ -29,11 +34,26 @@ class DuplicateTestsService(project: Project) {
     private fun getHighlights(psiMethod: PsiMethod): List<PsiElement> {
 
         val highlights = mutableListOf<PsiElement>()
+        highlightResolutionStrategies.forEach { highlights.addAll(it.getElements(psiMethod)) }
 
-        highlightResolutionStrategies
-            .forEach { highlights.addAll(it.getElements(psiMethod)) }
+        if (highlights.size == 0) return highlights
 
-        return highlights.sortedBy { it.startOffset }
+        highlights.sortBy { it.endOffset }
+
+        // interval scheduling algorithm, find largest subset of non-overlapping highlights
+        val res = mutableListOf<PsiElement>()
+        res.add(highlights[0])
+        var lastAdded = highlights[0]
+
+        for (hl in highlights) {
+
+            if (hl.startOffset >= lastAdded.endOffset) {
+                res.add(hl)
+                lastAdded = hl
+            }
+        }
+
+        return res
     }
 
     /**
