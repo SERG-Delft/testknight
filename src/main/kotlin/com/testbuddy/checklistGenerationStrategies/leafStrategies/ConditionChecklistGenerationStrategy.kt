@@ -1,7 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiExpression
-import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.PropositionalExpression
 import com.testbuddy.models.TestingChecklistLeafNode
