@@ -4,7 +4,7 @@ import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 
 class IfStatementChecklistGenerationStrategy private constructor(

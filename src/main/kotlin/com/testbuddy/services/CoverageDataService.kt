@@ -8,7 +8,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
 import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.ProjectData
-import com.testbuddy.com.testbuddy.models.CoverageDiffObject
+import com.testbuddy.models.CoverageDiffObject
 
 class CoverageDataService : Disposable {
 

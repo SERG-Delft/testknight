@@ -5,7 +5,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.project.Project
-import com.testbuddy.com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
+import com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
 import java.awt.Color
 
 @Suppress("MagicNumber")
