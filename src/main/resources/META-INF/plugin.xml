@@ -16,6 +16,8 @@
         <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->

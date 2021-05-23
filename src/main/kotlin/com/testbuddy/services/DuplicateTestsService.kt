@@ -1,6 +1,7 @@
 package com.testbuddy.services
 
 import com.intellij.codeInsight.template.TemplateManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ScrollType
 import com.intellij.openapi.project.Project
@@ -15,8 +16,9 @@ import com.testbuddy.models.HighlightedTextData
 
 class DuplicateTestsService(project: Project) {
 
-    private val templateCreationService = TemplateCreationService(project)
+    private val templateCreationService = project.service<TemplateCreationService>()
     private val templateManager = TemplateManager.getInstance(project)
+    private val testAnalyzerService = project.service<TestAnalyzerService>()
 
     /**
      * List of active highlight resolution strategies
@@ -77,7 +79,7 @@ class DuplicateTestsService(project: Project) {
         // run the template
         templateManager.startTemplate(editor, template)
 
-        return true
+        return testAnalyzerService.isTestMethod(method)
     }
 
     /**
