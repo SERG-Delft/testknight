@@ -77,11 +77,11 @@
                 icon="AllIcons.Actions.Diff">
         </action>
         <action id="ShowIntegratedView" class="com.testbuddy.views.actions.RefreshDiffHighlights"
-                text="Show Integrated View" description="Shows the coverage line markers in the editor."
+                text="Show Newly Covered Lines" description="Shows the coverage line markers in the editor."
                 icon="AllIcons.General.InspectionsEye">
         </action>
         <action id="HideIntegratedView" class="com.testbuddy.views.actions.HideDiffCovHighlights"
-                text="Hide Integrated View" description="Hides the coverage line markers in the editor."
+                text="Hide Newly Covered Lines" description="Hides the coverage line markers in the editor."
                 icon="AllIcons.Diff.Remove">
         </action>
     </actions>
