@@ -71,6 +71,7 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         service.initTrees(checkListTree)
         service.addChecklist(backendChecklist)
         val expected = "Math2 add Test where a is empty\n" +
+            "Math2 add Test where a has one element\n" +
             "Math2 add Test where a is null\n" +
             "Math2 add Test where foreach loop runs multiple times\n"
         val received = service.print()
@@ -93,6 +94,7 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         service.addChecklist(backendChecklist)
         service.addChecklist(backendChecklist)
         val expected = "Math2 add Test where a is empty\n" +
+            "Math2 add Test where a has one element\n" +
             "Math2 add Test where a is null\n" +
             "Math2 add Test where foreach loop runs multiple times\n"
         val received = service.print()
@@ -114,9 +116,11 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         service.initTrees(checkListTree)
         service.addChecklist(backendChecklist)
         val expected = "Math2 add Test where a is empty\n" +
+            "Math2 add Test where a has one element\n" +
             "Math2 add Test where a is null\n" +
             "Math2 add Test where foreach loop runs multiple times\n" +
             "Math2 add2 Test where a is empty\n" +
+            "Math2 add2 Test where a has one element\n" +
             "Math2 add2 Test where a is null\n" +
             "Math2 add2 Test where foreach loop runs multiple times\n"
         val received = service.print()
@@ -139,9 +143,11 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         service.addChecklist(backendChecklist)
         service.addChecklist(backendChecklist)
         val expected = "Math2 add Test where a is empty\n" +
+            "Math2 add Test where a has one element\n" +
             "Math2 add Test where a is null\n" +
             "Math2 add Test where foreach loop runs multiple times\n" +
             "Math2 add2 Test where a is empty\n" +
+            "Math2 add2 Test where a has one element\n" +
             "Math2 add2 Test where a is null\n" +
             "Math2 add2 Test where foreach loop runs multiple times\n"
         val received = service.print()
@@ -165,9 +171,11 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         service.addChecklist(backendChecklistMethod)
         service.addChecklist(backendChecklistClass)
         val expected = "Math2 add Test where a is empty\n" +
+            "Math2 add Test where a has one element\n" +
             "Math2 add Test where a is null\n" +
             "Math2 add Test where foreach loop runs multiple times\n" +
             "Math2 add2 Test where a is empty\n" +
+            "Math2 add2 Test where a has one element\n" +
             "Math2 add2 Test where a is null\n" +
             "Math2 add2 Test where foreach loop runs multiple times\n"
         val received = service.print()
@@ -191,9 +199,11 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         service.addChecklist(backendChecklistClass)
         service.addChecklist(backendChecklistMethod)
         val expected = "Math2 add Test where a is empty\n" +
+            "Math2 add Test where a has one element\n" +
             "Math2 add Test where a is null\n" +
             "Math2 add Test where foreach loop runs multiple times\n" +
             "Math2 add2 Test where a is empty\n" +
+            "Math2 add2 Test where a has one element\n" +
             "Math2 add2 Test where a is null\n" +
             "Math2 add2 Test where foreach loop runs multiple times\n"
         val received = service.print()

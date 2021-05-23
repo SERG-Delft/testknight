@@ -104,8 +104,8 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is true", condition!!),
-            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is false", condition!!),
+            TestingChecklistLeafNode("Test where \"age <= 0\" is true", condition!!),
+            TestingChecklistLeafNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
         TestCase.assertEquals(expected, results)
@@ -120,8 +120,8 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is true", condition!!),
-            TestingChecklistLeafNode("Test where in the condition \"age <= 0\", \"age <= 0\" is false", condition!!),
+            TestingChecklistLeafNode("Test where \"age <= 0\" is true", condition!!),
+            TestingChecklistLeafNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
         TestCase.assertEquals(expected, results)

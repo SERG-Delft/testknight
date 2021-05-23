@@ -42,6 +42,13 @@ class ForeachStatementChecklistGenerationStrategy private constructor() :
             ),
             TestingChecklistLeafNode(
                 description = TestingChecklistMessageBundleHandler.message(
+                    "forEachOnce",
+                    iteratedValue
+                ),
+                psiElement
+            ),
+            TestingChecklistLeafNode(
+                description = TestingChecklistMessageBundleHandler.message(
                     "forEachNull",
                     iteratedValue
                 ),
