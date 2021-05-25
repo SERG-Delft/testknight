@@ -21,6 +21,9 @@
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
         <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
+
+
+
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -29,6 +32,16 @@
 
         <toolWindow id="TestBuddy" secondary="true" icon="AllIcons.General.Modified" anchor="right"
                     factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
+
+        <!--        TestBuddy Settings-->
+        <applicationConfigurable parentId="tools" instance="com.testbuddy.settings.SettingsConfigurable"
+                                 id="com.testbuddy.settings.SettingsConfigurable"
+                                 displayName="TestBuddy"/>
+        <applicationService serviceImplementation="com.testbuddy.settings.SettingsService"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+
     </extensions>
 
 
