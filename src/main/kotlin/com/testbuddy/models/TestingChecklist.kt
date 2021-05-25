@@ -9,21 +9,21 @@ data class TestingChecklist(val classChecklists: MutableList<TestingChecklistCla
 open class TestingChecklistNode(open var checked: Int = 0)
 data class TestingChecklistLeafNode(
     var description: String,
-    val element: PsiElement,
+    val element: PsiElement?,
     override var checked: Int = 0
     // val parent: TestingChecklistMethodNode
 ) : TestingChecklistNode()
 abstract class TestingChecklistParentNode : TestingChecklistNode()
 data class TestingChecklistClassNode(
     var description: String,
-    val children: MutableList<TestingChecklistMethodNode>,
+    var children: MutableList<TestingChecklistMethodNode>,
     val element: PsiClass,
     override var checked: Int = 0
     // val parent: TestingChecklist
 ) : TestingChecklistParentNode()
 data class TestingChecklistMethodNode(
     var description: String,
-    val children: MutableList<TestingChecklistLeafNode>,
+    var children: MutableList<TestingChecklistLeafNode>,
     val element: PsiMethod,
     override var checked: Int = 0
     // val parent: TestingChecklistClassNode?

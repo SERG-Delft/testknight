@@ -48,10 +48,11 @@ class ChecklistTreeService {
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
     ): Boolean {
-
+        if (itemNode.element == null) {
+            return false
+        }
         var foundItem = false
         for (i in 0 until dataMethod.children.size) {
-
             val dataItem = dataMethod.children[i]
             // var uiTreeItem = uiTreeMethod.getChildAt(i)
             if (itemNode.description == dataItem.description &&
@@ -69,25 +70,22 @@ class ChecklistTreeService {
      * This method builds the UI for a checklist item
      *
      * @param foundItem the Boolean which represents if the item was found or not
-     * @param uiTreeClassNode: the TreeNode which represents the class reference of the UI
-     * @param uiTreeClassNode: the TreeNode which represents the method reference of the UI
+     * @param uiTreeMethodNode: the TreeNode which represents the method reference of the UI
      * @param dataMethod the TestingChecklistMethodNode which represents the method of the tree
      * @param itemNode the TestingChecklistLeafNode which we have to be append to the tree
      */
     private fun buildUiItem(
         foundItem: Boolean,
-        uiTreeClassNode: TreeNode,
         uiTreeMethod: TreeNode,
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
     ) {
-        if (!foundItem && dataMethod.children.size != 0) {
+        if (!foundItem) {
             dataMethod.children.add(itemNode)
 
             val newItemNode = CheckedTreeNode(ChecklistUserObject(itemNode, 0))
             newItemNode.isChecked = false
             (uiTreeMethod as CheckedTreeNode).add(newItemNode)
-            (uiTreeClassNode as CheckedTreeNode).add(uiTreeMethod)
         }
     }
 
@@ -114,7 +112,7 @@ class ChecklistTreeService {
                 dataMethod.description = methodNode.description
                 for (itemNode in methodNode.children) {
                     val foundItem: Boolean = findElement(dataMethod, itemNode)
-                    buildUiItem(foundItem, uiTreeClassNode, uiTreeMethod, dataMethod, itemNode)
+                    buildUiItem(foundItem, uiTreeMethod, dataMethod, itemNode)
                 }
             }
         }

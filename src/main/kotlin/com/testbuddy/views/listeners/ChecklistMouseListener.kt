@@ -7,6 +7,7 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.TestingChecklistMethodNode
 import com.testbuddy.views.actions.DeleteChecklistAction
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -35,6 +36,10 @@ class ChecklistMouseListener(private val tree: Tree, private val project: Projec
                 val edit = JBMenuItem("Edit")
                 edit.addActionListener(DeleteChecklistAction(node, project))
                 menu.add(edit)
+            } else if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
+                val addItem = JBMenuItem("Add item")
+                addItem.addActionListener(DeleteChecklistAction(node, project))
+                menu.add(addItem)
             }
 
             menu.show(tree, event.x, event.y)
