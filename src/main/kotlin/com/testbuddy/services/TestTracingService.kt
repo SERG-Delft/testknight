@@ -3,7 +3,10 @@ package com.testbuddy.com.testbuddy.services
 import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
+import com.testbuddy.com.testbuddy.models.TestCoverageData
+import java.io.DataInputStream
 import java.io.File
+import java.io.FileInputStream
 
 class TestTracingService(val project: Project) {
 
@@ -26,4 +29,30 @@ class TestTracingService(val project: Project) {
 
         return null
     }
+
+    private fun readTraceFile(traceFile: File): TestCoverageData {
+
+        val coverage = TestCoverageData(traceFile.nameWithoutExtension)
+
+        val stream = DataInputStream(FileInputStream(traceFile))
+
+        val numClasses = stream.readInt()
+
+        for (c in 0 until numClasses) {
+
+            val className = stream.readUTF()
+            val linesSize = stream.readInt()
+
+            coverage.classes[className] = mutableListOf()
+
+            for (l in 0 until linesSize) {
+                val line = stream.readInt()
+                (coverage.classes[className] as MutableList).add(line)
+            }
+        }
+
+        stream.close()
+        return coverage
+    }
+
 }
