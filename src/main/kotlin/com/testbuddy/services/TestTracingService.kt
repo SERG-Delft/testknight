@@ -1,5 +1,6 @@
 package com.testbuddy.com.testbuddy.services
 
+import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
@@ -7,9 +8,36 @@ import com.testbuddy.com.testbuddy.models.TestCoverageData
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 
 class TestTracingService(val project: Project) {
 
+    val coverageDataManager = CoverageDataManager.getInstance(project)
+
+    /**
+     * Get the lines of code tested by a given test.
+     *
+     * @param test the test in string format: ClassName,testName
+     * @return a TestCoverageObject representing the lines covered by the test
+     */
+    fun getLinesForTest(test: String): TestCoverageData {
+
+        val currentSuitesBundle = coverageDataManager.currentSuitesBundle
+            ?: throw FileNotFoundException("no coverage data")
+
+        val traceFile: File = getTraceFile(test, currentSuitesBundle)
+            ?: throw FileNotFoundException("traces not found")
+
+        return readTraceFile(traceFile)
+    }
+
+    /**
+     * Gets the trace file given a coverage suite and testName.
+     *
+     * @param test the test
+     * @param coverageSuitesBundle the coverage suite to extract the data from
+     * @return the file pointer of the trace file
+     */
     private fun getTraceFile(test: String, coverageSuitesBundle: CoverageSuitesBundle): File? {
         val traceDirs = coverageSuitesBundle.suites.map {
             val filePath = it.coverageDataFileName
@@ -30,6 +58,12 @@ class TestTracingService(val project: Project) {
         return null
     }
 
+    /**
+     * Read a trace file and extract the information into a TestCoverageData object.
+     *
+     * @param traceFile the traceFile
+     * @return the lines of code covered by the test
+     */
     private fun readTraceFile(traceFile: File): TestCoverageData {
 
         val coverage = TestCoverageData(traceFile.nameWithoutExtension)
@@ -38,14 +72,14 @@ class TestTracingService(val project: Project) {
 
         val numClasses = stream.readInt()
 
-        for (c in 0 until numClasses) {
+        repeat(numClasses) {
 
             val className = stream.readUTF()
             val linesSize = stream.readInt()
 
             coverage.classes[className] = mutableListOf()
 
-            for (l in 0 until linesSize) {
+            repeat(linesSize) {
                 val line = stream.readInt()
                 (coverage.classes[className] as MutableList).add(line)
             }
@@ -54,5 +88,4 @@ class TestTracingService(val project: Project) {
         stream.close()
         return coverage
     }
-
 }
