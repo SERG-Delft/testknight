@@ -12,7 +12,7 @@ import java.io.FileNotFoundException
 
 class TestTracingService(val project: Project) {
 
-    val coverageDataManager = CoverageDataManager.getInstance(project)
+    private val coverageDataManager = CoverageDataManager.getInstance(project)
 
     /**
      * Get the lines of code tested by a given test.
@@ -64,7 +64,7 @@ class TestTracingService(val project: Project) {
      * @param traceFile the traceFile
      * @return the lines of code covered by the test
      */
-    private fun readTraceFile(traceFile: File): TestCoverageData {
+    fun readTraceFile(traceFile: File): TestCoverageData {
 
         val coverage = TestCoverageData(traceFile.nameWithoutExtension)
 
