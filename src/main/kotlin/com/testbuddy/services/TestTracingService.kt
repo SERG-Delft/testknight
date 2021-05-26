@@ -9,6 +9,7 @@ import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.io.IOException
 
 class TestTracingService(val project: Project) {
 
@@ -64,7 +65,6 @@ class TestTracingService(val project: Project) {
     /**
      * Read a trace file and extract the information into a TestCoverageData object.
      *
-     * @suppress to suppress TooGenericExceptionCaught because streams can throw a variety of exceptions.
      * @param traceFile the traceFile.
      * @return the lines of code covered by the test.
      */
@@ -92,7 +92,8 @@ class TestTracingService(val project: Project) {
             }
             stream.close()
             return coverage
-        } catch (ex: Exception) {
+        } catch (ex: IOException) {
+
             println("tracefile could not be read" + ex.message)
             throw ex
         }
