@@ -98,13 +98,12 @@ class ConditionChecklistGenerationStrategy private constructor(
 
         val (simplified, assignments) = PropositionalExpression(psiElement).simplified()
 
-        val testCases = when (coverageGenerationMethod) {
-            ConditionCoverageType.BRANCH -> branchCoverage(simplified)
+        return when (coverageGenerationMethod) {
             ConditionCoverageType.MCDC -> mcdc(assignments.keys.toList(), simplified)
-        }
+                .map { TestingChecklistLeafNode(it.getDescription(assignments), psiElement) }
 
-        return testCases.map {
-            TestingChecklistLeafNode(it.getDescription(assignments), psiElement)
+            ConditionCoverageType.BRANCH -> branchCoverage(simplified)
+                .map { TestingChecklistLeafNode(it.getDescription(mapOf(simplified to psiElement.text)), psiElement) }
         }
     }
 
