@@ -1,0 +1,77 @@
+openapi: 3.0.0
+info:
+  title: TestBuddy Telemetry Server API
+  description: This the API specification for TestBuddy's telemetry server. It contains all the necessary information about how to upload usage data.
+  contact:
+    name: TU Delft Software Engineering Research Group
+    url: https://se.ewi.tudelft.nl/
+  version: 1.0.0 #API Version
+servers:
+  - url: https://testbuddy.tudelft.nl
+paths:
+  /userId:
+    description: User Id Resource
+    get: 
+      description: Operation to fetch a new user ID.
+      responses:
+        200: 
+          description: Successfully generated and returned a user ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId: 
+                    type: integer
+                    example: 42
+      tags:
+          - User Management
+  /usageData:
+    description: Usage Data
+    post: 
+      description: Operation to upload new usage data. 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  example: 42
+                testDuplicationInvocations:
+                  type: integer
+                  example: 13
+                gotoTestInvocations:
+                  type: integer
+                  example: 25
+                assertionSuggestionInvocations:
+                  type: integer
+                  example: 5
+                checklistGenerationInvocations:
+                  type: integer
+                  example: 50
+                skeletonGenerationInvocations:
+                  type: integer
+                  example: 14
+                splitScreenDiffViewInvocations:
+                  type: integer
+                  example: 2
+                sameScreenDiffViewInvocations:
+                  type: integer
+                  example: 10
+                runWithCoverageInvocations:
+                  type: integer
+                  example: 20
+                traceTestInvocations:
+                  type: integer
+                  example: 33
+      responses:
+        201:
+          description: Successfully added the usage data.
+        400:
+          description: Invalid input. For example a negative number in one of the invocation fields.
+        401:
+          description: Invalid user ID.
+      tags:
+        - Data collecting
