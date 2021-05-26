@@ -10,6 +10,8 @@ import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.testbuddy.models.AssertionSuggestion
+import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
 import com.testbuddy.utilities.StringFormatter
 
 class AssertionSuggestionService {
@@ -81,9 +83,18 @@ class AssertionSuggestionService {
         methodAnalyzerService: MethodAnalyzerService,
         resolvedNamesMap: Map<String, String>
     ): List<AssertionSuggestion> {
-        val assertionsBasedOnSideEffects =
-            methodAnalyzerService.getSideEffects(methodUnderTest)
-                .map { it.toAssertionSuggestion(resolvedNamesMap[it.info] ?: return emptyList()) }
+        val assertionsBasedOnSideEffects = mutableListOf<AssertionSuggestion>()
+        val sideEffects = methodAnalyzerService.getSideEffects(methodUnderTest)
+        sideEffects.forEach {
+            if (it is MethodCallOnParameterSideEffect && resolvedNamesMap.containsKey(it.info)) {
+                assertionsBasedOnSideEffects.add(it.toAssertionSuggestion(resolvedNamesMap[it.info]!!))
+            } else if (it is ClassFieldMutationSideEffect) {
+                assertionsBasedOnSideEffects.add(it.toAssertionSuggestion())
+            }
+        }
+//        val assertionsBasedOnSideEffects =
+//            methodAnalyzerService.getSideEffects(methodUnderTest)
+//                .map { it.toAssertionSuggestion(resolvedNamesMap[it.info] ?: return emptyList()) }
         val assertionsBasedOnOutput = this.getAssertionOnOutput(methodUnderTest)
         return assertionsBasedOnOutput + assertionsBasedOnSideEffects
     }

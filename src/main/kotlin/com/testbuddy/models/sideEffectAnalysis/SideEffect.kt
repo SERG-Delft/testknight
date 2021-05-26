@@ -3,17 +3,17 @@ package com.testbuddy.models.sideEffectAnalysis
 import com.testbuddy.messageBundleHandlers.AssertionSuggestionMessageBundleHandler
 import com.testbuddy.models.AssertionSuggestion
 
-abstract class SideEffect(open val info: String) {
-    abstract fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion
-}
+open class SideEffect(open val info: String)
 
-abstract class ClassFieldMutationSideEffect(override val info: String) : SideEffect(info)
+abstract class ClassFieldMutationSideEffect(override val info: String) : SideEffect(info) {
+    abstract fun toAssertionSuggestion(): AssertionSuggestion
+}
 data class ReassignsClassFieldSideEffect(val nameOfField: String) : ClassFieldMutationSideEffect(nameOfField) {
-    override fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion {
+    override fun toAssertionSuggestion(): AssertionSuggestion {
         return AssertionSuggestion(
             AssertionSuggestionMessageBundleHandler.message(
                 "fieldReassignment",
-                resolvedParameterName
+                nameOfField
             )
         )
     }
@@ -21,12 +21,12 @@ data class ReassignsClassFieldSideEffect(val nameOfField: String) : ClassFieldMu
 
 data class MethodCallOnClassFieldSideEffect(val nameOfField: String, val nameOfMethod: String) :
     ClassFieldMutationSideEffect(nameOfField) {
-    override fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion {
+    override fun toAssertionSuggestion(): AssertionSuggestion {
         return AssertionSuggestion(
             AssertionSuggestionMessageBundleHandler
                 .message(
                     "methodFieldModification",
-                    nameOfMethod, resolvedParameterName
+                    nameOfMethod, nameOfField
                 )
         )
     }
@@ -34,7 +34,7 @@ data class MethodCallOnClassFieldSideEffect(val nameOfField: String, val nameOfM
 
 data class MethodCallOnParameterSideEffect(val nameOfParameter: String, val nameOfMethod: String) :
     SideEffect(nameOfParameter) {
-    override fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion {
+    fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion {
         return AssertionSuggestion(
             AssertionSuggestionMessageBundleHandler
                 .message(

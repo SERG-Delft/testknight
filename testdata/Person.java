@@ -25,6 +25,10 @@ public class Person {
         spouse.marryTo(this);
     }
 
+    public void setSpouse(Person spouse) {
+        this.spouse = spouse;
+    }
+
     public int getAge() {
         return age;
     }
