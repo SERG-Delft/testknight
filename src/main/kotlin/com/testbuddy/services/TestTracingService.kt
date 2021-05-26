@@ -2,7 +2,6 @@ package com.testbuddy.com.testbuddy.services
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
-import com.intellij.coverage.JavaCoverageEngine
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
 import com.testbuddy.com.testbuddy.models.TestCoverageData
@@ -10,8 +9,6 @@ import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.StreamCorruptedException
 
 class TestTracingService(val project: Project) {
 
@@ -20,27 +17,29 @@ class TestTracingService(val project: Project) {
     /**
      * Get the lines of code tested by a given test.
      *
-     * @param test the test in string format: ClassName,testName
-     * @return a TestCoverageObject representing the lines covered by the test
+     * @param test the test in string format: ClassName,testName.
+     * @return a TestCoverageObject representing the lines covered by the test.
      */
     fun getLinesForTest(test: String): TestCoverageData {
 
         val currentSuitesBundle = coverageDataManager.currentSuitesBundle
-                ?: throw FileNotFoundException("no coverage data")
+            ?: throw FileNotFoundException("no coverage data")
 
         val traceFile: File = getTraceFile(test, currentSuitesBundle)
-                ?: throw FileNotFoundException("traces not found")
+            ?: throw FileNotFoundException("traces not found")
+
         return readTraceFile(traceFile)
     }
 
     /**
      * Gets the trace file given a coverage suite and testName.
      *
-     * @param test the test
-     * @param coverageSuitesBundle the coverage suite to extract the data from
-     * @return the file pointer of the trace file
+     * @param test the test.
+     * @param coverageSuitesBundle the coverage suite to extract the data from.
+     * @return the file pointer of the trace file.
      */
     private fun getTraceFile(test: String, coverageSuitesBundle: CoverageSuitesBundle): File? {
+
         val traceDirs = coverageSuitesBundle.suites.map {
             val filePath = it.coverageDataFileName
             val dirName = FileUtilRt.getNameWithoutExtension(File(filePath).name)
@@ -49,15 +48,15 @@ class TestTracingService(val project: Project) {
         }
 
         traceDirs
-                .sortedByDescending { it.lastModified() }
-                .forEach { dir ->
+            .sortedByDescending { it.lastModified() }
+            .forEach { dir ->
 
-                    dir.listFiles()?.forEach { file ->
-                        if (file.name == "$test.tr") {
-                            return file
-                        }
+                dir.listFiles()?.forEach { file ->
+                    if (file.name == "$test.tr") {
+                        return file
                     }
                 }
+            }
 
         return null
     }
@@ -65,16 +64,17 @@ class TestTracingService(val project: Project) {
     /**
      * Read a trace file and extract the information into a TestCoverageData object.
      *
-     * @param traceFile the traceFile
-     * @return the lines of code covered by the test
+     * @suppress to suppress TooGenericExceptionCaught because streams can throw a variety of exceptions.
+     * @param traceFile the traceFile.
+     * @return the lines of code covered by the test.
      */
+    @Suppress("TooGenericExceptionCaught")
     fun readTraceFile(traceFile: File): TestCoverageData {
 
         try {
             val coverage = TestCoverageData(traceFile.nameWithoutExtension)
 
             val stream = DataInputStream(FileInputStream(traceFile))
-
 
             val numClasses = stream.readInt()
 
@@ -90,14 +90,11 @@ class TestTracingService(val project: Project) {
                     (coverage.classes[className] as MutableList).add(line)
                 }
             }
-
             stream.close()
             return coverage
-
         } catch (ex: Exception) {
             println("tracefile could not be read" + ex.message)
             throw ex
         }
-
     }
 }
