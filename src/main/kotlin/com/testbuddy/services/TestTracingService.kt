@@ -2,6 +2,7 @@ package com.testbuddy.com.testbuddy.services
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
+import com.intellij.coverage.JavaCoverageEngine
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
 import com.testbuddy.com.testbuddy.models.TestCoverageData
@@ -9,6 +10,8 @@ import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.StreamCorruptedException
 
 class TestTracingService(val project: Project) {
 
@@ -23,11 +26,10 @@ class TestTracingService(val project: Project) {
     fun getLinesForTest(test: String): TestCoverageData {
 
         val currentSuitesBundle = coverageDataManager.currentSuitesBundle
-            ?: throw FileNotFoundException("no coverage data")
+                ?: throw FileNotFoundException("no coverage data")
 
         val traceFile: File = getTraceFile(test, currentSuitesBundle)
-            ?: throw FileNotFoundException("traces not found")
-
+                ?: throw FileNotFoundException("traces not found")
         return readTraceFile(traceFile)
     }
 
@@ -50,12 +52,12 @@ class TestTracingService(val project: Project) {
                 .sortedByDescending { it.lastModified() }
                 .forEach { dir ->
 
-            dir.listFiles()?.forEach { file ->
-                if (file.name == "$test.tr") {
-                    return file
+                    dir.listFiles()?.forEach { file ->
+                        if (file.name == "$test.tr") {
+                            return file
+                        }
+                    }
                 }
-            }
-        }
 
         return null
     }
@@ -68,26 +70,34 @@ class TestTracingService(val project: Project) {
      */
     fun readTraceFile(traceFile: File): TestCoverageData {
 
-        val coverage = TestCoverageData(traceFile.nameWithoutExtension)
+        try {
+            val coverage = TestCoverageData(traceFile.nameWithoutExtension)
 
-        val stream = DataInputStream(FileInputStream(traceFile))
+            val stream = DataInputStream(FileInputStream(traceFile))
 
-        val numClasses = stream.readInt()
 
-        repeat(numClasses) {
+            val numClasses = stream.readInt()
 
-            val className = stream.readUTF()
-            val linesSize = stream.readInt()
+            repeat(numClasses) {
 
-            coverage.classes[className] = mutableListOf()
+                val className = stream.readUTF()
+                val linesSize = stream.readInt()
 
-            repeat(linesSize) {
-                val line = stream.readInt()
-                (coverage.classes[className] as MutableList).add(line)
+                coverage.classes[className] = mutableListOf()
+
+                repeat(linesSize) {
+                    val line = stream.readInt()
+                    (coverage.classes[className] as MutableList).add(line)
+                }
             }
+
+            stream.close()
+            return coverage
+
+        } catch (ex: Exception) {
+            println("tracefile could not be read" + ex.message)
+            throw ex
         }
 
-        stream.close()
-        return coverage
     }
 }
