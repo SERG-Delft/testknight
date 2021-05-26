@@ -21,6 +21,7 @@
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
         <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestTracingService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -92,7 +93,11 @@
         <intentionAction>
             <className>com.testbuddy.views.actions.AssertionSuggestionsAction</className>
             <category>TestBuddy intentions</category>
+        </intentionAction>
 
+        <intentionAction>
+            <className>com.testbuddy.views.actions.TraceTestAction</className>
+            <category>TestBuddy intentions</category>
         </intentionAction>
     </extensions>
 
