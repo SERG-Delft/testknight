@@ -63,7 +63,29 @@ class ConditionChecklistGenerationStrategy private constructor(
     /**
      * Represents a test case in the form of a mapping between propositions and truth values
      */
-    inner class TestCase(val assignments: Map<String, Boolean>)
+    inner class TestCase(val assignments: Map<String, Boolean>) {
+        fun getDescription(): String = if (assignments.size == 1) {
+                val expr = assignments.keys.first()
+                "Test where $expr is ${assignments[expr]}"
+        } else {
+
+            var description = ""
+
+            assignments.entries.forEach { (proposition, value) ->
+                description += "$proposition is $value, "
+            }
+
+            for ((proposition, value) in assignments.entries) {
+                description += TestingChecklistMessageBundleHandler.message(
+                    "conditionAssignmentMessage",
+                    assignments[proposition]!!,
+                    value
+                )
+            }
+
+            description.dropLast(2)
+        }
+    }
 
     /**
      * Generates the testing checklist based on the configured coverage method.
