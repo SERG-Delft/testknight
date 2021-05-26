@@ -6,6 +6,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy.TestCaseBindings
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 import junit.framework.TestCase
@@ -135,5 +136,27 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
                 "Foo"
             )
         }
+    }
+
+    @Test
+    fun testBindingsToStringSimple() {
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val bindings = strategy.TestCaseBindings(mapOf("A" to true, "B" to false))
+
+        val assignments = mapOf("A" to "a", "B" to "b")
+
+        val desc = bindings.getDescription(assignments)
+        assertEquals("Test where \"a\" is true, \"b\" is false", desc)
+    }
+
+    @Test
+    fun testBindingsToStringSingle() {
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val bindings = strategy.TestCaseBindings(mapOf("A" to true))
+
+        val assignments = mapOf("A" to "a")
+
+        val desc = bindings.getDescription(assignments)
+        assertEquals("Test where \"a\" is true", desc)
     }
 }
