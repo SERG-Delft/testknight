@@ -61,6 +61,11 @@ class ConditionChecklistGenerationStrategy private constructor(
     }
 
     /**
+     * Represents a test case in the form of a mapping between propositions and truth values
+     */
+    inner class TestCase(val assignments: Map<String, Boolean>)
+
+    /**
      * Generates the testing checklist based on the configured coverage method.
      *
      * @param psiElement the PsiExpression to generate on.
@@ -105,21 +110,19 @@ class ConditionChecklistGenerationStrategy private constructor(
      * @param assignments the map of assignments.
      */
     private fun testCaseFormatter(
-        testCases: Set<Map<String, Boolean>>,
+        testCases: Set<TestCase>,
         psiElement: PsiExpression,
         assignments: Map<String, String>
     ): List<TestingChecklistLeafNode> {
-        return testCases.map {
+        return testCases.map { testCase ->
 
-            var description = if (it.size == 1) {
-                TestingChecklistMessageBundleHandler
-                    .message("conditionSingleMessage", psiElement.text)
+            var description = if (testCase.assignments.size == 1) {
+                TestingChecklistMessageBundleHandler.message("conditionSingleMessage", psiElement.text)
             } else {
-                TestingChecklistMessageBundleHandler
-                    .message("conditionBaseMessage", psiElement.text)
+                TestingChecklistMessageBundleHandler.message("conditionBaseMessage", psiElement.text)
             }
 
-            for ((proposition, value) in it.entries) {
+            for ((proposition, value) in testCase.assignments.entries) {
                 description += TestingChecklistMessageBundleHandler.message(
                     "conditionAssignmentMessage",
                     assignments[proposition]!!,
@@ -128,7 +131,7 @@ class ConditionChecklistGenerationStrategy private constructor(
             }
 
             // remove trailing comma and space
-            TestingChecklistLeafNode(description.dropLast(2), psiElement,)
+            TestingChecklistLeafNode(description.dropLast(2), psiElement, 0)
         }
     }
 
@@ -140,7 +143,7 @@ class ConditionChecklistGenerationStrategy private constructor(
      * @return a set of String -> Boolean maps which assign values to each proposition in the test case
      */
     @Suppress("NestedBlockDepth")
-    fun mcdc(variables: List<String>, expressionString: String): Set<Map<String, Boolean>> {
+    fun mcdc(variables: List<String>, expressionString: String): Set<TestCase> {
 
         val n = variables.size
         val truthTable = TruthTable(variables, expressionString)
@@ -173,7 +176,7 @@ class ConditionChecklistGenerationStrategy private constructor(
             }
         }
 
-        return rows.map { truthTable.assignments(it) }.toSet()
+        return rows.map { TestCase(truthTable.assignments(it)) }.toSet()
     }
 
     /**
@@ -183,10 +186,10 @@ class ConditionChecklistGenerationStrategy private constructor(
      * @param expressionString the logical expression in string form.
      * @return a set of String -> Boolean maps which assign values to each proposition in the test case.
      */
-    private fun branchCoverage(expressionString: String): Set<Map<String, Boolean>> {
+    private fun branchCoverage(expressionString: String): Set<TestCase> {
         return setOf(
-            mapOf(expressionString to true),
-            mapOf(expressionString to false)
+            TestCase(mapOf(expressionString to true)),
+            TestCase(mapOf(expressionString to false))
         )
     }
 }
