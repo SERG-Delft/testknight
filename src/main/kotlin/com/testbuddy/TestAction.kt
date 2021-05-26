@@ -3,6 +3,7 @@ package com.testbuddy
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.testbuddy.com.testbuddy.services.TestTracingService
 import com.testbuddy.services.DuplicateTestsService
 
 class TestAction : AnAction() {
@@ -12,10 +13,9 @@ class TestAction : AnAction() {
         val editor = event.getData(CommonDataKeys.EDITOR)
         val project = event.getData(CommonDataKeys.PROJECT)
 
-        if (psiFile != null && editor != null && project != null) {
+        val service = TestTracingService(project!!)
 
-            val service = DuplicateTestsService(project)
-            service.duplicateMethodUnderCaret(psiFile, editor)
-        }
+        val a = 2
+
     }
 }

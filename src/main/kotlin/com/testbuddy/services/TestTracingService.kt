@@ -46,7 +46,9 @@ class TestTracingService(val project: Project) {
             File(parentDir, dirName)
         }
 
-        traceDirs.forEach { dir ->
+        traceDirs
+                .sortedByDescending { it.lastModified() }
+                .forEach { dir ->
 
             dir.listFiles()?.forEach { file ->
                 if (file.name == "$test.tr") {
