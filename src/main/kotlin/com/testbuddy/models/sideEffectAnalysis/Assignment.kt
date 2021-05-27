@@ -3,12 +3,20 @@ package com.testbuddy.models.sideEffectAnalysis
 import com.intellij.psi.PsiAssignmentExpression
 import com.testbuddy.utilities.StringFormatter
 
-data class Assignment(val nameAffected: String) {
+data class Assignment(val affectedObjectName: String, val fieldAffected: String?) {
 
     companion object Factory {
         fun create(psiAssignmentExpression: PsiAssignmentExpression): Assignment {
             val nameAffected = psiAssignmentExpression.lExpression.text
-            return Assignment(nameAffected)
+            val formattedName = nameAffected.replace("this.", "")
+            return if (formattedName.contains('.')) {
+                val lastIndex = formattedName.lastIndexOf('.')
+                val objectNameAffected = formattedName.substring(0, lastIndex)
+                val fieldAffected = formattedName.substring(lastIndex + 1)
+                Assignment(objectNameAffected, fieldAffected)
+            } else {
+                Assignment(nameAffected, null)
+            }
         }
     }
 
@@ -24,8 +32,8 @@ data class Assignment(val nameAffected: String) {
         identifiersInMethodScope: Map<String, String>,
         identifiersInClassScope: Map<String, String>
     ): Boolean {
-        return !identifiersInMethodScope.contains(this.nameAffected) &&
-            identifiersInClassScope.contains(this.nameAffected)
+        return !identifiersInMethodScope.contains(this.affectedObjectName) &&
+            identifiersInClassScope.contains(this.affectedObjectName)
     }
 
     /**
@@ -38,15 +46,24 @@ data class Assignment(val nameAffected: String) {
     fun getClassFieldsReassigned(
         identifiersInMethodScope: Map<String, String>,
         identifiersInClassScope: Map<String, String>
-    ): List<ReassignsClassFieldSideEffect> {
+    ): List<ClassFieldMutationSideEffect> {
         return if (affectsClassField(identifiersInMethodScope, identifiersInClassScope)) {
-            listOf(
-                ReassignsClassFieldSideEffect(
-                    StringFormatter.formatClassFieldName(
-                        this.nameAffected
+            if (this.fieldAffected == null) {
+                listOf(
+                    ReassignsClassFieldSideEffect(
+                        StringFormatter.formatClassFieldName(
+                            this.affectedObjectName
+                        )
                     )
                 )
-            )
+            } else {
+                listOf(
+                    ReassignmentOfTransitiveField(
+                        StringFormatter.formatClassFieldName(this.affectedObjectName),
+                        this.fieldAffected
+                    )
+                )
+            }
         } else {
             emptyList()
         }

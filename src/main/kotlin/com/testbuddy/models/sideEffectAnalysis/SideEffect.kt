@@ -8,6 +8,7 @@ open class SideEffect(open val info: String)
 abstract class ClassFieldMutationSideEffect(override val info: String) : SideEffect(info) {
     abstract fun toAssertionSuggestion(): AssertionSuggestion
 }
+
 data class ReassignsClassFieldSideEffect(val nameOfField: String) : ClassFieldMutationSideEffect(nameOfField) {
     override fun toAssertionSuggestion(): AssertionSuggestion {
         return AssertionSuggestion(
@@ -25,16 +26,32 @@ data class MethodCallOnClassFieldSideEffect(val nameOfField: String, val nameOfM
         return AssertionSuggestion(
             AssertionSuggestionMessageBundleHandler
                 .message(
-                    "methodFieldModification",
+                    "classFieldModification",
                     nameOfMethod, nameOfField
                 )
         )
     }
 }
 
-data class MethodCallOnParameterSideEffect(val nameOfParameter: String, val nameOfMethod: String) :
-    SideEffect(nameOfParameter) {
-    fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion {
+data class ReassignmentOfTransitiveField(val nameOfField: String, val nameOfTransitiveField: String) :
+    ClassFieldMutationSideEffect(nameOfField) {
+    override fun toAssertionSuggestion(): AssertionSuggestion {
+        return AssertionSuggestion(
+            AssertionSuggestionMessageBundleHandler.message(
+                "transitiveFieldReassignment",
+                nameOfTransitiveField, nameOfField
+            )
+        )
+    }
+}
+
+abstract class ArgumentMutationSideEffect(open val nameOfParameter: String) : SideEffect(nameOfParameter) {
+    abstract fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion
+}
+
+data class MethodCallOnParameterSideEffect(override val nameOfParameter: String, val nameOfMethod: String) :
+    ArgumentMutationSideEffect(nameOfParameter) {
+    override fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion {
         return AssertionSuggestion(
             AssertionSuggestionMessageBundleHandler
                 .message(
@@ -44,3 +61,10 @@ data class MethodCallOnParameterSideEffect(val nameOfParameter: String, val name
         )
     }
 }
+
+// data class FieldReassignmentOfParameterSideEffect(override val nameOfParameter: String,
+// val nameOfMethod: String): ArgumentMutationSideEffect(nameOfParameter) {
+//    override fun toAssertionSuggest(resolvedParameterName: String): AssertionSuggestion {
+//        TODO()
+//    }
+// }

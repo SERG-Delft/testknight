@@ -37,6 +37,10 @@ class MethodAnalyzerService {
      */
     private fun getArgumentsAffected(method: PsiMethod): List<MethodCallOnParameterSideEffect> {
         val methodUnderAnalysis = Method.createFromMethod(method)
+
+        val assignments =
+            PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java).map { Assignment.create(it) }
+
         val methodCalls = PsiTreeUtil
             .findChildrenOfType(method, PsiMethodCallExpression::class.java)
             .filter { methodFilter(it) }
@@ -44,14 +48,13 @@ class MethodAnalyzerService {
         val parentClass = Class.createClassFromMethod(method)
 
         return methodCalls.flatMap {
-            it.getMethodCallSideEffects<MethodCallOnParameterSideEffect>(
+            it.getMethodCallSideEffects(
                 methodUnderAnalysis.parameters,
                 parentClass.fields,
                 {
                     fieldName: String,
                     paramsInMethodScope: Map<String, String>,
                     ->
-//                    !parentClass.isClassField(fieldName, paramsInMethodScope)
                     paramsInMethodScope.containsKey(fieldName)
                 }
             ) { fieldName: String, methodName: String -> MethodCallOnParameterSideEffect(fieldName, methodName) }
@@ -86,7 +89,7 @@ class MethodAnalyzerService {
 
         val classFieldsAffectedByMethodCalls =
             methodCalls.flatMap {
-                it.getMethodCallSideEffects<MethodCallOnClassFieldSideEffect>(
+                it.getMethodCallSideEffects(
                     methodUnderAnalysis.identifiersInScope,
                     parentClass.fields,
                     {

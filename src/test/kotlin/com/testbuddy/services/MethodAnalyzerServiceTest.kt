@@ -6,6 +6,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
+import com.testbuddy.models.sideEffectAnalysis.ReassignmentOfTransitiveField
 import com.testbuddy.models.sideEffectAnalysis.ReassignsClassFieldSideEffect
 import com.testbuddy.models.sideEffectAnalysis.SideEffect
 import junit.framework.TestCase
@@ -240,6 +241,17 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val expected = emptyList<SideEffect>()
         assertMethodSideEffects(testClass, expected, "dijkstra")
+    }
+
+    @Test
+    fun testReferenceChanged() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf<SideEffect>(
+            ReassignsClassFieldSideEffect("spouse"),
+            ReassignmentOfTransitiveField("spouse", "spouse")
+        )
+        assertMethodSideEffects(testClass, expected, "marryToReferenceChanged")
     }
 
     public override fun getTestDataPath(): String {

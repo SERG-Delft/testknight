@@ -35,6 +35,11 @@ public class Person {
         spouse.spouse = this;
     }
 
+    public void marryToParameterFieldAffected(Person newSpouse) {
+        spouse = newSpouse;
+        newSpouse.spouse = this;
+    }
+
 
     public void setSpouse(Person spouse) {
         this.spouse = spouse;
