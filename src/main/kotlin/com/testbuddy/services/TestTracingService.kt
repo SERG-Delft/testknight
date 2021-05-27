@@ -2,9 +2,19 @@ package com.testbuddy.services
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.markup.HighlighterLayer
+import com.intellij.openapi.editor.markup.TextAttributes
+import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.TestCoverageData
+import java.awt.Color
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -14,6 +24,45 @@ import java.io.IOException
 class TestTracingService(val project: Project) {
 
     private val coverageDataManager = CoverageDataManager.getInstance(project)
+    private val fileEditorManager = FileEditorManager.getInstance(project)
+    private val psiDocumentManager = PsiDocumentManager.getInstance(project)
+
+    /**
+     * Highlight all active editors.
+     *
+     * @param covData the coverage data to use
+     */
+    fun refreshHighlights(covData: TestCoverageData) {
+        fileEditorManager.allEditors.forEach {
+            if (it is TextEditor) {
+                highlightEditor(it.editor, covData)
+            }
+        }
+    }
+
+    /**
+     * Highlight the lines covered within an editor.
+     *
+     * @param editor the editor
+     * @param covData the coverage data
+     */
+    fun highlightEditor(editor: Editor, covData: TestCoverageData) {
+
+        val psiFile = psiDocumentManager.getPsiFile(editor.document)
+        val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
+
+        if (psiFile == null || classQn == null) return
+
+        // get the coverage data
+        val lines = covData.classes[classQn] ?: return
+
+        val textAttributes = TextAttributes()
+        textAttributes.backgroundColor = Color.CYAN
+
+        lines.forEach {
+            editor.markupModel.addLineHighlighter(it - 1, HighlighterLayer.LAST, textAttributes)
+        }
+    }
 
     /**
      * Get the lines of code tested by a given test.
