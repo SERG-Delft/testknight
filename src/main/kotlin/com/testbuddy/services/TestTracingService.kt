@@ -32,7 +32,18 @@ class TestTracingService(val project: Project) {
     /**
      * The current coverage data to show.
      */
-    var activeCovData: TestCoverageData? = null
+    private var activeCovData: TestCoverageData? = null
+
+    /**
+     * Highlight the lines covered by testName.
+     *
+     * @param testName the string representation of the test.
+     */
+    fun highlightTest(testName: String) {
+        removeHighlights()
+        activeCovData = getLinesForTest(testName)
+        refreshHighlights()
+    }
 
     /**
      * Highlight all active editors.
@@ -53,6 +64,7 @@ class TestTracingService(val project: Project) {
      */
     fun removeHighlights() {
         highlighters.forEach { it.dispose() }
+        activeCovData = null
     }
 
     /**
@@ -86,7 +98,7 @@ class TestTracingService(val project: Project) {
      * @param test the test in string format: ClassName,testName.
      * @return a TestCoverageObject representing the lines covered by the test.
      */
-    fun getLinesForTest(test: String): TestCoverageData {
+    private fun getLinesForTest(test: String): TestCoverageData {
 
         val currentSuitesBundle = coverageDataManager.currentSuitesBundle
             ?: throw FileNotFoundException("no coverage data")

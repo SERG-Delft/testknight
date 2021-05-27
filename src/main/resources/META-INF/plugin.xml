@@ -87,6 +87,9 @@
                 text="Hide Newly Covered Lines" description="Hides the coverage line markers in the editor."
                 icon="AllIcons.Diff.Remove">
         </action>
+        <action id="com.testbuddy.com.testbuddy.views.actions.HideTracedTestHighlightsAction"
+                class="com.testbuddy.views.actions.HideTracedTestHighlightsAction"
+                text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -119,6 +122,8 @@
     <projectListeners>
         <listener class="com.testbuddy.InitializationListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
+        <listener class="com.testbuddy.views.listeners.FileEditorListener"
+                  topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
     </projectListeners>
 
 </idea-plugin>

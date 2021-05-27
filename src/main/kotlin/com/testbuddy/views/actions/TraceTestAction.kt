@@ -45,11 +45,9 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction {
 
         if (parentMethod == null || methodCall == null || parentClass == null) return
 
-        // get the coverage data
+        // highlight the data
         val testName = "${parentClass.name},${parentMethod.name}"
-        val testTracingService = project.service<TestTracingService>()
-        val covData = testTracingService.getLinesForTest(testName)
-        val lines = covData.classes[parentClass.qualifiedName]
+        project.service<TestTracingService>().highlightTest(testName)
 
         // get method declaration information
         val methodDeclaration = methodCall.resolveMethod()
