@@ -4,6 +4,7 @@ import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.HighlighterLayer
+import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -26,18 +27,32 @@ class TestTracingService(val project: Project) {
     private val coverageDataManager = CoverageDataManager.getInstance(project)
     private val fileEditorManager = FileEditorManager.getInstance(project)
     private val psiDocumentManager = PsiDocumentManager.getInstance(project)
+    private val highlighters = mutableListOf<RangeHighlighter>()
+
+    /**
+     * The current coverage data to show.
+     */
+    var activeCovData: TestCoverageData? = null
 
     /**
      * Highlight all active editors.
-     *
-     * @param covData the coverage data to use
      */
-    fun refreshHighlights(covData: TestCoverageData) {
+    fun refreshHighlights() {
+
+        activeCovData ?: return
+
         fileEditorManager.allEditors.forEach {
             if (it is TextEditor) {
-                highlightEditor(it.editor, covData)
+                highlightEditor(it.editor, activeCovData!!)
             }
         }
+    }
+
+    /**
+     * Hide all highlighters
+     */
+    fun removeHighlights() {
+        highlighters.forEach { it.dispose() }
     }
 
     /**
@@ -46,7 +61,7 @@ class TestTracingService(val project: Project) {
      * @param editor the editor
      * @param covData the coverage data
      */
-    fun highlightEditor(editor: Editor, covData: TestCoverageData) {
+    private fun highlightEditor(editor: Editor, covData: TestCoverageData) {
 
         val psiFile = psiDocumentManager.getPsiFile(editor.document)
         val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
@@ -59,8 +74,9 @@ class TestTracingService(val project: Project) {
         val textAttributes = TextAttributes()
         textAttributes.backgroundColor = Color.CYAN
 
+        // highlight each line
         lines.forEach {
-            editor.markupModel.addLineHighlighter(it - 1, HighlighterLayer.LAST, textAttributes)
+            highlighters.add(editor.markupModel.addLineHighlighter(it - 1, HighlighterLayer.LAST, textAttributes))
         }
     }
 

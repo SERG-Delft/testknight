@@ -33,8 +33,8 @@ class TestAction : AnAction() {
         covData.classes["Person"] = mutableListOf(1, 2, 3)
 
         val service = TestTracingService(project)
-        service.refreshHighlights(covData)
+        service.activeCovData = covData
 
-
+        service.refreshHighlights()
     }
 }
