@@ -25,6 +25,17 @@ public class Person {
         spouse.marryTo(this);
     }
 
+    public void marryToReferenceChanged(Person newSpouse) {
+        spouse = newSpouse;
+        spouse.spouse = this;
+    }
+
+    public void marryToDoubleShadowing(Person spouse) {
+        this.spouse = spouse;
+        spouse.spouse = this;
+    }
+
+
     public void setSpouse(Person spouse) {
         this.spouse = spouse;
     }

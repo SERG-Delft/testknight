@@ -1,15 +1,13 @@
 package com.testbuddy.models.sideEffectAnalysis
 
 import com.intellij.psi.PsiAssignmentExpression
-import com.intellij.psi.PsiReferenceExpression
 import com.testbuddy.utilities.StringFormatter
 
 data class Assignment(val nameAffected: String) {
 
     companion object Factory {
         fun create(psiAssignmentExpression: PsiAssignmentExpression): Assignment {
-            val leftExpression = psiAssignmentExpression.lExpression
-            val nameAffected = (leftExpression as PsiReferenceExpression).qualifiedName
+            val nameAffected = psiAssignmentExpression.lExpression.text
             return Assignment(nameAffected)
         }
     }

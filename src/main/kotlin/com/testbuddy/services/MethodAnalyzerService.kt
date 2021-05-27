@@ -51,7 +51,8 @@ class MethodAnalyzerService {
                     fieldName: String,
                     paramsInMethodScope: Map<String, String>,
                     ->
-                    !parentClass.isClassField(fieldName, paramsInMethodScope)
+//                    !parentClass.isClassField(fieldName, paramsInMethodScope)
+                    paramsInMethodScope.containsKey(fieldName)
                 }
             ) { fieldName: String, methodName: String -> MethodCallOnParameterSideEffect(fieldName, methodName) }
         }

@@ -68,7 +68,7 @@ internal class AssertionSuggestionServiceTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testSetSpouse() {
+    fun testSetSpouseAssertions() {
         this.myFixture.configureByFile("/PersonMixed.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
@@ -81,6 +81,23 @@ internal class AssertionSuggestionServiceTest : BasePlatformTestCase() {
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
         this.myFixture.checkResultByFile(
             "/expected/PersonMixed.testSetSpouse.java"
+        )
+    }
+
+    @Test
+    fun testDijkstraTest() {
+        this.myFixture.configureByFile("/Dijkstra.java")
+        val psi = this.myFixture.file
+        val project = this.myFixture.project
+
+        val service = AssertionSuggestionService()
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testMethod = testClass!!.findMethodsByName("testDijkstra")[0] as PsiMethod
+        val methodUnderTestCall =
+            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
+        service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
+        this.myFixture.checkResultByFile(
+            "/expected/Dijkstra.testDijkstraTest.java"
         )
     }
 }

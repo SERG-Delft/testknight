@@ -233,6 +233,15 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         assertMethodSideEffects(testClass, expected, "chainedStaticMethodCall")
     }
 
+    @Test
+    fun testDijkstra() {
+        this.myFixture.configureByFile("/Dijkstra.java")
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = emptyList<SideEffect>()
+        assertMethodSideEffects(testClass, expected, "dijkstra")
+    }
+
     public override fun getTestDataPath(): String {
         return "testdata"
     }

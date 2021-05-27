@@ -67,7 +67,9 @@ class AssertionSuggestionService {
                     methodBody.add(comment).addAfter(whiteSpace, comment)
                 }
             }
-            CodeStyleManager.getInstance(project).reformat(testMethod)
+            WriteCommandAction.runWriteCommandAction(project) {
+                CodeStyleManager.getInstance(project).reformat(testMethod)
+            }
         }
     }
 

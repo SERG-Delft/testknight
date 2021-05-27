@@ -19,11 +19,6 @@ public class Person {
         return spouse;
     }
 
-    //Affects the passed argument as a side-effect.
-    public void marryTo(Person spouse) {
-        this.spouse = spouse;
-        spouse.marryTo(this);
-    }
 
     public void setSpouse(Person spouse) {
         this.spouse = spouse;
