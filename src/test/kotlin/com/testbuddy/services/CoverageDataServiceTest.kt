@@ -170,7 +170,42 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         every { classData.getLineData(2) } returns line3
 
         TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
-                Pair(setOf(0 , 1 , 2), setOf(0, 1, 2)))
+                Pair(setOf(0, 1, 2), setOf(0, 1, 2)))
     }
 
+    @Test
+    fun testNullLinesInClassDataPassedNew() {
+
+        //some null lines
+        val line0 = null
+        val line1 = LineData(1,
+                "simple description for line 1")
+        line1.hits = 2
+
+        val line2 = LineData(2,
+                "simple description for line 2")
+        line2.hits = 4
+
+        val line3 = null
+        val line4 = null
+        val line5 = null
+
+        val line6 = LineData(6, "simple description for line 6")
+        line6.hits = 6
+
+        val classData = mockk<ClassData>()
+
+        every { classData.lines } returns arrayOf(line0, line1, line2, line3, line4, line5, line6)
+
+        every { classData.getLineData(0) } returns line0
+        every { classData.getLineData(1) } returns line1
+        every { classData.getLineData(2) } returns line2
+        every { classData.getLineData(3) } returns line3
+        every { classData.getLineData(4) } returns line4
+        every { classData.getLineData(5) } returns line5
+        every { classData.getLineData(6) } returns line6
+
+        TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
+                Pair(setOf(1, 2, 6), setOf(1, 2, 6)))
+    }
 }
