@@ -1,7 +1,11 @@
 package com.testbuddy.services
 
+import com.intellij.configurationStore.NOTIFICATION_GROUP_ID
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
+import com.intellij.icons.AllIcons
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationType
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
@@ -13,6 +17,7 @@ import com.intellij.openapi.util.io.FileUtilRt
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.com.testbuddy.exceptions.NoTestCoverageDataException
 import com.testbuddy.com.testbuddy.models.TestCoverageData
 import java.awt.Color
 import java.io.DataInputStream
@@ -20,6 +25,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
+import java.lang.IllegalStateException
 
 class TestTracingService(val project: Project) {
 
@@ -97,15 +103,33 @@ class TestTracingService(val project: Project) {
      * @param test the test in string format: ClassName,testName.
      * @return a TestCoverageObject representing the lines covered by the test.
      */
-    private fun getLinesForTest(test: String): TestCoverageData {
+    @Throws(NoTestCoverageDataException::class)
+    private fun getLinesForTest(test: String): TestCoverageData? {
 
-        val currentSuitesBundle = coverageDataManager.currentSuitesBundle
-            ?: throw FileNotFoundException("no coverage data")
+        // display a notification with the Provided title and content
+        fun notify(title: String, content: String) {
+            Notification(NOTIFICATION_GROUP_ID, AllIcons.General.Warning, NotificationType.ERROR)
+                .setTitle(title)
+                .setContent(content)
+                .notify(project)
+        }
 
-        val traceFile: File = getTraceFile(test, currentSuitesBundle)
-            ?: throw FileNotFoundException("traces not found")
+        try {
+            val currentSuitesBundle = coverageDataManager.currentSuitesBundle
+            val traceFile = getTraceFile(test, currentSuitesBundle)
+            return readTraceFile(traceFile)
+        } catch(ex: FileNotFoundException) {
+            notify("Test coverage info not found", "Make sure you have ran with coverage and test-tracing")
+            println(ex)
+        } catch(ex: IllegalStateException) {
+            notify("Test coverage info not found", "Make sure you have ran with coverage and test-tracing")
+            println(ex)
+        } catch(ex: IOException) {
+            notify("Failed to read trace file", "Rerun coverage")
+            println(ex)
+        }
 
-        return readTraceFile(traceFile)
+        throw NoTestCoverageDataException()
     }
 
     /**
@@ -115,7 +139,8 @@ class TestTracingService(val project: Project) {
      * @param coverageSuitesBundle the coverage suite to extract the data from.
      * @return the file pointer of the trace file.
      */
-    private fun getTraceFile(test: String, coverageSuitesBundle: CoverageSuitesBundle): File? {
+    @Throws(FileNotFoundException::class)
+    private fun getTraceFile(test: String, coverageSuitesBundle: CoverageSuitesBundle): File {
 
         val traceDirs = coverageSuitesBundle.suites.map {
             val filePath = it.coverageDataFileName
@@ -135,7 +160,7 @@ class TestTracingService(val project: Project) {
                 }
             }
 
-        return null
+        throw FileNotFoundException("no trace file found")
     }
 
     /**
@@ -145,13 +170,12 @@ class TestTracingService(val project: Project) {
      * @return the lines of code covered by the test.
      */
     @Suppress("TooGenericExceptionCaught")
+    @Throws(IOException::class)
     fun readTraceFile(traceFile: File): TestCoverageData {
 
         try {
             val coverage = TestCoverageData(traceFile.nameWithoutExtension)
-
             val stream = DataInputStream(FileInputStream(traceFile))
-
             val numClasses = stream.readInt()
 
             repeat(numClasses) {
