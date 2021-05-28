@@ -7,14 +7,13 @@ import com.intellij.openapi.components.Storage
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
-
 @State(name = "com.testbuddy.settings.SettingsState", storages = [Storage("TestBuddySettings.xml")])
 class SettingsService : PersistentStateComponent<SettingsState> {
 
-    private var myState : SettingsState? = null
+    private var myState: SettingsState = SettingsState()
 
     @Nullable
-    override fun getState(): SettingsState? {
+    override fun getState(): SettingsState {
         return myState
     }
 
@@ -26,5 +25,4 @@ class SettingsService : PersistentStateComponent<SettingsState> {
         val instance: SettingsService
             get() = ServiceManager.getService(SettingsService::class.java)
     }
-
 }

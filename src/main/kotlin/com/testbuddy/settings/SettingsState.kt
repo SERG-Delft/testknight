@@ -13,12 +13,28 @@ data class TelemetrySettings(var isEnabled: Boolean = false)
 
 data class TestListSettings(
     var autoUpdateUI: Boolean = true,
-    var highlightStrategies: MutableMap<String, Boolean> = mutableMapOf()
+    var highlightStrategies: MutableMap<String, Boolean> = mutableMapOf(
+        "Constructor" to true,
+        "Literals" to true,
+        "Assertions" to true,
+        "Highlight inside quotes" to true
+    )
 )
 
 data class ChecklistSettings(
     var coverageCriteria: String = "MCDC",
-    var checklistStrategies: MutableMap<String, Boolean> = mutableMapOf(),
+    var checklistStrategies: MutableMap<String, Boolean> = mutableMapOf(
+        "If Statement" to true,
+        "Switch Statement" to true,
+        "Try Statement" to true,
+        "Parameter List" to true,
+        "While Statement" to true,
+        "For Statement" to true,
+        "Do While Statement" to true,
+        "Foreach Statement" to true,
+        "Throw Statement" to true,
+        "Conditional Expression" to true
+    ),
     var typeCaseMap: MutableMap<String, List<String>> = mutableMapOf(),
     var showGutterIcons: Boolean = true,
     var gotoChecklistItem: Boolean = true,

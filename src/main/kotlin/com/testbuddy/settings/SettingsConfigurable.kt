@@ -1,14 +1,10 @@
 package com.testbuddy.settings
 
-import com.intellij.openapi.options.Configurable
-import org.jetbrains.annotations.Nullable
-import javax.swing.JComponent
+import com.intellij.openapi.options.BoundConfigurable
+import com.intellij.openapi.ui.DialogPanel
 
-
-class SettingsConfigurable : Configurable {
+class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     private var mySettingsComponent: SettingsComponent? = null
-    private var settingsService = SettingsService.instance
-
 
     /**
      * Returns the visible name of the configurable component.
@@ -22,33 +18,8 @@ class SettingsConfigurable : Configurable {
         return "TestBuddy"
     }
 
-    @Nullable
-    override fun createComponent(): JComponent {
+    override fun createPanel(): DialogPanel {
         mySettingsComponent = SettingsComponent()
         return mySettingsComponent!!.getComponent()
     }
-
-
-    //Inform when UI component got modified compared to saved state.
-    override fun isModified(): Boolean {
-        return mySettingsComponent!!.state.myFlag
-    }
-
-
-    //Save from component into file
-    override fun apply() {
-         mySettingsComponent!!.state.copyTo(settingsService.state!!)
-    }
-
-    //Load from file into component
-    override fun reset() {
-        settingsService.state ?: return
-        settingsService.state!!.copyTo(mySettingsComponent!!.state)
-    }
-
-    override fun disposeUIResources() {
-        mySettingsComponent = null
-    }
-
-
 }
