@@ -115,7 +115,7 @@ class TryStatementChecklistGenerationStrategy private constructor(
             if (it.catchType != null) result.add(
                 TestingChecklistLeafNode(
                     TestingChecklistMessageBundleHandler.message(
-                        "tryBlockThrowsSpecifException",
+                        "tryBlockThrowsSpecificException",
                         it.catchType!!.canonicalText
                     ),
                     it
