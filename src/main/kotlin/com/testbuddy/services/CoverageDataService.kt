@@ -12,10 +12,10 @@ import com.testbuddy.models.CoverageDiffObject
 
 class CoverageDataService : Disposable {
 
-    private var previousData: ProjectData? = null
-    private var previousSuite: CoverageSuitesBundle? = null
-    private var currentData: ProjectData? = null
-    private var currentSuite: CoverageSuitesBundle? = null
+    var previousData: ProjectData? = null
+    var previousSuite: CoverageSuitesBundle? = null
+    var currentData: ProjectData? = null
+    var currentSuite: CoverageSuitesBundle? = null
     var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
 
     /**
@@ -102,7 +102,7 @@ class CoverageDataService : Disposable {
      * @param classData classData object to extract corresponding lineData information.
      * @return a set of all lines covered by previous suite.
      */
-    private fun getLinesCoveredPreviously(classData: ClassData?): Set<Int> {
+    fun getLinesCoveredPreviously(classData: ClassData?): Set<Int> {
         val coveredPrevSet = mutableSetOf<Int>()
         if (classData == null) return emptySet()
         val size = classData.lines.size
