@@ -6,6 +6,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy.TestCaseBindings
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 import junit.framework.TestCase
@@ -37,7 +38,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     fun testMcdc1Prop() {
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
-        val testCases = strategy.mcdc(listOf("a"), "a")
+        val testCases = strategy.mcdc(listOf("a"), "a").map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -51,7 +52,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     fun testMcdc2Props() {
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
-        val testCases = strategy.mcdc(listOf("a", "b"), "a && b")
+        val testCases = strategy.mcdc(listOf("a", "b"), "a && b").map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -66,7 +67,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     fun testMcdc3Props() {
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
-        val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)")
+        val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)").map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -83,6 +84,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
         val testCases = strategy.mcdc(listOf("a", "b", "c", "d"), "a && (b || c || d)")
+            .map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -134,5 +136,27 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
                 "Foo"
             )
         }
+    }
+
+    @Test
+    fun testBindingsToStringSimple() {
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val bindings = strategy.TestCaseBindings(mapOf("A" to true, "B" to false))
+
+        val assignments = mapOf("A" to "a", "B" to "b")
+
+        val desc = bindings.getDescription(assignments)
+        assertEquals("Test where \"a\" is true, \"b\" is false", desc)
+    }
+
+    @Test
+    fun testBindingsToStringSingle() {
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val bindings = strategy.TestCaseBindings(mapOf("A" to true))
+
+        val assignments = mapOf("A" to "a")
+
+        val desc = bindings.getDescription(assignments)
+        assertEquals("Test where \"a\" is true", desc)
     }
 }

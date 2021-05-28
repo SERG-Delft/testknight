@@ -6,6 +6,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 class TestAction : AnAction() {
 
     override fun actionPerformed(event: AnActionEvent) {
-        TODO()
+//        val psiFile = event.getData(CommonDataKeys.PSI_FILE)!!
+//        val editor = event.getData(CommonDataKeys.EDITOR)!!
+//        val project = event.getData(CommonDataKeys.PROJECT)!!
     }
 }

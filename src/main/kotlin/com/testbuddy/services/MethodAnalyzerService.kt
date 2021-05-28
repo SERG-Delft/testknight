@@ -5,6 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCall
+import com.testbuddy.models.sideEffectAnalysis.ArgumentMutationSideEffect
 import com.testbuddy.models.sideEffectAnalysis.Assignment
 import com.testbuddy.models.sideEffectAnalysis.Class
 import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
@@ -35,26 +36,38 @@ class MethodAnalyzerService {
      * @param method the method to analyze.
      * @return a list of MethodCallOnParameterSideEffect objects representing the found side-effects.
      */
-    private fun getArgumentsAffected(method: PsiMethod): List<MethodCallOnParameterSideEffect> {
+    private fun getArgumentsAffected(method: PsiMethod): List<ArgumentMutationSideEffect> {
         val methodUnderAnalysis = Method.createFromMethod(method)
+
+        val assignments =
+            PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java).map { Assignment.create(it) }
+
         val methodCalls = PsiTreeUtil
             .findChildrenOfType(method, PsiMethodCallExpression::class.java)
             .filter { methodFilter(it) }
             .map { MethodCall.create(it) }
         val parentClass = Class.createClassFromMethod(method)
 
-        return methodCalls.flatMap {
-            it.getMethodCallSideEffects<MethodCallOnParameterSideEffect>(
+        val parameterFieldsReassigned = assignments.flatMap {
+            it.getParameterFieldsReassigned(
+                methodUnderAnalysis.identifiersInScope,
+            )
+        }
+
+        val methodCallsOnArguments = methodCalls.flatMap {
+            it.getMethodCallSideEffects(
                 methodUnderAnalysis.parameters,
                 parentClass.fields,
                 {
                     fieldName: String,
                     paramsInMethodScope: Map<String, String>,
                     ->
-                    !parentClass.isClassField(fieldName, paramsInMethodScope)
+                    paramsInMethodScope.containsKey(fieldName)
                 }
             ) { fieldName: String, methodName: String -> MethodCallOnParameterSideEffect(fieldName, methodName) }
         }
+
+        return methodCallsOnArguments + parameterFieldsReassigned
     }
 
     // methods for detecting class field mutations
@@ -85,7 +98,7 @@ class MethodAnalyzerService {
 
         val classFieldsAffectedByMethodCalls =
             methodCalls.flatMap {
-                it.getMethodCallSideEffects<MethodCallOnClassFieldSideEffect>(
+                it.getMethodCallSideEffects(
                     methodUnderAnalysis.identifiersInScope,
                     parentClass.fields,
                     {
