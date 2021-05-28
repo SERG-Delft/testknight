@@ -74,17 +74,19 @@ class ConditionChecklistGenerationStrategy private constructor(
          */
         fun getDescription(assignments: Map<String, String>): String {
 
-            var description = "Test where "
+            val description = StringBuilder("Test where ")
 
             bindings.entries.forEach { (proposition, value) ->
-                description += TestingChecklistMessageBundleHandler.message(
-                    "conditionAssignmentMessage",
-                    assignments[proposition]!!,
-                    value
+                description.append(
+                    TestingChecklistMessageBundleHandler.message(
+                        "conditionAssignmentMessage",
+                        assignments[proposition]!!,
+                        value
+                    )
                 )
             }
 
-            return description.dropLast(2)
+            return description.dropLast(2).toString()
         }
     }
 
