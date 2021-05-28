@@ -1,7 +1,6 @@
 package com.testbuddy.services
 
 import com.intellij.coverage.CoverageSuitesBundle
-import com.intellij.psi.search.searches.AllClassesSearch
 import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.LineData
 import com.intellij.rt.coverage.data.ProjectData
@@ -33,7 +32,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         service.currentSuite = currentSuite
         val newSuite = mockk<CoverageSuitesBundle>()
         val newData = mockk<ProjectData>()
-        service.updateCoverage(newSuite,newData)
+        service.updateCoverage(newSuite, newData)
         TestCase.assertEquals(service.currentData, newData)
         TestCase.assertEquals(service.currentSuite, newSuite)
         TestCase.assertEquals(service.previousData, currentData)
@@ -65,7 +64,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testNullLinesInClassDataPassed() {
+    fun testNullLinesInClassDataPassedPrevious() {
 
         //some null lines
         val line0 = null
@@ -146,6 +145,32 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         every { classData.getLineData(7) } returns line7
 
         TestCase.assertEquals(service.getLinesCoveredPreviously(classData), setOf(1, 3, 6))
+    }
+
+    @Test
+    fun testBoilerplateSetReturnNewlyCovered() {
+
+        val line1 = LineData(1,
+                "simple description for line 1")
+        line1.hits = 2
+
+        val line2 = LineData(2,
+                "simple description for line 2")
+        line2.hits = 4
+
+        val line3 = LineData(3, "simple description for line 3")
+        line3.hits = 6
+
+        val classData = mockk<ClassData>()
+
+        every { classData.lines } returns arrayOf(line1, line2, line3)
+
+        every { classData.getLineData(0) } returns line1
+        every { classData.getLineData(1) } returns line2
+        every { classData.getLineData(2) } returns line3
+
+        TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
+                Pair(setOf(0 , 1 , 2), setOf(0, 1, 2)))
     }
 
 }
