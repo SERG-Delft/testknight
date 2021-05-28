@@ -9,7 +9,7 @@ import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-class CoverageDataServiceTest : BasePlatformTestCase(){
+class CoverageDataServiceTest : BasePlatformTestCase() {
 
     val service = CoverageDataService()
 
@@ -47,7 +47,7 @@ class CoverageDataServiceTest : BasePlatformTestCase(){
     }
 
     @Test
-    fun testNullLinesInClassDataPassed(){
+    fun testNullLinesInClassDataPassed() {
 
         //some null lines
         val line0 = null
@@ -63,26 +63,26 @@ class CoverageDataServiceTest : BasePlatformTestCase(){
         val line4 = null
         val line5 = null
 
-        val line6 = LineData(6,"simple description for line 6")
+        val line6 = LineData(6, "simple description for line 6")
         line6.hits = 6
 
         val classData = mockk<ClassData>()
 
-        every { classData.lines } returns arrayOf(line0,line1,line2,line3,line4,line5,line6)
+        every { classData.lines } returns arrayOf(line0, line1, line2, line3, line4, line5, line6)
 
-        every { classData.getLineData(0)} returns line0
-        every { classData.getLineData(1)} returns line1
-        every { classData.getLineData(2)} returns line2
-        every { classData.getLineData(3)} returns line3
-        every { classData.getLineData(4)} returns line4
-        every { classData.getLineData(5)} returns line5
-        every { classData.getLineData(6)} returns line6
+        every { classData.getLineData(0) } returns line0
+        every { classData.getLineData(1) } returns line1
+        every { classData.getLineData(2) } returns line2
+        every { classData.getLineData(3) } returns line3
+        every { classData.getLineData(4) } returns line4
+        every { classData.getLineData(5) } returns line5
+        every { classData.getLineData(6) } returns line6
 
-        TestCase.assertEquals(service.getLinesCoveredPreviously(classData),setOf(1,2,6))
+        TestCase.assertEquals(service.getLinesCoveredPreviously(classData), setOf(1, 2, 6))
     }
 
     @Test
-    fun testFilterByHitsCoveredPreviously(){
+    fun testFilterByHitsCoveredPreviously() {
 
         val line0 = LineData(0,
                 "simple description for line 0")
@@ -116,23 +116,19 @@ class CoverageDataServiceTest : BasePlatformTestCase(){
 
         val classData = mockk<ClassData>()
 
-        every { classData.lines } returns arrayOf(line0,line1,line2,line3,line4,line5,line6,line7)
+        every { classData.lines } returns arrayOf(line0, line1, line2, line3, line4, line5, line6, line7)
 
-        every { classData.getLineData(0)} returns line0
-        every { classData.getLineData(1)} returns line1
-        every { classData.getLineData(2)} returns line2
-        every { classData.getLineData(3)} returns line3
-        every { classData.getLineData(4)} returns line4
-        every { classData.getLineData(5)} returns line5
-        every { classData.getLineData(6)} returns line6
-        every { classData.getLineData(7)} returns line7
+        every { classData.getLineData(0) } returns line0
+        every { classData.getLineData(1) } returns line1
+        every { classData.getLineData(2) } returns line2
+        every { classData.getLineData(3) } returns line3
+        every { classData.getLineData(4) } returns line4
+        every { classData.getLineData(5) } returns line5
+        every { classData.getLineData(6) } returns line6
+        every { classData.getLineData(7) } returns line7
 
-        TestCase.assertEquals(service.getLinesCoveredPreviously(classData),setOf(1,3,6))
+        TestCase.assertEquals(service.getLinesCoveredPreviously(classData), setOf(1, 3, 6))
     }
 
-    @Test
-    fun testMethod(){
-        TestCase.assertTrue(true)
-    }
 
 }
