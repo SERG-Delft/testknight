@@ -5,6 +5,7 @@ import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.LineData
 import com.intellij.rt.coverage.data.ProjectData
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.models.CoverageDiffObject
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
@@ -42,12 +43,16 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
     @Test
     fun testBoilerplateSetReturn() {
 
-        val line1 = LineData(1,
-                "simple description for line 1")
+        val line1 = LineData(
+            1,
+            "simple description for line 1"
+        )
         line1.hits = 2
 
-        val line2 = LineData(2,
-                "simple description for line 2")
+        val line2 = LineData(
+            2,
+            "simple description for line 2"
+        )
         line2.hits = 4
 
         val line6 = LineData(6, "simple description for line 6")
@@ -66,14 +71,18 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
     @Test
     fun testNullLinesInClassDataPassedPrevious() {
 
-        //some null lines
+        // some null lines
         val line0 = null
-        val line1 = LineData(1,
-                "simple description for line 1")
+        val line1 = LineData(
+            1,
+            "simple description for line 1"
+        )
         line1.hits = 2
 
-        val line2 = LineData(2,
-                "simple description for line 2")
+        val line2 = LineData(
+            2,
+            "simple description for line 2"
+        )
         line2.hits = 4
 
         val line3 = null
@@ -101,32 +110,46 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
     @Test
     fun testFilterByHitsCoveredPreviously() {
 
-        val line0 = LineData(0,
-                "simple description for line 0")
+        val line0 = LineData(
+            0,
+            "simple description for line 0"
+        )
         line0.hits = 0
 
-        val line1 = LineData(1,
-                "simple description for line 1")
+        val line1 = LineData(
+            1,
+            "simple description for line 1"
+        )
         line1.hits = 1
 
-        val line2 = LineData(2,
-                "simple description for line 2")
+        val line2 = LineData(
+            2,
+            "simple description for line 2"
+        )
         line2.hits = -1
 
-        val line3 = LineData(3,
-                "simple description for line 3")
+        val line3 = LineData(
+            3,
+            "simple description for line 3"
+        )
         line3.hits = Int.MAX_VALUE
 
-        val line4 = LineData(4,
-                "simple description for line 4")
+        val line4 = LineData(
+            4,
+            "simple description for line 4"
+        )
         line4.hits = Int.MIN_VALUE
 
-        val line5 = LineData(5,
-                "simple description for line 5")
+        val line5 = LineData(
+            5,
+            "simple description for line 5"
+        )
         line5.hits = 0
 
-        val line6 = LineData(6,
-                "simple description for line 6")
+        val line6 = LineData(
+            6,
+            "simple description for line 6"
+        )
         line6.hits = 2
 
         val line7 = null
@@ -150,12 +173,16 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
     @Test
     fun testBoilerplateSetReturnNewlyCovered() {
 
-        val line1 = LineData(1,
-                "simple description for line 1")
+        val line1 = LineData(
+            1,
+            "simple description for line 1"
+        )
         line1.hits = 2
 
-        val line2 = LineData(2,
-                "simple description for line 2")
+        val line2 = LineData(
+            2,
+            "simple description for line 2"
+        )
         line2.hits = 4
 
         val line3 = LineData(3, "simple description for line 3")
@@ -169,21 +196,27 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         every { classData.getLineData(1) } returns line2
         every { classData.getLineData(2) } returns line3
 
-        TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
-                Pair(setOf(0, 1, 2), setOf(0, 1, 2)))
+        TestCase.assertEquals(
+            service.getTotalLinesAndNewlyCoveredLines(classData),
+            Pair(setOf(0, 1, 2), setOf(0, 1, 2))
+        )
     }
 
     @Test
     fun testNullLinesInClassDataPassedNew() {
 
-        //some null lines
+        // some null lines
         val line0 = null
-        val line1 = LineData(1,
-                "simple description for line 1")
+        val line1 = LineData(
+            1,
+            "simple description for line 1"
+        )
         line1.hits = 2
 
-        val line2 = LineData(2,
-                "simple description for line 2")
+        val line2 = LineData(
+            2,
+            "simple description for line 2"
+        )
         line2.hits = 4
 
         val line3 = null
@@ -205,8 +238,10 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         every { classData.getLineData(5) } returns line5
         every { classData.getLineData(6) } returns line6
 
-        TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
-                Pair(setOf(1, 2, 6), setOf(1, 2, 6)))
+        TestCase.assertEquals(
+            service.getTotalLinesAndNewlyCoveredLines(classData),
+            Pair(setOf(1, 2, 6), setOf(1, 2, 6))
+        )
     }
 
     @Test
@@ -215,32 +250,46 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         // All lines only excludes cases where LineData is null
         // Because LineData can not have negative hits
 
-        val line0 = LineData(0,
-                "simple description for line 0")
+        val line0 = LineData(
+            0,
+            "simple description for line 0"
+        )
         line0.hits = 0
 
-        val line1 = LineData(1,
-                "simple description for line 1")
+        val line1 = LineData(
+            1,
+            "simple description for line 1"
+        )
         line1.hits = 1
 
-        val line2 = LineData(2,
-                "simple description for line 2")
+        val line2 = LineData(
+            2,
+            "simple description for line 2"
+        )
         line2.hits = -1
 
-        val line3 = LineData(3,
-                "simple description for line 3")
+        val line3 = LineData(
+            3,
+            "simple description for line 3"
+        )
         line3.hits = Int.MAX_VALUE
 
-        val line4 = LineData(4,
-                "simple description for line 4")
+        val line4 = LineData(
+            4,
+            "simple description for line 4"
+        )
         line4.hits = Int.MIN_VALUE
 
-        val line5 = LineData(5,
-                "simple description for line 5")
+        val line5 = LineData(
+            5,
+            "simple description for line 5"
+        )
         line5.hits = 0
 
-        val line6 = LineData(6,
-                "simple description for line 6")
+        val line6 = LineData(
+            6,
+            "simple description for line 6"
+        )
         line6.hits = 2
 
         val line7 = null
@@ -258,21 +307,49 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         every { classData.getLineData(6) } returns line6
         every { classData.getLineData(7) } returns line7
 
-        TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
-                Pair(setOf(0, 1, 2, 3, 4, 5, 6), setOf(1, 3, 6)))
+        TestCase.assertEquals(
+            service.getTotalLinesAndNewlyCoveredLines(classData),
+            Pair(setOf(0, 1, 2, 3, 4, 5, 6), setOf(1, 3, 6))
+        )
     }
 
     @Test
     fun testNullClassDataPreviousCoverage() {
         val classData = null
-        TestCase.assertEquals(service.getLinesCoveredPreviously(classData),
-                emptySet<Int>())
+        TestCase.assertEquals(
+            service.getLinesCoveredPreviously(classData),
+            emptySet<Int>()
+        )
     }
 
     @Test
     fun testNullClassDataNewCoverage() {
         val classData = null
-        TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
-                Pair(emptySet<Int>(),emptySet<Int>()))
+        TestCase.assertEquals(
+            service.getTotalLinesAndNewlyCoveredLines(classData),
+            Pair(emptySet<Int>(), emptySet<Int>())
+        )
+    }
+
+    @Test
+    fun testPreviousDataNullGetDiffLines() {
+        service.previousData = null
+        val obj = CoverageDiffObject(setOf(1, 2, 3), setOf(1, 2, 3), setOf(1, 2, 3))
+        val classCoveragesMap = mutableMapOf("PointClass" to obj)
+        service.classCoveragesMap = classCoveragesMap
+        service.getDiffLines(project)
+        // check that the map hasn't been modified after call
+        assertEquals(service.classCoveragesMap, classCoveragesMap)
+    }
+
+    @Test
+    fun testCurrentDataNullGetDiffLines() {
+        service.currentData = null
+        val obj = CoverageDiffObject(setOf(1, 2, 3), setOf(1, 2, 3), setOf(1, 2, 3))
+        val classCoveragesMap = mutableMapOf("PointClass" to obj)
+        service.classCoveragesMap = classCoveragesMap
+        service.getDiffLines(project)
+        // check that the map hasn't been modified after call
+        assertEquals(service.classCoveragesMap, classCoveragesMap)
     }
 }
