@@ -285,6 +285,7 @@ class ChecklistTreeService {
         if (indexClass == -1) { return }
 
         val classNode = dataTree.classChecklists[indexClass]
+        // dataTree.classChecklists.
         val uiTreeClass = uiTreeRoot.getChildAt(indexClass) as CheckedTreeNode
 
         val indexMethod = getIndexMethod(deleteMethod, classNode)

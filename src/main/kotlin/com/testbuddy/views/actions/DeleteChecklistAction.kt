@@ -18,6 +18,8 @@ class DeleteChecklistAction(private val node: CheckedTreeNode, private val proje
 
         val service = project.service<ChecklistTreeService>()
 
+        // val node = path.lastPathComponent as CheckedTreeNode
+
         if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Delete") {
 
             if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistClassNode) {

@@ -18,6 +18,7 @@ import javax.swing.tree.TreePath
 class ChecklistMouseListener(private val tree: Tree, private val project: Project) : MouseAdapter() {
 
     override fun mousePressed(event: MouseEvent) {
+        println("sint aici")
 
         if (SwingUtilities.isRightMouseButton(event)) {
 
@@ -34,7 +35,12 @@ class ChecklistMouseListener(private val tree: Tree, private val project: Projec
 
             if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistLeafNode) {
                 val edit = JBMenuItem("Edit")
-                edit.addActionListener(DeleteChecklistAction(node, project))
+
+                edit.addActionListener {
+                    it.apply { tree.startEditingAtPath(path) }
+
+                    // println("kaokowk")
+                }
                 menu.add(edit)
             } else if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
                 val addItem = JBMenuItem("Add item")

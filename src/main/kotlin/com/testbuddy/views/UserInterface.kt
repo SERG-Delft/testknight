@@ -23,6 +23,7 @@ import com.testbuddy.views.listeners.ChecklistSelectionListener
 import com.testbuddy.views.listeners.CopyPasteKeyboardListener
 import com.testbuddy.views.listeners.CopyPasteMouseListener
 import com.testbuddy.views.listeners.PsiTreeListener
+import com.testbuddy.views.trees.ChecklistCellEditor
 import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
@@ -71,6 +72,9 @@ class UserInterface(val project: Project) {
         checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
         checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
         checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
+
+        checkListTree!!.cellEditor = ChecklistCellEditor(checkListTree!!, project)
+        checkListTree!!.isEditable = true
 
         service.initTrees(checkListTree!!)
         panel.setViewportView(checkListTree)
