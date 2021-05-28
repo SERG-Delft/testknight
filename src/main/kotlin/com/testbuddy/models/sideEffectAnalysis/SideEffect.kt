@@ -62,9 +62,17 @@ data class MethodCallOnParameterSideEffect(override val nameOfParameter: String,
     }
 }
 
-// data class FieldReassignmentOfParameterSideEffect(override val nameOfParameter: String,
-// val nameOfMethod: String): ArgumentMutationSideEffect(nameOfParameter) {
-//    override fun toAssertionSuggest(resolvedParameterName: String): AssertionSuggestion {
-//        TODO()
-//    }
-// }
+data class ParameterFieldReassignmentSideEffect(
+    override val nameOfParameter: String,
+    val nameOfField: String
+) : ArgumentMutationSideEffect(nameOfParameter) {
+    override fun toAssertionSuggestion(resolvedParameterName: String): AssertionSuggestion {
+        return AssertionSuggestion(
+            AssertionSuggestionMessageBundleHandler
+                .message(
+                    "parameterFieldReassignment",
+                    nameOfField, resolvedParameterName
+                )
+        )
+    }
+}

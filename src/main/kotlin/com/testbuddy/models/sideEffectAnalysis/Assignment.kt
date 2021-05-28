@@ -36,6 +36,23 @@ data class Assignment(val affectedObjectName: String, val fieldAffected: String?
             identifiersInClassScope.contains(this.affectedObjectName)
     }
 
+    fun getParameterFieldsReassigned(
+        methodParameters: Map<String, String>,
+    ): List<ParameterFieldReassignmentSideEffect> {
+        return if (methodParameters.containsKey(this.affectedObjectName) && this.fieldAffected != null) {
+            listOf(
+                ParameterFieldReassignmentSideEffect(
+                    StringFormatter.formatClassFieldName(
+                        this.affectedObjectName,
+                    ),
+                    this.fieldAffected
+                )
+            )
+        } else {
+            emptyList()
+        }
+    }
+
     /**
      * Returns all the class fields re-assigned by an assignment.
      *

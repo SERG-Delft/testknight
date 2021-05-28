@@ -5,13 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCall
-import com.testbuddy.models.sideEffectAnalysis.Assignment
-import com.testbuddy.models.sideEffectAnalysis.Class
-import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
-import com.testbuddy.models.sideEffectAnalysis.Method
-import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
-import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
-import com.testbuddy.models.sideEffectAnalysis.SideEffect
+import com.testbuddy.models.sideEffectAnalysis.*
 
 class MethodAnalyzerService {
 
@@ -35,11 +29,12 @@ class MethodAnalyzerService {
      * @param method the method to analyze.
      * @return a list of MethodCallOnParameterSideEffect objects representing the found side-effects.
      */
-    private fun getArgumentsAffected(method: PsiMethod): List<MethodCallOnParameterSideEffect> {
+    private fun getArgumentsAffected(method: PsiMethod): List<ArgumentMutationSideEffect> {
         val methodUnderAnalysis = Method.createFromMethod(method)
 
         val assignments =
             PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java).map { Assignment.create(it) }
+
 
         val methodCalls = PsiTreeUtil
             .findChildrenOfType(method, PsiMethodCallExpression::class.java)
@@ -47,7 +42,14 @@ class MethodAnalyzerService {
             .map { MethodCall.create(it) }
         val parentClass = Class.createClassFromMethod(method)
 
-        return methodCalls.flatMap {
+
+        val parameterFieldsReassigned = assignments.flatMap {
+            it.getParameterFieldsReassigned(
+                methodUnderAnalysis.identifiersInScope,
+            )
+        }
+
+        val methodCallsOnArguments = methodCalls.flatMap {
             it.getMethodCallSideEffects(
                 methodUnderAnalysis.parameters,
                 parentClass.fields,
@@ -59,6 +61,8 @@ class MethodAnalyzerService {
                 }
             ) { fieldName: String, methodName: String -> MethodCallOnParameterSideEffect(fieldName, methodName) }
         }
+
+        return methodCallsOnArguments + parameterFieldsReassigned
     }
 
     // methods for detecting class field mutations

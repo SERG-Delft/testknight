@@ -4,11 +4,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
-import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
-import com.testbuddy.models.sideEffectAnalysis.ReassignmentOfTransitiveField
-import com.testbuddy.models.sideEffectAnalysis.ReassignsClassFieldSideEffect
-import com.testbuddy.models.sideEffectAnalysis.SideEffect
+import com.testbuddy.models.sideEffectAnalysis.*
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -252,6 +248,29 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
             ReassignmentOfTransitiveField("spouse", "spouse")
         )
         assertMethodSideEffects(testClass, expected, "marryToReferenceChanged")
+    }
+
+    @Test
+    fun testDoubleShadowing() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            ReassignsClassFieldSideEffect("spouse"),
+            ParameterFieldReassignmentSideEffect("spouse", "spouse")
+        )
+        assertMethodSideEffects(testClass, expected, "marryToDoubleShadowing")
+    }
+
+    @Test
+    fun testParameterFieldAffected() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            ReassignsClassFieldSideEffect("spouse"),
+            ParameterFieldReassignmentSideEffect("newSpouse", "spouse")
+        )
+        assertMethodSideEffects(testClass, expected, "marryToParameterFieldAffected")
+
     }
 
     public override fun getTestDataPath(): String {
