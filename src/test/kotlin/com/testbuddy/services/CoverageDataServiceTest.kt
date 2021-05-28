@@ -1,7 +1,10 @@
 package com.testbuddy.services
 
+import com.intellij.coverage.CoverageSuitesBundle
+import com.intellij.psi.search.searches.AllClassesSearch
 import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.LineData
+import com.intellij.rt.coverage.data.ProjectData
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import io.mockk.every
 import io.mockk.mockk
@@ -20,6 +23,21 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     public override fun getTestDataPath(): String {
         return "testdata"
+    }
+
+    @Test
+    fun testReassignmentUpdateCoverage() {
+        val currentData = mockk<ProjectData>()
+        val currentSuite = mockk<CoverageSuitesBundle>()
+        service.currentData = currentData
+        service.currentSuite = currentSuite
+        val newSuite = mockk<CoverageSuitesBundle>()
+        val newData = mockk<ProjectData>()
+        service.updateCoverage(newSuite,newData)
+        TestCase.assertEquals(service.currentData, newData)
+        TestCase.assertEquals(service.currentSuite, newSuite)
+        TestCase.assertEquals(service.previousData, currentData)
+        TestCase.assertEquals(service.previousSuite, currentSuite)
     }
 
     @Test
@@ -129,6 +147,5 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
         TestCase.assertEquals(service.getLinesCoveredPreviously(classData), setOf(1, 3, 6))
     }
-
 
 }

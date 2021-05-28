@@ -82,7 +82,7 @@ class CoverageDataService : Disposable {
      * @param classData classData object to extract corresponding lineData information.
      * @return a pair of set of all lines and set of lines covered by existing suite.
      */
-    private fun getTotalLinesAndNewlyCoveredLines(classData: ClassData?): Pair<Set<Int>, Set<Int>> {
+    fun getTotalLinesAndNewlyCoveredLines(classData: ClassData?): Pair<Set<Int>, Set<Int>> {
         val allLineSet = mutableSetOf<Int>()
         val coveredNowSet = mutableSetOf<Int>()
         if (classData == null) return Pair(emptySet<Int>(), emptySet<Int>())
