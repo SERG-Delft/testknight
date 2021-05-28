@@ -3,7 +3,12 @@ package com.testbuddy.settings
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.ColorPanel
+import com.intellij.ui.TreeSpeedSearch
+import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.layout.panel
+import com.intellij.ui.treeStructure.Tree
+import com.intellij.util.ui.tree.TreeUtil
+import javax.swing.tree.DefaultMutableTreeNode
 
 class SettingsComponent {
 
@@ -60,11 +65,33 @@ class SettingsComponent {
                     }
                 }
 
-                row("Datatype Map") {
-                    for (i in checklistSettings.typeCaseMap) {
-                        row {
-                            label(i.key)
+                row("Type Cases") {
+
+                    row {
+                        val panel = JBScrollPane()
+
+                        val root = DefaultMutableTreeNode("root")
+
+                        val tree = Tree(root)
+
+                        tree.isRootVisible = false
+                        tree.showsRootHandles = true
+
+                        for (typeCase in checklistSettings.typeCaseMap) {
+                            val dataType = DefaultMutableTreeNode(typeCase.key)
+
+                            for (value in typeCase.value) {
+                                dataType.add(DefaultMutableTreeNode(value))
+                            }
+
+                            root.add(dataType)
                         }
+
+                        TreeUtil.expand(tree, 1)
+                        panel.setViewportView(tree)
+                        TreeSpeedSearch(tree)
+
+                        panel()
                     }
                 }
             }
