@@ -261,4 +261,18 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
                 Pair(setOf(0, 1, 2, 3, 4, 5, 6), setOf(1, 3, 6)))
     }
+
+    @Test
+    fun testNullClassDataPreviousCoverage() {
+        val classData = null
+        TestCase.assertEquals(service.getLinesCoveredPreviously(classData),
+                emptySet<Int>())
+    }
+
+    @Test
+    fun testNullClassDataNewCoverage() {
+        val classData = null
+        TestCase.assertEquals(service.getTotalLinesAndNewlyCoveredLines(classData),
+                Pair(emptySet<Int>(),emptySet<Int>()))
+    }
 }
