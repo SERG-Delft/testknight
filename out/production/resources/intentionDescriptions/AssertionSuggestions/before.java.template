@@ -1,0 +1,6 @@
+@Test
+void setXTest(){
+  Point p = new Point(0, 0);
+
+   p.<spot>setX</spot>(5);
+}
