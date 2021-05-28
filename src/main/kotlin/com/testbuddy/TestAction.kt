@@ -1,10 +1,6 @@
 package com.testbuddy
 
-import com.intellij.configurationStore.NOTIFICATION_GROUP_ID
 import com.intellij.coverage.CoverageDataManager
-import com.intellij.icons.AllIcons
-import com.intellij.notification.Notification
-import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys

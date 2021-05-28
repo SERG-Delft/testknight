@@ -25,7 +25,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
-import java.lang.IllegalStateException
 
 class TestTracingService(val project: Project) {
 
@@ -93,7 +92,13 @@ class TestTracingService(val project: Project) {
 
         // highlight each line
         lines.forEach {
-            highlighters.add(editor.markupModel.addLineHighlighter(it - 1, HighlighterLayer.LAST, textAttributes))
+            highlighters.add(
+                editor.markupModel.addLineHighlighter(
+                    it - 1,
+                    HighlighterLayer.ADDITIONAL_SYNTAX,
+                    textAttributes
+                )
+            )
         }
     }
 
@@ -118,13 +123,13 @@ class TestTracingService(val project: Project) {
             val currentSuitesBundle = coverageDataManager.currentSuitesBundle
             val traceFile = getTraceFile(test, currentSuitesBundle)
             return readTraceFile(traceFile)
-        } catch(ex: FileNotFoundException) {
+        } catch (ex: FileNotFoundException) {
             notify("Test coverage info not found", "Make sure you have ran with coverage and test-tracing")
             println(ex)
-        } catch(ex: IllegalStateException) {
+        } catch (ex: IllegalStateException) {
             notify("Test coverage info not found", "Make sure you have ran with coverage and test-tracing")
             println(ex)
-        } catch(ex: IOException) {
+        } catch (ex: IOException) {
             notify("Failed to read trace file", "Rerun coverage")
             println(ex)
         }

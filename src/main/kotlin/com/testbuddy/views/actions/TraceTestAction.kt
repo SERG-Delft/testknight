@@ -51,7 +51,8 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction {
 
         try {
             project.service<TestTracingService>().highlightTest(testName)
-        } catch(ex: NoTestCoverageDataException) {
+        } catch (ex: NoTestCoverageDataException) {
+            println(ex)
             return
         }
 
