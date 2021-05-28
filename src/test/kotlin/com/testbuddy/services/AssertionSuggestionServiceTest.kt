@@ -100,4 +100,55 @@ internal class AssertionSuggestionServiceTest : BasePlatformTestCase() {
             "/expected/Dijkstra.testDijkstraTest.java"
         )
     }
+
+    @Test
+    fun testReferenceChangedAssertions() {
+        this.myFixture.configureByFile("/PersonMixed.java")
+        val psi = this.myFixture.file
+        val project = this.myFixture.project
+
+        val service = AssertionSuggestionService()
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testMethod = testClass!!.findMethodsByName("testMarryToReferenceChanged")[0] as PsiMethod
+        val methodUnderTestCall =
+            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
+        service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
+        this.myFixture.checkResultByFile(
+            "/expected/PersonMixed.testReferenceChanged.java"
+        )
+    }
+
+    @Test
+    fun testDoubleShadowingAssertions() {
+        this.myFixture.configureByFile("/PersonMixed.java")
+        val psi = this.myFixture.file
+        val project = this.myFixture.project
+
+        val service = AssertionSuggestionService()
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testMethod = testClass!!.findMethodsByName("testMarryToDoubleShadowing")[0] as PsiMethod
+        val methodUnderTestCall =
+            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
+        service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
+        this.myFixture.checkResultByFile(
+            "/expected/PersonMixed.testDoubleShadowing.java"
+        )
+    }
+
+    @Test
+    fun testParameterFieldAffectedAssertions() {
+        this.myFixture.configureByFile("/PersonMixed.java")
+        val psi = this.myFixture.file
+        val project = this.myFixture.project
+
+        val service = AssertionSuggestionService()
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testMethod = testClass!!.findMethodsByName("testMarryToParameterFieldAffected")[0] as PsiMethod
+        val methodUnderTestCall =
+            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
+        service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
+        this.myFixture.checkResultByFile(
+            "/expected/PersonMixed.testParameterFieldAffected.java"
+        )
+    }
 }

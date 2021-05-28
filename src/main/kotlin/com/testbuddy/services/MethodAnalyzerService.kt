@@ -5,7 +5,14 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCall
-import com.testbuddy.models.sideEffectAnalysis.*
+import com.testbuddy.models.sideEffectAnalysis.ArgumentMutationSideEffect
+import com.testbuddy.models.sideEffectAnalysis.Assignment
+import com.testbuddy.models.sideEffectAnalysis.Class
+import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
+import com.testbuddy.models.sideEffectAnalysis.Method
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
+import com.testbuddy.models.sideEffectAnalysis.SideEffect
 
 class MethodAnalyzerService {
 
@@ -35,13 +42,11 @@ class MethodAnalyzerService {
         val assignments =
             PsiTreeUtil.findChildrenOfType(method, PsiAssignmentExpression::class.java).map { Assignment.create(it) }
 
-
         val methodCalls = PsiTreeUtil
             .findChildrenOfType(method, PsiMethodCallExpression::class.java)
             .filter { methodFilter(it) }
             .map { MethodCall.create(it) }
         val parentClass = Class.createClassFromMethod(method)
-
 
         val parameterFieldsReassigned = assignments.flatMap {
             it.getParameterFieldsReassigned(

@@ -77,11 +77,6 @@ public class Person {
         Person p2 = new Person("Alice", 28);
         p1.setSpouse(p2);
         assertEquals(p1.spouse, p2);
-
-        /**
-         * Assert that attribute "spouse" is re-assigned properly.
-         */
-
     }
 
     public void marryToReferenceChanged(Person newSpouse) {
@@ -126,6 +121,14 @@ public class Person {
 
         p1.marryToParameterFieldAffected(p2);
         assertEquals(p1.getSpouse(), p2);
+
+
+        /**
+         * Assert that attribute "spouse" is re-assigned properly.
+         * Assert that field "spouse" of argument "p2" is re-assigned properly.
+         */
+
+
     }
 
 }

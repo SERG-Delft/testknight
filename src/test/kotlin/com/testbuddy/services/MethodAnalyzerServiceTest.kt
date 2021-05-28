@@ -4,7 +4,12 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.models.sideEffectAnalysis.*
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
+import com.testbuddy.models.sideEffectAnalysis.ParameterFieldReassignmentSideEffect
+import com.testbuddy.models.sideEffectAnalysis.ReassignmentOfTransitiveField
+import com.testbuddy.models.sideEffectAnalysis.ReassignsClassFieldSideEffect
+import com.testbuddy.models.sideEffectAnalysis.SideEffect
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -270,7 +275,6 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
             ParameterFieldReassignmentSideEffect("newSpouse", "spouse")
         )
         assertMethodSideEffects(testClass, expected, "marryToParameterFieldAffected")
-
     }
 
     public override fun getTestDataPath(): String {

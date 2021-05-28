@@ -78,6 +78,51 @@ public class Person {
         p1.setSpouse(p2);
         assertEquals(p1.spouse, p2);
     }
+
+    public void marryToReferenceChanged(Person newSpouse) {
+        spouse = newSpouse;
+        spouse.spouse = this;
+    }
+
+    public void marryToDoubleShadowing(Person spouse) {
+        this.spouse = spouse;
+        spouse.spouse = this;
+    }
+
+    public void marryToParameterFieldAffected(Person newSpouse) {
+        spouse = newSpouse;
+        newSpouse.spouse = this;
+    }
+
+
+    @Test
+    public void testMarryToReferenceChanged() {
+        Person p1 = new Person("Bob", 23);
+        Person p2 = new Person("Alice", 24);
+
+        p1.marryToReferenceChanged(p2);
+        assertEquals(p1.getSpouse(), p2);
+    }
+
+    @Test
+    public void testMarryToDoubleShadowing() {
+        Person p1 = new Person("Bob", 23);
+        Person p2 = new Person("Alice", 24);
+
+        p1.marryToDoubleShadowing(p2);
+        assertEquals(p1.getSpouse(), p2);
+    }
+
+
+    @Test
+    public void testMarryToParameterFieldAffected() {
+        Person p1 = new Person("Bob", 23);
+        Person p2 = new Person("Alice", 24);
+
+        p1.marryToParameterFieldAffected(p2);
+        assertEquals(p1.getSpouse(), p2);
+    }
+
 }
 
 
