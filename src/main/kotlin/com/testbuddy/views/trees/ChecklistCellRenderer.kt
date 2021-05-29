@@ -4,12 +4,12 @@ import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.ColoredTreeCellRenderer
 import com.intellij.ui.SimpleTextAttributes
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistParentNode
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
 import com.testbuddy.models.TestingChecklistNode
-import com.testbuddy.models.TestingChecklistParentNode
 import java.awt.Color
 import javax.swing.JTree
 

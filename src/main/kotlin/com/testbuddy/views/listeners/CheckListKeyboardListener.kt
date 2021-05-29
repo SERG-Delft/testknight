@@ -2,8 +2,8 @@ package com.testbuddy.views.listeners
 
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistLeafNode
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import javax.swing.tree.TreePath

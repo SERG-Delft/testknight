@@ -4,10 +4,11 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBMenuItem
 import com.intellij.ui.CheckedTreeNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
+
 import com.testbuddy.services.ChecklistTreeService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
