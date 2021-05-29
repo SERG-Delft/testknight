@@ -26,8 +26,17 @@ class UserInterfaceFactory : ToolWindowFactory {
         toolWindow.contentManager.addContent(content)
         project.messageBus.connect().subscribe(VirtualFileManager.VFS_CHANGES, object : BulkFileListener {
             override fun after(@NotNull events: List<VFileEvent?>) {
+
                 val service = project.service<CoverageDataService>()
-                    val a = 2
+                val map = service.classCoveragesMap
+
+                events.forEach {
+                    if(it != null && it.file != null) {
+                        val isMethodModified = map.containsKey(it.file!!.nameWithoutExtension)
+                    }
+                }
+
+                println(events.size)
             }
         })
     }
