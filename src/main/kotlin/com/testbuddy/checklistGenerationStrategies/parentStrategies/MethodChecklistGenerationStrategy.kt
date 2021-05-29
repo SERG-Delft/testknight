@@ -13,8 +13,8 @@ import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.utilities.ChecklistLeafNodeGenerator
 
 class MethodChecklistGenerationStrategy private constructor(

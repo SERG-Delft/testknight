@@ -11,7 +11,7 @@ import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class ForeachStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class ForEachStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
     @Before
     public override fun setUp() {
@@ -30,7 +30,7 @@ internal class ForeachStatementChecklistGenerationStrategyTest : BasePlatformTes
 
     @Test
     fun testMissingIteratedValueReturnsEmptyList() {
-        val generationStrategy = ForeachStatementChecklistGenerationStrategy.create()
+        val generationStrategy = ForEachStatementChecklistGenerationStrategy.create()
 
         this.myFixture.configureByFile("/SimpleArray.java")
         val method = getMethod("brokenForEach")
@@ -42,7 +42,7 @@ internal class ForeachStatementChecklistGenerationStrategyTest : BasePlatformTes
 
     @Test
     fun testForeachChecklistGenerationCorrect() {
-        val generationStrategy = ForeachStatementChecklistGenerationStrategy.create()
+        val generationStrategy = ForEachStatementChecklistGenerationStrategy.create()
 
         this.myFixture.configureByFile("/SimpleArray.java")
         val method = getMethod("incrementByOneForEach")

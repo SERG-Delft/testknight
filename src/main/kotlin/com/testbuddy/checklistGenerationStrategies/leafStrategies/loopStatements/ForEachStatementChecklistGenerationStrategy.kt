@@ -5,7 +5,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistG
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.TestingChecklistLeafNode
 
-class ForeachStatementChecklistGenerationStrategy private constructor() :
+class ForEachStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiForeachStatement> {
 
     companion object Factory {
@@ -15,8 +15,8 @@ class ForeachStatementChecklistGenerationStrategy private constructor() :
          *
          * @return a new ForEachStatementChecklistGenerationStrategy.
          */
-        fun create(): ForeachStatementChecklistGenerationStrategy {
-            return ForeachStatementChecklistGenerationStrategy()
+        fun create(): ForEachStatementChecklistGenerationStrategy {
+            return ForEachStatementChecklistGenerationStrategy()
         }
     }
 

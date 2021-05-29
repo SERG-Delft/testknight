@@ -22,7 +22,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingState
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements.TryStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.DoWhileStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForStatementChecklistGenerationStrategy
-import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForeachStatementChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForEachStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
 import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TestingChecklistMethodNode
@@ -223,7 +223,7 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
 
         val forEach = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiForeachStatement::class.java)
 
-        val forEachStrategy = mockk<ForeachStatementChecklistGenerationStrategy>()
+        val forEachStrategy = mockk<ForEachStatementChecklistGenerationStrategy>()
         every { forEachStrategy.generateChecklist(forEach!!) } returns emptyList()
         leafNodeGenerator.forEachStatementChecklistGenerationStrategy = forEachStrategy
 
@@ -278,7 +278,7 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
         val whileStrategy = mockk<WhileStatementChecklistGenerationStrategy>()
         val forStrategy = mockk<ForStatementChecklistGenerationStrategy>()
         val doWhileStrategy = mockk<DoWhileStatementChecklistGenerationStrategy>()
-        val forEachStrategy = mockk<ForeachStatementChecklistGenerationStrategy>()
+        val forEachStrategy = mockk<ForEachStatementChecklistGenerationStrategy>()
         val ternaryStrategy = mockk<ConditionalExpressionChecklistGenerationStrategy>()
         val throwStatement = mockk<ThrowStatementChecklistGenerationStrategy>()
 
