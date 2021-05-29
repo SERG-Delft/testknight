@@ -1,7 +1,11 @@
 package com.testbuddy.settings
 
+import com.intellij.ui.ColorUtil
 import java.awt.Color
 
+/**
+ * Data structure for storing the settings.
+ */
 data class SettingsState(
     var telemetrySettings: TelemetrySettings = TelemetrySettings(),
     var testListSettings: TestListSettings = TestListSettings(),
@@ -14,10 +18,10 @@ data class TelemetrySettings(var isEnabled: Boolean = false)
 data class TestListSettings(
     var autoUpdateUI: Boolean = true,
     var highlightStrategies: MutableMap<String, Boolean> = mutableMapOf(
-        "Constructor" to true,
-        "Literals" to true,
-        "Assertions" to true,
-        "Highlight inside quotes" to true
+        "Highlight constructor arguments" to true,
+        "Highlight literals" to true,
+        "Highlight assertion statements" to true,
+        "Highlight string inside quotes" to true
     )
 )
 
@@ -33,7 +37,7 @@ data class ChecklistSettings(
         "Do While Statement" to true,
         "Foreach Statement" to true,
         "Throw Statement" to true,
-        "Conditional Expression" to true
+        "Ternary Operator" to true
     ),
     var typeCaseMap: MutableMap<String, List<String>> = mutableMapOf(
         "byte" to listOf("Byte.MAX_VALUE", "Byte.MIN_VALUE"),
@@ -58,12 +62,12 @@ data class ChecklistSettings(
     var showGutterIcons: Boolean = true,
     var gotoChecklistItem: Boolean = true,
     var highlightChecklistItem: Boolean = true,
-    var highlightColor: Color = Color.LIGHT_GRAY
+    var highlightColor: String = ColorUtil.toHex(Color.LIGHT_GRAY)
 )
 
 data class CoverageSettings(
-    var includedColor: Color = Color.GREEN,
-    var deletedColor: Color = Color.RED,
-    var diffIncludedColor: Color = Color.GREEN,
-    var diffExcludedColor: Color = Color.RED
+    var addedColor: String = ColorUtil.toHex(Color.GREEN),
+    var deletedColor: String = ColorUtil.toHex(Color.RED),
+    var tracedColor: String = ColorUtil.toHex(Color.CYAN),
+    var showIntegratedView: Boolean = true
 )

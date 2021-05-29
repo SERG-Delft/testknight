@@ -1,5 +1,6 @@
 package com.testbuddy.settings
 
+import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.ColorPanel
@@ -7,32 +8,42 @@ import com.intellij.ui.TreeSpeedSearch
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.layout.panel
 import com.intellij.ui.treeStructure.Tree
+import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
 import javax.swing.tree.DefaultMutableTreeNode
 
 class SettingsComponent {
 
-    var myPanel: DialogPanel
+    private var myPanel: DialogPanel
     private val state = SettingsService.instance.state
+
+    private lateinit var addedColor: ColorPanel
+    private lateinit var deletedColor: ColorPanel
+    private lateinit var tracedColor: ColorPanel
 
     init {
         myPanel = panel {
             titledRow("Telemetry") {
                 row {
-                    checkBox("Allow sending data", state.telemetrySettings::isEnabled)
+                    checkBox(
+                        "Allow data collection",
+                        state.telemetrySettings::isEnabled
+                    )
+                }
+                row {
+                    label("By selecting this, you agree to our", UIUtil.ComponentStyle.SMALL)
+                    link("terms and conditions.", UIUtil.ComponentStyle.SMALL) {
+                        BrowserUtil.browse("https://youtu.be/dQw4w9WgXcQ")
+                    }
                 }
             }
-            titledRow("Test List") {
+
+            titledRow("Test Duplication") {
                 val testListSettings = state.testListSettings
 
-                row {
-                    checkBox("Auto update panel", testListSettings::autoUpdateUI)
-                }
-                row("Highlight strategies") {
-                    for (i in testListSettings.highlightStrategies) {
-                        row {
-                            checkBox(i.key, { i.value }, { newVal -> i.setValue(newVal) })
-                        }
+                for (i in testListSettings.highlightStrategies) {
+                    row {
+                        checkBox(i.key, { i.value }, { newVal -> i.setValue(newVal) })
                     }
                 }
             }
@@ -51,10 +62,10 @@ class SettingsComponent {
                     checkBox("Show gutter icons", checklistSettings::showGutterIcons)
                 }
                 row {
-                    checkBox("Goto checklist code", checklistSettings::gotoChecklistItem)
+                    checkBox("Goto selected checklist item's source", checklistSettings::gotoChecklistItem)
                 }
                 row {
-                    checkBox("Highlight checklist code", checklistSettings::highlightChecklistItem)
+                    checkBox("Highlight selected checklist item's source", checklistSettings::highlightChecklistItem)
                 }
 
                 row("Checklist strategies") {
@@ -69,9 +80,7 @@ class SettingsComponent {
 
                     row {
                         val panel = JBScrollPane()
-
                         val root = DefaultMutableTreeNode("root")
-
                         val tree = Tree(root)
 
                         tree.isRootVisible = false
@@ -91,6 +100,7 @@ class SettingsComponent {
                         panel.setViewportView(tree)
                         TreeSpeedSearch(tree)
 
+                        // UI component gets generated here
                         panel()
                     }
                 }
@@ -99,61 +109,95 @@ class SettingsComponent {
             titledRow("Coverage") {
                 val coverageSettings = state.coverageSettings
                 row {
-                    val addedColor = ColorPanel()
-                    addedColor.selectedColor = coverageSettings.includedColor
+                    checkBox("Show newly (un)covered lines in gutter", coverageSettings::showIntegratedView)
+                }
+                row {
+                    addedColor = ColorPanel()
+                    addedColor.selectedColor = SettingsService.toColor(coverageSettings.addedColor)
 
-                    addedColor.addActionListener {
-                        if (it.actionCommand == "colorPanelChanged" && addedColor.selectedColor != null) {
-                            coverageSettings.deletedColor = addedColor.selectedColor!!
-                        }
-                    }
-
-                    label("Recently added color: ")
+                    label("Newly covered lines color: ")
                     addedColor()
                 }
                 row {
-                    val deletedColor = ColorPanel()
-                    deletedColor.selectedColor = coverageSettings.deletedColor
+                    deletedColor = ColorPanel()
+                    deletedColor.selectedColor = SettingsService.toColor(coverageSettings.deletedColor)
 
-                    deletedColor.addActionListener {
-                        if (it.actionCommand == "colorPanelChanged" && deletedColor.selectedColor != null) {
-                            coverageSettings.deletedColor = deletedColor.selectedColor!!
-                        }
-                    }
-
-                    label("Recently deleted color: ")
+                    label("Newly uncovered lines color: ")
                     deletedColor()
                 }
                 row {
-                    val addedColorDiff = ColorPanel()
-                    addedColorDiff.selectedColor = coverageSettings.diffIncludedColor
+                    tracedColor = ColorPanel()
+                    tracedColor.selectedColor = SettingsService.toColor(coverageSettings.tracedColor)
 
-                    addedColorDiff.addActionListener {
-                        if (it.actionCommand == "colorPanelChanged" && addedColorDiff.selectedColor != null) {
-                            coverageSettings.deletedColor = addedColorDiff.selectedColor!!
-                        }
-                    }
-
-                    label("Recently added color in diff: ")
-                    addedColorDiff()
-                }
-                row {
-                    val deletedColorDiff = ColorPanel()
-                    deletedColorDiff.selectedColor = coverageSettings.diffExcludedColor
-
-                    deletedColorDiff.addActionListener {
-                        if (it.actionCommand == "colorPanelChanged" && deletedColorDiff.selectedColor != null) {
-                            coverageSettings.deletedColor = deletedColorDiff.selectedColor!!
-                        }
-                    }
-
-                    label("Recently deleted color in diff: ")
-                    deletedColorDiff()
+                    label("Traced tests lines color: ")
+                    tracedColor()
                 }
             }
         }
     }
 
+    /**
+     * Checks if the settings panel has different colors than the settings state.
+     * Returns false is any of the newly selected color is null (as we don't want to save null colors)
+     *
+     * @param coverageColors Settings state's coverage colors
+     */
+    fun isColorModified(coverageColors: CoverageSettings): Boolean {
+
+        if (this.addedColor.selectedColor == null ||
+            this.deletedColor.selectedColor == null ||
+            this.tracedColor.selectedColor == null
+        ) {
+            return false
+        }
+
+        val covAddedColor = SettingsService.toColor(coverageColors.addedColor)
+        val covDeletedColor = SettingsService.toColor(coverageColors.deletedColor)
+        val covTracedColor = SettingsService.toColor(coverageColors.tracedColor)
+
+        return (
+            covAddedColor != this.addedColor.selectedColor!! ||
+                covDeletedColor != this.deletedColor.selectedColor!! ||
+                covTracedColor != this.tracedColor.selectedColor!!
+            )
+    }
+
+    /**
+     * Gets called when the uses press reset in settings.
+     * This reverts back to the old color choices in the panel by loading it from the settings state.
+     *
+     * @param coverageColors Settings state's coverage colors
+     */
+    fun resetCoverageColors(coverageColors: CoverageSettings) {
+        val covAddedColor = SettingsService.toColor(coverageColors.addedColor)
+        val covDeletedColor = SettingsService.toColor(coverageColors.deletedColor)
+        val covTracedColor = SettingsService.toColor(coverageColors.tracedColor)
+
+        this.addedColor.selectedColor = covAddedColor
+        this.deletedColor.selectedColor = covDeletedColor
+        this.tracedColor.selectedColor = covTracedColor
+    }
+
+    /**
+     * Gets called when the uses press apply in settings.
+     * This saves the newly selected coverage colors to the settings state.
+     *
+     * @param coverageColors Settings state's coverage colors
+     */
+    fun applyCoverageColors(coverageColors: CoverageSettings) {
+        coverageColors.addedColor = this.addedColor.selectedColor?.let { SettingsService.toColorHex(it) }
+            ?: coverageColors.addedColor
+        coverageColors.deletedColor = this.deletedColor.selectedColor?.let { SettingsService.toColorHex(it) }
+            ?: coverageColors.deletedColor
+        coverageColors.tracedColor = this.tracedColor.selectedColor?.let { SettingsService.toColorHex(it) }
+            ?: coverageColors.tracedColor
+    }
+
+    /**
+     * Returns the Dialog panel for settings.
+     *
+     * @return the Dialog panel for settings
+     */
     fun getComponent(): DialogPanel {
         return myPanel
     }
