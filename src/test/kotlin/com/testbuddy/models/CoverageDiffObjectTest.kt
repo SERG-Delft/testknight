@@ -51,4 +51,18 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
         val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
         TestCase.assertEquals(obj.linesNewlyAdded, emptySet<Int>())
     }
+
+    @Test
+    fun testEmptyCoveredInBoth() {
+
+        //linesCoveredOnBoth isn't dependent on all lines in implementation
+        val allLines = emptySet<Int>()
+        val coveredPrev = emptySet<Int>()
+        val coveredNow = setOf(1, 2, 3, 4, 5)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(obj.linesCoveredInBoth,
+                emptySet<Int>())
+
+    }
 }
