@@ -17,10 +17,11 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testGoodWeatherNewlyRemoved() {
+    fun testEmptyNewlyRemoved() {
 
-        val allLines = setOf(1, 2, 3, 4, 5)
-        val coveredPrev = setOf(1, 2, 3, 4, 5)
+        //allLines not required
+        val allLines = emptySet<Int>()
+        val coveredPrev = setOf(1, 2, 3)
         val coveredNow = setOf(1, 2, 3, 4, 5)
 
         val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
@@ -28,36 +29,26 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
     }
 
     @Test
-    fun testGoodWeatherNewlyAdded() {
+    fun testEmptyNotCovered() {
 
+        //depends on all 3 attributes
         val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = setOf(1, 2, 3, 4)
+        val coveredNow = setOf(2, 5)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(obj.linesNotCovered, emptySet<Int>())
+    }
+
+    @Test
+    fun testEmptyNewlyAdded() {
+
+        //allLines not required
+        val allLines = emptySet<Int>()
         val coveredPrev = setOf(1, 2, 3, 4, 5)
         val coveredNow = setOf(1, 2, 3, 4, 5)
 
         val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
         TestCase.assertEquals(obj.linesNewlyAdded, emptySet<Int>())
-    }
-
-    @Test
-    fun testGoodWeatherCoveredInBoth() {
-
-        val allLines = setOf(1, 2, 3, 4, 5)
-        val coveredPrev = setOf(1, 2, 3, 4, 5)
-        val coveredNow = setOf(1, 2, 3, 4, 5)
-
-        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
-        TestCase.assertEquals(obj.linesCoveredInBoth,
-                setOf(1, 2, 3, 4, 5))
-    }
-
-    @Test
-    fun testGoodWeatherNotCovered() {
-
-        val allLines = setOf(1, 2, 3, 4, 5)
-        val coveredPrev = setOf(1, 2, 3, 4, 5)
-        val coveredNow = setOf(1, 2, 3, 4, 5)
-
-        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
-        TestCase.assertEquals(obj.linesNotCovered, emptySet<Int>())
     }
 }
