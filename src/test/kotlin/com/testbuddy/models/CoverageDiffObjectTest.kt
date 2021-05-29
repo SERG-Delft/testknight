@@ -19,7 +19,7 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
     @Test
     fun testEmptyNewlyRemoved() {
 
-        //allLines not required
+        // allLines not required
         val allLines = emptySet<Int>()
         val coveredPrev = setOf(1, 2, 3)
         val coveredNow = setOf(1, 2, 3, 4, 5)
@@ -31,7 +31,7 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
     @Test
     fun testEmptyNotCovered() {
 
-        //depends on all 3 attributes
+        // depends on all 3 attributes
         val allLines = setOf(1, 2, 3, 4, 5)
         val coveredPrev = setOf(1, 2, 3, 4)
         val coveredNow = setOf(2, 5)
@@ -43,7 +43,7 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
     @Test
     fun testEmptyNewlyAdded() {
 
-        //allLines not required
+        // allLines not required
         val allLines = emptySet<Int>()
         val coveredPrev = setOf(1, 2, 3, 4, 5)
         val coveredNow = setOf(1, 2, 3, 4, 5)
@@ -55,14 +55,15 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
     @Test
     fun testEmptyCoveredInBoth() {
 
-        //linesCoveredOnBoth isn't dependent on all lines in implementation
+        // linesCoveredOnBoth isn't dependent on all lines in implementation
         val allLines = emptySet<Int>()
         val coveredPrev = emptySet<Int>()
         val coveredNow = setOf(1, 2, 3, 4, 5)
 
         val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
-        TestCase.assertEquals(obj.linesCoveredInBoth,
-                emptySet<Int>())
-
+        TestCase.assertEquals(
+            obj.linesCoveredInBoth,
+            emptySet<Int>()
+        )
     }
 }

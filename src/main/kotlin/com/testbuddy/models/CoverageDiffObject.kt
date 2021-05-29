@@ -11,6 +11,7 @@ class CoverageDiffObject(val allLines: Set<Int>, val coveredPrev: Set<Int>, val 
         linesNewlyRemoved = coveredPrev - coveredNow
         linesNewlyAdded = coveredNow - coveredPrev
         linesCoveredInBoth = coveredPrev.intersect(coveredNow)
-        linesNotCovered = allLines - linesCoveredInBoth
+        val linesCoveredInEither = coveredPrev.union(coveredNow)
+        linesNotCovered = allLines - linesCoveredInEither
     }
 }
