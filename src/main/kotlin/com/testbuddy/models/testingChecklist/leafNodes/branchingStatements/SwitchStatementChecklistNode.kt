@@ -14,4 +14,29 @@ class SwitchStatementChecklistNode(
         TODO("Not yet implemented")
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as SwitchStatementChecklistNode
+
+        if (description != other.description) return false
+        if (element != other.element) return false
+        if (switchVariable != other.switchVariable) return false
+        if (value != other.value) return false
+        if (isDefaultCase != other.isDefaultCase) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = description.hashCode()
+        result = 31 * result + element.hashCode()
+        result = 31 * result + switchVariable.hashCode()
+        result = 31 * result + (value?.hashCode() ?: 0)
+        result = 31 * result + isDefaultCase.hashCode()
+        return result
+    }
+
+
 }

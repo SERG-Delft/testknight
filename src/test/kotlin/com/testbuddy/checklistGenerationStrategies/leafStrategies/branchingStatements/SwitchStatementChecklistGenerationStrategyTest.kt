@@ -5,7 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -29,11 +29,16 @@ internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTest
         val method = getMethod("commentOnAge")
         val switch = PsiTreeUtil.findChildOfType(method, PsiSwitchStatement::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test this.age is 10", switch!!),
-            TestingChecklistLeafNode("Test this.age is 20", switch!!),
-            TestingChecklistLeafNode("Test this.age is 30", switch!!),
-            TestingChecklistLeafNode("Test this.age is 40", switch!!),
-            TestingChecklistLeafNode("Test this.age is different from all the switch cases", switch!!)
+            SwitchStatementChecklistNode("Test this.age is 10", switch!!, "this.age", "10"),
+            SwitchStatementChecklistNode("Test this.age is 20", switch!!, "this.age", "20"),
+            SwitchStatementChecklistNode("Test this.age is 30", switch!!, "this.age", "30"),
+            SwitchStatementChecklistNode("Test this.age is 40", switch!!, "this.age", "40"),
+            SwitchStatementChecklistNode(
+                "Test this.age is different from all the switch cases",
+                switch!!,
+                "this.age",
+                null
+            )
         )
         val actual = generationStrategy.generateChecklist(switch!!)
         TestCase.assertEquals(expected, actual)
@@ -44,10 +49,10 @@ internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTest
         val method = getMethod("commentOnAgeEnhanched")
         val switch = PsiTreeUtil.findChildOfType(method, PsiSwitchStatement::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test this.age is 10", switch!!),
-            TestingChecklistLeafNode("Test this.age is 20", switch!!),
-            TestingChecklistLeafNode("Test this.age is 30", switch!!),
-            TestingChecklistLeafNode("Test this.age is 40", switch!!)
+            SwitchStatementChecklistNode("Test this.age is 10", switch!!, "this.age", "10"),
+            SwitchStatementChecklistNode("Test this.age is 20", switch!!, "this.age", "20"),
+            SwitchStatementChecklistNode("Test this.age is 30", switch!!, "this.age", "30"),
+            SwitchStatementChecklistNode("Test this.age is 40", switch!!, "this.age", "40"),
         )
         val actual = generationStrategy.generateChecklist(switch!!)
         TestCase.assertEquals(expected, actual)
@@ -58,10 +63,10 @@ internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTest
         val method = getMethod("commentOnAgeEnhanchedWithRules")
         val switch = PsiTreeUtil.findChildOfType(method, PsiSwitchStatement::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test this.age is 10", switch!!),
-            TestingChecklistLeafNode("Test this.age is 20", switch!!),
-            TestingChecklistLeafNode("Test this.age is 30", switch!!),
-            TestingChecklistLeafNode("Test this.age is 40", switch!!)
+            SwitchStatementChecklistNode("Test this.age is 10", switch!!, "this.age", "10"),
+            SwitchStatementChecklistNode("Test this.age is 20", switch!!, "this.age", "20"),
+            SwitchStatementChecklistNode("Test this.age is 30", switch!!, "this.age", "30"),
+            SwitchStatementChecklistNode("Test this.age is 40", switch!!, "this.age", "40"),
         )
         val actual = generationStrategy.generateChecklist(switch!!)
         TestCase.assertEquals(expected, actual)

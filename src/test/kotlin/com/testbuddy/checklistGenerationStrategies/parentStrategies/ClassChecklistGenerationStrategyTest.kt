@@ -4,8 +4,8 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
@@ -48,13 +48,13 @@ internal class ClassChecklistGenerationStrategyTest : BasePlatformTestCase() {
         val methodsInClass = PsiTreeUtil.findChildrenOfType(testClass, PsiMethod::class.java)
 
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(0)) } returns
-            TestingChecklistMethodNode("add", mutableListOf(), methodsInClass.elementAt(0))
+                TestingChecklistMethodNode("add", mutableListOf(), methodsInClass.elementAt(0))
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(1)) } returns
-            TestingChecklistMethodNode("sub", mutableListOf(), methodsInClass.elementAt(1))
+                TestingChecklistMethodNode("sub", mutableListOf(), methodsInClass.elementAt(1))
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(2)) } returns
-            TestingChecklistMethodNode("mult", mutableListOf(), methodsInClass.elementAt(2))
+                TestingChecklistMethodNode("mult", mutableListOf(), methodsInClass.elementAt(2))
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(3)) } returns
-            TestingChecklistMethodNode("div", mutableListOf(), methodsInClass.elementAt(3))
+                TestingChecklistMethodNode("div", mutableListOf(), methodsInClass.elementAt(3))
 
         val expectedChildren = mutableListOf(
             TestingChecklistMethodNode("add", mutableListOf(), methodsInClass.elementAt(0)),
@@ -69,7 +69,8 @@ internal class ClassChecklistGenerationStrategyTest : BasePlatformTestCase() {
             testClass!!
         )
 
-        val result = ClassChecklistGenerationStrategy.create(methodChecklistGenerationStrategy).generateChecklist(testClass)
+        val result =
+            ClassChecklistGenerationStrategy.create(methodChecklistGenerationStrategy).generateChecklist(testClass)
         TestCase.assertEquals(expected, result)
     }
 }

@@ -14,6 +14,7 @@ import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterListChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ThrowStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements.ConditionalExpressionChecklistGenerationStrategy
@@ -24,8 +25,9 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForEachStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.utilities.ChecklistLeafNodeGenerator
 import io.mockk.every
 import io.mockk.mockk
@@ -69,25 +71,25 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
         val ifConditionGenerator = mockk<IfStatementChecklistGenerationStrategy>()
         every { ifConditionGenerator.generateChecklist(ifNegativeAge) } returns
             listOf(
-                TestingChecklistLeafNode("Test for age < 0", ifNegativeAge),
-                TestingChecklistLeafNode("Test for age == 0", ifNegativeAge),
-                TestingChecklistLeafNode("Test for age > 0", ifNegativeAge)
+                ConditionChecklistNode("Test for age < 0", ifNegativeAge),
+                ConditionChecklistNode("Test for age == 0", ifNegativeAge),
+                ConditionChecklistNode("Test for age > 0", ifNegativeAge)
             )
         every { ifConditionGenerator.generateChecklist(ifVeryLargeAge) } returns
             listOf(
-                TestingChecklistLeafNode("Test for age > 100", ifNegativeAge),
-                TestingChecklistLeafNode("Test for age == 100", ifNegativeAge),
-                TestingChecklistLeafNode("Test for age < 100", ifNegativeAge)
+                ConditionChecklistNode("Test for age > 100", ifNegativeAge),
+                ConditionChecklistNode("Test for age == 100", ifNegativeAge),
+                ConditionChecklistNode("Test for age < 100", ifNegativeAge)
             )
         leafNodeGenerator.ifStatementChecklistGenerationStrategy = ifConditionGenerator
 
-        val expectedChildren = mutableListOf(
-            TestingChecklistLeafNode("Test for age < 0", ifNegativeAge),
-            TestingChecklistLeafNode("Test for age == 0", ifNegativeAge),
-            TestingChecklistLeafNode("Test for age > 0", ifNegativeAge),
-            TestingChecklistLeafNode("Test for age > 100", ifNegativeAge),
-            TestingChecklistLeafNode("Test for age == 100", ifNegativeAge),
-            TestingChecklistLeafNode("Test for age < 100", ifNegativeAge)
+        val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
+            ConditionChecklistNode("Test for age < 0", ifNegativeAge),
+            ConditionChecklistNode("Test for age == 0", ifNegativeAge),
+            ConditionChecklistNode("Test for age > 0", ifNegativeAge),
+            ConditionChecklistNode("Test for age > 100", ifNegativeAge),
+            ConditionChecklistNode("Test for age == 100", ifNegativeAge),
+            ConditionChecklistNode("Test for age < 100", ifNegativeAge)
         )
         val expectedNode = TestingChecklistMethodNode("setAge", expectedChildren, methodToGenerateOn)
         val actualNode = methodGenerator.generateChecklist(methodToGenerateOn)

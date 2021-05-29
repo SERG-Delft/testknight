@@ -7,7 +7,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -34,7 +34,7 @@ internal class IfStatementChecklistGenerationStrategyTest : BasePlatformTestCase
         this.myFixture.configureByFile("/BrokenClass.java")
         val method = getMethod("incompleteCondition")
         val ifStatement = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(ifStatement!!)
         TestCase.assertEquals(expected, actual)
     }
@@ -47,7 +47,7 @@ internal class IfStatementChecklistGenerationStrategyTest : BasePlatformTestCase
         this.myFixture.configureByFile("/BrokenClass.java")
         val method = getMethod("conditionalWithLiteral")
         val ifStatement = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(ifStatement!!)
         TestCase.assertEquals(expected, actual)
     }
