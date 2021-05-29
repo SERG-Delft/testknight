@@ -50,7 +50,7 @@ class SettingsComponent {
 
             titledRow("Checklist") {
                 val checklistSettings = state.checklistSettings
-                val coverageComboBox = listOf("MCDC", "BRANCH")
+                val coverageComboBox = listOf("MC/DC", "BRANCH")
                 val savedSelection = checklistSettings.coverageCriteria
                 val comboBoxModel = CollectionComboBoxModel(coverageComboBox, savedSelection)
                 row {

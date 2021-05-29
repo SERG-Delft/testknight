@@ -26,7 +26,7 @@ data class TestListSettings(
 )
 
 data class ChecklistSettings(
-    var coverageCriteria: String = "MCDC",
+    var coverageCriteria: String = "MC/DC",
     var checklistStrategies: MutableMap<String, Boolean> = mutableMapOf(
         "If Statement" to true,
         "Switch Statement" to true,
