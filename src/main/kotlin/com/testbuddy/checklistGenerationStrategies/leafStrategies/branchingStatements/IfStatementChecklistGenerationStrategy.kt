@@ -36,9 +36,9 @@ class IfStatementChecklistGenerationStrategy private constructor(
          * @return a new IfStatementChecklistGenerationStrategy.
          */
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-                IfStatementChecklistGenerationStrategy {
-            return IfStatementChecklistGenerationStrategy(conditionChecklistGenerator)
-        }
+            IfStatementChecklistGenerationStrategy {
+                return IfStatementChecklistGenerationStrategy(conditionChecklistGenerator)
+            }
 
         /**
          * Returns the configured condition coverage type.

@@ -31,8 +31,8 @@ internal class ParameterListChecklistGenerationStrategyTest : BasePlatformTestCa
         val expected = listOf(
             ParameterChecklistNode("Test method parameter \"currentYear\" equal to: 1", parameter, "currentYear", "1"),
             ParameterChecklistNode("Test method parameter \"currentYear\" equal to: 0", parameter, "currentYear", "0"),
-            ParameterChecklistNode("Test method parameter \"currentYear\" equal to: Integer.MAX_VALUE", parameter, "currentYear", "Integer.Max_Value"),
-            ParameterChecklistNode("Test method parameter \"currentYear\" equal to: Integer.MIN_VALUE", parameter, "currentYear", "Integer.Min_Value"),
+            ParameterChecklistNode("Test method parameter \"currentYear\" equal to: Integer.MAX_VALUE", parameter, "currentYear", "Integer.MAX_VALUE"),
+            ParameterChecklistNode("Test method parameter \"currentYear\" equal to: Integer.MIN_VALUE", parameter, "currentYear", "Integer.MIN_VALUE"),
             ParameterChecklistNode("Test method parameter \"currentYear\" equal to: -42", parameter, "currentYear", "-42")
         )
         val actual = generationStrategy.generateChecklistForParameter(parameter)

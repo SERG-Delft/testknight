@@ -8,7 +8,6 @@ import com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodCheckl
 import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 
-
 class GenerateTestCaseChecklistService {
 
     private val testAnalyzerService = TestAnalyzerService()

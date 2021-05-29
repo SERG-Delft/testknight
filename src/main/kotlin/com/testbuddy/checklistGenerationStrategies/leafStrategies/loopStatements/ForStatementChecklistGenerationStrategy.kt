@@ -33,9 +33,9 @@ class ForStatementChecklistGenerationStrategy private constructor(
          * @return a new ForStatementChecklistGenerationStrategy.
          */
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-                ForStatementChecklistGenerationStrategy {
-            return ForStatementChecklistGenerationStrategy(conditionChecklistGenerator)
-        }
+            ForStatementChecklistGenerationStrategy {
+                return ForStatementChecklistGenerationStrategy(conditionChecklistGenerator)
+            }
     }
 
     /**
@@ -49,11 +49,11 @@ class ForStatementChecklistGenerationStrategy private constructor(
         val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
-                listOf(
-                    ForLoopStatementChecklistNode(
-                        TestingChecklistMessageBundleHandler.message("forLoopMultiple"),
-                        psiElement
-                    )
+            listOf(
+                ForLoopStatementChecklistNode(
+                    TestingChecklistMessageBundleHandler.message("forLoopMultiple"),
+                    psiElement
                 )
+            )
     }
 }

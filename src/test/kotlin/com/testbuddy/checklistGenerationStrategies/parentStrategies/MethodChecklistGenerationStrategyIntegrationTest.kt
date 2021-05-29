@@ -10,6 +10,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParenthesizedExpression
 import com.intellij.psi.PsiPrefixExpression
 import com.intellij.psi.PsiReferenceExpression
+import com.intellij.psi.PsiSwitchLabelStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
@@ -116,34 +117,36 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val methodToGenerateOn = getMethod("commentOnAge")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiSwitchStatement::class.java)
+        val switchLabels = PsiTreeUtil.findChildrenOfType(methodToGenerateOn, PsiSwitchLabelStatement::class.java)
+
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             SwitchStatementChecklistNode(
                 "Test this.age is 10",
-                expr!!,
+                switchLabels.elementAt(0)!!,
                 "this.age",
                 "10"
             ),
             SwitchStatementChecklistNode(
                 "Test this.age is 20",
-                expr!!,
+                switchLabels.elementAt(1)!!,
                 "this.age",
                 "20"
             ),
             SwitchStatementChecklistNode(
                 "Test this.age is 30",
-                expr!!,
+                switchLabels.elementAt(2)!!,
                 "this.age",
                 "30"
             ),
             SwitchStatementChecklistNode(
                 "Test this.age is 40",
-                expr!!,
+                switchLabels.elementAt(3)!!,
                 "this.age",
                 "40"
             ),
             SwitchStatementChecklistNode(
                 "Test this.age is different from all the switch cases",
-                expr!!,
+                switchLabels.elementAt(4)!!,
                 "this.age",
                 null
             ),

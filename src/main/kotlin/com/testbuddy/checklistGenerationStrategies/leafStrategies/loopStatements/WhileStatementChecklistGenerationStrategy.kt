@@ -33,9 +33,9 @@ class WhileStatementChecklistGenerationStrategy private constructor(
          * @return a new WhileStatementChecklistGenerationStrategy.
          */
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-                WhileStatementChecklistGenerationStrategy {
-            return WhileStatementChecklistGenerationStrategy(conditionChecklistGenerator)
-        }
+            WhileStatementChecklistGenerationStrategy {
+                return WhileStatementChecklistGenerationStrategy(conditionChecklistGenerator)
+            }
     }
 
     /**
@@ -49,11 +49,11 @@ class WhileStatementChecklistGenerationStrategy private constructor(
         val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
-                listOf(
-                    WhileStatementChecklistNode(
-                        TestingChecklistMessageBundleHandler.message("whileLoopMultiple"),
-                        psiElement
-                    )
+            listOf(
+                WhileStatementChecklistNode(
+                    TestingChecklistMessageBundleHandler.message("whileLoopMultiple"),
+                    psiElement
                 )
+            )
     }
 }

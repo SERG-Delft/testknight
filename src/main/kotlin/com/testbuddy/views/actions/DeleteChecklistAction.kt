@@ -8,7 +8,6 @@ import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChec
 import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.models.ChecklistUserObject
-
 import com.testbuddy.services.ChecklistTreeService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
