@@ -9,7 +9,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.psi.PsiManager
 import com.intellij.ui.CheckboxTree
-import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
@@ -23,7 +22,6 @@ import com.testbuddy.views.listeners.ChecklistSelectionListener
 import com.testbuddy.views.listeners.CopyPasteKeyboardListener
 import com.testbuddy.views.listeners.CopyPasteMouseListener
 import com.testbuddy.views.listeners.PsiTreeListener
-import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
@@ -62,9 +60,12 @@ class UserInterface(val project: Project) {
 
         val service = project.service<ChecklistTreeService>()
         val panel = JBScrollPane()
-        val root = CheckedTreeNode("root")
+        // val root = CheckedTreeNode("root")
 
-        checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
+        service.initUiTree()
+        val checkListTree = service.getUiTree()
+
+        // checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         val mouseListener = ChecklistMouseListener(checkListTree!!, project)
         checkListTree!!.addMouseListener(mouseListener)
 
@@ -72,7 +73,7 @@ class UserInterface(val project: Project) {
         checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
         checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
 
-        service.initTrees(checkListTree!!)
+        // service.initTrees(checkListTree!!)
         panel.setViewportView(checkListTree)
 
         toolWindowPanel.setContent(panel)

@@ -8,6 +8,7 @@ import com.testbuddy.models.TestingChecklist
 import com.testbuddy.models.TestingChecklistClassNode
 import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.views.trees.ChecklistCellRenderer
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
@@ -18,6 +19,8 @@ class ChecklistTreeService {
     private lateinit var uiTree: CheckboxTree
     private lateinit var dataTree: TestingChecklist
 
+    // private val state =
+
     /**
      * This method initialize the trees, it acts like a constructor.
      *
@@ -26,6 +29,36 @@ class ChecklistTreeService {
     fun initTrees(uiTree: CheckboxTree) {
         dataTree = TestingChecklist(mutableListOf())
         this.uiTree = uiTree
+    }
+
+    fun getUiTree(): CheckboxTree {
+        return uiTree
+    }
+
+    fun initUiTree() {
+
+        //  dataTree.toString().toByte()
+
+        dataTree = ChecklistTreePersistent.instance.state
+        val root = CheckedTreeNode("root")
+        uiTree = CheckboxTree(ChecklistCellRenderer(true), root)
+        val uiTreeRoot = uiTree.model.root as CheckedTreeNode
+
+        for (classNode in dataTree.classChecklists) {
+            val uiTreeClassNode = CheckedTreeNode(ChecklistUserObject(classNode, classNode.checked))
+            for (methodNode in classNode.children) {
+                val uiTreeMethod = CheckedTreeNode(ChecklistUserObject(methodNode, methodNode.checked))
+                for (item in methodNode.children) {
+                    val itemNode = CheckedTreeNode(ChecklistUserObject(item, item.checked))
+                    itemNode.isChecked = (item.checked > 0)
+                    uiTreeMethod.add(itemNode)
+                }
+                (uiTreeClassNode as CheckedTreeNode).add(uiTreeMethod)
+            }
+            uiTreeRoot.add(uiTreeClassNode)
+        }
+        (uiTree.model as DefaultTreeModel).reload()
+        TreeUtil.expandAll(uiTree)
     }
 
     /**
@@ -57,6 +90,7 @@ class ChecklistTreeService {
             if (itemNode.description == dataItem.description &&
                 itemNode.element == dataItem.element
             ) {
+                itemNode.element
                 foundItem = true
                 break
                 // i do not have to add this item
@@ -76,7 +110,6 @@ class ChecklistTreeService {
      */
     private fun buildUiItem(
         foundItem: Boolean,
-        uiTreeClassNode: TreeNode,
         uiTreeMethod: TreeNode,
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
@@ -87,7 +120,7 @@ class ChecklistTreeService {
             val newItemNode = CheckedTreeNode(ChecklistUserObject(itemNode, 0))
             newItemNode.isChecked = false
             (uiTreeMethod as CheckedTreeNode).add(newItemNode)
-            (uiTreeClassNode as CheckedTreeNode).add(uiTreeMethod)
+            // (uiTreeClassNode as CheckedTreeNode).add(uiTreeMethod)
         }
     }
 
@@ -114,7 +147,7 @@ class ChecklistTreeService {
                 dataMethod.description = methodNode.description
                 for (itemNode in methodNode.children) {
                     val foundItem: Boolean = findElement(dataMethod, itemNode)
-                    buildUiItem(foundItem, uiTreeClassNode, uiTreeMethod, dataMethod, itemNode)
+                    buildUiItem(foundItem, uiTreeMethod, dataMethod, itemNode)
                 }
             }
         }

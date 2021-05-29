@@ -9,7 +9,7 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.4.32"
+    id("org.jetbrains.kotlin.jvm") version "1.5.10"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "0.7.2"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -18,6 +18,9 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+
+//    id ("org.jetbrains.kotlin.jvm") version ""
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.10"
 }
 
 group = properties("pluginGroup")
@@ -33,6 +36,7 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     implementation("org.testng:testng:7.1.0")
     implementation("io.mockk:mockk:1.9.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0")
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
