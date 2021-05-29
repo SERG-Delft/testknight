@@ -6,8 +6,8 @@ import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChec
 data class TryStatementChecklistNode(
     override var description: String,
     override val element: PsiElement,
-    val exceptionName: String,
-    val isExceptionThrown: Boolean
+    val exceptionName: String?,
+    val isExceptionThrown: Boolean = exceptionName != null
 ) : TestingChecklistLeafNode(description, element) {
     override fun generateTestMethod(): PsiElement {
         TODO("Not yet implemented")

@@ -2,8 +2,8 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatement
 
 import com.intellij.psi.PsiForeachStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForEachStatementChecklistNode
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
 
 class ForEachStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiForeachStatement> {
@@ -26,38 +26,42 @@ class ForEachStatementChecklistGenerationStrategy private constructor() :
      * @param psiElement the foreach loop PSI element for which the checklist is to be generated.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    override fun generateChecklist(psiElement: PsiForeachStatement): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiForeachStatement): List<ForEachStatementChecklistNode> {
 
         if (psiElement.iteratedValue == null) {
             return emptyList()
         }
         val iteratedValue = psiElement.iteratedValue!!.text
         return listOf(
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 description = TestingChecklistMessageBundleHandler.message(
                     "forEachEmpty",
                     iteratedValue
                 ),
-                psiElement
+                psiElement,
+                iteratedValue
             ),
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 description = TestingChecklistMessageBundleHandler.message(
                     "forEachOnce",
                     iteratedValue
                 ),
-                psiElement
+                psiElement,
+                iteratedValue
             ),
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 description = TestingChecklistMessageBundleHandler.message(
                     "forEachNull",
                     iteratedValue
                 ),
-                psiElement
+                psiElement,
+                iteratedValue
             ),
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 description = TestingChecklistMessageBundleHandler
                     .message("forEachMultiple"),
-                psiElement
+                psiElement,
+                iteratedValue
             )
         )
     }

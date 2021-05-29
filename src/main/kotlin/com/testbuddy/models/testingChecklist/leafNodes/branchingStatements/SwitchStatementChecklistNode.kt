@@ -7,8 +7,8 @@ class SwitchStatementChecklistNode(
     override var description: String,
     override val element: PsiElement,
     val switchVariable: String,
-    val value: String,
-    val defaultCase: Boolean
+    val value: String?,
+    val isDefaultCase: Boolean = value == null
 ) : TestingChecklistLeafNode(description, element) {
     override fun generateTestMethod(): PsiElement {
         TODO("Not yet implemented")

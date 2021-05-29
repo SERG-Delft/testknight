@@ -1,10 +1,10 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiExpression
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.PropositionalExpression
-import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TruthTable
 import kotlin.math.pow
 
@@ -96,16 +96,16 @@ class ConditionChecklistGenerationStrategy private constructor(
      * @param psiElement the PsiExpression to generate on.
      * @return a list of TestingChecklistLeafNodes that represent the checklist.
      */
-    override fun generateChecklist(psiElement: PsiExpression): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiExpression): List<ConditionChecklistNode> {
 
         val (simplified, assignments) = PropositionalExpression(psiElement).simplified()
 
         return when (coverageGenerationMethod) {
             ConditionCoverageType.MCDC -> mcdc(assignments.keys.toList(), simplified)
-                .map { TestingChecklistLeafNode(it.getDescription(assignments), psiElement) }
+                .map { ConditionChecklistNode(it.getDescription(assignments), psiElement) }
 
             ConditionCoverageType.BRANCH -> branchCoverage(simplified)
-                .map { TestingChecklistLeafNode(it.getDescription(mapOf(simplified to psiElement.text)), psiElement) }
+                .map { ConditionChecklistNode(it.getDescription(mapOf(simplified to psiElement.text)), psiElement) }
         }
     }
 

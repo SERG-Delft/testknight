@@ -3,9 +3,10 @@ package com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatem
 import com.intellij.psi.PsiElement
 import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
-class ForEachChecklistNode(
+class ForEachStatementChecklistNode(
     override var description: String,
-    override val element: PsiElement
+    override val element: PsiElement,
+    val iteratedValue: String
 ) : TestingChecklistLeafNode(
     description, element
 ) {

@@ -3,8 +3,9 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatement
 import com.intellij.psi.PsiForStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForLoopStatementChecklistNode
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
 
 class ForStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -32,9 +33,9 @@ class ForStatementChecklistGenerationStrategy private constructor(
          * @return a new ForStatementChecklistGenerationStrategy.
          */
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-            ForStatementChecklistGenerationStrategy {
-                return ForStatementChecklistGenerationStrategy(conditionChecklistGenerator)
-            }
+                ForStatementChecklistGenerationStrategy {
+            return ForStatementChecklistGenerationStrategy(conditionChecklistGenerator)
+        }
     }
 
     /**
@@ -48,11 +49,11 @@ class ForStatementChecklistGenerationStrategy private constructor(
         val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
-            listOf(
-                TestingChecklistLeafNode(
-                    TestingChecklistMessageBundleHandler.message("forLoopMultiple"),
-                    psiElement
+                listOf(
+                    ForLoopStatementChecklistNode(
+                        TestingChecklistMessageBundleHandler.message("forLoopMultiple"),
+                        psiElement
+                    )
                 )
-            )
     }
 }

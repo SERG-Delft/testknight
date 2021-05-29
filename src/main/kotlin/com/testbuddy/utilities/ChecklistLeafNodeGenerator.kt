@@ -21,7 +21,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForEachStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
 class ChecklistLeafNodeGenerator {
 

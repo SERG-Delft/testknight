@@ -4,7 +4,7 @@ import com.intellij.psi.PsiConditionalExpression
 import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 
 class ConditionalExpressionChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -60,7 +60,7 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
      * @param psiElement the conditional expression for which the checklist is to be generated.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    override fun generateChecklist(psiElement: PsiConditionalExpression): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiConditionalExpression): List<ConditionChecklistNode> {
 
         val condition = psiElement.condition
 

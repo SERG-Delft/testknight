@@ -3,8 +3,9 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatement
 import com.intellij.psi.PsiWhileStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.WhileStatementChecklistNode
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
 
 class WhileStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -32,9 +33,9 @@ class WhileStatementChecklistGenerationStrategy private constructor(
          * @return a new WhileStatementChecklistGenerationStrategy.
          */
         fun create(conditionChecklistGenerator: ConditionChecklistGenerationStrategy):
-            WhileStatementChecklistGenerationStrategy {
-                return WhileStatementChecklistGenerationStrategy(conditionChecklistGenerator)
-            }
+                WhileStatementChecklistGenerationStrategy {
+            return WhileStatementChecklistGenerationStrategy(conditionChecklistGenerator)
+        }
     }
 
     /**
@@ -48,11 +49,11 @@ class WhileStatementChecklistGenerationStrategy private constructor(
         val condition = psiElement.condition ?: return emptyList()
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
-            listOf(
-                TestingChecklistLeafNode(
-                    TestingChecklistMessageBundleHandler.message("whileLoopMultiple"),
-                    psiElement
+                listOf(
+                    WhileStatementChecklistNode(
+                        TestingChecklistMessageBundleHandler.message("whileLoopMultiple"),
+                        psiElement
+                    )
                 )
-            )
     }
 }
