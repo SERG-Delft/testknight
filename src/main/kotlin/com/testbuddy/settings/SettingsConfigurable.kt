@@ -1,7 +1,9 @@
 package com.testbuddy.settings
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.ui.DialogPanel
+import com.testbuddy.services.GenerateTestCaseChecklistService
 
 class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     private lateinit var mySettingsComponent: SettingsComponent
@@ -41,6 +43,7 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     override fun apply() {
         super.apply()
         mySettingsComponent.applyCoverageColors(state.coverageSettings)
+        ApplicationManager.getApplication().getService(GenerateTestCaseChecklistService::class.java).rebuildStrategies()
     }
 
     /**

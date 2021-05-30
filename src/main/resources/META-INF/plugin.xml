@@ -14,7 +14,6 @@
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
         <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
-        <projectService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
         <projectService serviceImplementation="com.testbuddy.services.CoverageDataService"/>
         <projectService serviceImplementation="com.testbuddy.services.CoverageHighlighterService"/>
@@ -22,8 +21,7 @@
         <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
 
-
-
+        <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
