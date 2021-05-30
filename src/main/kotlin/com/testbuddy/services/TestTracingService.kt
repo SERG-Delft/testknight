@@ -17,9 +17,10 @@ import com.intellij.openapi.util.io.FileUtilRt
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.ui.ColorUtil
 import com.testbuddy.com.testbuddy.exceptions.NoTestCoverageDataException
 import com.testbuddy.com.testbuddy.models.TestCoverageData
-import java.awt.Color
+import com.testbuddy.settings.SettingsService
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -88,7 +89,7 @@ class TestTracingService(val project: Project) {
         val lines = covData.classes[classQn] ?: return
 
         val textAttributes = TextAttributes()
-        textAttributes.backgroundColor = Color.CYAN
+        textAttributes.backgroundColor = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.tracedColor)
 
         // highlight each line
         lines.forEach {
