@@ -1,20 +1,12 @@
 package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
-import com.intellij.psi.PsiConditionalExpression
-import com.intellij.psi.PsiDoWhileStatement
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiForStatement
-import com.intellij.psi.PsiForeachStatement
-import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiParameterList
-import com.intellij.psi.PsiSwitchStatement
-import com.intellij.psi.PsiThrowStatement
-import com.intellij.psi.PsiTryStatement
-import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.settings.SettingsService
 import com.testbuddy.utilities.ChecklistLeafNodeGenerator
 
 class MethodChecklistGenerationStrategy private constructor(
@@ -66,13 +58,17 @@ class MethodChecklistGenerationStrategy private constructor(
          * probably load them from a file (that is why this is an entire method instead of a field)
          */
         private fun getDefaultStructureTypesRecognized(): Array<Class<out PsiElement>> {
-            return arrayOf(
-                PsiIfStatement::class.java, PsiSwitchStatement::class.java,
-                PsiTryStatement::class.java, PsiParameterList::class.java,
-                PsiWhileStatement::class.java, PsiForStatement::class.java,
-                PsiDoWhileStatement::class.java, PsiForeachStatement::class.java,
-                PsiThrowStatement::class.java, PsiConditionalExpression::class.java
-            )
+
+            val settingsService = ApplicationManager.getApplication().getService(SettingsService::class.java)
+            val settings = settingsService.state
+            val recognizedStructures = mutableListOf<Class<out PsiElement>>()
+
+            // for each checklist strategy setting if enabled in settings add to recognized structures
+            settings.checklistSettings.checklistStrategies.entries.forEach { (str, enabled) ->
+                if (enabled) recognizedStructures.add(settingsService.strategyNames[str]!!)
+            }
+
+            return recognizedStructures.toTypedArray()
         }
     }
 
