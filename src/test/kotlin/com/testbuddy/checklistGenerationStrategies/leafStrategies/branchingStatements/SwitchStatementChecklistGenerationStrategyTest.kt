@@ -7,7 +7,7 @@ import com.intellij.psi.PsiSwitchLabeledRuleStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

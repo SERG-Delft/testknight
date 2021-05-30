@@ -2,8 +2,8 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiNewExpression
 import com.intellij.psi.PsiThrowStatement
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
+import com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
 
 class ThrowStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiThrowStatement> {

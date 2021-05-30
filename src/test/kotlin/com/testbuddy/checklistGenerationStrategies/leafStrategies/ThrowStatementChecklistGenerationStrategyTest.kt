@@ -5,7 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

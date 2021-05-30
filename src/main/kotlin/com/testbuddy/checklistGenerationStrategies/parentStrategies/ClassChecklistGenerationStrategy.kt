@@ -3,8 +3,8 @@ package com.testbuddy.checklistGenerationStrategies.parentStrategies
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 
 class ClassChecklistGenerationStrategy private constructor(
     private val methodChecklistGenerator: ParentChecklistGeneratorStrategy<PsiMethod, TestingChecklistMethodNode>

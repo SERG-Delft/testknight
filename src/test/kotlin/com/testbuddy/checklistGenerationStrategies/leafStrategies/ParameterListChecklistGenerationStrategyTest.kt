@@ -5,7 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -31,9 +31,24 @@ internal class ParameterListChecklistGenerationStrategyTest : BasePlatformTestCa
         val expected = listOf(
             ParameterChecklistNode("Test method parameter \"currentYear\" equal to: 1", parameter, "currentYear", "1"),
             ParameterChecklistNode("Test method parameter \"currentYear\" equal to: 0", parameter, "currentYear", "0"),
-            ParameterChecklistNode("Test method parameter \"currentYear\" equal to: Integer.MAX_VALUE", parameter, "currentYear", "Integer.MAX_VALUE"),
-            ParameterChecklistNode("Test method parameter \"currentYear\" equal to: Integer.MIN_VALUE", parameter, "currentYear", "Integer.MIN_VALUE"),
-            ParameterChecklistNode("Test method parameter \"currentYear\" equal to: -42", parameter, "currentYear", "-42")
+            ParameterChecklistNode(
+                "Test method parameter \"currentYear\" equal to: Integer.MAX_VALUE",
+                parameter,
+                "currentYear",
+                "Integer.MAX_VALUE"
+            ),
+            ParameterChecklistNode(
+                "Test method parameter \"currentYear\" equal to: Integer.MIN_VALUE",
+                parameter,
+                "currentYear",
+                "Integer.MIN_VALUE"
+            ),
+            ParameterChecklistNode(
+                "Test method parameter \"currentYear\" equal to: -42",
+                parameter,
+                "currentYear",
+                "-42"
+            )
         )
         val actual = generationStrategy.generateChecklistForParameter(parameter)
         TestCase.assertEquals(expected, actual)

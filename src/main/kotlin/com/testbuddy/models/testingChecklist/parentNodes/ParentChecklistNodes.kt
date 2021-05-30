@@ -1,9 +1,9 @@
-package com.testbuddy.models
+package com.testbuddy.models.testingChecklist.parentNodes
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.TestingChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
 abstract class TestingChecklistParentNode : TestingChecklistNode()
 data class TestingChecklistClassNode(

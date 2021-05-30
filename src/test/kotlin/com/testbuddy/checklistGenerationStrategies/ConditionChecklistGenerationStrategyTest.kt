@@ -6,8 +6,8 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

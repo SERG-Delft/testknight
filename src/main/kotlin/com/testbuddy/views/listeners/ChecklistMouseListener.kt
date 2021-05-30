@@ -6,10 +6,9 @@ import com.intellij.openapi.ui.JBPopupMenu
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.views.actions.ModifyChecklistAction
-import com.testbuddy.views.actions.DeleteChecklistAction
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.SwingUtilities

@@ -1,6 +1,6 @@
 package com.testbuddy.models
 
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
 
 data class TestingChecklist(val classChecklists: MutableList<TestingChecklistClassNode>)
 

@@ -1,24 +1,17 @@
 package com.testbuddy.models.testingChecklist.leafNodes
 
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiParameter
 import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 
-data class ParameterChecklistNode(
+class CustomChecklistNode(
     override var description: String,
-    override val element: PsiParameter,
-    val parameterName: String,
-    val suggestedValue: String
+    override val element: PsiElement? = null,
+    override var checked: Int = 0
 ) : TestingChecklistLeafNode(description, element) {
-    /**
-     * Generate a test method for a parameter.
-     *
-     * @param project the project.
-     * @return the PsiMethod representing the test.
-     */
     override fun generateTestMethod(project: Project): PsiMethod {
-        val methodName = TestMethodGenerationMessageBundleHandler.message("parameterTestCaseName")
+        val methodName = TestMethodGenerationMessageBundleHandler.message("customNodeTestCaseName")
         return super.generateTestMethod(project, methodName)
     }
 }

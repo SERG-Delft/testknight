@@ -4,10 +4,11 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBMenuItem
 import com.intellij.ui.CheckedTreeNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.models.ChecklistUserObject
+import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.services.ChecklistTreeService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -54,7 +55,7 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
             println("Edit functionality")
         } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Add item") {
 
-            val newItem = TestingChecklistLeafNode("", null, 0)
+            val newItem = CustomChecklistNode("", null, 0)
 
             val descriptionMethod: String = (
                 (node.userObject as ChecklistUserObject)

@@ -2,8 +2,8 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatement
 
 import com.intellij.psi.PsiForeachStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForEachStatementChecklistNode
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForEachStatementChecklistNode
 
 class ForEachStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiForeachStatement> {
