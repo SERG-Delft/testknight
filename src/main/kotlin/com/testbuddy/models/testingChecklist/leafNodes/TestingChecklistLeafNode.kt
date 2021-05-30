@@ -1,10 +1,12 @@
 package com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes
 
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiType
+import com.testbuddy.com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 import com.testbuddy.models.TestingChecklistNode
 
 abstract class TestingChecklistLeafNode(
@@ -33,7 +35,16 @@ abstract class TestingChecklistLeafNode(
     protected fun generateTestMethod(project: Project, methodName: String): PsiMethod {
         val factory = JavaPsiFacade.getInstance(project).elementFactory
         val method = factory.createMethod(methodName, PsiType.VOID)
+        val comment = factory.createDocCommentFromText(
+            "/** ${
+            TestMethodGenerationMessageBundleHandler.message(
+                "testMethodComment",
+                this.description
+            )
+            } **/"
+        )
         method.modifierList.addAnnotation("Test")
+        WriteCommandAction.runWriteCommandAction(project) { method.body!!.add(comment) }
         return method
     }
 }
