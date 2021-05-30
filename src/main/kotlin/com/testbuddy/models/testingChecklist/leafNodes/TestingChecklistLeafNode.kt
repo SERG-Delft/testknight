@@ -33,7 +33,7 @@ abstract class TestingChecklistLeafNode(
     protected fun generateTestMethod(project: Project, methodName: String): PsiMethod {
         val factory = JavaPsiFacade.getInstance(project).elementFactory
         val method = factory.createMethod(methodName, PsiType.VOID)
-        method.annotations[0] = factory.createAnnotationFromText("Test", method)
+        method.modifierList.addAnnotation("Test")
         return method
     }
 }
