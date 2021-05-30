@@ -4,27 +4,17 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.startOffset
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.settings.SettingsService
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.jupiter.api.Test
 
-class DuplicateTestsServiceTest : BasePlatformTestCase() {
+class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     /**
      * This test class is responsble for verifying the test duplication and highlight-conflict algorithm work
      * correctly. To test the individual highlight resolution strategies see their own test classes
      */
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
 
     @Test
     fun testDuplicateMethodUnderCaret() {

@@ -4,26 +4,16 @@ import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy.TestCaseBindings
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
-internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase() {
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class ConditionChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testMcdc0prop() {

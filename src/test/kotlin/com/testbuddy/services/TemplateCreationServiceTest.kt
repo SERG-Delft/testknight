@@ -3,13 +3,13 @@ package com.testbuddy.services
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.com.testbuddy.highlightResolutionStrategies.AssertionArgsStrategy
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class TemplateCreationServiceTest : BasePlatformTestCase() {
+internal class TemplateCreationServiceTest : TestBuddyTestCase() {
 
     @Before
     public override fun setUp() {
@@ -21,10 +21,6 @@ internal class TemplateCreationServiceTest : BasePlatformTestCase() {
         val project = this.myFixture.project
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)!!
         val serv = TemplateCreationService(project)
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
     }
 
     @Test

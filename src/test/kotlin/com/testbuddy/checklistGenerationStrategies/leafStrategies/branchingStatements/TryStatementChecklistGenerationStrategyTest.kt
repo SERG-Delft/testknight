@@ -5,14 +5,14 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.TestingChecklistLeafNode
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
-internal class TryStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class TryStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     private val generationStrategy = TryStatementChecklistGenerationStrategy.create()
 
@@ -20,10 +20,6 @@ internal class TryStatementChecklistGenerationStrategyTest : BasePlatformTestCas
     public override fun setUp() {
         super.setUp()
         this.myFixture.configureByFile("/Person.java")
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
     }
 
     @Test

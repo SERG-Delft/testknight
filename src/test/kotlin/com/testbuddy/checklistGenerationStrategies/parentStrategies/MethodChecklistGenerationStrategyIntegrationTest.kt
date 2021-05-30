@@ -14,22 +14,12 @@ import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TestingChecklistMethodNode
-import org.junit.Before
 import org.junit.Test
 
-internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestCase() {
 
     @Test
     fun testTernaryOperator() {

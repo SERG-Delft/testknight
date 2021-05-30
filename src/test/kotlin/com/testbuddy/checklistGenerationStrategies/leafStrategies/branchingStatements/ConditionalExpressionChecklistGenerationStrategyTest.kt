@@ -5,26 +5,16 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiConditionalExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.TestingChecklistLeafNode
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class ConditionalExpressionChecklistGenerationStrategyTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class ConditionalExpressionChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testMissingConditionReturnsEmptyChecklist() {

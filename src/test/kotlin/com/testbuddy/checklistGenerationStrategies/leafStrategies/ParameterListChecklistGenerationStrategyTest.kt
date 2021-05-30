@@ -4,13 +4,13 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.TestingChecklistLeafNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class ParameterListChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class ParameterListChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     private val typeCaseMap = mutableMapOf(
         "byte" to listOf("Byte.MAX_VALUE", "Byte.MIN_VALUE"),
@@ -39,10 +39,6 @@ internal class ParameterListChecklistGenerationStrategyTest : BasePlatformTestCa
     public override fun setUp() {
         super.setUp()
         this.myFixture.configureByFile("/Person.java")
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
     }
 
     @Test

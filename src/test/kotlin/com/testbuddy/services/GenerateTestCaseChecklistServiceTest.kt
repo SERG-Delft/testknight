@@ -1,27 +1,15 @@
 package com.testbuddy.services
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.components.service
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.settings.SettingsService
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class GenerateTestCaseChecklistServiceTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-        SettingsService.instance.resetState()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class GenerateTestCaseChecklistServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testBasic() {
