@@ -5,26 +5,16 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class IfStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class IfStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testNoCondition() {
@@ -34,7 +24,7 @@ internal class IfStatementChecklistGenerationStrategyTest : BasePlatformTestCase
         this.myFixture.configureByFile("/BrokenClass.java")
         val method = getMethod("incompleteCondition")
         val ifStatement = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(ifStatement!!)
         TestCase.assertEquals(expected, actual)
     }
@@ -47,7 +37,7 @@ internal class IfStatementChecklistGenerationStrategyTest : BasePlatformTestCase
         this.myFixture.configureByFile("/BrokenClass.java")
         val method = getMethod("conditionalWithLiteral")
         val ifStatement = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(ifStatement!!)
         TestCase.assertEquals(expected, actual)
     }

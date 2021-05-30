@@ -15,10 +15,11 @@ import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.CheckedTreeNode
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
 import com.testbuddy.models.TestingChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.settings.SettingsService
 import javax.swing.event.TreeSelectionEvent
 import javax.swing.event.TreeSelectionListener
 
@@ -31,6 +32,8 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
 
     private var editor: Editor? = null
     private var highlighterList: MutableList<RangeHighlighter> = mutableListOf()
+
+    private fun settingsState() = SettingsService.instance.state
 
     /**
      * The main listener function which gets called whenever the selection gets changed.
@@ -64,19 +67,23 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
                 val myKey = DefaultLanguageHighlighterColors.INLINE_PARAMETER_HINT_HIGHLIGHTED
 
                 // Create highlight and add to the highlight list.
-                highlighterList.add(
-                    editor!!.markupModel.addRangeHighlighter(
-                        myKey,
-                        element.startOffset,
-                        element.endOffset,
-                        HighlighterLayer.SELECTION - 200,
-                        HighlighterTargetArea.EXACT_RANGE
+                if (settingsState().checklistSettings.highlightChecklistItem) {
+                    highlighterList.add(
+                        editor!!.markupModel.addRangeHighlighter(
+                            myKey,
+                            element.startOffset,
+                            element.endOffset,
+                            HighlighterLayer.SELECTION - 200,
+                            HighlighterTargetArea.EXACT_RANGE
+                        )
                     )
-                )
+                }
 
                 // Goto the offset
-                editor!!.caretModel.primaryCaret.moveToOffset(element.startOffset)
-                editor!!.scrollingModel.scrollToCaret(ScrollType.CENTER)
+                if (settingsState().checklistSettings.gotoChecklistItem) {
+                    editor!!.caretModel.primaryCaret.moveToOffset(element.startOffset)
+                    editor!!.scrollingModel.scrollToCaret(ScrollType.CENTER)
+                }
             }
         }
     }

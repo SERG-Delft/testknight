@@ -6,7 +6,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.TryStatementChecklistNode
 
 class TryStatementChecklistGenerationStrategy private constructor(
     private val generationType: TryGenerationType
@@ -80,7 +80,7 @@ class TryStatementChecklistGenerationStrategy private constructor(
      * @param psiElement the try statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    override fun generateChecklist(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiTryStatement): List<TryStatementChecklistNode> {
         return when (this.generationType) {
             TryGenerationType.CasePerExceptionGeneration -> generateCasePerException(psiElement)
             TryGenerationType.BinaryCaseGeneration -> generateBinaryCase(psiElement)
@@ -94,31 +94,34 @@ class TryStatementChecklistGenerationStrategy private constructor(
      * @param psiElement the try statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    private fun generateCasePerException(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
-        val result = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+    private fun generateCasePerException(psiElement: PsiTryStatement): List<TryStatementChecklistNode> {
+        val result = mutableListOf<TryStatementChecklistNode>(
+            TryStatementChecklistNode(
                 TestingChecklistMessageBundleHandler.message("tryBlockSuccess"),
-                psiElement
+                psiElement,
+                null
             )
         )
         val catches = PsiTreeUtil.findChildrenOfType(psiElement, PsiCatchSection::class.java)
         if (catches.isEmpty()) {
             result.add(
-                TestingChecklistLeafNode(
+                TryStatementChecklistNode(
                     TestingChecklistMessageBundleHandler.message("tryBlockGeneralException"),
-                    psiElement
+                    psiElement,
+                    "AnyException",
                 )
             )
             return result
         }
         catches.forEach {
             if (it.catchType != null) result.add(
-                TestingChecklistLeafNode(
+                TryStatementChecklistNode(
                     TestingChecklistMessageBundleHandler.message(
-                        "tryBlockThrowsSpecifException",
+                        "tryBlockThrowsSpecificException",
                         it.catchType!!.canonicalText
                     ),
-                    it
+                    it,
+                    it.catchType!!.canonicalText
                 )
             )
         }
@@ -132,17 +135,19 @@ class TryStatementChecklistGenerationStrategy private constructor(
      * @param psiElement the try statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    private fun generateBinaryCase(psiElement: PsiTryStatement): List<TestingChecklistLeafNode> {
+    private fun generateBinaryCase(psiElement: PsiTryStatement): List<TryStatementChecklistNode> {
         return listOf(
-            TestingChecklistLeafNode(
+            TryStatementChecklistNode(
                 TestingChecklistMessageBundleHandler
                     .message("tryBlockSuccess"),
-                psiElement
+                psiElement,
+                null
             ),
-            TestingChecklistLeafNode(
+            TryStatementChecklistNode(
                 TestingChecklistMessageBundleHandler
                     .message("tryBlockGeneralException"),
-                psiElement
+                psiElement,
+                "AnyException"
             )
         )
     }

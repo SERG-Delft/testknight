@@ -1,23 +1,15 @@
 package com.testbuddy.services
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.settings.SettingsService
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class GenerateTestCaseChecklistServiceTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class GenerateTestCaseChecklistServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testBasic() {
@@ -96,5 +88,61 @@ internal class GenerateTestCaseChecklistServiceTest : BasePlatformTestCase() {
         val output = serv.generateClassChecklistFromMethod(psiMethod)
 
         TestCase.assertEquals(0, output.children.size)
+    }
+
+    @Test
+    fun testSetMcDc() {
+        myFixture.configureByFile("/Methods.java")
+        val serv = ApplicationManager.getApplication().getService(GenerateTestCaseChecklistService::class.java)
+        val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
+        val psiMethod = psiClass!!.findMethodsByName("mcdc")[0] as PsiMethod
+
+        SettingsService.instance.state.checklistSettings.coverageCriteria = "MC/DC"
+
+        val output = serv.generateMethodChecklist(psiMethod)
+
+        TestCase.assertEquals(5, output.children.size)
+    }
+
+    @Test
+    fun testSetBranch() {
+        myFixture.configureByFile("/Methods.java")
+        val serv = ApplicationManager.getApplication().getService(GenerateTestCaseChecklistService::class.java)
+        val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
+        val psiMethod = psiClass!!.findMethodsByName("mcdc")[0] as PsiMethod
+
+        SettingsService.instance.state.checklistSettings.coverageCriteria = "BRANCH"
+        serv.rebuildStrategies()
+
+        val output = serv.generateMethodChecklist(psiMethod)
+        TestCase.assertEquals(2, output.children.size)
+    }
+
+    @Test
+    fun testDisableParams() {
+        myFixture.configureByFile("/Methods.java")
+        val serv = ApplicationManager.getApplication().getService(GenerateTestCaseChecklistService::class.java)
+        val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
+        val psiMethod = psiClass!!.findMethodsByName("onlyParam")[0] as PsiMethod
+
+        SettingsService.instance.state.checklistSettings.checklistStrategies["Parameter List"] = false
+        serv.rebuildStrategies()
+
+        val output = serv.generateMethodChecklist(psiMethod)
+        TestCase.assertEquals(0, output.children.size)
+    }
+
+    @Test
+    fun testCustomParamSuggestions() {
+        myFixture.configureByFile("/Methods.java")
+        val serv = ApplicationManager.getApplication().getService(GenerateTestCaseChecklistService::class.java)
+        val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
+        val psiMethod = psiClass!!.findMethodsByName("customType")[0] as PsiMethod
+
+        SettingsService.instance.state.checklistSettings.typeCaseMap["type"] = listOf("a", "aa", "aaa")
+        serv.rebuildStrategies()
+
+        val output = serv.generateMethodChecklist(psiMethod)
+        TestCase.assertEquals(3, output.children.size)
     }
 }

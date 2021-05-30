@@ -5,7 +5,8 @@ import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.exceptions.InvalidConfigurationException
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.settings.SettingsService
 
 class IfStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -14,7 +15,8 @@ class IfStatementChecklistGenerationStrategy private constructor(
 
     companion object Factory {
 
-        private const val defaultConditionCoverageType = "MCDC"
+        @Suppress("UnusedPrivateMember")
+        private const val defaultConditionCoverageType = "MC/DC"
 
         /**
          * Creates a new IfStatementChecklistGenerationStrategy.
@@ -46,11 +48,8 @@ class IfStatementChecklistGenerationStrategy private constructor(
          * @return a string representing the configured condition coverage.
          */
         private fun getConditionCoverageType(): String {
-            // This is currently a placeholder, when we add
-            // configuration files the conditionCoverageType
-            // will be read from there.
-            val conditionCoverageType = defaultConditionCoverageType
-            return conditionCoverageType
+            val settings = SettingsService.instance.state
+            return settings.checklistSettings.coverageCriteria
         }
     }
 
@@ -60,7 +59,7 @@ class IfStatementChecklistGenerationStrategy private constructor(
      * @param psiElement the if statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    override fun generateChecklist(psiElement: PsiIfStatement): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiIfStatement): List<ConditionChecklistNode> {
         val condition = psiElement.condition
         if (condition == null || condition is PsiLiteralExpression) {
             return emptyList()

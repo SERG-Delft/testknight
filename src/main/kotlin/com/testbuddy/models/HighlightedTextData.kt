@@ -1,9 +1,11 @@
 package com.testbuddy.models
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLiteralExpression
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
+import com.testbuddy.settings.SettingsService
 
 /**
  * Represents an element to be highlighted when a test is duplicated
@@ -22,7 +24,7 @@ class HighlightedTextData(var startOffset: Int, var endOffset: Int, var text: St
     constructor(element: PsiElement) : this(element.startOffset, element.endOffset, element.text) {
 
         // if literal is string, include only the text inside quotes
-        if (isString(element)) {
+        if (isQuoteHlEnabled() && (isString(element) || isChar(element))) {
             this.startOffset = element.startOffset + 1
             this.endOffset = element.endOffset - 1
             this.text = element.text.substring(1, element.text.length - 1)
@@ -34,7 +36,24 @@ class HighlightedTextData(var startOffset: Int, var endOffset: Int, var text: St
      *
      * @param element the PSI element
      */
-    private fun isString(element: PsiElement): Boolean {
-        return (element is PsiLiteralExpression && element.text.matches(Regex("\".*\"")))
-    }
+    private fun isString(element: PsiElement) =
+        element is PsiLiteralExpression && element.text.matches(Regex("\".*\""))
+
+    /**
+     * Returns true if the provided PSI element corresponds to a string literal.
+     *
+     * @param element the PSI element
+     */
+    private fun isChar(element: PsiElement) =
+        element is PsiLiteralExpression && element.text.matches(Regex("'.'"))
+
+    /**
+     * Reads the settings to determine if in-quote highlighting is enabled.
+     *
+     * @return true if in-quote highlighting is enabled
+     */
+    private fun isQuoteHlEnabled() = ApplicationManager
+        .getApplication()
+        .getService(SettingsService::class.java)
+        .state.testListSettings.highlightStrategies["Highlight string inside quotes"]!!
 }

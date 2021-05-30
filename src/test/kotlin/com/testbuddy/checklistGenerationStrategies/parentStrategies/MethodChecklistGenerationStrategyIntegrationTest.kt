@@ -10,26 +10,25 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParenthesizedExpression
 import com.intellij.psi.PsiPrefixExpression
 import com.intellij.psi.PsiReferenceExpression
+import com.intellij.psi.PsiSwitchLabelStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
-import org.junit.Before
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.TryStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.DoWhileStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForEachStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForLoopStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.WhileStatementChecklistNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import org.junit.Test
 
-internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestCase() {
 
     @Test
     fun testTernaryOperator() {
@@ -39,11 +38,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiParenthesizedExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"a > b\" is false",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"a > b\" is true",
                 expr!!
             )
@@ -61,11 +60,11 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiReferenceExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"condition\" is false",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"condition\" is true",
                 expr!!
             )
@@ -84,13 +83,15 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiTryStatement::class.java)
         val catch = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiCatchSection::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            TryStatementChecklistNode(
                 "Test with the try block running successfully",
-                expr!!
+                expr!!,
+                null
             ),
-            TestingChecklistLeafNode(
+            TryStatementChecklistNode(
                 "Test with the try block throwing a NotMarriedException",
-                catch!!
+                catch!!,
+                "NotMarriedException"
             ),
         )
         val expectedNode =
@@ -106,26 +107,38 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val methodToGenerateOn = getMethod("commentOnAge")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiSwitchStatement::class.java)
+        val switchLabels = PsiTreeUtil.findChildrenOfType(methodToGenerateOn, PsiSwitchLabelStatement::class.java)
+
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            SwitchStatementChecklistNode(
                 "Test this.age is 10",
-                expr!!
+                switchLabels.elementAt(0)!!,
+                "this.age",
+                "10"
             ),
-            TestingChecklistLeafNode(
+            SwitchStatementChecklistNode(
                 "Test this.age is 20",
-                expr!!
+                switchLabels.elementAt(1)!!,
+                "this.age",
+                "20"
             ),
-            TestingChecklistLeafNode(
+            SwitchStatementChecklistNode(
                 "Test this.age is 30",
-                expr!!
+                switchLabels.elementAt(2)!!,
+                "this.age",
+                "30"
             ),
-            TestingChecklistLeafNode(
+            SwitchStatementChecklistNode(
                 "Test this.age is 40",
-                expr!!
+                switchLabels.elementAt(3)!!,
+                "this.age",
+                "40"
             ),
-            TestingChecklistLeafNode(
+            SwitchStatementChecklistNode(
                 "Test this.age is different from all the switch cases",
-                expr!!
+                switchLabels.elementAt(4)!!,
+                "this.age",
+                null
             ),
         )
         val expectedNode = TestingChecklistMethodNode("commentOnAge", expectedChildren, methodToGenerateOn)
@@ -142,15 +155,15 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiPrefixExpression::class.java)
         val doWhile = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiDoWhileStatement::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"!condition\" is false",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"!condition\" is true",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            DoWhileStatementChecklistNode(
                 "Test where do-while loop runs multiple times",
                 doWhile!!
             )
@@ -168,21 +181,25 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiForeachStatement::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 "Test where this.name is empty",
-                expr!!
+                expr!!,
+                "this.name"
             ),
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 "Test where this.name has one element",
-                expr!!
+                expr!!,
+                "this.name"
             ),
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 "Test where this.name is null",
-                expr!!
+                expr!!,
+                "this.name"
             ),
-            TestingChecklistLeafNode(
+            ForEachStatementChecklistNode(
                 "Test where foreach loop runs multiple times",
-                expr!!
+                expr!!,
+                "this.name"
             )
         )
         val expectedNode = TestingChecklistMethodNode("spellWithForEach", expectedChildren, methodToGenerateOn)
@@ -199,15 +216,15 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiForStatement::class.java)
         val bin = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiBinaryExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"i < this.name.length()\" is false",
                 bin!!
             ),
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"i < this.name.length()\" is true",
                 bin!!
             ),
-            TestingChecklistLeafNode(
+            ForLoopStatementChecklistNode(
                 "Test where for loop runs multiple times",
                 expr!!
             )
@@ -226,15 +243,15 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiBinaryExpression::class.java)
         val whileStatement = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiWhileStatement::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"counter < 11\" is false",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"counter < 11\" is true",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            WhileStatementChecklistNode(
                 "Test where while loop runs multiple times",
                 whileStatement!!
             )
@@ -255,31 +272,39 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiPrefixExpression::class.java)
         val doWhile = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiDoWhileStatement::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: null",
-                param!!
+                param!!,
+                "a",
+                "null"
             ),
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: [1,2,3,4]",
-                param!!
+                param!!,
+                "a",
+                "[1,2,3,4]"
             ),
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: [4,3,2,1]",
-                param!!
+                param!!,
+                "a",
+                "[4,3,2,1]"
             ),
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: []",
-                param!!
+                param!!,
+                "a",
+                "[]"
             ),
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"!condition\" is false",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            ConditionChecklistNode(
                 "Test where \"!condition\" is true",
                 expr!!
             ),
-            TestingChecklistLeafNode(
+            DoWhileStatementChecklistNode(
                 "Test where do-while loop runs multiple times",
                 doWhile!!
             )
@@ -298,22 +323,30 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : BasePlatformTe
 
         val expr = methodToGenerateOn.parameterList.parameters[0]
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: null",
-                expr!!
+                expr!!,
+                "a",
+                "null"
             ),
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: [1,2,3,4]",
-                expr!!
+                expr!!,
+                "a",
+                "[1,2,3,4]"
             ),
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: [4,3,2,1]",
-                expr!!
+                expr!!,
+                "a",
+                "[4,3,2,1]"
             ),
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 "Test method parameter \"a\" equal to: []",
-                expr!!
-            ),
+                expr!!,
+                "a",
+                "[]"
+            )
         )
         val expectedNode = TestingChecklistMethodNode("mysteriousMethodWithArray", expectedChildren, methodToGenerateOn)
         val actual = methodGenerator.generateChecklist(methodToGenerateOn)

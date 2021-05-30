@@ -9,6 +9,8 @@ object ConstructorArgsStrategy : HighlightResolutionStrategy {
 
     override val priority = 1
 
+    override val settingsName = "Highlight constructor arguments"
+
     override fun getElements(psiMethod: PsiMethod): List<HighlightedTextData> {
         val res = arrayListOf<HighlightedTextData>()
 

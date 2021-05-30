@@ -24,4 +24,20 @@ public class PointTest {
     void nestedContains() {
         Point p = new Point(0, somefunc(foo(), bar(1, 2, 3)), dar());
     }
+
+    @Test
+    void strAndChar() {
+        int s = "string";
+        char c = 'c';
+    }
+
+    @Test
+    void hasAll() {
+        Point p = new Point(0, 0);
+
+        p.x += 1;
+        p.y += 1;
+
+        assertEquals(1, p.x);
+    }
 }

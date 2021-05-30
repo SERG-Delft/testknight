@@ -2,21 +2,11 @@ package com.testbuddy.models
 
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiExpression
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class PropositionalExpressionTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class PropositionalExpressionTest : TestBuddyTestCase() {
 
     @Test
     fun testSimplificationSimple() {

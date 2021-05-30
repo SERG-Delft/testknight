@@ -4,7 +4,9 @@ import com.intellij.psi.PsiForStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForLoopStatementChecklistNode
+import com.testbuddy.settings.SettingsService
 
 class ForStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -19,10 +21,11 @@ class ForStatementChecklistGenerationStrategy private constructor(
          * @return a new ForStatementChecklistGenerationStrategy.
          */
         fun create(): ForStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator =
-                ConditionChecklistGenerationStrategy
-                    .createWithMcDcConditionCoverage()
-            return create(conditionChecklistGenerator)
+            val settings = SettingsService.instance.state
+            val conditionStrategy = ConditionChecklistGenerationStrategy
+                .createFromString(settings.checklistSettings.coverageCriteria)
+
+            return create(conditionStrategy)
         }
 
         /**
@@ -49,7 +52,7 @@ class ForStatementChecklistGenerationStrategy private constructor(
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
             listOf(
-                TestingChecklistLeafNode(
+                ForLoopStatementChecklistNode(
                     TestingChecklistMessageBundleHandler.message("forLoopMultiple"),
                     psiElement
                 )

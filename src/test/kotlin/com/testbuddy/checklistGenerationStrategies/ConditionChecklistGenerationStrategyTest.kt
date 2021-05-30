@@ -4,25 +4,15 @@ import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.exceptions.InvalidConfigurationException
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
-internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase() {
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class ConditionChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testMcdc0prop() {
@@ -37,7 +27,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     fun testMcdc1Prop() {
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
-        val testCases = strategy.mcdc(listOf("a"), "a")
+        val testCases = strategy.mcdc(listOf("a"), "a").map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -51,7 +41,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     fun testMcdc2Props() {
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
-        val testCases = strategy.mcdc(listOf("a", "b"), "a && b")
+        val testCases = strategy.mcdc(listOf("a", "b"), "a && b").map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -66,7 +56,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
     fun testMcdc3Props() {
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
-        val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)")
+        val testCases = strategy.mcdc(listOf("a", "b", "c"), "a && (b || c)").map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -83,6 +73,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val strategy = ConditionChecklistGenerationStrategy.createWithMcDcConditionCoverage()
 
         val testCases = strategy.mcdc(listOf("a", "b", "c", "d"), "a && (b || c || d)")
+            .map { it.bindings }
 
         assertContainsElements(
             testCases,
@@ -104,8 +95,8 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test where \"age <= 0\" is true", condition!!),
-            TestingChecklistLeafNode("Test where \"age <= 0\" is false", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is true", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
         TestCase.assertEquals(expected, results)
@@ -120,8 +111,8 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test where \"age <= 0\" is true", condition!!),
-            TestingChecklistLeafNode("Test where \"age <= 0\" is false", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is true", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
         TestCase.assertEquals(expected, results)
@@ -134,5 +125,27 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
                 "Foo"
             )
         }
+    }
+
+    @Test
+    fun testBindingsToStringSimple() {
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
+        val bindings = strategy.TestCaseBindings(mapOf("A" to true, "B" to false))
+
+        val assignments = mapOf("A" to "a", "B" to "b")
+
+        val desc = bindings.getDescription(assignments)
+        assertEquals("Test where \"a\" is true, \"b\" is false", desc)
+    }
+
+    @Test
+    fun testBindingsToStringSingle() {
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
+        val bindings = strategy.TestCaseBindings(mapOf("A" to true))
+
+        val assignments = mapOf("A" to "a")
+
+        val desc = bindings.getDescription(assignments)
+        assertEquals("Test where \"a\" is true", desc)
     }
 }

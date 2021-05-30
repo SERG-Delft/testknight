@@ -3,9 +3,11 @@ package com.testbuddy.services
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
+import com.testbuddy.models.sideEffectAnalysis.ParameterFieldReassignmentSideEffect
+import com.testbuddy.models.sideEffectAnalysis.ReassignmentOfTransitiveField
 import com.testbuddy.models.sideEffectAnalysis.ReassignsClassFieldSideEffect
 import com.testbuddy.models.sideEffectAnalysis.SideEffect
 import junit.framework.TestCase
@@ -13,7 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import java.lang.AssertionError
 
-class MethodAnalyzerServiceTest : BasePlatformTestCase() {
+class MethodAnalyzerServiceTest : TestBuddyTestCase() {
 
     private val service = MethodAnalyzerService()
 
@@ -233,8 +235,46 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
         assertMethodSideEffects(testClass, expected, "chainedStaticMethodCall")
     }
 
-    public override fun getTestDataPath(): String {
-        return "testdata"
+    @Test
+    fun testDijkstra() {
+        this.myFixture.configureByFile("/Dijkstra.java")
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = emptyList<SideEffect>()
+        assertMethodSideEffects(testClass, expected, "dijkstra")
+    }
+
+    @Test
+    fun testReferenceChanged() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf<SideEffect>(
+            ReassignsClassFieldSideEffect("spouse"),
+            ReassignmentOfTransitiveField("spouse", "spouse")
+        )
+        assertMethodSideEffects(testClass, expected, "marryToReferenceChanged")
+    }
+
+    @Test
+    fun testDoubleShadowing() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            ReassignsClassFieldSideEffect("spouse"),
+            ParameterFieldReassignmentSideEffect("spouse", "spouse")
+        )
+        assertMethodSideEffects(testClass, expected, "marryToDoubleShadowing")
+    }
+
+    @Test
+    fun testParameterFieldAffected() {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val expected = listOf(
+            ReassignsClassFieldSideEffect("spouse"),
+            ParameterFieldReassignmentSideEffect("newSpouse", "spouse")
+        )
+        assertMethodSideEffects(testClass, expected, "marryToParameterFieldAffected")
     }
 
     /**

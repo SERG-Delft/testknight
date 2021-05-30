@@ -3,7 +3,6 @@ package com.testbuddy.models.sideEffectAnalysis
 import com.intellij.psi.PsiDeclarationStatement
 import com.intellij.psi.PsiLocalVariable
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiParameter
 import com.intellij.psi.util.PsiTreeUtil
 
 data class Method(
@@ -38,7 +37,7 @@ data class Method(
 
         private fun getParametersOfMethod(method: PsiMethod): Map<String, String> {
             val result = mutableMapOf<String, String>()
-            val parameters = PsiTreeUtil.findChildrenOfType(method, PsiParameter::class.java)
+            val parameters = method.parameterList.parameters
             for (parameter in parameters) {
                 result[parameter.name] = parameter.type.canonicalText
             }

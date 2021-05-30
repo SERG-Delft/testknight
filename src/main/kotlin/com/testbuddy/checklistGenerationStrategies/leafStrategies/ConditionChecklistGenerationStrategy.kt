@@ -4,8 +4,8 @@ import com.intellij.psi.PsiExpression
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.PropositionalExpression
-import com.testbuddy.models.TestingChecklistLeafNode
 import com.testbuddy.models.TruthTable
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import kotlin.math.pow
 
 class ConditionChecklistGenerationStrategy private constructor(
@@ -17,6 +17,7 @@ class ConditionChecklistGenerationStrategy private constructor(
     }
 
     companion object Factory {
+
         /**
          * Creates a new ConditionChecklistGenerationStrategy
          * with MC/DC coverage as the condition coverage type.
@@ -41,22 +42,44 @@ class ConditionChecklistGenerationStrategy private constructor(
          * Creates a new ConditionChecklistGenerationStrategy
          * from the name of the the condition coverage type defined.
          *
-         * @param conditionCoverageType the type of condition coverage. The only ones accepted are
+         * @param covType the type of condition coverage. The only ones accepted are
          * "BRANCH" and "MCDC". Anything else will result to a InvalidConfigurationException.
          * @return a ConditionChecklistGenerationStrategy object.
          */
-        fun createFromString(
-            conditionCoverageType: String
-        ): ConditionChecklistGenerationStrategy {
-            val validTypes = ConditionCoverageType.values().map { it.name }.toSet()
-            return if (validTypes.contains(conditionCoverageType)) {
-                when (ConditionCoverageType.valueOf(conditionCoverageType)) {
-                    ConditionCoverageType.MCDC -> createWithMcDcConditionCoverage()
-                    ConditionCoverageType.BRANCH -> createWithBranchConditionCoverage()
-                }
-            } else {
-                throw InvalidConfigurationException("condition coverage type", conditionCoverageType)
+        fun createFromString(covType: String): ConditionChecklistGenerationStrategy = when (covType) {
+            "MC/DC" -> createWithMcDcConditionCoverage()
+            "BRANCH" -> createWithBranchConditionCoverage()
+            else -> throw InvalidConfigurationException("condition coverage type", covType)
+        }
+    }
+
+    /**
+     * Represents a test case in the form of a mapping between propositions and truth values
+     *
+     * @param bindings represents the bindings of each proposition to a truth value.
+     */
+    inner class TestCaseBindings(val bindings: Map<String, Boolean>) {
+
+        /**
+         * Converts the bindings to a string representation given assignments.
+         *
+         * @param assignments a map from string to string representing the actual names of each proposition.
+         */
+        fun getDescription(assignments: Map<String, String>): String {
+
+            val description = StringBuilder("Test where ")
+
+            bindings.entries.forEach { (proposition, value) ->
+                description.append(
+                    TestingChecklistMessageBundleHandler.message(
+                        "conditionAssignmentMessage",
+                        assignments[proposition]!!,
+                        value
+                    )
+                )
             }
+
+            return description.dropLast(2).toString()
         }
     }
 
@@ -66,69 +89,16 @@ class ConditionChecklistGenerationStrategy private constructor(
      * @param psiElement the PsiExpression to generate on.
      * @return a list of TestingChecklistLeafNodes that represent the checklist.
      */
-    override fun generateChecklist(psiElement: PsiExpression): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiExpression): List<ConditionChecklistNode> {
+
+        val (simplified, assignments) = PropositionalExpression(psiElement).simplified()
+
         return when (coverageGenerationMethod) {
-            ConditionCoverageType.MCDC -> mcDcCoverageGeneration(psiElement)
-            ConditionCoverageType.BRANCH -> branchCoverageGeneration(psiElement)
-        }
-    }
+            ConditionCoverageType.MCDC -> mcdc(assignments.keys.toList(), simplified)
+                .map { ConditionChecklistNode(it.getDescription(assignments), psiElement) }
 
-    /**
-     * Generates the testing checklist based on branch coverage.
-     *
-     * @param psiElement the PsiExpression to generate on.
-     * @return a list of TestingChecklistLeafNodes that represent the checklist.
-     */
-    private fun branchCoverageGeneration(psiElement: PsiExpression): List<TestingChecklistLeafNode> {
-        val (simplified, assignments) = PropositionalExpression(psiElement).simplified()
-        val testCases = branchCoverage(simplified)
-        return testCaseFormatter(testCases, psiElement, assignments)
-    }
-
-    /**
-     * Generates the testing checklist based on MC/DC coverage.
-     *
-     * @param psiElement the PsiExpression to generate on.
-     * @return a list of TestingChecklistLeafNodes that represent the checklist.
-     */
-    private fun mcDcCoverageGeneration(psiElement: PsiExpression): List<TestingChecklistLeafNode> {
-        val (simplified, assignments) = PropositionalExpression(psiElement).simplified()
-        val testCases = mcdc(assignments.keys.toList(), simplified)
-        return testCaseFormatter(testCases, psiElement, assignments)
-    }
-
-    /**
-     * Formats the test case map generated by the generation method.
-     *
-     * @param testCases the test cases.
-     * @param psiElement the PsiExpression.
-     * @param assignments the map of assignments.
-     */
-    private fun testCaseFormatter(
-        testCases: Set<Map<String, Boolean>>,
-        psiElement: PsiExpression,
-        assignments: Map<String, String>
-    ): List<TestingChecklistLeafNode> {
-        return testCases.map {
-
-            var description = if (it.size == 1) {
-                TestingChecklistMessageBundleHandler
-                    .message("conditionSingleMessage", psiElement.text)
-            } else {
-                TestingChecklistMessageBundleHandler
-                    .message("conditionBaseMessage", psiElement.text)
-            }
-
-            for ((proposition, value) in it.entries) {
-                description += TestingChecklistMessageBundleHandler.message(
-                    "conditionAssignmentMessage",
-                    assignments[proposition]!!,
-                    value
-                )
-            }
-
-            // remove trailing comma and space
-            TestingChecklistLeafNode(description.dropLast(2), psiElement,)
+            ConditionCoverageType.BRANCH -> branchCoverage(simplified)
+                .map { ConditionChecklistNode(it.getDescription(mapOf(simplified to psiElement.text)), psiElement) }
         }
     }
 
@@ -140,7 +110,7 @@ class ConditionChecklistGenerationStrategy private constructor(
      * @return a set of String -> Boolean maps which assign values to each proposition in the test case
      */
     @Suppress("NestedBlockDepth")
-    fun mcdc(variables: List<String>, expressionString: String): Set<Map<String, Boolean>> {
+    fun mcdc(variables: List<String>, expressionString: String): Set<TestCaseBindings> {
 
         val n = variables.size
         val truthTable = TruthTable(variables, expressionString)
@@ -173,7 +143,7 @@ class ConditionChecklistGenerationStrategy private constructor(
             }
         }
 
-        return rows.map { truthTable.assignments(it) }.toSet()
+        return rows.map { TestCaseBindings(truthTable.assignments(it)) }.toSet()
     }
 
     /**
@@ -183,10 +153,10 @@ class ConditionChecklistGenerationStrategy private constructor(
      * @param expressionString the logical expression in string form.
      * @return a set of String -> Boolean maps which assign values to each proposition in the test case.
      */
-    private fun branchCoverage(expressionString: String): Set<Map<String, Boolean>> {
+    private fun branchCoverage(expressionString: String): Set<TestCaseBindings> {
         return setOf(
-            mapOf(expressionString to true),
-            mapOf(expressionString to false)
+            TestCaseBindings(mapOf(expressionString to true)),
+            TestCaseBindings(mapOf(expressionString to false))
         )
     }
 }
