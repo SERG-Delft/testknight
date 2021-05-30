@@ -18,7 +18,6 @@ import javax.swing.tree.TreePath
 class ChecklistMouseListener(private val tree: Tree, private val project: Project) : MouseAdapter() {
 
     override fun mousePressed(event: MouseEvent) {
-        println("sint aici")
 
         if (SwingUtilities.isRightMouseButton(event)) {
 
@@ -38,8 +37,6 @@ class ChecklistMouseListener(private val tree: Tree, private val project: Projec
 
                 edit.addActionListener {
                     it.apply { tree.startEditingAtPath(path) }
-
-                    // println("kaokowk")
                 }
                 menu.add(edit)
             } else if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
@@ -49,10 +46,6 @@ class ChecklistMouseListener(private val tree: Tree, private val project: Projec
             }
 
             menu.show(tree, event.x, event.y)
-
-            // If the node contains the userObject which is expected from a test method node.
-            println(node.userObject)
-            println(node.parent)
         }
     }
 }

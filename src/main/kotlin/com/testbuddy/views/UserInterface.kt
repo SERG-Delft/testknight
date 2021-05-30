@@ -73,7 +73,7 @@ class UserInterface(val project: Project) {
         checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
         checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
 
-        checkListTree!!.cellEditor = ChecklistCellEditor(checkListTree!!, project)
+        checkListTree!!.cellEditor = ChecklistCellEditor()
         checkListTree!!.isEditable = true
 
         service.initTrees(checkListTree!!)
