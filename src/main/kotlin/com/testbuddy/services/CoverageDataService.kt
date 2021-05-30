@@ -17,6 +17,38 @@ class CoverageDataService : Disposable {
     private var currentData: ProjectData? = null
     private var currentSuite: CoverageSuitesBundle? = null
     var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
+    private var isDiffAvailable = true
+
+    /**
+     * Getter to get isDiffAvailable.
+     *
+     * @return isDiffAvailable.
+     */
+    fun getIsDiffAvailable(): Boolean {
+        return isDiffAvailable
+    }
+
+    /**
+     * Getter to get isDiffAvailable.
+     *
+     * @return isDiffAvailable.
+     */
+    fun setIsDiffAvailable(flag: Boolean): Boolean {
+        isDiffAvailable = flag
+        return isDiffAvailable
+    }
+
+    /**
+     * Sets previous data and suite to null.
+     * This is required to not show wrong diff info if source code is modified after run
+     * In this case the current suite at this point would have outdated
+     */
+    fun resetCurrentDataAndMap() {
+        currentData = null
+        currentSuite = null
+        // code to be refactored after updating listener
+        // classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
+    }
 
     /**
      * Updates coverage at the end of every execution of runWithCoverage.
@@ -53,13 +85,20 @@ class CoverageDataService : Disposable {
         var allLines = emptySet<Int>()
         var coveredPrev = emptySet<Int>()
         var coveredNow = emptySet<Int>()
-        if (previousData == null || currentData == null) {
+        if (currentData == null) return
+        if (previousData == null) {
+            isDiffAvailable = false
             return
         }
 
+        val testAnalyzerService = TestAnalyzerService()
+
         // gets all relevant classes in current project (not imports and org.junit or javax classes)
+        // filters out all test classes because we aren't interested in tests for those
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
-            .findAll().mapNotNull { it.name }
+            .findAll()
+            .filter { !testAnalyzerService.isTestClass(it) }
+            .mapNotNull { it.name }
 
         classesInProject.forEach {
             if (currentData!!.classes.contains(it)) {
