@@ -12,7 +12,7 @@ import com.testbuddy.services.ChecklistTreeService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 
-class DeleteChecklistAction(private val node: CheckedTreeNode, private val project: Project) : ActionListener {
+class ModifyChecklistAction(private val node: CheckedTreeNode, private val project: Project) : ActionListener {
 
     override fun actionPerformed(e: ActionEvent) {
 

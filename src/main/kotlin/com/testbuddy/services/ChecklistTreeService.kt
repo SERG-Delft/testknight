@@ -83,7 +83,7 @@ class ChecklistTreeService {
         if (!foundItem) {
             dataMethod.children.add(itemNode)
 
-            val newItemNode = CheckedTreeNode(ChecklistUserObject(itemNode, 0))
+            val newItemNode = CheckedTreeNode(ChecklistUserObject(itemNode))
             newItemNode.isChecked = false
             (uiTreeMethod as CheckedTreeNode).add(newItemNode)
         }
@@ -132,9 +132,9 @@ class ChecklistTreeService {
         methodNode: TestingChecklistMethodNode
     ) {
         dataClass.children.add(methodNode)
-        val uiTreeMethod = CheckedTreeNode(ChecklistUserObject(methodNode, 0))
+        val uiTreeMethod = CheckedTreeNode(ChecklistUserObject(methodNode))
         for (item in methodNode.children) {
-            val itemNode = CheckedTreeNode(ChecklistUserObject(item, 0))
+            val itemNode = CheckedTreeNode(ChecklistUserObject(item))
             itemNode.isChecked = false
             uiTreeMethod.add(itemNode)
         }
@@ -195,14 +195,14 @@ class ChecklistTreeService {
         // not finding the method, create new class
         if (!findClass(uiTreeRoot, newNode)) {
             dataTree.classChecklists.add(newNode)
-            val classNode = CheckedTreeNode(ChecklistUserObject(newNode, 0))
+            val classNode = CheckedTreeNode(ChecklistUserObject(newNode))
             uiTreeRoot.add(classNode)
             for (method in newNode.children) {
 
-                val methodNode = CheckedTreeNode(ChecklistUserObject(method, 0))
+                val methodNode = CheckedTreeNode(ChecklistUserObject(method))
 
                 for (item in method.children) {
-                    val itemNode = CheckedTreeNode(ChecklistUserObject(item, 0))
+                    val itemNode = CheckedTreeNode(ChecklistUserObject(item))
                     itemNode.isChecked = false
                     methodNode.add(itemNode)
                 }
@@ -285,7 +285,6 @@ class ChecklistTreeService {
         if (indexClass == -1) { return }
 
         val classNode = dataTree.classChecklists[indexClass]
-        // dataTree.classChecklists.
         val uiTreeClass = uiTreeRoot.getChildAt(indexClass) as CheckedTreeNode
 
         val indexMethod = getIndexMethod(deleteMethod, classNode)
@@ -295,6 +294,11 @@ class ChecklistTreeService {
 
         val indexItem = getIndexItem(deleteItem, methodNode)
         if (indexItem == -1) { return }
+
+        if (deleteItem.checked > 0) {
+            methodNode.checked -= deleteItem.checked
+            classNode.checked -= deleteItem.checked
+        }
 
         methodNode.children.removeAt(indexItem)
         uiTreeMethod.remove(indexItem)
@@ -321,9 +325,13 @@ class ChecklistTreeService {
         val indexMethod = getIndexMethod(deleteMethod, classNode)
 
         if (indexMethod == -1) { return }
+
+        if (deleteMethod.checked > 0) {
+            classNode.checked -= deleteMethod.checked
+        }
+
         classNode.children.removeAt(indexMethod)
         uiTreeClass.remove(indexMethod)
-
         (uiTree.model as DefaultTreeModel).reload()
         TreeUtil.expandAll(uiTree)
     }
