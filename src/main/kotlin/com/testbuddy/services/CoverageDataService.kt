@@ -17,6 +17,28 @@ class CoverageDataService : Disposable {
     private var currentData: ProjectData? = null
     private var currentSuite: CoverageSuitesBundle? = null
     var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
+    private var isDiffAvailable = false
+
+    /**
+     * Getter to get isDiffAvailable.
+     *
+     * @return isDiffAvailable.
+     */
+    fun getIsDiffAvailable() : Boolean{
+        return isDiffAvailable
+    }
+
+    /**
+     * Setter to set isDiffAvailable.
+     *
+     * @return the boolean value isDiffAvailable is set to.
+     */
+    fun setIsDiffAvailable(changedFlag : Boolean) : Boolean{
+        isDiffAvailable = changedFlag
+        return isDiffAvailable
+    }
+
+
 
     /**
      * Updates coverage at the end of every execution of runWithCoverage.
