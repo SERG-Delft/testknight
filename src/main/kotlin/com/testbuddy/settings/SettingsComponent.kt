@@ -21,13 +21,21 @@ class SettingsComponent {
     private lateinit var deletedColor: ColorPanel
     private lateinit var tracedColor: ColorPanel
 
+    // KMutableProperty0 has been changed to Setters and Getters
+    // For some reason, the following error was thrown when using KMutableProperty0
+    // java.lang.NoSuchMethodError:
+    // 'void kotlin.jvm.internal.MutablePropertyReference0Impl.<init>
+    // (java.lang.Object, java.lang.Class, java.lang.String, java.lang.String, int)'
+    // We can change back to KMutableProperty0 once this error has been fixed.
     init {
         myPanel = panel {
             titledRow("Telemetry") {
                 row {
                     checkBox(
                         "Allow data collection",
-                        state.telemetrySettings::isEnabled
+                        // state.telemetrySettings::isEnabled
+                        { state.telemetrySettings.isEnabled },
+                        { newVal -> state.telemetrySettings.isEnabled = newVal }
                     )
                 }
                 row {
@@ -55,17 +63,41 @@ class SettingsComponent {
                 val comboBoxModel = CollectionComboBoxModel(coverageComboBox, savedSelection)
                 row {
                     label("Coverage Criteria")
-                    comboBox(comboBoxModel, checklistSettings::coverageCriteria)
+                    comboBox(
+                        comboBoxModel,
+                        // checklistSettings::coverageCriteria
+                        { checklistSettings.coverageCriteria },
+                        { newVal ->
+                            if (newVal != null) {
+                                checklistSettings.coverageCriteria = newVal
+                            }
+                        }
+                    )
                 }
 
                 row {
-                    checkBox("Show gutter icons", checklistSettings::showGutterIcons)
+                    checkBox(
+                        "Show gutter icons",
+                        // checklistSettings::showGutterIcons
+                        { checklistSettings.showGutterIcons },
+                        { newVal -> checklistSettings.showGutterIcons = newVal }
+                    )
                 }
                 row {
-                    checkBox("Goto selected checklist item's source", checklistSettings::gotoChecklistItem)
+                    checkBox(
+                        "Goto selected checklist item's source",
+                        // checklistSettings::gotoChecklistItem
+                        { checklistSettings.gotoChecklistItem },
+                        { newVal -> checklistSettings.gotoChecklistItem = newVal }
+                    )
                 }
                 row {
-                    checkBox("Highlight selected checklist item's source", checklistSettings::highlightChecklistItem)
+                    checkBox(
+                        "Highlight selected checklist item's source",
+                        // checklistSettings::highlightChecklistItem
+                        { checklistSettings.highlightChecklistItem },
+                        { newVal -> checklistSettings.highlightChecklistItem = newVal }
+                    )
                 }
 
                 row("Checklist strategies") {
@@ -109,7 +141,12 @@ class SettingsComponent {
             titledRow("Coverage") {
                 val coverageSettings = state.coverageSettings
                 row {
-                    checkBox("Show newly (un)covered lines in gutter", coverageSettings::showIntegratedView)
+                    checkBox(
+                        "Show newly (un)covered lines in gutter",
+                        // coverageSettings::showIntegratedView
+                        { coverageSettings.showIntegratedView },
+                        { newVal -> coverageSettings.showIntegratedView = newVal }
+                    )
                 }
                 row {
                     addedColor = ColorPanel()
