@@ -42,15 +42,15 @@ class ShowCoverageDiffAction : AnAction() {
         val scrollPanel = JBScrollPane()
         scrollPanel.viewport.view = twoSidePanel
         val windowWrapper = WindowWrapperBuilder(WindowWrapper.Mode.FRAME, scrollPanel)
-                .setProject(e.project)
-                .setTitle("Diff Coverage")
-                // releaseEditor on close.
-                .setOnCloseHandler {
-                    editorFactory.releaseEditor(leftEditor)
-                    editorFactory.releaseEditor(rightEditor)
-                    true // requires a boolean return, true after releasing editor
-                }
-                .build()
+            .setProject(e.project)
+            .setTitle("Diff Coverage")
+            // releaseEditor on close.
+            .setOnCloseHandler {
+                editorFactory.releaseEditor(leftEditor)
+                editorFactory.releaseEditor(rightEditor)
+                true // requires a boolean return, true after releasing editor
+            }
+            .build()
 
         windowWrapper.show()
     }
@@ -71,9 +71,9 @@ class ShowCoverageDiffAction : AnAction() {
         val service = e.project!!.service<CoverageDataService>()
 
         e.presentation.isEnabled = (
-                e.getData(CommonDataKeys.EDITOR) != null &&
-                        e.getData(CommonDataKeys.VIRTUAL_FILE) != null &&
-                        e.getData(CommonDataKeys.PSI_FILE) != null
-                )
+            e.getData(CommonDataKeys.EDITOR) != null &&
+                e.getData(CommonDataKeys.VIRTUAL_FILE) != null &&
+                e.getData(CommonDataKeys.PSI_FILE) != null
+            )
     }
 }

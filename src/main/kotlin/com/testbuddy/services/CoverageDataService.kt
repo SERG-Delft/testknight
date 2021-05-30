@@ -24,7 +24,7 @@ class CoverageDataService : Disposable {
      *
      * @return isDiffAvailable.
      */
-    fun getIsDiffAvailable() : Boolean{
+    fun getIsDiffAvailable(): Boolean {
         return isDiffAvailable
     }
 
@@ -33,11 +33,10 @@ class CoverageDataService : Disposable {
      *
      * @return isDiffAvailable.
      */
-    fun setIsDiffAvailable(flag : Boolean) : Boolean{
+    fun setIsDiffAvailable(flag: Boolean): Boolean {
         isDiffAvailable = flag
         return isDiffAvailable
     }
-
 
     /**
      * Sets previous data and suite to null.
@@ -48,9 +47,8 @@ class CoverageDataService : Disposable {
         currentData = null
         currentSuite = null
         // code to be refactored after updating listener
-        //classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
+        // classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
     }
-
 
     /**
      * Updates coverage at the end of every execution of runWithCoverage.
@@ -87,20 +85,20 @@ class CoverageDataService : Disposable {
         var allLines = emptySet<Int>()
         var coveredPrev = emptySet<Int>()
         var coveredNow = emptySet<Int>()
-        if( currentData == null) return
+        if (currentData == null) return
         if (previousData == null) {
             isDiffAvailable = false
             return
         }
 
-        var testAnalyzerService = TestAnalyzerService()
+        val testAnalyzerService = TestAnalyzerService()
 
         // gets all relevant classes in current project (not imports and org.junit or javax classes)
         // filters out all test classes because we aren't interested in tests for those
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
-                .findAll()
-                .filter { !testAnalyzerService.isTestClass(it) }
-                .mapNotNull { it.name }
+            .findAll()
+            .filter { !testAnalyzerService.isTestClass(it) }
+            .mapNotNull { it.name }
 
         classesInProject.forEach {
             if (currentData!!.classes.contains(it)) {

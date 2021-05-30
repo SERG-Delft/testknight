@@ -11,7 +11,6 @@ import com.intellij.ui.content.ContentFactory
 import com.testbuddy.services.CoverageDataService
 import org.jetbrains.annotations.NotNull
 
-
 class UserInterfaceFactory : ToolWindowFactory {
     /**
      * Create the tool window content.
@@ -24,24 +23,26 @@ class UserInterfaceFactory : ToolWindowFactory {
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(userInterface.getContent(), "", false)
         toolWindow.contentManager.addContent(content)
-        project.messageBus.connect().subscribe(VirtualFileManager.VFS_CHANGES, object : BulkFileListener {
-            override fun after(@NotNull events: List<VFileEvent?>) {
+        project.messageBus.connect().subscribe(
+            VirtualFileManager.VFS_CHANGES,
+            object : BulkFileListener {
+                override fun after(@NotNull events: List<VFileEvent?>) {
 
-                val service = project.service<CoverageDataService>()
-                val map = service.classCoveragesMap
-                val a = 2
-                events.forEach {
-                    if(it != null && it.file != null) {
-                        if(map.containsKey(it.file!!.nameWithoutExtension)){
-                            var coverageDataService = project.service<CoverageDataService>()
-                            coverageDataService.resetCurrentDataAndMap()
-                            service.setIsDiffAvailable(false)
+                    val service = project.service<CoverageDataService>()
+                    val map = service.classCoveragesMap
+                    events.forEach {
+                        if (it != null && it.file != null) {
+                            if (map.containsKey(it.file!!.nameWithoutExtension)) {
+                                val coverageDataService = project.service<CoverageDataService>()
+                                coverageDataService.resetCurrentDataAndMap()
+                                service.setIsDiffAvailable(false)
+                            }
                         }
                     }
-                }
 
-                println(events.size)
+                    println(events.size)
+                }
             }
-        })
+        )
     }
 }
