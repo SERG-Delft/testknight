@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes
+package com.testbuddy.models
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
