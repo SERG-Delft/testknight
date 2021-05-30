@@ -21,9 +21,9 @@ class DuplicateTestsService(project: Project) {
     private val testAnalyzerService = project.service<TestAnalyzerService>()
 
     /**
-     * List of active highlight resolution strategies
+     * List of highlight resolution strategies
      */
-    val highlightResolutionStrategies = listOf(
+    private val highlightResolutionStrategies = listOf(
         AssertionArgsStrategy,
         ConstructorArgsStrategy,
         MagicNumberStrategy
@@ -35,7 +35,7 @@ class DuplicateTestsService(project: Project) {
     fun getHighlights(psiMethod: PsiMethod): List<HighlightedTextData> {
 
         val highlights = mutableListOf<HighlightedTextData>()
-        highlightResolutionStrategies.forEach { highlights.addAll(it.getElements(psiMethod)) }
+        highlightResolutionStrategies.forEach { if (it.isEnabled()) highlights.addAll(it.getElements(psiMethod)) }
 
         if (highlights.size == 0) return highlights
 

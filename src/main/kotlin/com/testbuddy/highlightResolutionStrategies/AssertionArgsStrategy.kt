@@ -22,6 +22,8 @@ object AssertionArgsStrategy : HighlightResolutionStrategy {
 
     override val priority: Int = 2
 
+    override val settingsName = "Highlight assertion statements"
+
     override fun getElements(psiMethod: PsiMethod): List<HighlightedTextData> {
 
         val res = arrayListOf<HighlightedTextData>()

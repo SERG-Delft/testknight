@@ -9,6 +9,8 @@ object MagicNumberStrategy : HighlightResolutionStrategy {
 
     override val priority: Int = 1
 
+    override val settingsName = "Highlight literals"
+
     override fun getElements(psiMethod: PsiMethod): List<HighlightedTextData> {
         return PsiTreeUtil.findChildrenOfType(psiMethod, PsiLiteralExpression::class.java)
             .map {
