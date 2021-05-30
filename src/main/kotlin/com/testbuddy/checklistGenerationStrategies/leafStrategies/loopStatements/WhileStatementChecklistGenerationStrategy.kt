@@ -1,6 +1,5 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiWhileStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
@@ -21,7 +20,7 @@ class WhileStatementChecklistGenerationStrategy private constructor(
          * @return a new WhileStatementChecklistGenerationStrategy.
          */
         fun create(): WhileStatementChecklistGenerationStrategy {
-            val settings = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+            val settings = SettingsService.instance.state
             val conditionStrategy = ConditionChecklistGenerationStrategy
                 .createFromString(settings.checklistSettings.coverageCriteria)
 

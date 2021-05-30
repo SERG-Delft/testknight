@@ -1,6 +1,5 @@
 package com.testbuddy.views.listeners
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ScrollType
@@ -34,7 +33,7 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
     private var editor: Editor? = null
     private var highlighterList: MutableList<RangeHighlighter> = mutableListOf()
 
-    private fun settingsState() = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+    private fun settingsState() = SettingsService.instance.state
 
     /**
      * The main listener function which gets called whenever the selection gets changed.

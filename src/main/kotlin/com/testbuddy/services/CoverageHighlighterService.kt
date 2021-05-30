@@ -1,6 +1,5 @@
 package com.testbuddy.services
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diff.DiffColors
 import com.intellij.openapi.editor.Editor
@@ -18,7 +17,7 @@ class CoverageHighlighterService(val project: Project) {
     private val highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
     private val covDataService = project.service<CoverageDataService>()
 
-    private fun settingsState() = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+    private fun settingsState() = SettingsService.instance.state
 
     private fun deletedColor() = ColorUtil.fromHex(settingsState().coverageSettings.deletedColor)
     private fun includedColor() = ColorUtil.fromHex(settingsState().coverageSettings.addedColor)

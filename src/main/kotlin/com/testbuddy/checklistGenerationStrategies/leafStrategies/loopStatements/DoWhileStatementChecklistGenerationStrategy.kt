@@ -1,6 +1,5 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiDoWhileStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
@@ -21,7 +20,7 @@ class DoWhileStatementChecklistGenerationStrategy private constructor(
          * @return a new DoWhileStatementChecklistGenerationStrategy.
          */
         fun create(): DoWhileStatementChecklistGenerationStrategy {
-            val settings = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+            val settings = SettingsService.instance.state
             val conditionStrategy = ConditionChecklistGenerationStrategy
                 .createFromString(settings.checklistSettings.coverageCriteria)
 

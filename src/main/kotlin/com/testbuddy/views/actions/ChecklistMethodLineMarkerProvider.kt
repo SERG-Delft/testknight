@@ -3,7 +3,6 @@ package com.testbuddy.views.actions
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiIdentifier
@@ -19,7 +18,7 @@ class ChecklistMethodLineMarkerProvider : LineMarkerProvider {
 
     private val testAnalyzerService = TestAnalyzerService()
 
-    private fun settingsState() = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+    private fun settingsState() = SettingsService.instance.state
 
     private fun isMethodDeclaration(element: PsiElement) = (element is PsiIdentifier && element.parent is PsiMethod)
 

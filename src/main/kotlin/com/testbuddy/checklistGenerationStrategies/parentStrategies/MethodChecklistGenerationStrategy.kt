@@ -1,6 +1,5 @@
 package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
@@ -59,7 +58,7 @@ class MethodChecklistGenerationStrategy private constructor(
          */
         private fun getDefaultStructureTypesRecognized(): Array<Class<out PsiElement>> {
 
-            val settingsService = ApplicationManager.getApplication().getService(SettingsService::class.java)
+            val settingsService = SettingsService.instance
             val settings = settingsService.state
             val recognizedStructures = mutableListOf<Class<out PsiElement>>()
 

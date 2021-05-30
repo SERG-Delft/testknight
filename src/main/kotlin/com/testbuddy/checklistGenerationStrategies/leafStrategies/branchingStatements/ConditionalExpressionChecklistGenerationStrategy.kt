@@ -1,6 +1,5 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiConditionalExpression
 import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
@@ -49,7 +48,7 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
          * @return a string representing the configured condition coverage.
          */
         private fun getConditionCoverageType(): String {
-            val settings = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+            val settings = SettingsService.instance.state
             return settings.checklistSettings.coverageCriteria
         }
     }
