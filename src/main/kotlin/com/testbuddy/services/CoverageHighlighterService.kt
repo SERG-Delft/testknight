@@ -1,5 +1,6 @@
 package com.testbuddy.services
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diff.DiffColors
 import com.intellij.openapi.editor.Editor
@@ -7,20 +8,20 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.project.Project
+import com.intellij.ui.ColorUtil
 import com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
+import com.testbuddy.settings.SettingsService
 import java.awt.Color
 
-@Suppress("MagicNumber")
 class CoverageHighlighterService(val project: Project) {
 
     private val highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
     private val covDataService = project.service<CoverageDataService>()
 
-    private val deletedColor = Color(237, 71, 71)
-    private val includedColor = Color(64, 120, 68)
+    private fun settingsState() = ApplicationManager.getApplication().getService(SettingsService::class.java).state
 
-    private val diffIncludedColor = Color(64, 120, 68)
-    private val diffExcludedColor = Color(237, 71, 71)
+    private fun deletedColor() = ColorUtil.fromHex(settingsState().coverageSettings.deletedColor)
+    private fun includedColor() = ColorUtil.fromHex(settingsState().coverageSettings.addedColor)
 
     /**
      * Display a all diff-coverage highlights in a given editor and class.
@@ -34,11 +35,11 @@ class CoverageHighlighterService(val project: Project) {
         val covDiffObject = covDataService.classCoveragesMap[className] ?: return
 
         for (line in covDiffObject.linesNewlyRemoved) {
-            addGutterHighlighter(editor, line, deletedColor)
+            addGutterHighlighter(editor, line, deletedColor())
         }
 
         for (line in covDiffObject.linesNewlyAdded) {
-            addGutterHighlighter(editor, line, includedColor)
+            addGutterHighlighter(editor, line, includedColor())
         }
     }
 
@@ -55,17 +56,17 @@ class CoverageHighlighterService(val project: Project) {
         val covDiffObject = covDataService.classCoveragesMap[className] ?: return
 
         for (line in covDiffObject.coveredPrev) {
-            addGutterHighlighter(leftEditor, line, diffIncludedColor, DiffColors.DIFF_INSERTED)
+            addGutterHighlighter(leftEditor, line, includedColor(), DiffColors.DIFF_INSERTED)
         }
         for (line in (covDiffObject.allLines - covDiffObject.coveredPrev)) {
-            addGutterHighlighter(leftEditor, line, diffExcludedColor, DiffColors.DIFF_CONFLICT)
+            addGutterHighlighter(leftEditor, line, deletedColor(), DiffColors.DIFF_CONFLICT)
         }
 
         for (line in covDiffObject.coveredNow) {
-            addGutterHighlighter(rightEditor, line, diffIncludedColor, DiffColors.DIFF_INSERTED)
+            addGutterHighlighter(rightEditor, line, includedColor(), DiffColors.DIFF_INSERTED)
         }
         for (line in (covDiffObject.allLines - covDiffObject.coveredNow)) {
-            addGutterHighlighter(rightEditor, line, diffExcludedColor, DiffColors.DIFF_CONFLICT)
+            addGutterHighlighter(rightEditor, line, deletedColor(), DiffColors.DIFF_CONFLICT)
         }
     }
 
