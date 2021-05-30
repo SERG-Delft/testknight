@@ -1,6 +1,9 @@
 package com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements
 
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiMethod
+import com.testbuddy.com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
 data class ForEachStatementChecklistNode(
@@ -10,7 +13,14 @@ data class ForEachStatementChecklistNode(
 ) : TestingChecklistLeafNode(
     description, element
 ) {
-    override fun generateTestMethod(): PsiElement {
-        TODO("Not yet implemented")
+    /**
+     * Generate a test method for a for each statement.
+     *
+     * @param project the project.
+     * @return the PsiMethod representing the test.
+     */
+    override fun generateTestMethod(project: Project): PsiMethod {
+        val methodName = TestMethodGenerationMessageBundleHandler.message("forEachTestCaseName")
+        return super.generateTestMethod(project, methodName)
     }
 }
