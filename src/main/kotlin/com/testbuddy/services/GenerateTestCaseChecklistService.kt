@@ -5,8 +5,8 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 
 class GenerateTestCaseChecklistService {
 

@@ -22,6 +22,7 @@
         <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestTracingService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestMethodGenerationService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->

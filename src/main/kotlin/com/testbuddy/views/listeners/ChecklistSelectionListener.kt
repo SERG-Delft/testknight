@@ -15,10 +15,10 @@ import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.CheckedTreeNode
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
 import com.testbuddy.models.TestingChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import javax.swing.event.TreeSelectionEvent
 import javax.swing.event.TreeSelectionListener
 

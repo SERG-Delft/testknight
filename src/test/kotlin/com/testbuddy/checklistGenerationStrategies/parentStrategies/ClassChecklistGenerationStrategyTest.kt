@@ -4,8 +4,8 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
@@ -69,7 +69,8 @@ internal class ClassChecklistGenerationStrategyTest : BasePlatformTestCase() {
             testClass!!
         )
 
-        val result = ClassChecklistGenerationStrategy.create(methodChecklistGenerationStrategy).generateChecklist(testClass)
+        val result =
+            ClassChecklistGenerationStrategy.create(methodChecklistGenerationStrategy).generateChecklist(testClass)
         TestCase.assertEquals(expected, result)
     }
 }

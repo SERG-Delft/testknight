@@ -4,7 +4,8 @@ import com.intellij.psi.PsiDoWhileStatement
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.DoWhileStatementChecklistNode
 
 class DoWhileStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -49,7 +50,7 @@ class DoWhileStatementChecklistGenerationStrategy private constructor(
         val mcdcChecklist = conditionChecklistGenerator.generateChecklist(condition)
         return mcdcChecklist +
             listOf(
-                TestingChecklistLeafNode(
+                DoWhileStatementChecklistNode(
                     TestingChecklistMessageBundleHandler
                         .message("doWhileMultipleTimes"),
                     psiElement

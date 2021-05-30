@@ -6,9 +6,8 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy.TestCaseBindings
 import com.testbuddy.exceptions.InvalidConfigurationException
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -106,8 +105,8 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test where \"age <= 0\" is true", condition!!),
-            TestingChecklistLeafNode("Test where \"age <= 0\" is false", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is true", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
         TestCase.assertEquals(expected, results)
@@ -122,8 +121,8 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
         val expected = listOf(
-            TestingChecklistLeafNode("Test where \"age <= 0\" is true", condition!!),
-            TestingChecklistLeafNode("Test where \"age <= 0\" is false", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is true", condition!!),
+            ConditionChecklistNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
         TestCase.assertEquals(expected, results)

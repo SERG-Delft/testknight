@@ -5,9 +5,9 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.TestingChecklist
-import com.testbuddy.models.TestingChecklistClassNode
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
@@ -48,10 +48,11 @@ class ChecklistTreeService {
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
     ): Boolean {
-
+        if (itemNode.element == null) {
+            return false
+        }
         var foundItem = false
         for (i in 0 until dataMethod.children.size) {
-
             val dataItem = dataMethod.children[i]
             // var uiTreeItem = uiTreeMethod.getChildAt(i)
             if (itemNode.description == dataItem.description &&
@@ -69,25 +70,22 @@ class ChecklistTreeService {
      * This method builds the UI for a checklist item
      *
      * @param foundItem the Boolean which represents if the item was found or not
-     * @param uiTreeClassNode: the TreeNode which represents the class reference of the UI
-     * @param uiTreeClassNode: the TreeNode which represents the method reference of the UI
+     * @param uiTreeMethodNode: the TreeNode which represents the method reference of the UI
      * @param dataMethod the TestingChecklistMethodNode which represents the method of the tree
      * @param itemNode the TestingChecklistLeafNode which we have to be append to the tree
      */
     private fun buildUiItem(
         foundItem: Boolean,
-        uiTreeClassNode: TreeNode,
         uiTreeMethod: TreeNode,
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
     ) {
-        if (!foundItem && dataMethod.children.size != 0) {
+        if (!foundItem) {
             dataMethod.children.add(itemNode)
 
-            val newItemNode = CheckedTreeNode(ChecklistUserObject(itemNode, 0))
+            val newItemNode = CheckedTreeNode(ChecklistUserObject(itemNode))
             newItemNode.isChecked = false
             (uiTreeMethod as CheckedTreeNode).add(newItemNode)
-            (uiTreeClassNode as CheckedTreeNode).add(uiTreeMethod)
         }
     }
 
@@ -114,7 +112,7 @@ class ChecklistTreeService {
                 dataMethod.description = methodNode.description
                 for (itemNode in methodNode.children) {
                     val foundItem: Boolean = findElement(dataMethod, itemNode)
-                    buildUiItem(foundItem, uiTreeClassNode, uiTreeMethod, dataMethod, itemNode)
+                    buildUiItem(foundItem, uiTreeMethod, dataMethod, itemNode)
                 }
             }
         }
@@ -134,9 +132,9 @@ class ChecklistTreeService {
         methodNode: TestingChecklistMethodNode
     ) {
         dataClass.children.add(methodNode)
-        val uiTreeMethod = CheckedTreeNode(ChecklistUserObject(methodNode, 0))
+        val uiTreeMethod = CheckedTreeNode(ChecklistUserObject(methodNode))
         for (item in methodNode.children) {
-            val itemNode = CheckedTreeNode(ChecklistUserObject(item, 0))
+            val itemNode = CheckedTreeNode(ChecklistUserObject(item))
             itemNode.isChecked = false
             uiTreeMethod.add(itemNode)
         }
@@ -197,14 +195,14 @@ class ChecklistTreeService {
         // not finding the method, create new class
         if (!findClass(uiTreeRoot, newNode)) {
             dataTree.classChecklists.add(newNode)
-            val classNode = CheckedTreeNode(ChecklistUserObject(newNode, 0))
+            val classNode = CheckedTreeNode(ChecklistUserObject(newNode))
             uiTreeRoot.add(classNode)
             for (method in newNode.children) {
 
-                val methodNode = CheckedTreeNode(ChecklistUserObject(method, 0))
+                val methodNode = CheckedTreeNode(ChecklistUserObject(method))
 
                 for (item in method.children) {
-                    val itemNode = CheckedTreeNode(ChecklistUserObject(item, 0))
+                    val itemNode = CheckedTreeNode(ChecklistUserObject(item))
                     itemNode.isChecked = false
                     methodNode.add(itemNode)
                 }
@@ -297,6 +295,11 @@ class ChecklistTreeService {
         val indexItem = getIndexItem(deleteItem, methodNode)
         if (indexItem == -1) { return }
 
+        if (deleteItem.checked > 0) {
+            methodNode.checked -= deleteItem.checked
+            classNode.checked -= deleteItem.checked
+        }
+
         methodNode.children.removeAt(indexItem)
         uiTreeMethod.remove(indexItem)
         (uiTree.model as DefaultTreeModel).reload()
@@ -322,9 +325,13 @@ class ChecklistTreeService {
         val indexMethod = getIndexMethod(deleteMethod, classNode)
 
         if (indexMethod == -1) { return }
+
+        if (deleteMethod.checked > 0) {
+            classNode.checked -= deleteMethod.checked
+        }
+
         classNode.children.removeAt(indexMethod)
         uiTreeClass.remove(indexMethod)
-
         (uiTree.model as DefaultTreeModel).reload()
         TreeUtil.expandAll(uiTree)
     }

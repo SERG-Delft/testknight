@@ -3,13 +3,13 @@ package com.testbuddy.views.listeners
 import com.intellij.ui.CheckboxTreeListener
 import com.intellij.ui.CheckedTreeNode
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
 /**
-* Custom CheckboxTreelistener which support counting the selected items.
-*
-* @param checklistTree CheckboxTree the listener listens to.
-*/
+ * Custom CheckboxTreeListener which support counting the selected items.
+ *
+ * @param checklistTree CheckboxTree the listener listens to.
+ */
 class CheckedNodeListener : CheckboxTreeListener {
 
     /**
