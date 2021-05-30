@@ -1,7 +1,7 @@
 # Sprint retrospective: Week 3
 
-- **Scrum Master:** Pavlos Makridis
-- **Note Taker:** Cristian Botocan
+- **Scrum Master:** Piyush Deshmukh
+- **Note Taker:** Jorge Romeu
 
 ## Tasks
 - **All team members**
@@ -45,5 +45,3 @@
 ## State of the Project
 
 - We have an almost complete version (both frontend and backend) of the copy-paste feature. The UI has been laid out for the checklist feature. All the bugs detected at the end of the first sprint have been fixed.
-
-
