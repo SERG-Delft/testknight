@@ -62,8 +62,190 @@ class CoverageDiffObjectTest : BasePlatformTestCase() {
 
         val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
         TestCase.assertEquals(
-            obj.linesCoveredInBoth,
-            emptySet<Int>()
+                obj.linesCoveredInBoth,
+                emptySet<Int>()
+        )
+    }
+
+    @Test
+    fun testCaseOne() {
+
+        val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = setOf(1, 2, 3, 4, 5)
+        val coveredNow = setOf(1, 2, 3, 4, 5)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(
+                obj.linesCoveredInBoth,
+                setOf(1, 2, 3, 4, 5)
+        )
+        TestCase.assertEquals(
+                obj.linesNotCovered,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyAdded,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyRemoved,
+                emptySet<Int>()
+        )
+    }
+
+    @Test
+    fun testCaseTwo() {
+
+        val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = emptySet<Int>()
+        val coveredNow = setOf(1, 2, 3, 4, 5)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(
+                obj.linesCoveredInBoth,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNotCovered,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyAdded,
+                setOf(1, 2, 3, 4, 5)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyRemoved,
+                emptySet<Int>()
+        )
+    }
+
+    @Test
+    fun testCaseThree() {
+
+        val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = setOf(1, 2, 3, 4, 5)
+        val coveredNow = emptySet<Int>()
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(
+                obj.linesCoveredInBoth,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNotCovered,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyAdded,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyRemoved,
+                setOf(1, 2, 3, 4, 5)
+        )
+    }
+
+    @Test
+    fun testCaseFour() {
+
+        val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = setOf(1, 3, 5)
+        val coveredNow = setOf(1, 2)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(
+                obj.linesCoveredInBoth,
+                setOf(1)
+        )
+        TestCase.assertEquals(
+                obj.linesNotCovered,
+                setOf(4)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyAdded,
+                setOf(2)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyRemoved,
+                setOf(3, 5)
+        )
+    }
+
+    @Test
+    fun testCaseFive() {
+
+        val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = setOf(1, 2)
+        val coveredNow = setOf(1, 3, 5)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(
+                obj.linesCoveredInBoth,
+                setOf(1)
+        )
+        TestCase.assertEquals(
+                obj.linesNotCovered,
+                setOf(4)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyAdded,
+                setOf(3, 5)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyRemoved,
+                setOf(2)
+        )
+    }
+
+    @Test
+    fun testCaseSix() {
+
+        val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = setOf(3)
+        val coveredNow = setOf(1)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(
+                obj.linesCoveredInBoth,
+                emptySet<Int>()
+        )
+        TestCase.assertEquals(
+                obj.linesNotCovered,
+                setOf(2, 4, 5)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyAdded,
+                setOf(1)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyRemoved,
+                setOf(3)
+        )
+    }
+
+    @Test
+    fun testCaseSeven() {
+
+        val allLines = setOf(1, 2, 3, 4, 5)
+        val coveredPrev = setOf(3,4,5)
+        val coveredNow = setOf(1,5)
+
+        val obj = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+        TestCase.assertEquals(
+                obj.linesCoveredInBoth,
+                setOf(5)
+        )
+        TestCase.assertEquals(
+                obj.linesNotCovered,
+                setOf(2)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyAdded,
+                setOf(1)
+        )
+        TestCase.assertEquals(
+                obj.linesNewlyRemoved,
+                setOf(3,4)
         )
     }
 }
