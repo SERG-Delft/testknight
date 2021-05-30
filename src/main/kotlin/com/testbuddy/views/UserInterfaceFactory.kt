@@ -29,10 +29,14 @@ class UserInterfaceFactory : ToolWindowFactory {
 
                 val service = project.service<CoverageDataService>()
                 val map = service.classCoveragesMap
-
+                val a = 2
                 events.forEach {
                     if(it != null && it.file != null) {
-                        val isMethodModified = map.containsKey(it.file!!.nameWithoutExtension)
+                        if(map.containsKey(it.file!!.nameWithoutExtension)){
+                            var coverageDataService = project.service<CoverageDataService>()
+                            coverageDataService.resetCurrentDataAndMap()
+                            service.setIsDiffAvailable(false)
+                        }
                     }
                 }
 

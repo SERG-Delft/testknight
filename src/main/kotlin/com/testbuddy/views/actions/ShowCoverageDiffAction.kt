@@ -11,6 +11,7 @@ import com.intellij.openapi.ui.WindowWrapperBuilder
 import com.intellij.psi.PsiClass
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.components.JBScrollPane
+import com.testbuddy.services.CoverageDataService
 import com.testbuddy.services.CoverageHighlighterService
 
 class ShowCoverageDiffAction : AnAction() {
@@ -41,15 +42,15 @@ class ShowCoverageDiffAction : AnAction() {
         val scrollPanel = JBScrollPane()
         scrollPanel.viewport.view = twoSidePanel
         val windowWrapper = WindowWrapperBuilder(WindowWrapper.Mode.FRAME, scrollPanel)
-            .setProject(e.project)
-            .setTitle("Diff Coverage")
-            // releaseEditor on close.
-            .setOnCloseHandler {
-                editorFactory.releaseEditor(leftEditor)
-                editorFactory.releaseEditor(rightEditor)
-                true // requires a boolean return, true after releasing editor
-            }
-            .build()
+                .setProject(e.project)
+                .setTitle("Diff Coverage")
+                // releaseEditor on close.
+                .setOnCloseHandler {
+                    editorFactory.releaseEditor(leftEditor)
+                    editorFactory.releaseEditor(rightEditor)
+                    true // requires a boolean return, true after releasing editor
+                }
+                .build()
 
         windowWrapper.show()
     }
@@ -62,11 +63,17 @@ class ShowCoverageDiffAction : AnAction() {
      */
     override fun update(e: AnActionEvent) {
         // Set the availability based on whether the project, psiFile and editor is not null
+        if (e.project == null) {
+            e.presentation.isEnabled = false
+            return
+        }
+
+        val service = e.project!!.service<CoverageDataService>()
+
         e.presentation.isEnabled = (
-            e.project != null &&
                 e.getData(CommonDataKeys.EDITOR) != null &&
-                e.getData(CommonDataKeys.VIRTUAL_FILE) != null &&
-                e.getData(CommonDataKeys.PSI_FILE) != null
-            )
+                        e.getData(CommonDataKeys.VIRTUAL_FILE) != null &&
+                        e.getData(CommonDataKeys.PSI_FILE) != null
+                )
     }
 }
