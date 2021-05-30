@@ -12,11 +12,13 @@ import com.testbuddy.services.ChecklistTreeService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 
-class DeleteChecklistAction(private val node: CheckedTreeNode, private val project: Project) : ActionListener {
+class ModifyChecklistAction(private val node: CheckedTreeNode, private val project: Project) : ActionListener {
 
     override fun actionPerformed(e: ActionEvent) {
 
         val service = project.service<ChecklistTreeService>()
+
+        // val node = path.lastPathComponent as CheckedTreeNode
 
         if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Delete") {
 
@@ -48,8 +50,39 @@ class DeleteChecklistAction(private val node: CheckedTreeNode, private val proje
                         .checklistNode as TestingChecklistClassNode
                 )
             }
-        } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "edit") {
+        } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Edit") {
             println("Edit functionality")
+        } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Add item") {
+
+            val newItem = TestingChecklistLeafNode("", null, 0)
+
+            val descriptionMethod: String = (
+                (node.userObject as ChecklistUserObject)
+                    .checklistNode as TestingChecklistMethodNode
+                ).description
+            val elementMethod = (
+                (node.userObject as ChecklistUserObject)
+                    .checklistNode as TestingChecklistMethodNode
+                ).element
+            val listItems: MutableList<TestingChecklistLeafNode> = mutableListOf(newItem)
+
+            val descriptionClass: String = (
+                (
+                    (node.parent as CheckedTreeNode)
+                        .userObject as ChecklistUserObject
+                    ).checklistNode as TestingChecklistClassNode
+                ).description
+            val elementClass = (
+                (
+                    (node.parent as CheckedTreeNode)
+                        .userObject as ChecklistUserObject
+                    ).checklistNode as TestingChecklistClassNode
+                ).element
+
+            val methodNode = TestingChecklistMethodNode(descriptionMethod, listItems, elementMethod)
+            val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
+            val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
+            service.addChecklist(classNode)
         }
     }
 }
