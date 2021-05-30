@@ -3,11 +3,13 @@ package com.testbuddy.views.actions
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.PsiMethod
 import com.testbuddy.services.TestAnalyzerService
+import com.testbuddy.settings.SettingsService
 import com.testbuddy.views.listeners.MethodChecklistIconHandler
 
 /**
@@ -17,22 +19,25 @@ class ChecklistMethodLineMarkerProvider : LineMarkerProvider {
 
     private val testAnalyzerService = TestAnalyzerService()
 
+    private fun settingsState() = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+
+    private fun isMethodDeclaration(element: PsiElement) = (element is PsiIdentifier && element.parent is PsiMethod)
+
     /**
      * The method which creates the Line Marker for the method
      * @param element PsiElement for which we have to build the Line Marker
      */
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
 
-        if (element is PsiIdentifier && element.parent is PsiMethod &&
-            !testAnalyzerService.isTestMethod(element.parent as PsiMethod)
+        if (isMethodDeclaration(element) &&
+            !testAnalyzerService.isTestMethod(element.parent as PsiMethod) &&
+            settingsState().checklistSettings.showGutterIcons
         ) {
             return LineMarkerInfo(
-                element, element.textRange, AllIcons.General.Add,
-                { element: PsiElement ->
-                    buildString {
-                        append("Generate checklist")
-                    }
-                },
+                element,
+                element.textRange,
+                AllIcons.General.Add,
+                { el: PsiElement -> "Generate Checklist" },
                 MethodChecklistIconHandler(), GutterIconRenderer.Alignment.RIGHT
             )
         }
