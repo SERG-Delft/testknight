@@ -6,6 +6,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistG
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForLoopStatementChecklistNode
+import com.testbuddy.settings.SettingsService
 
 class ForStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -20,10 +21,11 @@ class ForStatementChecklistGenerationStrategy private constructor(
          * @return a new ForStatementChecklistGenerationStrategy.
          */
         fun create(): ForStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator =
-                ConditionChecklistGenerationStrategy
-                    .createWithMcDcConditionCoverage()
-            return create(conditionChecklistGenerator)
+            val settings = SettingsService.instance.state
+            val conditionStrategy = ConditionChecklistGenerationStrategy
+                .createFromString(settings.checklistSettings.coverageCriteria)
+
+            return create(conditionStrategy)
         }
 
         /**

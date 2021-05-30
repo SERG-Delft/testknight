@@ -2,21 +2,11 @@ package com.testbuddy.services
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class TestAnalyzerServiceTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class TestAnalyzerServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testIsTestClassTrue() {

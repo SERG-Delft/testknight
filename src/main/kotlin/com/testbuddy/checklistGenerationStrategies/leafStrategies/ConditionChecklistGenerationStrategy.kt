@@ -17,6 +17,7 @@ class ConditionChecklistGenerationStrategy private constructor(
     }
 
     companion object Factory {
+
         /**
          * Creates a new ConditionChecklistGenerationStrategy
          * with MC/DC coverage as the condition coverage type.
@@ -41,22 +42,14 @@ class ConditionChecklistGenerationStrategy private constructor(
          * Creates a new ConditionChecklistGenerationStrategy
          * from the name of the the condition coverage type defined.
          *
-         * @param conditionCoverageType the type of condition coverage. The only ones accepted are
+         * @param covType the type of condition coverage. The only ones accepted are
          * "BRANCH" and "MCDC". Anything else will result to a InvalidConfigurationException.
          * @return a ConditionChecklistGenerationStrategy object.
          */
-        fun createFromString(
-            conditionCoverageType: String
-        ): ConditionChecklistGenerationStrategy {
-            val validTypes = ConditionCoverageType.values().map { it.name }.toSet()
-            return if (validTypes.contains(conditionCoverageType)) {
-                when (ConditionCoverageType.valueOf(conditionCoverageType)) {
-                    ConditionCoverageType.MCDC -> createWithMcDcConditionCoverage()
-                    ConditionCoverageType.BRANCH -> createWithBranchConditionCoverage()
-                }
-            } else {
-                throw InvalidConfigurationException("condition coverage type", conditionCoverageType)
-            }
+        fun createFromString(covType: String): ConditionChecklistGenerationStrategy = when (covType) {
+            "MC/DC" -> createWithMcDcConditionCoverage()
+            "BRANCH" -> createWithBranchConditionCoverage()
+            else -> throw InvalidConfigurationException("condition coverage type", covType)
         }
     }
 

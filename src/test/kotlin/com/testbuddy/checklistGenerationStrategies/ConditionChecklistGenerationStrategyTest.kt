@@ -4,25 +4,15 @@ import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
-internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase() {
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+internal class ConditionChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testMcdc0prop() {
@@ -139,7 +129,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testBindingsToStringSimple() {
-        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
         val bindings = strategy.TestCaseBindings(mapOf("A" to true, "B" to false))
 
         val assignments = mapOf("A" to "a", "B" to "b")
@@ -150,7 +140,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testBindingsToStringSingle() {
-        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
         val bindings = strategy.TestCaseBindings(mapOf("A" to true))
 
         val assignments = mapOf("A" to "a")

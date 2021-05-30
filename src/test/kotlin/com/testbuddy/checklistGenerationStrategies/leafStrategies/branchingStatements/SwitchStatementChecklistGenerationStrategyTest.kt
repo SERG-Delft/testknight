@@ -6,13 +6,13 @@ import com.intellij.psi.PsiSwitchLabelStatement
 import com.intellij.psi.PsiSwitchLabeledRuleStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class SwitchStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     private val generationStrategy = SwitchStatementChecklistGenerationStrategy.create()
 
@@ -20,10 +20,6 @@ internal class SwitchStatementChecklistGenerationStrategyTest : BasePlatformTest
     public override fun setUp() {
         super.setUp()
         this.myFixture.configureByFile("/Person.java")
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
     }
 
     @Test

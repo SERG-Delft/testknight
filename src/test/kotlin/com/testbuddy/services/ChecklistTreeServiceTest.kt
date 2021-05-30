@@ -3,28 +3,18 @@ package com.testbuddy.services
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.views.trees.ChecklistCellRenderer
-import org.junit.Before
 import org.junit.Test
 
-class ChecklistTreeServiceTest : BasePlatformTestCase() {
+class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     private val service = ChecklistTreeService()
     private val checklistService = GenerateTestCaseChecklistService()
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
 
     @Test
     fun testInit() {

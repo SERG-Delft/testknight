@@ -4,13 +4,13 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-internal class ThrowStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class ThrowStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     private val generationStrategy = ThrowStatementChecklistGenerationStrategy.create()
 
@@ -18,10 +18,6 @@ internal class ThrowStatementChecklistGenerationStrategyTest : BasePlatformTestC
     public override fun setUp() {
         super.setUp()
         this.myFixture.configureByFile("/Person.java")
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
     }
 
     @Test

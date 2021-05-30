@@ -11,6 +11,7 @@ import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodN
 class GenerateTestCaseChecklistService {
 
     private val testAnalyzerService = TestAnalyzerService()
+
     private var classStrategy = ClassChecklistGenerationStrategy.create()
     private var methodStrategy = MethodChecklistGenerationStrategy.create()
 
@@ -56,5 +57,13 @@ class GenerateTestCaseChecklistService {
      */
     fun generateMethodChecklist(psiMethod: PsiMethod): TestingChecklistMethodNode {
         return methodStrategy.generateChecklist(psiMethod)
+    }
+
+    /**
+     * Re-creates the class and method strategies. This method is called whenever settings are modified
+     */
+    fun rebuildStrategies() {
+        classStrategy = ClassChecklistGenerationStrategy.create()
+        methodStrategy = MethodChecklistGenerationStrategy.create()
     }
 }

@@ -3,7 +3,7 @@ package com.testbuddy.services
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
 import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
 import com.testbuddy.models.sideEffectAnalysis.ParameterFieldReassignmentSideEffect
@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import java.lang.AssertionError
 
-class MethodAnalyzerServiceTest : BasePlatformTestCase() {
+class MethodAnalyzerServiceTest : TestBuddyTestCase() {
 
     private val service = MethodAnalyzerService()
 
@@ -275,10 +275,6 @@ class MethodAnalyzerServiceTest : BasePlatformTestCase() {
             ParameterFieldReassignmentSideEffect("newSpouse", "spouse")
         )
         assertMethodSideEffects(testClass, expected, "marryToParameterFieldAffected")
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
     }
 
     /**

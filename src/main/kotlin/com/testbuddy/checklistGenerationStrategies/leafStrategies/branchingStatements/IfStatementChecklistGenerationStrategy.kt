@@ -6,6 +6,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionCheck
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.settings.SettingsService
 
 class IfStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -14,7 +15,8 @@ class IfStatementChecklistGenerationStrategy private constructor(
 
     companion object Factory {
 
-        private const val defaultConditionCoverageType = "MCDC"
+        @Suppress("UnusedPrivateMember")
+        private const val defaultConditionCoverageType = "MC/DC"
 
         /**
          * Creates a new IfStatementChecklistGenerationStrategy.
@@ -46,11 +48,8 @@ class IfStatementChecklistGenerationStrategy private constructor(
          * @return a string representing the configured condition coverage.
          */
         private fun getConditionCoverageType(): String {
-            // This is currently a placeholder, when we add
-            // configuration files the conditionCoverageType
-            // will be read from there.
-            val conditionCoverageType = defaultConditionCoverageType
-            return conditionCoverageType
+            val settings = SettingsService.instance.state
+            return settings.checklistSettings.coverageCriteria
         }
     }
 

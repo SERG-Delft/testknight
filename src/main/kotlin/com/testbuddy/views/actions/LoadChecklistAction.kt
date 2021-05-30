@@ -3,6 +3,7 @@ package com.testbuddy.views.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
@@ -42,7 +43,10 @@ class LoadChecklistAction : AnAction() {
 
     fun actionPerformed(project: Project, psiElement: PsiElement, refresh: Boolean = false): Boolean {
 
-        val checklistService = project.service<GenerateTestCaseChecklistService>()
+        val checklistService = ApplicationManager
+            .getApplication()
+            .getService(GenerateTestCaseChecklistService::class.java)
+
         val checkTestService = TestAnalyzerService()
         var checklistClassTree: TestingChecklistClassNode? = null
         if (psiElement is PsiClass && !checkTestService.isTestClass(psiElement)) {

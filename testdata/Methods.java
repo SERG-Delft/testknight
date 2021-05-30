@@ -83,7 +83,6 @@ class Methods {
         int x = (a > b) ? 1 : 2
     }
 
-
     public void twoBranchesNoParameter() {
         boolean condition = true && false || true;
         if (condition) {
@@ -91,5 +90,21 @@ class Methods {
         } else {
             System.out.println("false");
         }
+    }
+
+    public void mcdc() {
+        if (a || b && c) {
+            // b1
+        } else {
+            // b1
+        }
+    }
+
+    public void onlyParam(int a) {
+        // nothin
+    }
+
+    public void customType(type a) {
+        // nothin
     }
 }

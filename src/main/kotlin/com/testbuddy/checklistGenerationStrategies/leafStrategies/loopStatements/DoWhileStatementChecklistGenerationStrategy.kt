@@ -6,6 +6,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistG
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.DoWhileStatementChecklistNode
+import com.testbuddy.settings.SettingsService
 
 class DoWhileStatementChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -20,10 +21,11 @@ class DoWhileStatementChecklistGenerationStrategy private constructor(
          * @return a new DoWhileStatementChecklistGenerationStrategy.
          */
         fun create(): DoWhileStatementChecklistGenerationStrategy {
-            val conditionChecklistGenerator =
-                ConditionChecklistGenerationStrategy
-                    .createWithMcDcConditionCoverage()
-            return create(conditionChecklistGenerator)
+            val settings = SettingsService.instance.state
+            val conditionStrategy = ConditionChecklistGenerationStrategy
+                .createFromString(settings.checklistSettings.coverageCriteria)
+
+            return create(conditionStrategy)
         }
 
         /**

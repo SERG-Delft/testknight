@@ -3,20 +3,12 @@ package com.testbuddy.highlightResolutionStrategies
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.com.testbuddy.highlightResolutionStrategies.MagicNumberStrategy
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class MagicNumberStrategyTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String = "testdata"
+internal class MagicNumberStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testBasic() {

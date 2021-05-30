@@ -13,7 +13,6 @@ import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterListChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ThrowStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements.ConditionalExpressionChecklistGenerationStrategy
@@ -24,6 +23,7 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForEachStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
+import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
@@ -32,10 +32,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class MethodChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     private val recognizedStructs = arrayOf(
         PsiIfStatement::class.java, PsiSwitchStatement::class.java,
@@ -44,15 +43,6 @@ internal class MethodChecklistGenerationStrategyTest : BasePlatformTestCase() {
         PsiDoWhileStatement::class.java, PsiForeachStatement::class.java,
         PsiThrowStatement::class.java, PsiConditionalExpression::class.java
     )
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
 
     @Test
     fun testMethodGeneratesOnIfStatements() {
