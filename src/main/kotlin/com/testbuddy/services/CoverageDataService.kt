@@ -57,9 +57,14 @@ class CoverageDataService : Disposable {
             return
         }
 
+        var testAnalyzerService = TestAnalyzerService()
+
         // gets all relevant classes in current project (not imports and org.junit or javax classes)
+        // filters out all test classes because we aren't interested in tests for those
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
-            .findAll().mapNotNull { it.name }
+                .findAll()
+                .filter { testAnalyzerService.isTestClass(it) }
+                .mapNotNull { it.name }
 
         classesInProject.forEach {
             if (currentData!!.classes.contains(it)) {
