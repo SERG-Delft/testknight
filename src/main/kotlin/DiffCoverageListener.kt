@@ -19,6 +19,8 @@ class DiffCoverageListener(val project: Project) : CoverageSuiteListener {
 
         val suite = covDataManager.currentSuitesBundle
         val data = suite.coverageData
+        val service = project.service<CoverageDataService>()
+        service.setIsDiffAvailable(true)
 
         covDataService.updateCoverage(suite, data)
     }

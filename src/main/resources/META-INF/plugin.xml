@@ -20,6 +20,8 @@
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
         <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestTracingService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestMethodGenerationService"/>
 
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
     </extensions>
@@ -97,13 +99,20 @@
                 text="Hide Newly Covered Lines" description="Hides the coverage line markers in the editor."
                 icon="AllIcons.Diff.Remove">
         </action>
+        <action id="com.testbuddy.com.testbuddy.views.actions.HideTracedTestHighlightsAction"
+                class="com.testbuddy.views.actions.HideTracedTestHighlightsAction"
+                text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction>
             <className>com.testbuddy.views.actions.AssertionSuggestionsAction</className>
             <category>TestBuddy intentions</category>
+        </intentionAction>
 
+        <intentionAction>
+            <className>com.testbuddy.views.actions.TraceTestAction</className>
+            <category>TestBuddy intentions</category>
         </intentionAction>
     </extensions>
 
@@ -125,6 +134,8 @@
     <projectListeners>
         <listener class="com.testbuddy.InitializationListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
+        <listener class="com.testbuddy.views.listeners.FileEditorListener"
+                  topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
     </projectListeners>
 
 </idea-plugin>

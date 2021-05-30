@@ -4,7 +4,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiParameterList
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
 import com.testbuddy.settings.SettingsService
 
 class ParameterListChecklistGenerationStrategy private constructor(
@@ -52,8 +52,8 @@ class ParameterListChecklistGenerationStrategy private constructor(
      * @param psiElement the parameter list
      * @return a list of TestingCheckListLeafNode objects corresponding to the checklist items.
      */
-    override fun generateChecklist(psiElement: PsiParameterList): List<TestingChecklistLeafNode> {
-        val result = mutableListOf<TestingChecklistLeafNode>()
+    override fun generateChecklist(psiElement: PsiParameterList): List<ParameterChecklistNode> {
+        val result = mutableListOf<ParameterChecklistNode>()
         psiElement.parameters.forEach {
             result.addAll(generateChecklistForParameter(it))
         }
@@ -66,18 +66,20 @@ class ParameterListChecklistGenerationStrategy private constructor(
      * @param psiElement the parameter statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    fun generateChecklistForParameter(psiElement: PsiParameter): List<TestingChecklistLeafNode> {
+    fun generateChecklistForParameter(psiElement: PsiParameter): List<ParameterChecklistNode> {
         val typeOfParameter = psiElement.type.canonicalText
         val nameOfParameter = psiElement.name
         val casesForType = this.typeChecklistCaseMap[typeOfParameter] ?: emptyList()
         return casesForType.map {
-            TestingChecklistLeafNode(
+            ParameterChecklistNode(
                 TestingChecklistMessageBundleHandler.message(
                     "parameterBaseMessage",
                     nameOfParameter,
                     it
                 ),
-                psiElement
+                psiElement,
+                nameOfParameter,
+                it
             )
         }
     }

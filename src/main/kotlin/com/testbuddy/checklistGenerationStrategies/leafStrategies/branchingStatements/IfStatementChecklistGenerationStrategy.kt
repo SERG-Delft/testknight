@@ -5,7 +5,7 @@ import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.exceptions.InvalidConfigurationException
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import com.testbuddy.settings.SettingsService
 
 class IfStatementChecklistGenerationStrategy private constructor(
@@ -59,7 +59,7 @@ class IfStatementChecklistGenerationStrategy private constructor(
      * @param psiElement the if statement.
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
-    override fun generateChecklist(psiElement: PsiIfStatement): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiIfStatement): List<ConditionChecklistNode> {
         val condition = psiElement.condition
         if (condition == null || condition is PsiLiteralExpression) {
             return emptyList()

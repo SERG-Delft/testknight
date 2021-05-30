@@ -3,7 +3,7 @@ package com.testbuddy.checklistGenerationStrategies.leafStrategies
 import com.intellij.psi.PsiNewExpression
 import com.intellij.psi.PsiThrowStatement
 import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
 
 class ThrowStatementChecklistGenerationStrategy private constructor() :
     LeafChecklistGeneratorStrategy<PsiThrowStatement> {
@@ -26,14 +26,15 @@ class ThrowStatementChecklistGenerationStrategy private constructor() :
      * @return a list of TestingChecklistLeafNode objects corresponding to the required checklist items.
      */
 
-    override fun generateChecklist(psiElement: PsiThrowStatement): List<TestingChecklistLeafNode> {
+    override fun generateChecklist(psiElement: PsiThrowStatement): List<ThrowStatementChecklistNode> {
         val newExpression = (psiElement.exception as? PsiNewExpression)
         val nameOfException = newExpression?.classReference?.qualifiedName
         if (newExpression == null || nameOfException == null) return emptyList()
         return listOf(
-            TestingChecklistLeafNode(
+            ThrowStatementChecklistNode(
                 TestingChecklistMessageBundleHandler.message("throw", nameOfException),
-                psiElement
+                psiElement,
+                nameOfException
             )
         )
     }

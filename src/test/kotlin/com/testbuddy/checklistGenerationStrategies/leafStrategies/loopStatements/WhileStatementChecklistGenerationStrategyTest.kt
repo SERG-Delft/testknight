@@ -7,7 +7,7 @@ import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase

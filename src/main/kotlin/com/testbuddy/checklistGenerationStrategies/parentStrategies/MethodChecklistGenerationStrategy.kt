@@ -3,8 +3,8 @@ package com.testbuddy.checklistGenerationStrategies.parentStrategies
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.settings.SettingsService
 import com.testbuddy.utilities.ChecklistLeafNodeGenerator
 

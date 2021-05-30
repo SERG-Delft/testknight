@@ -5,7 +5,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
@@ -24,7 +24,7 @@ internal class ThrowStatementChecklistGenerationStrategyTest : TestBuddyTestCase
     fun testSimpleThrow() {
         val method = getMethod("getSpouse")
         val throwStatement = PsiTreeUtil.findChildOfType(method, PsiThrowStatement::class.java)
-        val expected = listOf(TestingChecklistLeafNode("Test when NotMarriedException is thrown", throwStatement!!))
+        val expected = listOf(ThrowStatementChecklistNode("Test when NotMarriedException is thrown", throwStatement!!, "NotMarriedException"))
         val actual = generationStrategy.generateChecklist(throwStatement)
         TestCase.assertEquals(expected, actual)
     }
@@ -33,7 +33,7 @@ internal class ThrowStatementChecklistGenerationStrategyTest : TestBuddyTestCase
     fun testInvalidNewExpressionInThrow() {
         val method = getMethod("methodWithBrokenThrows")
         val throwStatement = PsiTreeUtil.findChildrenOfType(method, PsiThrowStatement::class.java).elementAt(0)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ThrowStatementChecklistNode>()
         val actual = generationStrategy.generateChecklist(throwStatement)
         TestCase.assertEquals(expected, actual)
     }
@@ -42,7 +42,7 @@ internal class ThrowStatementChecklistGenerationStrategyTest : TestBuddyTestCase
     fun testMissingExceptionClassInThrow() {
         val method = getMethod("methodWithBrokenThrows")
         val throwStatement = PsiTreeUtil.findChildrenOfType(method, PsiThrowStatement::class.java).elementAt(1)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ThrowStatementChecklistNode>()
         val actual = generationStrategy.generateChecklist(throwStatement)
         TestCase.assertEquals(expected, actual)
     }
