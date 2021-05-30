@@ -1,10 +1,12 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiConditionalExpression
 import com.intellij.psi.PsiLiteralExpression
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
 import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.settings.SettingsService
 
 class ConditionalExpressionChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy
@@ -13,7 +15,8 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
 
     companion object Factory {
 
-        private const val defaultConditionCoverageType = "MCDC"
+        @Suppress("UnusedPrivateMember")
+        private const val defaultConditionCoverageType = "MC/DC"
 
         /**
          * Creates a new ConditionalExpressionChecklistGenerationStrategy.
@@ -46,11 +49,8 @@ class ConditionalExpressionChecklistGenerationStrategy private constructor(
          * @return a string representing the configured condition coverage.
          */
         private fun getConditionCoverageType(): String {
-            // This is currently a placeholder, when we add
-            // configuration files the conditionCoverageType
-            // will be read from there.
-            val conditionCoverageType = defaultConditionCoverageType
-            return conditionCoverageType
+            val settings = ApplicationManager.getApplication().getService(SettingsService::class.java).state
+            return settings.checklistSettings.coverageCriteria
         }
     }
 

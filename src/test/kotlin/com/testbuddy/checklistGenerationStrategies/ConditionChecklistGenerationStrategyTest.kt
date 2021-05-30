@@ -140,7 +140,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testBindingsToStringSimple() {
-        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
         val bindings = strategy.TestCaseBindings(mapOf("A" to true, "B" to false))
 
         val assignments = mapOf("A" to "a", "B" to "b")
@@ -151,7 +151,7 @@ internal class ConditionChecklistGenerationStrategyTest : BasePlatformTestCase()
 
     @Test
     fun testBindingsToStringSingle() {
-        val strategy = ConditionChecklistGenerationStrategy.createFromString("MCDC")
+        val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
         val bindings = strategy.TestCaseBindings(mapOf("A" to true))
 
         val assignments = mapOf("A" to "a")
