@@ -7,7 +7,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -34,7 +34,7 @@ internal class ConditionalExpressionChecklistGenerationStrategyTest : BasePlatfo
         this.myFixture.configureByFile("/BrokenTernary.java")
         val method = getMethod("incompleteConditionalExpression")
         val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(conditionalExpression!!)
         TestCase.assertEquals(expected, actual)
     }
@@ -53,7 +53,7 @@ internal class ConditionalExpressionChecklistGenerationStrategyTest : BasePlatfo
         this.myFixture.configureByFile("/BrokenTernary.java")
         val method = getMethod("conditionalExpressionWithLiteral")
         val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
-        val expected = emptyList<TestingChecklistLeafNode>()
+        val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(conditionalExpression!!)
         TestCase.assertEquals(expected, actual)
     }

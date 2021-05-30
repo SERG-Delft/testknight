@@ -3,7 +3,7 @@ package com.testbuddy.views.trees
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.components.JBTextField
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import java.awt.Component
 import java.awt.event.ActionListener
 import java.util.EventObject

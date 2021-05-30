@@ -6,8 +6,8 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
-import com.testbuddy.models.TestingChecklistLeafNode
-import com.testbuddy.models.TestingChecklistMethodNode
+import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.views.trees.ChecklistCellRenderer
 import org.junit.Before
 import org.junit.Test
@@ -385,7 +385,7 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
         service.addChecklist(backendChecklistClass)
-        val deleteItem = TestingChecklistLeafNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
+        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
         service.deleteItem(deleteItem, backendChecklistClass.children[0], backendChecklistClass)
         service.deleteItem(deleteItem, backendChecklistClass.children[0], backendChecklistClass)
 
@@ -436,7 +436,7 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
 
-        val deleteItem = TestingChecklistLeafNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
+        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
         val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element, 0)
         val root = CheckedTreeNode("root")
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
@@ -462,7 +462,7 @@ class ChecklistTreeServiceTest : BasePlatformTestCase() {
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
 
-        val deleteItem = TestingChecklistLeafNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
+        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
         val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element, 0)
         val root = CheckedTreeNode("root")
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)

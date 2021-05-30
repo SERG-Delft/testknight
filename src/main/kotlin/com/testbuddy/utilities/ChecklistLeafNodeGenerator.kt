@@ -18,10 +18,10 @@ import com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingState
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements.SwitchStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements.TryStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.DoWhileStatementChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForEachStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForStatementChecklistGenerationStrategy
-import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForeachStatementChecklistGenerationStrategy
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.WhileStatementChecklistGenerationStrategy
-import com.testbuddy.models.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
 class ChecklistLeafNodeGenerator {
 
@@ -34,7 +34,7 @@ class ChecklistLeafNodeGenerator {
     var forStatementChecklistGenerationStrategy = ForStatementChecklistGenerationStrategy.create()
     var doWhileStatementChecklistGenerationStrategy = DoWhileStatementChecklistGenerationStrategy.create()
     var throwStatementChecklistGenerationStrategy = ThrowStatementChecklistGenerationStrategy.create()
-    var forEachStatementChecklistGenerationStrategy = ForeachStatementChecklistGenerationStrategy.create()
+    var forEachStatementChecklistGenerationStrategy = ForEachStatementChecklistGenerationStrategy.create()
 
     /**
      * Generates the testing checklist for a given PsiElement.
