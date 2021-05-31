@@ -8,7 +8,8 @@ stages:
 build:
   stage: build
   script:
-    gradle build
+    - gradle assemble
+    - gradle testClasses
 
 detekt:
   stage: staticAnalysis
@@ -24,4 +25,3 @@ test:
   stage: test
   script:
     gradle test
-
