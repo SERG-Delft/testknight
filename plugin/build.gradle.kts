@@ -74,13 +74,9 @@ detekt {
     }
 }
 
-
-
 tasks.jacocoTestReport {
     dependsOn(tasks.test) // tests are required to run before generating the report
 }
-
-
 
 tasks {
     // Set the compatibility versions to 1.8
