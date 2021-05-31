@@ -6,9 +6,8 @@ import com.intellij.psi.PsiSwitchLabelStatement
 import com.intellij.psi.PsiSwitchLabeledRuleStatement
 import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements.SwitchStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

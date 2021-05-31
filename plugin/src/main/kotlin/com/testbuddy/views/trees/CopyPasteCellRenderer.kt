@@ -1,8 +1,8 @@
-package com.testbuddy.com.testbuddy.views.trees
+package com.testbuddy.views.trees
 
 import com.intellij.ui.components.JBLabel
-import com.testbuddy.com.testbuddy.models.TestClassData
-import com.testbuddy.com.testbuddy.models.TestMethodUserObject
+import com.testbuddy.models.TestClassData
+import com.testbuddy.models.TestMethodUserObject
 import java.awt.Component
 import javax.swing.Box
 import javax.swing.BoxLayout

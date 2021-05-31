@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes
+package com.testbuddy.models.testingChecklist.leafNodes
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiThrowStatement
-import com.testbuddy.com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
+import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 
 data class ThrowStatementChecklistNode(
     override var description: String,

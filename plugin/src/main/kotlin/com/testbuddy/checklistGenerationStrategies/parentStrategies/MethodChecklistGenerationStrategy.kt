@@ -1,12 +1,12 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies
+package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
-import com.testbuddy.com.testbuddy.settings.SettingsService
-import com.testbuddy.com.testbuddy.utilities.ChecklistLeafNodeGenerator
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.settings.SettingsService
+import com.testbuddy.utilities.ChecklistLeafNodeGenerator
 
 class MethodChecklistGenerationStrategy private constructor(
     private val nestedStructureTypesRecognized: Array<Class<out PsiElement>>,

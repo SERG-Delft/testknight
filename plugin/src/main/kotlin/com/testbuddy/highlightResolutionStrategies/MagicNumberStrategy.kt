@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.highlightResolutionStrategies
+package com.testbuddy.highlightResolutionStrategies
 
 import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.HighlightedTextData
+import com.testbuddy.models.HighlightedTextData
 
 object MagicNumberStrategy : HighlightResolutionStrategy {
 

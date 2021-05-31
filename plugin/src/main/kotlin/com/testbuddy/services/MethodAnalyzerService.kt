@@ -1,18 +1,18 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.ArgumentMutationSideEffect
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.Assignment
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.Class
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.Method
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCall
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.SideEffect
+import com.testbuddy.models.sideEffectAnalysis.ArgumentMutationSideEffect
+import com.testbuddy.models.sideEffectAnalysis.Assignment
+import com.testbuddy.models.sideEffectAnalysis.Class
+import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
+import com.testbuddy.models.sideEffectAnalysis.Method
+import com.testbuddy.models.sideEffectAnalysis.MethodCall
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnClassFieldSideEffect
+import com.testbuddy.models.sideEffectAnalysis.MethodCallOnParameterSideEffect
+import com.testbuddy.models.sideEffectAnalysis.SideEffect
 
 class MethodAnalyzerService {
 

@@ -5,10 +5,9 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiIfStatement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements.IfStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

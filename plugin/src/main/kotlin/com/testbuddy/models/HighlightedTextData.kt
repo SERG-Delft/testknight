@@ -1,11 +1,11 @@
-package com.testbuddy.com.testbuddy.models
+package com.testbuddy.models
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLiteralExpression
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.settings.SettingsService
 
 /**
  * Represents an element to be highlighted when a test is duplicated

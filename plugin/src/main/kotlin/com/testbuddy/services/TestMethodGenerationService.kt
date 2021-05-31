@@ -1,11 +1,11 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ScrollType
 import com.intellij.openapi.project.Project
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
 class TestMethodGenerationService {
 

@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.TemplateManager
@@ -6,7 +6,7 @@ import com.intellij.codeInsight.template.impl.ConstantNode
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiMethod
 import com.intellij.refactoring.suggested.startOffset
-import com.testbuddy.com.testbuddy.models.HighlightedTextData
+import com.testbuddy.models.HighlightedTextData
 
 class TemplateCreationService(private val project: Project) {
 

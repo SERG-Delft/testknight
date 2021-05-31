@@ -1,13 +1,13 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.util.ui.tree.TreeUtil
-import com.testbuddy.com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
-import com.testbuddy.models.TestingChecklist
+import com.testbuddy.models.ChecklistUserObject
+import com.testbuddy.models.testingChecklist.TestingChecklist
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode

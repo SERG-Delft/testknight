@@ -3,11 +3,9 @@ package com.testbuddy.checklistGenerationStrategies.parentStrategies
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase

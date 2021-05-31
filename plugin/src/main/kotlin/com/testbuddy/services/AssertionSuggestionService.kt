@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.components.service
@@ -9,10 +9,10 @@ import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.codeStyle.CodeStyleManager
-import com.testbuddy.com.testbuddy.models.AssertionSuggestion
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.ArgumentMutationSideEffect
-import com.testbuddy.com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
-import com.testbuddy.com.testbuddy.utilities.StringFormatter
+import com.testbuddy.models.AssertionSuggestion
+import com.testbuddy.models.sideEffectAnalysis.ArgumentMutationSideEffect
+import com.testbuddy.models.sideEffectAnalysis.ClassFieldMutationSideEffect
+import com.testbuddy.utilities.StringFormatter
 
 class AssertionSuggestionService {
 

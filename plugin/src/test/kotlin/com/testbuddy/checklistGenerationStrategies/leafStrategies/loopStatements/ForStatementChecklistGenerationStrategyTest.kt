@@ -6,9 +6,8 @@ import com.intellij.psi.PsiForStatement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements.ForStatementChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase

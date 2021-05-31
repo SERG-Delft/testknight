@@ -1,11 +1,11 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
+package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.PsiParameterList
-import com.testbuddy.com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
+import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
+import com.testbuddy.settings.SettingsService
 
 class ParameterListChecklistGenerationStrategy private constructor(
     private val typeChecklistCaseMap: Map<String, List<String>>

@@ -2,8 +2,7 @@ package com.testbuddy.models
 
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiExpression
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.PropositionalExpression
+import com.testbuddy.extensions.TestBuddyTestCase
 import junit.framework.TestCase
 import org.junit.Test
 

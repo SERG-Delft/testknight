@@ -1,7 +1,7 @@
-package com.testbuddy.com.testbuddy.models.sideEffectAnalysis
+package com.testbuddy.models.sideEffectAnalysis
 
-import com.testbuddy.com.testbuddy.messageBundleHandlers.AssertionSuggestionMessageBundleHandler
-import com.testbuddy.com.testbuddy.models.AssertionSuggestion
+import com.testbuddy.messageBundleHandlers.AssertionSuggestionMessageBundleHandler
+import com.testbuddy.models.AssertionSuggestion
 
 open class SideEffect(open val info: String)
 

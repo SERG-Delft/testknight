@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.models
+package com.testbuddy.models
 
 import com.intellij.psi.PsiMethod
 

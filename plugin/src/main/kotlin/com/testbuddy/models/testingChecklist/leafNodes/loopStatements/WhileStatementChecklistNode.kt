@@ -1,10 +1,10 @@
-package com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements
+package com.testbuddy.models.testingChecklist.leafNodes.loopStatements
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
-import com.testbuddy.com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
 data class WhileStatementChecklistNode(
     override var description: String,

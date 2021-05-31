@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.settings
+package com.testbuddy.settings
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.ui.DialogPanel
-import com.testbuddy.com.testbuddy.services.GenerateTestCaseChecklistService
+import com.testbuddy.services.GenerateTestCaseChecklistService
 
 class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     private lateinit var mySettingsComponent: SettingsComponent

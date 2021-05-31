@@ -5,12 +5,10 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
-import com.testbuddy.com.testbuddy.services.ChecklistTreeService
-import com.testbuddy.com.testbuddy.services.GenerateTestCaseChecklistService
-import com.testbuddy.com.testbuddy.views.trees.ChecklistCellRenderer
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.views.trees.ChecklistCellRenderer
 import org.junit.Test
 
 class ChecklistTreeServiceTest : TestBuddyTestCase() {

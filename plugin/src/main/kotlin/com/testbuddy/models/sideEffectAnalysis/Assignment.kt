@@ -1,7 +1,7 @@
-package com.testbuddy.com.testbuddy.models.sideEffectAnalysis
+package com.testbuddy.models.sideEffectAnalysis
 
 import com.intellij.psi.PsiAssignmentExpression
-import com.testbuddy.com.testbuddy.utilities.StringFormatter
+import com.testbuddy.utilities.StringFormatter
 
 data class Assignment(val affectedObjectName: String, val fieldAffected: String?) {
 

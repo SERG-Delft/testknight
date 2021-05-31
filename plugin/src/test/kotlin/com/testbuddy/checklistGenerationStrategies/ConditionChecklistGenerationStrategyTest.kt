@@ -4,10 +4,10 @@ import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import junit.framework.TestCase
 import org.junit.Test
 import kotlin.test.assertFailsWith

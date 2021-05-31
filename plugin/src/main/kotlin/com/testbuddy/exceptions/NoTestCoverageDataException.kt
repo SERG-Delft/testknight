@@ -1,3 +1,3 @@
-package com.testbuddy.com.testbuddy.exceptions
+package com.testbuddy.exceptions
 
 class NoTestCoverageDataException : Exception()

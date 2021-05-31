@@ -1,6 +1,5 @@
 package com.testbuddy.models
 
-import com.testbuddy.com.testbuddy.models.TruthTable
 import org.junit.Test
 import kotlin.test.assertEquals
 

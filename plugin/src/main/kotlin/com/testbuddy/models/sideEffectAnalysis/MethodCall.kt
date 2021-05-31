@@ -1,8 +1,8 @@
-package com.testbuddy.com.testbuddy.models.sideEffectAnalysis
+package com.testbuddy.models.sideEffectAnalysis
 
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiReferenceExpression
-import com.testbuddy.com.testbuddy.utilities.StringFormatter
+import com.testbuddy.utilities.StringFormatter
 
 data class MethodCall(val name: String, val args: List<String>) {
 

@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.settings
+package com.testbuddy.settings
 
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager

@@ -1,12 +1,12 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.openapi.Disposable
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.models.TestClassData
-import com.testbuddy.com.testbuddy.models.TestMethodData
+import com.testbuddy.models.TestClassData
+import com.testbuddy.models.TestMethodData
 
 class LoadTestsService : Disposable {
 

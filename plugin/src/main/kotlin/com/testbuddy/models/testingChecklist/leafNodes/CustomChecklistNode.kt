@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes
+package com.testbuddy.models.testingChecklist.leafNodes
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
-import com.testbuddy.com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
+import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 
 class CustomChecklistNode(
     override var description: String,

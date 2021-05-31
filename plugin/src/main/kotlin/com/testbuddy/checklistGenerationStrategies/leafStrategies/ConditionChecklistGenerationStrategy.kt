@@ -1,11 +1,11 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies
+package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
 import com.intellij.psi.PsiExpression
-import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
-import com.testbuddy.com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.com.testbuddy.models.PropositionalExpression
-import com.testbuddy.com.testbuddy.models.TruthTable
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
+import com.testbuddy.models.PropositionalExpression
+import com.testbuddy.models.TruthTable
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
 import kotlin.math.pow
 
 class ConditionChecklistGenerationStrategy private constructor(

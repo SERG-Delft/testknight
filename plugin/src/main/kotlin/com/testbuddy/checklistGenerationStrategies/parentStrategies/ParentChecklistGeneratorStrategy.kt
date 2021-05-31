@@ -1,8 +1,8 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies
+package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
 import com.intellij.psi.PsiElement
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.ChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistParentNode
+import com.testbuddy.checklistGenerationStrategies.ChecklistGeneratorStrategy
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistParentNode
 
 interface ParentChecklistGeneratorStrategy<
     E : PsiElement,

@@ -1,7 +1,7 @@
-package com.testbuddy.com.testbuddy.extensions
+package com.testbuddy.extensions
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.settings.SettingsService
 
 open class TestBuddyTestCase : BasePlatformTestCase() {
 

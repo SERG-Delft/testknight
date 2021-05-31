@@ -1,11 +1,11 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
+package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiConditionalExpression
 import com.intellij.psi.PsiLiteralExpression
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.settings.SettingsService
 
 class ConditionalExpressionChecklistGenerationStrategy private constructor(
     private val conditionChecklistGenerator: ConditionChecklistGenerationStrategy

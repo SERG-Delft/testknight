@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.utilities
+package com.testbuddy.utilities
 
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -9,8 +9,8 @@ import com.intellij.psi.PsiManager
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
-import com.testbuddy.com.testbuddy.views.actions.testcases.ClearTestAction
-import com.testbuddy.com.testbuddy.views.actions.testcases.LoadTestAction
+import com.testbuddy.actions.testcases.ClearTestAction
+import com.testbuddy.actions.testcases.LoadTestAction
 import javax.swing.JTabbedPane
 import javax.swing.JViewport
 

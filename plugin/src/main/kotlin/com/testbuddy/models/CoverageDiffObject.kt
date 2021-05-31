@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.models
+package com.testbuddy.models
 
 class CoverageDiffObject(val allLines: Set<Int>, val coveredPrev: Set<Int>, val coveredNow: Set<Int>) {
 

@@ -5,8 +5,7 @@ import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.LineData
 import com.intellij.rt.coverage.data.ProjectData
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.CoverageDiffObject
-import com.testbuddy.com.testbuddy.services.CoverageDataService
+import com.testbuddy.models.CoverageDiffObject
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase

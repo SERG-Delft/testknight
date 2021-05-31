@@ -1,7 +1,6 @@
 package com.testbuddy.models
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.testbuddy.com.testbuddy.models.CoverageDiffObject
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

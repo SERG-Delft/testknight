@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.views
+package com.testbuddy.views
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -8,7 +8,7 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
-import com.testbuddy.com.testbuddy.services.CoverageDataService
+import com.testbuddy.services.CoverageDataService
 import org.jetbrains.annotations.NotNull
 
 class UserInterfaceFactory : ToolWindowFactory {

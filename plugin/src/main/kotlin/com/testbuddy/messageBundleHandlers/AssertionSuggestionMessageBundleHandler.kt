@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.messageBundleHandlers
+package com.testbuddy.messageBundleHandlers
 
 import com.intellij.AbstractBundle
 import org.jetbrains.annotations.NonNls

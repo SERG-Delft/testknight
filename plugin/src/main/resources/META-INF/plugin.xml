@@ -10,20 +10,20 @@
     <depends>Coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.LoadTestsService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.DuplicateTestsService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.MethodAnalyzerService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.GotoTestService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.AssertionSuggestionService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.CoverageDataService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.CoverageHighlighterService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.ChecklistTreeService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.TemplateCreationService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.TestAnalyzerService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.TestTracingService"/>
-        <projectService serviceImplementation="com.testbuddy.com.testbuddy.services.TestMethodGenerationService"/>
+        <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
+        <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
+        <projectService serviceImplementation="com.testbuddy.services.GotoTestService"/>
+        <projectService serviceImplementation="com.testbuddy.services.AssertionSuggestionService"/>
+        <projectService serviceImplementation="com.testbuddy.services.CoverageDataService"/>
+        <projectService serviceImplementation="com.testbuddy.services.CoverageHighlighterService"/>
+        <projectService serviceImplementation="com.testbuddy.services.ChecklistTreeService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TemplateCreationService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestTracingService"/>
+        <projectService serviceImplementation="com.testbuddy.services.TestMethodGenerationService"/>
 
-        <applicationService serviceImplementation="com.testbuddy.com.testbuddy.services.GenerateTestCaseChecklistService"/>
+        <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -31,13 +31,13 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <toolWindow id="TestBuddy" secondary="true" icon="AllIcons.General.Modified" anchor="right"
-                    factoryClass="com.testbuddy.com.testbuddy.views.UserInterfaceFactory"/>
+                    factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
 
         <!--        TestBuddy Settings-->
-        <applicationConfigurable parentId="tools" instance="com.testbuddy.com.testbuddy.settings.SettingsConfigurable"
+        <applicationConfigurable parentId="tools" instance="com.testbuddy.settings.SettingsConfigurable"
                                  id="SettingsConfigurable"
                                  displayName="TestBuddy"/>
-        <applicationService serviceImplementation="com.testbuddy.com.testbuddy.settings.SettingsService"/>
+        <applicationService serviceImplementation="com.testbuddy.settings.SettingsService"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -47,60 +47,60 @@
 
     <actions>
         <!---Actions in CopyPaste tab -->
-        <action id="LoadTestAction" class="com.testbuddy.com.testbuddy.views.actions.testcases.LoadTestAction"
+        <action id="LoadTestAction" class="com.testbuddy.actions.testcases.LoadTestAction"
                 text="Load Test Cases from Current File"
                 description="Loads all the test cases from the current open file in the editor"
                 icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="D" keymap="$default"/>
         </action>
-        <action id="ClearTestAction" class="com.testbuddy.com.testbuddy.views.actions.testcases.ClearTestAction"
+        <action id="ClearTestAction" class="com.testbuddy.actions.testcases.ClearTestAction"
                 text="Clear Test Cases UI"
                 description="Clears the tree which holds all the test case information."
                 icon="AllIcons.General.Remove">
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="D" keymap="$default"/>
         </action>
         <!---Actions in CheckList tab -->
-        <action id="ChecklistAction" class="com.testbuddy.com.testbuddy.views.actions.LoadChecklistAction"
+        <action id="ChecklistAction" class="com.testbuddy.actions.LoadChecklistAction"
                 text="Load Checklist for Class from Current File" description="Adds a new template test case."
                 icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="G" keymap="$default"/>
         </action>
-        <action id="ClearChecklistAction" class="com.testbuddy.com.testbuddy.views.actions.ClearChecklistAction"
+        <action id="ClearChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
                 text="Clear Checklist UI"
                 description="Clears the tree which holds all the checklist information."
                 icon="AllIcons.General.Remove">
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="G" keymap="$default"/>
         </action>
         <!---Actions for hotkeys-->
-        <action id="DuplicateTestAction" class="com.testbuddy.com.testbuddy.views.actions.testcases.DuplicateTestUnderCaretAction"
+        <action id="DuplicateTestAction" class="com.testbuddy.actions.testcases.DuplicateTestUnderCaretAction"
                 text="Duplicate Test Under Caret"
                 description="Duplicates the test under caret of the current open file">
             <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>
         </action>
-        <action id="GenerateChecklistAction" class="com.testbuddy.com.testbuddy.views.actions.GenerateChecklistUnderCaretAction"
+        <action id="GenerateChecklistAction" class="com.testbuddy.actions.GenerateChecklistUnderCaretAction"
                 text="Generate Checklist for Method/Class Under Caret"
                 description="Generates the checklist for the method/class under caret of the current open file.">
             <keyboard-shortcut first-keystroke="control shift G" keymap="$default"/>
         </action>
         <!---Actions in Coverage tab -->
-        <action id="LoadCoverageAction" class="com.testbuddy.com.testbuddy.views.actions.LoadCoverageAction"
+        <action id="LoadCoverageAction" class="com.testbuddy.actions.LoadCoverageAction"
                 text="Load Coverage" description="Adds the coverage statistics."
                 icon="AllIcons.Actions.Refresh">
         </action>
-        <action id="ShowCoverageDiffAction" class="com.testbuddy.com.testbuddy.views.actions.ShowCoverageDiffAction"
+        <action id="ShowCoverageDiffAction" class="com.testbuddy.actions.ShowCoverageDiffAction"
                 text="Show Diff View" description="Shows the difference in coverage in a diff view."
                 icon="AllIcons.Actions.Diff">
         </action>
-        <action id="ShowIntegratedView" class="com.testbuddy.com.testbuddy.views.actions.RefreshDiffHighlights"
+        <action id="ShowIntegratedView" class="com.testbuddy.actions.RefreshDiffHighlights"
                 text="Show Newly Covered Lines" description="Shows the coverage line markers in the editor."
                 icon="AllIcons.General.InspectionsEye">
         </action>
-        <action id="HideIntegratedView" class="com.testbuddy.com.testbuddy.views.actions.HideDiffCovHighlights"
+        <action id="HideIntegratedView" class="com.testbuddy.actions.HideDiffCovHighlights"
                 text="Hide Newly Covered Lines" description="Hides the coverage line markers in the editor."
                 icon="AllIcons.Diff.Remove">
         </action>
         <action id="com.testbuddy.HideTracedTestHighlightsAction"
-                class="com.testbuddy.com.testbuddy.views.actions.HideTracedTestHighlightsAction"
+                class="com.testbuddy.actions.HideTracedTestHighlightsAction"
                 text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
     </actions>
 
@@ -111,30 +111,30 @@
         </intentionAction>
 
         <intentionAction>
-            <className>com.testbuddy.com.testbuddy.views.actions.TraceTestAction</className>
+            <className>com.testbuddy.actions.TraceTestAction</className>
             <category>TestBuddy intentions</category>
         </intentionAction>
     </extensions>
 
     <actions>
-        <action id="TestAction" class="com.testbuddy.com.testbuddy.TestAction" text="Test Action"/>
+        <action id="TestAction" class="com.testbuddy.actions.TestAction" text="Test Action"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testbuddy.com.testbuddy.views.actions.ChecklistClassLineMarkerProvider"
+                                        implementationClass="com.testbuddy.actions.ChecklistClassLineMarkerProvider"
         />
 
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testbuddy.com.testbuddy.views.actions.ChecklistMethodLineMarkerProvider"
+                                        implementationClass="com.testbuddy.actions.ChecklistMethodLineMarkerProvider"
         />
 
     </extensions>
 
     <projectListeners>
-        <listener class="com.testbuddy.InitializationListener"
+        <listener class="com.testbuddy.listeners.InitializationListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
-        <listener class="com.testbuddy.com.testbuddy.views.listeners.FileEditorListener"
+        <listener class="com.testbuddy.listeners.FileEditorListener"
                   topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
     </projectListeners>
 

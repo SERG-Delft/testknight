@@ -1,6 +1,6 @@
-package com.testbuddy.com.testbuddy.models
+package com.testbuddy.models
 
-import com.testbuddy.models.TestingChecklistNode
+import com.testbuddy.models.testingChecklist.TestingChecklistNode
 
 /**
  * Custom user object which gets passed into checkListTree which contains useful information used by the renderer.

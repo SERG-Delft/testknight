@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.configurationStore.NOTIFICATION_GROUP_ID
 import com.intellij.coverage.CoverageDataManager
@@ -18,9 +18,9 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.ColorUtil
-import com.testbuddy.com.testbuddy.exceptions.NoTestCoverageDataException
-import com.testbuddy.com.testbuddy.models.TestCoverageData
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.exceptions.NoTestCoverageDataException
+import com.testbuddy.models.TestCoverageData
+import com.testbuddy.settings.SettingsService
 import java.io.DataInputStream
 import java.io.File
 import java.io.FileInputStream

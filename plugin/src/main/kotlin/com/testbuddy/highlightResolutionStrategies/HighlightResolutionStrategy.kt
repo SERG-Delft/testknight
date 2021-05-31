@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.highlightResolutionStrategies
+package com.testbuddy.highlightResolutionStrategies
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiMethod
-import com.testbuddy.com.testbuddy.models.HighlightedTextData
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.models.HighlightedTextData
+import com.testbuddy.settings.SettingsService
 
 interface HighlightResolutionStrategy {
 

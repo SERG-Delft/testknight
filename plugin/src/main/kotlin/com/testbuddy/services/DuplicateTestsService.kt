@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.openapi.components.service
@@ -9,10 +9,10 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.endOffset
-import com.testbuddy.com.testbuddy.highlightResolutionStrategies.AssertionArgsStrategy
-import com.testbuddy.com.testbuddy.highlightResolutionStrategies.ConstructorArgsStrategy
-import com.testbuddy.com.testbuddy.highlightResolutionStrategies.MagicNumberStrategy
-import com.testbuddy.com.testbuddy.models.HighlightedTextData
+import com.testbuddy.highlightResolutionStrategies.AssertionArgsStrategy
+import com.testbuddy.highlightResolutionStrategies.ConstructorArgsStrategy
+import com.testbuddy.highlightResolutionStrategies.MagicNumberStrategy
+import com.testbuddy.models.HighlightedTextData
 
 class DuplicateTestsService(project: Project) {
 

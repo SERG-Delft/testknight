@@ -1,12 +1,12 @@
-package com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
+package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiCatchSection
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
-import com.testbuddy.com.testbuddy.exceptions.InvalidConfigurationException
-import com.testbuddy.com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.TryStatementChecklistNode
+import com.testbuddy.checklistGenerationStrategies.leafStrategies.LeafChecklistGeneratorStrategy
+import com.testbuddy.exceptions.InvalidConfigurationException
+import com.testbuddy.messageBundleHandlers.TestingChecklistMessageBundleHandler
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.TryStatementChecklistNode
 
 class TryStatementChecklistGenerationStrategy private constructor(
     private val generationType: TryGenerationType

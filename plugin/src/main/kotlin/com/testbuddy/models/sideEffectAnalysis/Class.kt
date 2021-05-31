@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.models.sideEffectAnalysis
+package com.testbuddy.models.sideEffectAnalysis
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod

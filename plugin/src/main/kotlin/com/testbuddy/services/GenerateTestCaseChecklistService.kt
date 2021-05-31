@@ -1,12 +1,12 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.checklistGenerationStrategies.parentStrategies.ClassChecklistGenerationStrategy
+import com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 
 class GenerateTestCaseChecklistService {
 

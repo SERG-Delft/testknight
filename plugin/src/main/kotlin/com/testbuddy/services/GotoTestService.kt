@@ -1,9 +1,9 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ScrollType
 import com.intellij.refactoring.suggested.startOffset
-import com.testbuddy.com.testbuddy.models.TestMethodData
+import com.testbuddy.models.TestMethodData
 
 /**
  *  Centers user view to the specified method.

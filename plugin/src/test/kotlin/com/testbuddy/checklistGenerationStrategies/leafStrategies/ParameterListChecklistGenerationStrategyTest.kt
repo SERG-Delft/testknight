@@ -4,9 +4,8 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.leafStrategies.ParameterListChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.extensions
+package com.testbuddy.extensions
 
 import com.intellij.coverage.LineMarkerRendererWithErrorStripe
 import com.intellij.openapi.editor.Editor

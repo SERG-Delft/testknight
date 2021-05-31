@@ -1,4 +1,4 @@
-package com.testbuddy.com.testbuddy.services
+package com.testbuddy.services
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diff.DiffColors
@@ -8,8 +8,8 @@ import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.project.Project
 import com.intellij.ui.ColorUtil
-import com.testbuddy.com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
+import com.testbuddy.settings.SettingsService
 import java.awt.Color
 
 class CoverageHighlighterService(val project: Project) {

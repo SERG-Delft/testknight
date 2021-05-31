@@ -4,9 +4,8 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.services.GenerateTestCaseChecklistService
-import com.testbuddy.com.testbuddy.settings.SettingsService
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.settings.SettingsService
 import junit.framework.TestCase
 import org.junit.Test
 

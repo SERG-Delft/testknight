@@ -15,18 +15,17 @@ import com.intellij.psi.PsiSwitchStatement
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.testbuddy.com.testbuddy.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
-import com.testbuddy.com.testbuddy.extensions.TestBuddyTestCase
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.TryStatementChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.DoWhileStatementChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForEachStatementChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForLoopStatementChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.leafNodes.loopStatements.WhileStatementChecklistNode
-import com.testbuddy.com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.testingChecklist.leafNodes.ConditionChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.TryStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.DoWhileStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForEachStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForLoopStatementChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.WhileStatementChecklistNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import org.junit.Test
 
 internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestCase() {
