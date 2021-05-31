@@ -17,6 +17,8 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
+    // jacoco code coverage - read more: https://github.com/jacoco/jacoco
+    jacoco
 }
 
 group = properties("pluginGroup")
@@ -71,6 +73,14 @@ detekt {
         txt.enabled = false
     }
 }
+
+
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+}
+
+
 
 tasks {
     // Set the compatibility versions to 1.8
