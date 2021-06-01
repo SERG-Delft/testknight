@@ -7,7 +7,6 @@ that the user performed.
 | gotoTest             | The user used TestBuddy to quickly navigate to a test                                           |
 | suggestAssertion     | The user used TestBuddy to get assertion suggestions                                            |
 | generateChecklist    | The user used TestBuddy to generate a testing checklist                                         |
-| generateTestSkeleton | The user used TestBuddy to generate a test method skeleton                                      |
 | splitDiffView        | The user used TestBuddy to inspect how the coverage changed between two consecutive test runs.  |
 | integratedDiffView   | The user used TestBuddy to inspect how the coverage changed between two consecutive test runs.  |
 | traceTest            | The user used TestBuddy to inspect what specific lines a test covers                            |
