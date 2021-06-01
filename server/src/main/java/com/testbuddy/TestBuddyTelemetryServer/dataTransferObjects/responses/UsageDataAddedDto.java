@@ -5,6 +5,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddedUsageData {
+public class UsageDataAddedDto {
     private String message = "Successfully added usage data";
 }

@@ -9,7 +9,7 @@ import java.util.*;
 public class UsageDataDto {
 
     private String userId;
-    private ArrayList<ActionEventDto> actionsRecorded;
+    private List<ActionEventDto> actionsRecorded;
     private String hash;
 
 }
