@@ -41,12 +41,12 @@ test {
 
 checkstyle {
 	toolVersion "8.37"
-	configFile = file("/config/checkstyle/checkstyle.xml")
+	configFile = file("${rootDir}/server/config/checkstyle/checkstyle.xml")
 }
 
 pmd {
 	incrementalAnalysis = true
-	ruleSetFiles = files("/config/pmd/pmd.xml")
+	ruleSetFiles = files("${rootDir}/server/config/pmd/pmd.xml")
 	ruleSets = []
 }
 
