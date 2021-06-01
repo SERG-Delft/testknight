@@ -137,8 +137,8 @@
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
         <listener class="com.testbuddy.listeners.FileEditorListener"
                   topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
-        <listener class="com.testbuddy.listeners.TestResultLoggingListener"
-                  topic="com.intellij.execution.testframework.TestStatusListener"/>
+        <listener class="com.testbuddy.listeners.TestBuddyExecutionListener"
+                  topic="com.intellij.execution.ExecutionListener"/>
     </projectListeners>
 
 </idea-plugin>

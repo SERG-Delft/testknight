@@ -82,7 +82,7 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
 
                 if (editor != null) {
                     gotoTestService.gotoMethod(editor, reference)
-                    UsageDataService.instance.logDuplicateTest()
+                    UsageDataService.instance.logGotoTest()
                     return true
                 }
             }

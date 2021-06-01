@@ -15,7 +15,7 @@ class UsageDataService {
 
     private fun log(actionId: String) {
         actionsRecorded.add(ActionData(actionId))
-        println("Action $actionId")
+        println("Action $actionId has been executed")
     }
 
     fun logDuplicateTest() = log("duplicateTest")
