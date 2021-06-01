@@ -21,13 +21,10 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
     override fun actionPerformed(e: ActionEvent) {
 
         val service = project.service<ChecklistTreeService>()
-
-        if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Delete") {
-            deleteNode(service)
-        } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Generate Test Method") {
-            generateTestMethod()
-        } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Add item") {
-            addItem(service)
+        if (e.source is JBMenuItem) {
+            if ((e.source as JBMenuItem).text == "Delete") deleteNode(service)
+            if ((e.source as JBMenuItem).text == "Generate Test Method") generateTestMethod()
+            if ((e.source as JBMenuItem).text == "Add item") addItem(service)
         }
     }
 
