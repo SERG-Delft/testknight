@@ -2,8 +2,12 @@ package com.testbuddy.services
 
 import com.testbuddy.exceptions.InvalidActionIdException
 import com.testbuddy.models.ActionData
+import com.testbuddy.models.UsageData
+import java.util.UUID
 
 class UsageDataService {
+
+    val userId = UUID.randomUUID()
 
     private val actionIds = setOf(
         "duplicateTest",
@@ -34,5 +38,9 @@ class UsageDataService {
         actions.add(ActionData(actionId))
     } else {
         throw InvalidActionIdException(actionId)
+    }
+
+    fun constructUsageData(): UsageData {
+        return UsageData(actions)
     }
 }

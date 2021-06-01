@@ -1,6 +1,9 @@
 package com.testbuddy.actions
 
 import com.intellij.coverage.CoverageDataManager
+import com.intellij.ide.plugins.IdeaPluginDescriptor
+import com.intellij.ide.plugins.PluginInstaller
+import com.intellij.ide.plugins.PluginStateListener
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -12,6 +15,9 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.SwitchStatementChecklistNode
 import com.testbuddy.services.TestMethodGenerationService
+import com.testbuddy.settings.SettingsService
+import com.testbuddy.settings.SettingsState
+import java.util.UUID
 
 // Temporary Test Action for debug purposes
 class TestAction : AnAction() {
@@ -30,6 +36,6 @@ class TestAction : AnAction() {
         val fileEditorManager = FileEditorManager.getInstance(project)
         val service = project.service<TestMethodGenerationService>()
         val checklistItem = SwitchStatementChecklistNode("This is the description", psiFile, "var", null)
-        service.generateTestMethod(project, editor, checklistItem)
+        val settings = SettingsService.instance.state
     }
 }

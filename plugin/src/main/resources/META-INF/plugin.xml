@@ -24,6 +24,7 @@
         <projectService serviceImplementation="com.testbuddy.services.TestMethodGenerationService"/>
 
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
+        <applicationService serviceImplementation="com.testbuddy.services.UsageDataService"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -106,7 +107,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <intentionAction>
-            <className>com.testbuddy.com.testbuddy.views.actions.AssertionSuggestionsAction</className>
+            <className>com.testbuddy.actions.AssertionSuggestionsAction</className>
             <category>TestBuddy intentions</category>
         </intentionAction>
 
