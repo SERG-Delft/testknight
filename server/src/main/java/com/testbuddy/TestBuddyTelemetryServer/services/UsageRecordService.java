@@ -2,8 +2,8 @@ package com.testbuddy.TestBuddyTelemetryServer.services;
 
 import com.testbuddy.TestBuddyTelemetryServer.dataTransferObjects.requests.*;
 import com.testbuddy.TestBuddyTelemetryServer.dataTransferObjects.responses.*;
-import com.testbuddy.TestBuddyTelemetryServer.factories.*;
-import com.testbuddy.TestBuddyTelemetryServer.model.*;
+import com.testbuddy.TestBuddyTelemetryServer.domain.factories.*;
+import com.testbuddy.TestBuddyTelemetryServer.domain.model.*;
 import com.testbuddy.TestBuddyTelemetryServer.repositories.*;
 import com.testbuddy.TestBuddyTelemetryServer.security.*;
 import com.testbuddy.TestBuddyTelemetryServer.validation.*;

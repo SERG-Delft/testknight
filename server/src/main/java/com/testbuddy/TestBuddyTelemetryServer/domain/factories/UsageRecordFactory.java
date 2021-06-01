@@ -1,8 +1,8 @@
-package com.testbuddy.TestBuddyTelemetryServer.factories;
+package com.testbuddy.TestBuddyTelemetryServer.domain.factories;
 
 import com.testbuddy.TestBuddyTelemetryServer.dataTransferObjects.requests.*;
 import com.testbuddy.TestBuddyTelemetryServer.exceptions.*;
-import com.testbuddy.TestBuddyTelemetryServer.model.*;
+import com.testbuddy.TestBuddyTelemetryServer.domain.model.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
