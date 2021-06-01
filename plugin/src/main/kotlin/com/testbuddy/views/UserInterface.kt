@@ -8,7 +8,6 @@ import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.psi.PsiManager
-import com.intellij.ui.CheckboxTree
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
@@ -32,7 +31,6 @@ class UserInterface(val project: Project) {
 
     private var mainUI: JBTabbedPane? = null
     private var testCaseTree: Tree? = null
-    private var checkListTree: CheckboxTree? = null
 
     /**
      * Gets the component to be displayed on the tool window.
@@ -67,15 +65,15 @@ class UserInterface(val project: Project) {
         val checkListTree = service.getUiTree()
 
         // checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
-        val mouseListener = ChecklistMouseListener(checkListTree!!, project)
-        checkListTree!!.addMouseListener(mouseListener)
+        val mouseListener = ChecklistMouseListener(checkListTree, project)
+        checkListTree.addMouseListener(mouseListener)
 
-        checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
-        checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
-        checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
+        checkListTree.addCheckboxTreeListener(CheckedNodeListener())
+        checkListTree.addKeyListener(CheckListKeyboardListener(checkListTree))
+        checkListTree.addTreeSelectionListener(ChecklistSelectionListener(project))
 
-        checkListTree!!.cellEditor = ChecklistCellEditor()
-        checkListTree!!.isEditable = true
+        checkListTree.cellEditor = ChecklistCellEditor()
+        checkListTree.isEditable = true
 
         panel.setViewportView(checkListTree)
 

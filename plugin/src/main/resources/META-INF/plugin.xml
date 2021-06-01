@@ -24,6 +24,7 @@
         <projectService serviceImplementation="com.testbuddy.services.TestMethodGenerationService"/>
 
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
+        <applicationService serviceImplementation="com.testbuddy.services.ChecklistTreePersistent"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->

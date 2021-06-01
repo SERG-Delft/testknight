@@ -6,12 +6,15 @@ import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiType
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 import com.testbuddy.models.testingChecklist.TestingChecklistNode
+import com.testbuddy.utilities.PsiConverter
 
-abstract class TestingChecklistLeafNode(
-    open var description: String,
-    open val element: PsiElement?,
+open class TestingChecklistLeafNode(
+    open var description: String = "",
+    @OptionTag(converter = PsiConverter::class)
+    open var element: PsiElement? = null,
     override var checked: Int = 0
 ) : TestingChecklistNode() {
     /**
@@ -21,7 +24,11 @@ abstract class TestingChecklistLeafNode(
      * @param project the current project.
      * @return the PsiMethod representing the test.
      */
-    abstract fun generateTestMethod(project: Project): PsiMethod
+    open fun generateTestMethod(project: Project): PsiMethod {
+        val factory = JavaPsiFacade.getInstance(project).elementFactory
+        val method = factory.createMethod("methodName", PsiType.VOID)
+        return method
+    }
 
     /**
      * Generate a test method given a project and a name.
@@ -32,7 +39,7 @@ abstract class TestingChecklistLeafNode(
      * @param methodName the name of the method to generate.
      * @return the PsiMethod representing the test.
      */
-    protected fun generateTestMethod(project: Project, methodName: String): PsiMethod {
+    protected open fun generateTestMethod(project: Project, methodName: String): PsiMethod {
         val factory = JavaPsiFacade.getInstance(project).elementFactory
         val method = factory.createMethod(methodName, PsiType.VOID)
         val comment = factory.createDocCommentFromText(

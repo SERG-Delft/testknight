@@ -3,11 +3,14 @@ package com.testbuddy.models.testingChecklist.leafNodes
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
+import com.testbuddy.utilities.PsiConverter
 
 class CustomChecklistNode(
-    override var description: String,
-    override val element: PsiElement? = null,
+    override var description: String = "",
+    @OptionTag(converter = PsiConverter::class)
+    override var element: PsiElement? = null,
     override var checked: Int = 0
 ) : TestingChecklistLeafNode(description, element) {
     override fun generateTestMethod(project: Project): PsiMethod {
