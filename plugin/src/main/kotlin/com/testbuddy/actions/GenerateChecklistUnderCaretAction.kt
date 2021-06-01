@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
+import com.testbuddy.services.UsageDataService
 import com.testbuddy.utilities.UserInterfaceHelper
 
 class GenerateChecklistUnderCaretAction : AnAction() {
@@ -33,6 +34,7 @@ class GenerateChecklistUnderCaretAction : AnAction() {
         } else if (containingClass != null && checklistAction.actionPerformed(project, containingClass)) {
             UserInterfaceHelper.showTab(project, "Checklist")
         }
+        UsageDataService.instance.logGenerateChecklist()
     }
 
     /**

@@ -14,6 +14,7 @@ import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNo
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.GenerateTestCaseChecklistService
 import com.testbuddy.services.TestAnalyzerService
+import com.testbuddy.services.UsageDataService
 
 class LoadChecklistAction : AnAction() {
 
@@ -64,6 +65,7 @@ class LoadChecklistAction : AnAction() {
             checklistTreeService.addChecklist(checklistClassTree)
         }
 
+        UsageDataService.instance.logGenerateChecklist()
         return true
     }
 

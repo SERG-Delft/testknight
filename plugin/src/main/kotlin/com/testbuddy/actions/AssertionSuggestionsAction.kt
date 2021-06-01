@@ -12,6 +12,7 @@ import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.services.AssertionSuggestionService
 import com.testbuddy.services.TestAnalyzerService
+import com.testbuddy.services.UsageDataService
 
 /**
  * Implements an intention action to generate the assertions suggestions for the selected method call.
@@ -49,10 +50,6 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
      */
     override fun isAvailable(project: Project, editor: Editor, element: PsiElement): Boolean {
 
-        if (element == null) {
-            return false
-        }
-
         val parentMethod = PsiTreeUtil.getParentOfType(element, PsiMethod::class.java)
         val checkElement = PsiTreeUtil.getParentOfType(element, PsiMethodCallExpression::class.java)
         val testAnalyzerService = TestAnalyzerService()
@@ -79,6 +76,7 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
 
         val assertionsService = project.service<AssertionSuggestionService>()
         assertionsService.appendAssertionsAsComments(parentMethod!!, checkElement!!, project)
+        UsageDataService.instance.logAssertionSuggestion()
     }
 
     /**

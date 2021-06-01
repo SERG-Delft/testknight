@@ -1,46 +1,45 @@
 package com.testbuddy.services
 
-import com.testbuddy.exceptions.InvalidActionIdException
+import com.intellij.openapi.components.ServiceManager
 import com.testbuddy.models.ActionData
-import com.testbuddy.models.UsageData
-import java.util.UUID
 
+@Suppress("TooManyFunctions")
 class UsageDataService {
-
-    val userId = UUID.randomUUID()
-
-    private val actionIds = setOf(
-        "duplicateTest",
-        "gotoTest",
-        "suggestAssertion",
-        "generateChecklist",
-        "generateTestSkeleton",
-        "splitDiffView",
-        "integratedDiffView",
-        "traceTest",
-        "itemMarked",
-        "runWithCoverage",
-        "testRun",
-        "testFail",
-        "testAdd"
-    )
 
     private val actions = mutableListOf<ActionData>()
 
-    /**
-     * Logs an action given an actionId
-     *
-     * @param actionId the action ID
-     * @throws InvalidActionIdException
-     */
-    @Throws(InvalidActionIdException::class)
-    fun logAction(actionId: String) = if (actionIds.contains(actionId)) {
-        actions.add(ActionData(actionId))
-    } else {
-        throw InvalidActionIdException(actionId)
-    }
+    // a set of functions to log actions
 
-    fun constructUsageData(): UsageData {
-        return UsageData(actions)
+    fun logDuplicateTest() = actions.add(ActionData("duplicateTest"))
+
+    fun logGotoTest() = actions.add(ActionData("gotoTest"))
+
+    fun logAssertionSuggestion() = actions.add(ActionData("suggestAssertion"))
+
+    fun logGenerateChecklist() = actions.add(ActionData("generateChecklist"))
+
+    fun logSplitDiffView() = actions.add(ActionData("splitDiffView"))
+
+    fun logIntegratedDiffView() = actions.add(ActionData("integratedDiffView"))
+
+    fun logTraceTest() = actions.add(ActionData("traceTest"))
+
+    fun logGenerateTest() = actions.add(ActionData("generateTest"))
+
+    fun logItemMarked() = actions.add(ActionData("itemMarked"))
+
+    fun logItemDeleted() = actions.add(ActionData("itemDeleted"))
+
+    fun logRunWithCoverage() = actions.add(ActionData("runWithCoverage"))
+
+    fun logTestRun() = actions.add(ActionData("testRun"))
+
+    fun logTestFail() = actions.add(ActionData("testFail"))
+
+    fun logTestAdd() = actions.add(ActionData("testAdd"))
+
+    companion object {
+        val instance: UsageDataService
+            get() = ServiceManager.getService(UsageDataService::class.java)
     }
 }

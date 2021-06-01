@@ -18,6 +18,7 @@ import com.intellij.refactoring.suggested.startOffset
 import com.testbuddy.exceptions.NoTestCoverageDataException
 import com.testbuddy.services.TestAnalyzerService
 import com.testbuddy.services.TestTracingService
+import com.testbuddy.services.UsageDataService
 
 class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction {
 
@@ -70,5 +71,6 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction {
 
         // open method declaration
         fileEditorManager.openTextEditor(descriptor, true)
+        UsageDataService.instance.logTraceTest()
     }
 }

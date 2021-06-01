@@ -7,6 +7,7 @@ import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService
+import com.testbuddy.services.UsageDataService
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import java.awt.Point
 import java.awt.Rectangle
@@ -73,6 +74,7 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
                 val duplicateTestsService = project!!.service<DuplicateTestsService>()
                 if (editor != null) {
                     duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
+                    UsageDataService.instance.logDuplicateTest()
                     return true
                 }
             } else if (gotoBounds.contains(e.point)) {
@@ -80,6 +82,7 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
 
                 if (editor != null) {
                     gotoTestService.gotoMethod(editor, reference)
+                    UsageDataService.instance.logDuplicateTest()
                     return true
                 }
             }
