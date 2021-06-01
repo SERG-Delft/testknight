@@ -1,8 +1,10 @@
 package com.testbuddy.models
 
 import com.testbuddy.settings.SettingsService
+import kotlinx.serialization.Serializable
 
-class UsageData(val actionsRecorded: List<ActionData>) {
+@Serializable
+data class UsageData(val actionsRecorded: List<ActionData>) {
     val userId = SettingsService.instance.state.userId
     val hash: String = "TODO"
 }

@@ -2,41 +2,49 @@ package com.testbuddy.services
 
 import com.intellij.openapi.components.ServiceManager
 import com.testbuddy.models.ActionData
+import com.testbuddy.models.UsageData
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Suppress("TooManyFunctions")
 class UsageDataService {
 
-    private val actions = mutableListOf<ActionData>()
+    private val actionsRecorded = mutableListOf<ActionData>()
 
     // a set of functions to log actions
 
-    fun logDuplicateTest() = actions.add(ActionData("duplicateTest"))
+    fun logDuplicateTest() = actionsRecorded.add(ActionData("duplicateTest"))
 
-    fun logGotoTest() = actions.add(ActionData("gotoTest"))
+    fun logGotoTest() = actionsRecorded.add(ActionData("gotoTest"))
 
-    fun logAssertionSuggestion() = actions.add(ActionData("suggestAssertion"))
+    fun logAssertionSuggestion() = actionsRecorded.add(ActionData("suggestAssertion"))
 
-    fun logGenerateChecklist() = actions.add(ActionData("generateChecklist"))
+    fun logGenerateChecklist() = actionsRecorded.add(ActionData("generateChecklist"))
 
-    fun logSplitDiffView() = actions.add(ActionData("splitDiffView"))
+    fun logSplitDiffView() = actionsRecorded.add(ActionData("splitDiffView"))
 
-    fun logIntegratedDiffView() = actions.add(ActionData("integratedDiffView"))
+    fun logIntegratedDiffView() = actionsRecorded.add(ActionData("integratedDiffView"))
 
-    fun logTraceTest() = actions.add(ActionData("traceTest"))
+    fun logTraceTest() = actionsRecorded.add(ActionData("traceTest"))
 
-    fun logGenerateTest() = actions.add(ActionData("generateTest"))
+    fun logGenerateTest() = actionsRecorded.add(ActionData("generateTest"))
 
-    fun logItemMarked() = actions.add(ActionData("itemMarked"))
+    fun logItemMarked() = actionsRecorded.add(ActionData("itemMarked"))
 
-    fun logItemDeleted() = actions.add(ActionData("itemDeleted"))
+    fun logItemDeleted() = actionsRecorded.add(ActionData("itemDeleted"))
 
-    fun logRunWithCoverage() = actions.add(ActionData("runWithCoverage"))
+    fun logRunWithCoverage() = actionsRecorded.add(ActionData("runWithCoverage"))
 
-    fun logTestRun() = actions.add(ActionData("testRun"))
+    fun logTestRun() = actionsRecorded.add(ActionData("testRun"))
 
-    fun logTestFail() = actions.add(ActionData("testFail"))
+    fun logTestFail() = actionsRecorded.add(ActionData("testFail"))
 
-    fun logTestAdd() = actions.add(ActionData("testAdd"))
+    fun logTestAdd() = actionsRecorded.add(ActionData("testAdd"))
+
+    /**
+     * @return the current usage data.
+     */
+    fun usageDataJson() = Json.encodeToString(UsageData(actionsRecorded))
 
     companion object {
         val instance: UsageDataService
