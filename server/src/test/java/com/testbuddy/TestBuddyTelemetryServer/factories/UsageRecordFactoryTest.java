@@ -14,22 +14,22 @@ class UsageRecordFactoryTest {
     private final UsageRecordFactory usageRecordFactory = new UsageRecordFactory();
 
     private UsageDataDto usageDataDto;
-    private final String USER_ID = "userId";
-    private final LocalDateTime TIME = LocalDateTime.now();
-    private final String HASH = "hash";
-    private final String ACTION_ID = "testAdd";
+    private final String userId = "userId";
+    private final LocalDateTime time = LocalDateTime.now();
+    private final String hash = "hash";
+    private final String actionId = "testAdd";
 
     @BeforeEach
     public void setup() {
-        ActionEventDto actionEventDto = new ActionEventDto(ACTION_ID, TIME);
+        ActionEventDto actionEventDto = new ActionEventDto(actionId, time);
         List<ActionEventDto> actionEventDtoList = new ArrayList<>();
         actionEventDtoList.add(actionEventDto);
-        usageDataDto = new UsageDataDto(USER_ID, actionEventDtoList, HASH);
+        usageDataDto = new UsageDataDto(userId, actionEventDtoList, hash);
     }
 
     @Test
     public void testCreateFromDto() {
-        UsageRecord expected = new UsageRecord(USER_ID, new Action(ACTION_ID), TIME);
+        UsageRecord expected = new UsageRecord(userId, new Action(actionId), time);
         UsageRecord actual = usageRecordFactory.createUsageRecordFromDto(usageDataDto).get(0);
         assertEquals(expected, actual);
     }

@@ -3,8 +3,6 @@ package com.testbuddy.TestBuddyTelemetryServer.controllers;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.*;
 import com.testbuddy.TestBuddyTelemetryServer.dataTransferObjects.requests.*;
-import com.testbuddy.TestBuddyTelemetryServer.model.*;
-import com.testbuddy.TestBuddyTelemetryServer.repositories.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
@@ -26,25 +24,27 @@ class UsageDataControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final String PATH = "/usagedata";
-    private final String USER_ID = "123e4567-e89b-12d3-a456-426614174000";
-    private final String ACTION_ID = "testAdd";
-    private final LocalDateTime TIME = LocalDateTime.now();
-    private final String HASH = "79054025255fb1a26e4bc422aef54eb4";
+    private final String path = "/usagedata";
+    private final String userId = "123e4567-e89b-12d3-a456-426614174000";
+    private final String actionId = "testAdd";
+    private final LocalDateTime time = LocalDateTime.now();
+    private final String hash = "79054025255fb1a26e4bc422aef54eb4";
 
     private UsageDataDto usageDataDto;
 
     @BeforeEach
     public void setup() {
-        ActionEventDto actionEventDto = new ActionEventDto(ACTION_ID, TIME);
+        ActionEventDto actionEventDto = new ActionEventDto(actionId, time);
         List<ActionEventDto> actionEventDtoList = new ArrayList<>();
         actionEventDtoList.add(actionEventDto);
-        usageDataDto = new UsageDataDto(USER_ID, actionEventDtoList, HASH);
+        usageDataDto = new UsageDataDto(userId, actionEventDtoList, hash);
     }
 
+    //suppressed because PMD does not recognise the mockMvc assertion
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     @Test
     public void testSuccessfulRequest() throws Exception {
-        performRequest(PATH, usageDataDto, status().isOk());
+        performRequest(path, usageDataDto, status().isOk());
     }
 
     /**
