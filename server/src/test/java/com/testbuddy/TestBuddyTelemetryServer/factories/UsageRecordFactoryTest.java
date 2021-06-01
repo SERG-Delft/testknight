@@ -29,7 +29,7 @@ class UsageRecordFactoryTest {
 
     @Test
     public void testCreateFromDto() {
-        UsageRecord expected = new UsageRecord(USER_ID, ACTION_ID, TIME);
+        UsageRecord expected = new UsageRecord(USER_ID, new Action(ACTION_ID), TIME);
         UsageRecord actual = usageRecordFactory.createUsageRecordFromDto(usageDataDto).get(0);
         assertEquals(expected, actual);
     }

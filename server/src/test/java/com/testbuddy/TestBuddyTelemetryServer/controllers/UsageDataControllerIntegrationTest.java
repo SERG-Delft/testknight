@@ -3,6 +3,8 @@ package com.testbuddy.TestBuddyTelemetryServer.controllers;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.*;
 import com.testbuddy.TestBuddyTelemetryServer.dataTransferObjects.requests.*;
+import com.testbuddy.TestBuddyTelemetryServer.model.*;
+import com.testbuddy.TestBuddyTelemetryServer.repositories.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.*;
@@ -14,7 +16,6 @@ import java.io.*;
 import java.time.*;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

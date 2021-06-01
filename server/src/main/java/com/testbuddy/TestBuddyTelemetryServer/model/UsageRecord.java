@@ -9,24 +9,24 @@ import java.time.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="usageRecords")
+@Table(name = "USAGE_RECORDS")
 public class UsageRecord {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="userId")
+    @Column(name = "user_Id")
     private String userId;
 
-    @Column(name="actionId")
-    private String actionId;
+    @ManyToOne
+    private Action actionId;
 
-    @Column(name="dateTime")
+    @Column(name = "datetime")
     private LocalDateTime dateTime;
 
-    public UsageRecord(String userId, String actionId, LocalDateTime dateTime) {
+    public UsageRecord(String userId, Action actionId, LocalDateTime dateTime) {
         this.userId = userId;
         this.actionId = actionId;
         this.dateTime = dateTime;

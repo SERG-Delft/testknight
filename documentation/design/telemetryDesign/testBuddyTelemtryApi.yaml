@@ -31,7 +31,7 @@ paths:
                       actionId:
                         type: string
                         example: "testAdd"
-                      datetime:
+                      dateTime:
                         type: string
                         format: date-time
                         example: "2021-12-03T10:15:30"

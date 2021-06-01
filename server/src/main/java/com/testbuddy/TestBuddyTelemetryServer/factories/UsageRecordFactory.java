@@ -18,7 +18,13 @@ public class UsageRecordFactory {
     public List<UsageRecord> createUsageRecordFromDto(UsageDataDto usageDataDto) {
         ArrayList<UsageRecord> usageRecords = new ArrayList<>();
         for (ActionEventDto actionEventDto : usageDataDto.getActionsRecorded()) {
-            usageRecords.add(new UsageRecord(usageDataDto.getUserId(), actionEventDto.getActionId(), actionEventDto.getDateTime()));
+            usageRecords.add(
+                    new UsageRecord(
+                            usageDataDto.getUserId(),
+                            new Action(actionEventDto.getActionId()),
+                            actionEventDto.getDateTime()
+                    )
+            );
         }
         return usageRecords;
     }
