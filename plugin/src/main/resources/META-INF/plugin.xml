@@ -25,6 +25,8 @@
 
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <applicationService serviceImplementation="com.testbuddy.services.UsageDataService"/>
+        
+        <testStatusListener implementation="com.testbuddy.listeners.TestLoggingListener"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
