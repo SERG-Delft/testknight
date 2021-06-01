@@ -1,27 +1,2 @@
-image: gradle:6.7-jdk15
-
-stages:
-  - build
-  - staticAnalysis
-  - test
-
-build:
-  stage: build
-  script:
-    gradle build
-
-detekt:
-  stage: staticAnalysis
-  script:
-    gradle detekt
-
-code_style:
-  stage: staticAnalysis
-  script:
-    gradle ktlintCheck
-
-test:
-  stage: test
-  script:
-    gradle test
-
+include:
+  - plugin/.gitlab-ci.yml
