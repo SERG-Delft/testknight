@@ -8,18 +8,17 @@ stages:
 build:
   stage: build
   script:
-    - gradle assemble
-    - gradle testClasses
+    gradle assemble
 
-detekt:
+checkStyle:
   stage: staticAnalysis
   script:
-    gradle detekt
+    gradle checkstyleMain
 
-code_style:
+PMD:
   stage: staticAnalysis
   script:
-    gradle ktlintCheck
+    gradle pmdMain
 
 test:
   stage: test
