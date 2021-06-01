@@ -31,6 +31,11 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
         }
     }
 
+    /**
+     * Add a new checklist item.
+     *
+     * @param service ChecklistTreeService which will add the item to the ChecklistTree
+     */
     private fun addItem(service: ChecklistTreeService) {
 
         val newItem = CustomChecklistNode("", null, 0)
@@ -64,6 +69,11 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
         service.addChecklist(classNode)
     }
 
+    /**
+     * Delete a node from the tree.
+     *
+     * @param service ChecklistTreeService which will delete the node from the ChecklistTree
+     */
     private fun deleteNode(service: ChecklistTreeService) {
         if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistClassNode) {
 
