@@ -18,7 +18,7 @@ public class UsageDataController {
     }
 
     @PostMapping
-    public UsageDataAddedDto addUsageData(UsageDataDto usageData) {
+    public UsageDataAddedDto addUsageData(@RequestBody UsageDataDto usageData) {
         return usageDataService.persistUsageData(usageData);
     }
 
