@@ -111,7 +111,8 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
      * @param psiElement the psiElement we want to check.
      * @return true if psiElement is in the editor, false otherwise.
      */
-    private fun isElementInEditor(editor: Editor, psiElement: PsiElement): Boolean {
+    private fun isElementInEditor(editor: Editor, psiElement: PsiElement?): Boolean {
+        if (psiElement == null) return false
         val elementFile = psiElement.containingFile.virtualFile ?: return false
         val editorFile = FileDocumentManager.getInstance().getFile(editor.document)
         return elementFile == editorFile

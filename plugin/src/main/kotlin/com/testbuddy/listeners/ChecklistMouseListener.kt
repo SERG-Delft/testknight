@@ -34,11 +34,16 @@ class ChecklistMouseListener(private val tree: Tree, private val project: Projec
 
             if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistLeafNode) {
                 val edit = JBMenuItem("Edit")
+                val generate = JBMenuItem("Generate Test Method")
+
+                generate.addActionListener(ModifyChecklistAction(node, project))
 
                 edit.addActionListener {
                     it.apply { tree.startEditingAtPath(path) }
                 }
+
                 menu.add(edit)
+                menu.add(generate)
             } else if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
                 val addItem = JBMenuItem("Add item")
                 addItem.addActionListener(ModifyChecklistAction(node, project))
