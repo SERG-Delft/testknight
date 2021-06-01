@@ -13,33 +13,38 @@ class UsageDataService {
 
     // a set of functions to log actions
 
-    fun logDuplicateTest() = actionsRecorded.add(ActionData("duplicateTest"))
+    private fun log(actionId: String) {
+        actionsRecorded.add(ActionData(actionId))
+        println("Action $actionId")
+    }
 
-    fun logGotoTest() = actionsRecorded.add(ActionData("gotoTest"))
+    fun logDuplicateTest() = log("duplicateTest")
 
-    fun logAssertionSuggestion() = actionsRecorded.add(ActionData("suggestAssertion"))
+    fun logGotoTest() = log("gotoTest")
 
-    fun logGenerateChecklist() = actionsRecorded.add(ActionData("generateChecklist"))
+    fun logAssertionSuggestion() = log("suggestAssertion")
 
-    fun logSplitDiffView() = actionsRecorded.add(ActionData("splitDiffView"))
+    fun logGenerateChecklist() = log("generateChecklist")
 
-    fun logIntegratedDiffView() = actionsRecorded.add(ActionData("integratedDiffView"))
+    fun logSplitDiffView() = log("splitDiffView")
 
-    fun logTraceTest() = actionsRecorded.add(ActionData("traceTest"))
+    fun logIntegratedDiffView() = log("integratedDiffView")
 
-    fun logGenerateTest() = actionsRecorded.add(ActionData("generateTest"))
+    fun logTraceTest() = log("traceTest")
 
-    fun logItemMarked() = actionsRecorded.add(ActionData("itemMarked"))
+    fun logGenerateTest() = log("generateTest")
 
-    fun logItemDeleted() = actionsRecorded.add(ActionData("itemDeleted"))
+    fun logItemMarked() = log("itemMarked")
 
-    fun logRunWithCoverage() = actionsRecorded.add(ActionData("runWithCoverage"))
+    fun logItemDeleted() = log("itemDeleted")
 
-    fun logTestRun() = actionsRecorded.add(ActionData("testRun"))
+    fun logRunWithCoverage() = log("runWithCoverage")
 
-    fun logTestFail() = actionsRecorded.add(ActionData("testFail"))
+    fun logTestRun() = log("testRun")
 
-    fun logTestAdd() = actionsRecorded.add(ActionData("testAdd"))
+    fun logTestFail() = log("testFail")
+
+    fun logTestAdd() = log("testAdd")
 
     /**
      * @return the current usage data.
