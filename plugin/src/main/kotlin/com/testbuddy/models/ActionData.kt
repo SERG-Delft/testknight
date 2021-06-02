@@ -6,5 +6,9 @@ import java.time.format.DateTimeFormatter
 
 @Serializable
 data class ActionData(val actionId: String) {
-    val datetime: String = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
+    private val dateTime: String = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
+
+    fun toHashString(): String {
+        return actionId + dateTime
+    }
 }

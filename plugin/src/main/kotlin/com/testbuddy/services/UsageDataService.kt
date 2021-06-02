@@ -1,12 +1,11 @@
 package com.testbuddy.services
 
+import com.google.gson.Gson
 import com.intellij.execution.testframework.AbstractTestProxy
 import com.intellij.openapi.components.ServiceManager
 import com.testbuddy.models.ActionData
 import com.testbuddy.models.UsageData
 import com.testbuddy.settings.SettingsService
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Suppress("TooManyFunctions")
 class UsageDataService {
@@ -93,7 +92,9 @@ class UsageDataService {
      *
      * @return the current usage data.
      */
-    fun usageDataJson() = Json.encodeToString(UsageData(actionsRecorded))
+    fun usageDataJson() = Gson().toJson(UsageData(actionsRecorded))
+
+    fun usageData() = UsageData(actionsRecorded)
 
     companion object {
         val instance: UsageDataService
