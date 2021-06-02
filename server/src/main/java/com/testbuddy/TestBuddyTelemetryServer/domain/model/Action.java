@@ -1,4 +1,4 @@
-package com.testbuddy.TestBuddyTelemetryServer.model;
+package com.testbuddy.TestBuddyTelemetryServer.domain.model;
 
 import lombok.*;
 
