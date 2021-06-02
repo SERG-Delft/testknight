@@ -63,9 +63,9 @@ class LoadChecklistAction : AnAction() {
 
         if (checklistClassTree != null) {
             checklistTreeService.addChecklist(checklistClassTree)
+            UsageDataService.instance.logGenerateChecklist()
         }
 
-        UsageDataService.instance.logGenerateChecklist()
         return true
     }
 

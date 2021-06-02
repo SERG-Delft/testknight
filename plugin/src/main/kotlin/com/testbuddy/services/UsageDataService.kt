@@ -78,7 +78,7 @@ class UsageDataService {
                 // log test failures
                 if (!test.isPassed) logTestFail()
 
-                val hash = test.locationUrl.hashCode()
+                val hash = "${test.locationUrl}${test.name}".hashCode()
 
                 if (!knownTests.contains(hash)) {
                     instance.logTestAdd()
