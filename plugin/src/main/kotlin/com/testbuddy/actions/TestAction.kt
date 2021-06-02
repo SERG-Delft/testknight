@@ -1,7 +1,5 @@
 package com.testbuddy.actions
 
-import com.github.kittinunf.fuel.core.extensions.jsonBody
-import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.openapi.actionSystem.AnAction
@@ -36,16 +34,7 @@ class TestAction : AnAction() {
         val service = project.service<TestMethodGenerationService>()
         val checklistItem = SwitchStatementChecklistNode("This is the description", psiFile, "var", null)
         val settings = SettingsService.instance.state
-        val usageData = UsageDataService.instance.usageData()
+        val usageData = UsageDataService.instance
         val usageDataJson = Gson().toJson(usageData)
-
-        val (req, response, result) = "http://localhost:8080/usagedata"
-            .httpPost()
-            .jsonBody(usageDataJson)
-            .responseString()
-
-        println("REQ $req")
-        println("RES $response")
-        println("RES $result")
     }
 }

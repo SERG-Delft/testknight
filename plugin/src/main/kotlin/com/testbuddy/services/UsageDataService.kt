@@ -25,13 +25,15 @@ class UsageDataService {
 
     private val serverUrl = ServerMessageBundleHandler.message("serverUrl")
 
+    private fun telemetryEnabled() = SettingsService.instance.state.telemetrySettings.isEnabled
+
     /**
      * Add the action with the provided actionId to the log. Only runs if telemetry is enabled
      *
      * @param actionId the action id
      */
     private fun log(actionId: String) {
-        if (SettingsService.instance.state.telemetrySettings.isEnabled) {
+        if (telemetryEnabled()) {
             actionsRecorded.add(ActionData(actionId))
             println("Action $actionId has been executed")
         }

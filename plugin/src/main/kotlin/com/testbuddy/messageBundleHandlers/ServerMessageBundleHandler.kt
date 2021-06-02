@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
 @NonNls
-private const val BUNDLE = "messages.ServerBundle.properties"
+private const val BUNDLE = "messages.ServerBundle"
 
 object ServerMessageBundleHandler : AbstractBundle(BUNDLE) {
 
