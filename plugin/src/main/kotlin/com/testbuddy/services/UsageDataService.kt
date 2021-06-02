@@ -1,5 +1,6 @@
 package com.testbuddy.services
 
+import com.intellij.execution.testframework.AbstractTestProxy
 import com.intellij.openapi.components.ServiceManager
 import com.testbuddy.models.ActionData
 import com.testbuddy.models.UsageData
@@ -9,14 +10,27 @@ import kotlinx.serialization.json.Json
 @Suppress("TooManyFunctions")
 class UsageDataService {
 
+    /**
+     * List of recorded actions.
+     */
     private val actionsRecorded = mutableListOf<ActionData>()
 
-    // a set of functions to log actions
+    /**
+     * A set of hashes of the known tests. Used to detect new tests.
+     */
+    private val knownTests = HashSet<Int>()
 
+    /**
+     * Add the action with the provided actionId to the log.
+     *
+     * @param actionId the action id
+     */
     private fun log(actionId: String) {
         actionsRecorded.add(ActionData(actionId))
         println("Action $actionId has been executed")
     }
+
+    // a set of functions to log actions
 
     fun logDuplicateTest() = log("duplicateTest")
 
@@ -47,6 +61,33 @@ class UsageDataService {
     fun logTestAdd() = log("testAdd")
 
     /**
+     * For each test check if it is known, if not mark it as known and log a test add.
+     *
+     * @param root the test proxy
+     */
+    fun logTests(root: AbstractTestProxy) {
+        for (test in root.allTests) {
+            if (test.isLeaf) {
+
+                // log test runs
+                logTestRun()
+
+                // log test failures
+                if (!test.isPassed) logTestFail()
+
+                val hash = test.locationUrl.hashCode()
+
+                if (!knownTests.contains(hash)) {
+                    instance.logTestAdd()
+                    knownTests.add(hash)
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the usage data in JSON format.
+     *
      * @return the current usage data.
      */
     fun usageDataJson() = Json.encodeToString(UsageData(actionsRecorded))
