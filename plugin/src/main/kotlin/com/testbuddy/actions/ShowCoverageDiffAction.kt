@@ -13,6 +13,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.components.JBScrollPane
 import com.testbuddy.services.CoverageDataService
 import com.testbuddy.services.CoverageHighlighterService
+import com.testbuddy.services.UsageDataService
 
 class ShowCoverageDiffAction : AnAction() {
 
@@ -53,6 +54,7 @@ class ShowCoverageDiffAction : AnAction() {
             .build()
 
         windowWrapper.show()
+        UsageDataService.instance.logSplitDiffView()
     }
 
     /**

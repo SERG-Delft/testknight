@@ -13,6 +13,7 @@ import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNo
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.TestMethodGenerationService
+import com.testbuddy.services.UsageDataService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 
@@ -89,6 +90,7 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
                 ((node.parent.parent as CheckedTreeNode).userObject as ChecklistUserObject)
                     .checklistNode as TestingChecklistClassNode
             )
+            UsageDataService.instance.logItemDeleted()
         }
     }
 
@@ -106,5 +108,6 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
             (node.userObject as ChecklistUserObject)
                 .checklistNode as TestingChecklistLeafNode
         )
+        UsageDataService.instance.logGenerateTest()
     }
 }
