@@ -4,6 +4,7 @@ import com.intellij.execution.testframework.AbstractTestProxy
 import com.intellij.openapi.components.ServiceManager
 import com.testbuddy.models.ActionData
 import com.testbuddy.models.UsageData
+import com.testbuddy.settings.SettingsService
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -21,13 +22,15 @@ class UsageDataService {
     private val knownTests = HashSet<Int>()
 
     /**
-     * Add the action with the provided actionId to the log.
+     * Add the action with the provided actionId to the log. Only runs if telemetry is enabled
      *
      * @param actionId the action id
      */
     private fun log(actionId: String) {
-        actionsRecorded.add(ActionData(actionId))
-        println("Action $actionId has been executed")
+        if (SettingsService.instance.state.telemetrySettings.isEnabled) {
+            actionsRecorded.add(ActionData(actionId))
+            println("Action $actionId has been executed")
+        }
     }
 
     // a set of functions to log actions
