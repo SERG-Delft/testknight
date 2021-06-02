@@ -1,8 +1,11 @@
 package com.testbuddy.services
 
+import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
 import com.intellij.execution.testframework.AbstractTestProxy
 import com.intellij.openapi.components.ServiceManager
+import com.testbuddy.messageBundleHandlers.ServerMessageBundleHandler
 import com.testbuddy.models.ActionData
 import com.testbuddy.models.UsageData
 import com.testbuddy.settings.SettingsService
@@ -19,6 +22,8 @@ class UsageDataService {
      * A set of hashes of the known tests. Used to detect new tests.
      */
     private val knownTests = HashSet<Int>()
+
+    private val serverUrl = ServerMessageBundleHandler.message("serverUrl")
 
     /**
      * Add the action with the provided actionId to the log. Only runs if telemetry is enabled
@@ -56,11 +61,11 @@ class UsageDataService {
 
     fun logRunWithCoverage() = log("runWithCoverage")
 
-    fun logTestRun() = log("testRun")
+    private fun logTestRun() = log("testRun")
 
-    fun logTestFail() = log("testFail")
+    private fun logTestFail() = log("testFail")
 
-    fun logTestAdd() = log("testAdd")
+    private fun logTestAdd() = log("testAdd")
 
     /**
      * For each test check if it is known, if not mark it as known and log a test add.
@@ -92,9 +97,22 @@ class UsageDataService {
      *
      * @return the current usage data.
      */
-    fun usageDataJson() = Gson().toJson(UsageData(actionsRecorded))
+    private fun usageDataJson() = Gson().toJson(usageData())
 
-    fun usageData() = UsageData(actionsRecorded)
+    /**
+     * Get the usage data instance
+     *
+     * @return the UsageDataInstance
+     */
+    private fun usageData() = UsageData(actionsRecorded)
+
+    /**
+     * Send the user data to the server in the form of an HTTP Post request
+     */
+    fun sendUserData() = "http://$serverUrl/usagedata"
+        .httpPost()
+        .jsonBody(usageDataJson())
+        .responseString()
 
     companion object {
         val instance: UsageDataService
