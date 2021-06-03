@@ -37,10 +37,7 @@ class ChecklistTreeService {
 
     fun initUiTree() {
 
-        //  dataTree.toString().toByte()
-
         dataTree = ChecklistTreePersistent.instance.state
-//        dataTree = TestingChecklist(mutableListOf())
         val root = CheckedTreeNode("root")
         uiTree = CheckboxTree(ChecklistCellRenderer(true), root)
         val uiTreeRoot = uiTree.model.root as CheckedTreeNode

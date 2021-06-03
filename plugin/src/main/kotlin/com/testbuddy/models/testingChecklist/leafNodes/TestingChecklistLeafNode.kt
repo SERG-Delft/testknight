@@ -11,7 +11,7 @@ import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHand
 import com.testbuddy.models.testingChecklist.TestingChecklistNode
 import com.testbuddy.utilities.PsiConverter
 
-open class TestingChecklistLeafNode(
+abstract class TestingChecklistLeafNode(
     open var description: String = "",
     @OptionTag(converter = PsiConverter::class)
     open var element: PsiElement? = null,
@@ -24,11 +24,7 @@ open class TestingChecklistLeafNode(
      * @param project the current project.
      * @return the PsiMethod representing the test.
      */
-    open fun generateTestMethod(project: Project): PsiMethod {
-        val factory = JavaPsiFacade.getInstance(project).elementFactory
-        val method = factory.createMethod("methodName", PsiType.VOID)
-        return method
-    }
+    abstract fun generateTestMethod(project: Project): PsiMethod
 
     /**
      * Generate a test method given a project and a name.
@@ -39,7 +35,7 @@ open class TestingChecklistLeafNode(
      * @param methodName the name of the method to generate.
      * @return the PsiMethod representing the test.
      */
-    protected open fun generateTestMethod(project: Project, methodName: String): PsiMethod {
+    protected fun generateTestMethod(project: Project, methodName: String): PsiMethod {
         val factory = JavaPsiFacade.getInstance(project).elementFactory
         val method = factory.createMethod(methodName, PsiType.VOID)
         val comment = factory.createDocCommentFromText(
