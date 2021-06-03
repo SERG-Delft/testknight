@@ -113,9 +113,11 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
      * @param psiElement the psiElement we want to check.
      * @return true if psiElement is in the editor, false otherwise.
      */
-    private fun isElementInEditor(editor: Editor, psiElement: PsiElement): Boolean {
-        lateinit var elementFile: VirtualFile
+    private fun isElementInEditor(editor: Editor, psiElement: PsiElement?): Boolean {
+        if (psiElement == null) { return false }
 
+        lateinit var elementFile: VirtualFile
+        
         try {
             elementFile = psiElement.containingFile.virtualFile ?: return false
         } catch (e: PsiInvalidElementAccessException) {

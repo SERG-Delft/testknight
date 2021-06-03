@@ -11,6 +11,7 @@ import com.testbuddy.models.TestClassData
 import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService
+import com.testbuddy.services.UsageDataService
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import javax.swing.tree.DefaultMutableTreeNode
@@ -45,10 +46,12 @@ class CopyPasteKeyboardListener(private val tree: Tree, private val project: Pro
                 if (e.isShiftDown) {
                     val duplicateTestsService = project.service<DuplicateTestsService>()
                     duplicateTestsService.duplicateMethod(userObject.reference.psiMethod, userObject.editor!!)
+                    UsageDataService.instance.logDuplicateTest()
                 } else {
                     // else goto
                     val gotoTestService = project.service<GotoTestService>()
                     gotoTestService.gotoMethod(userObject.editor!!, userObject.reference)
+                    UsageDataService.instance.logGotoTest()
                 }
             } else if (node.userObject is TestClassData) {
                 val userObject = node.userObject as TestClassData

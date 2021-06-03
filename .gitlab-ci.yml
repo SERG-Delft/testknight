@@ -1,2 +1,3 @@
 include:
   - plugin/.gitlab-ci.yml
+  - server/.gitlab-ci.yml

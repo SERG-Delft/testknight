@@ -7,6 +7,7 @@ import com.intellij.openapi.components.service
 import com.intellij.psi.PsiClass
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.services.CoverageHighlighterService
+import com.testbuddy.services.UsageDataService
 
 class RefreshDiffHighlights : AnAction() {
 
@@ -21,5 +22,6 @@ class RefreshDiffHighlights : AnAction() {
         val coverageHighlighterService = project.service<CoverageHighlighterService>()
 
         coverageHighlighterService.refreshHighlights(editor, className)
+        UsageDataService.instance.logIntegratedDiffView()
     }
 }
