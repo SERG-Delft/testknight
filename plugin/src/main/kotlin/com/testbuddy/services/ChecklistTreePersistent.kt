@@ -1,13 +1,13 @@
 package com.testbuddy.services
 
 import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.intellij.openapi.project.Project
 import com.testbuddy.models.testingChecklist.TestingChecklist
 
 @State(name = "ChecklistTreePersistent", storages = [Storage("checklistData.xml")])
-class ChecklistTreePersistent : PersistentStateComponent<TestingChecklist> {
+class ChecklistTreePersistent(val project: Project) : PersistentStateComponent<TestingChecklist> {
 
     private var testingChecklistTree: TestingChecklist = TestingChecklist(mutableListOf())
 
@@ -33,10 +33,5 @@ class ChecklistTreePersistent : PersistentStateComponent<TestingChecklist> {
      */
     override fun loadState(state: TestingChecklist) {
         testingChecklistTree = state
-    }
-
-    companion object {
-        val instance: ChecklistTreePersistent
-            get() = ServiceManager.getService(ChecklistTreePersistent::class.java)
     }
 }

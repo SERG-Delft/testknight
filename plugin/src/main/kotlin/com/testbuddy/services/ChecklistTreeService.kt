@@ -1,5 +1,7 @@
 package com.testbuddy.services
 
+import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.util.ui.tree.TreeUtil
@@ -14,7 +16,7 @@ import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
 
 @Suppress("TooManyFunctions")
-class ChecklistTreeService {
+class ChecklistTreeService(val project: Project) {
 
     private lateinit var uiTree: CheckboxTree
     private lateinit var dataTree: TestingChecklist
@@ -25,7 +27,7 @@ class ChecklistTreeService {
      * @param uiTree the CheckboxTree which have to be initialized
      */
     fun initTrees(uiTree: CheckboxTree) {
-        dataTree = ChecklistTreePersistent.instance.state
+        dataTree = project.service<ChecklistTreePersistent>().state
         this.uiTree = uiTree
         resetTree()
     }
@@ -36,7 +38,7 @@ class ChecklistTreeService {
 
     fun initUiTree() {
 
-        dataTree = ChecklistTreePersistent.instance.state
+        dataTree = project.service<ChecklistTreePersistent>().state
         val root = CheckedTreeNode("root")
         uiTree = CheckboxTree(ChecklistCellRenderer(true), root)
         val uiTreeRoot = uiTree.model.root as CheckedTreeNode
