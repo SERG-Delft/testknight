@@ -6,6 +6,7 @@ public class NullFieldException extends ValidationException {
 
     /**
      * Constructs a new NullFieldException
+     *
      * @param nameOfField the name of the null field.
      */
     public NullFieldException(String nameOfField) {

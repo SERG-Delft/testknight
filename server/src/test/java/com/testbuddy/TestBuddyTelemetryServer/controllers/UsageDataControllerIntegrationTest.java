@@ -63,7 +63,7 @@ class UsageDataControllerIntegrationTest {
     @Test
     public void testInvalidActionId() throws Exception {
         usageDataDto.getActionsRecorded().get(0).setActionId("someId");
-        usageDataDto.setHash(hasher.hash(usageDataDto.toHashString()+"exampleMagicString"));
+        usageDataDto.setHash(hasher.hash(usageDataDto.toHashString() + "exampleMagicString"));
         performRequest(path, usageDataDto, status().isBadRequest());
     }
 
