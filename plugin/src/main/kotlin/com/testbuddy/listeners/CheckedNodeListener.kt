@@ -25,6 +25,7 @@ class CheckedNodeListener : CheckboxTreeListener {
 
             if (userObject.checklistNode is TestingChecklistLeafNode) {
                 if (node.isChecked) {
+                    userObject.checklistNode.checked = 1
                     val parent = (node.parent as CheckedTreeNode)
                     (parent.userObject as ChecklistUserObject).checklistNode.checked += 1
 
@@ -32,6 +33,7 @@ class CheckedNodeListener : CheckboxTreeListener {
                     (grandParent.userObject as ChecklistUserObject).checklistNode.checked += 1
                     UsageDataService.instance.logItemMarked()
                 } else {
+                    userObject.checklistNode.checked = 0
                     val parent = (node.parent as CheckedTreeNode)
                     (parent.userObject as ChecklistUserObject).checklistNode.checked -= 1
 

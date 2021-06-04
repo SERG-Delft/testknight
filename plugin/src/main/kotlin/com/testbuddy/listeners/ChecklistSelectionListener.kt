@@ -10,7 +10,9 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiInvalidElementAccessException
 import com.intellij.refactoring.suggested.endOffset
 import com.intellij.refactoring.suggested.startOffset
 import com.intellij.ui.CheckedTreeNode
@@ -112,8 +114,18 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
      * @return true if psiElement is in the editor, false otherwise.
      */
     private fun isElementInEditor(editor: Editor, psiElement: PsiElement?): Boolean {
-        if (psiElement == null) return false
-        val elementFile = psiElement.containingFile.virtualFile ?: return false
+        if (psiElement == null) { return false }
+
+        // Try to get the VirtualFile of the PsiElement.
+        // If the VirtualFile is null or throws PsiInvalidElementAccessException
+        // return false to prevent bad functionality of goto and highlight feature.
+        val elementFile: VirtualFile = try {
+            psiElement.containingFile.virtualFile ?: return false
+        } catch (e: PsiInvalidElementAccessException) {
+            println("Invalid psi element access : $e")
+            return false
+        }
+
         val editorFile = FileDocumentManager.getInstance().getFile(editor.document)
         return elementFile == editorFile
     }
