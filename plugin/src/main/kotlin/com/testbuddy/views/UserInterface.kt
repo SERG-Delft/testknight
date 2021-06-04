@@ -10,6 +10,7 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.psi.PsiManager
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
+import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.treeStructure.Tree
@@ -149,7 +150,7 @@ class UserInterface(val project: Project) {
         val actionToolbar = actionManager.createActionToolbar("CoverageToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
-        val panel = JBScrollPane()
+        val panel = ScrollPaneFactory.createScrollPane()
         toolWindowPanel.setContent(panel)
 
         return toolWindowPanel

@@ -1,17 +1,20 @@
 package com.testbuddy.actions
 
-import com.intellij.coverage.CoverageDataManager
-import com.intellij.coverage.view.CoverageView
-import com.intellij.coverage.view.CoverageViewManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.components.service
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.ui.TableSpeedSearch
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
+import com.intellij.ui.layout.panel
+import com.intellij.ui.table.JBTable
+import com.testbuddy.services.CoverageDataService
+import java.util.Vector
 import javax.swing.JTabbedPane
-
+import javax.swing.table.DefaultTableModel
 class LoadCoverageAction : AnAction() {
 
     /**
@@ -19,6 +22,7 @@ class LoadCoverageAction : AnAction() {
      *
      * @param e Event received when the associated menu item is chosen.
      */
+    @SuppressWarnings("MagicNumber")
     override fun actionPerformed(e: AnActionEvent) {
 
         val project = e.project!!
@@ -31,16 +35,62 @@ class LoadCoverageAction : AnAction() {
         val coverageScroll = coverageTab.getComponent(1) as JBScrollPane
         val coverageViewport = coverageScroll.viewport
 
-        val content = try {
-            val instance = CoverageDataManager.getInstance(project) ?: return
-            val stateBean = CoverageViewManager.StateBean()
-            CoverageView(project, instance, stateBean)
-        } catch (e: IllegalArgumentException) {
-            println(e)
-            return
+        val serv = project.service<CoverageDataService>()
+
+        serv.getDiffLines(project)
+
+        val content = panel {
+        }
+        content.isOpaque = false
+
+        val vec = Vector<String>()
+        vec.add("Name")
+        vec.add("Coverage")
+        vec.add("DiffButton")
+        val table = JBTable(DefaultTableModel(vec, 0))
+
+        val model = table.model as DefaultTableModel
+
+        for (x in serv.classCoveragesMap) {
+            val vec = Vector<String>()
+            vec.add(x.key)
+
+            var newLines = 0
+            var oldLines = 0
+            if (x.value.allLines.isNotEmpty()) {
+                newLines = (x.value.coveredNow.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
+                oldLines = (x.value.coveredPrev.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
+
+                val str = StringBuilder("$newLines%")
+
+                val value = x.value
+                if (newLines > oldLines) {
+                    str.append(" (+${newLines - oldLines}%)")
+                } else if (newLines < oldLines) {
+                    str.append(" (${newLines - oldLines}%)")
+                } else {
+                    str.append(" (+0%)")
+                }
+
+                str.append(" (${value.coveredNow.size}/${value.allLines.size})")
+
+                vec.add(str.toString())
+            } else {
+                vec.add("---")
+            }
+
+            vec.add("Diff")
+
+            model.addRow(vec)
         }
 
-        coverageViewport.view = content
+        table.tableHeader.reorderingAllowed = false
+        val speedSearch = TableSpeedSearch(table)
+        speedSearch.setClearSearchOnNavigateNoMatch(true)
+        table.autoCreateRowSorter = true
+        table.rowSorter
+
+        coverageViewport.view = table
     }
 
     /**
