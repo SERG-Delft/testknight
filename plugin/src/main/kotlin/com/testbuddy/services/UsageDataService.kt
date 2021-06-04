@@ -42,17 +42,20 @@ class UsageDataService {
      *
      * @param actionId the action id
      */
-    private fun record(actionId: String) {
+    private fun record(actionId: String): ActionData? {
         if (telemetryEnabled()) {
-            actionsRecorded.add(ActionData(actionId))
+            val action = ActionData(actionId)
+            actionsRecorded.add(action)
             println("Action $actionId has been executed (${actionsRecorded.size}/50)")
 
             // periodically send the usage data
             if (actionsRecorded.size >= actionsThreshold) {
                 sendUserData()
-                actionsRecorded = mutableListOf()
+                clearRecords()
             }
+            return action
         }
+        return null
     }
 
     // a set of functions to log actions
@@ -112,18 +115,25 @@ class UsageDataService {
     }
 
     /**
+     * Clear all usage data
+     */
+    fun clearRecords() {
+        actionsRecorded = mutableListOf()
+    }
+
+    /**
      * Get the usage data in JSON format.
      *
      * @return the current usage data.
      */
-    private fun usageDataJson() = Gson().toJson(usageData())
+    fun usageDataJson() = Gson().toJson(usageData())
 
     /**
      * Get the usage data instance.
      *
      * @return the UsageData instance
      */
-    private fun usageData() = UsageData(actionsRecorded)
+    fun usageData() = UsageData(actionsRecorded)
 
     /**
      * Send the user data to the server in the form of an HTTP Post request
