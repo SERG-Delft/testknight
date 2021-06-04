@@ -39,8 +39,6 @@ class UserInterfaceFactory : ToolWindowFactory {
                             }
                         }
                     }
-
-                    println(events.size)
                 }
             }
         )
