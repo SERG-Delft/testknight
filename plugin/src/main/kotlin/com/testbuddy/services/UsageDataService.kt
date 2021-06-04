@@ -31,11 +31,12 @@ class UsageDataService {
     private fun telemetryEnabled() = SettingsService.instance.state.telemetrySettings.isEnabled
 
     /**
-     * Add the action with the provided actionId to the log. Only runs if telemetry is enabled
+     * Add the action with the provided actionId to the
+     * recorded actions. Only runs if telemetry is enabled
      *
      * @param actionId the action id
      */
-    private fun log(actionId: String) {
+    private fun record(actionId: String) {
         if (telemetryEnabled()) {
             actionsRecorded.add(ActionData(actionId))
             println("Action $actionId has been executed")
@@ -44,36 +45,37 @@ class UsageDataService {
 
     // a set of functions to log actions
 
-    fun logDuplicateTest() = log("duplicateTest")
+    fun recordDuplicateTest() = record("duplicateTest")
 
-    fun logGotoTest() = log("gotoTest")
+    fun recordGotoTest() = record("gotoTest")
 
-    fun logAssertionSuggestion() = log("suggestAssertion")
+    fun recordSuggestAssertion() = record("suggestAssertion")
 
-    fun logGenerateChecklist() = log("generateChecklist")
+    fun recordGenerateChecklist() = record("generateChecklist")
 
-    fun logSplitDiffView() = log("splitDiffView")
+    fun recordSplitDiffView() = record("splitDiffView")
 
-    fun logIntegratedDiffView() = log("integratedDiffView")
+    fun recordIntegratedDiffView() = record("integratedDiffView")
 
-    fun logTraceTest() = log("traceTest")
+    fun recordTraceTest() = record("traceTest")
 
-    fun logGenerateTest() = log("generateTest")
+    fun recordGenerateTest() = record("generateTest")
 
-    fun logItemMarked() = log("itemMarked")
+    fun recordItemMarked() = record("itemMarked")
 
-    fun logItemDeleted() = log("itemDeleted")
+    fun recordItemDeleted() = record("itemDeleted")
 
-    fun logRunWithCoverage() = log("runWithCoverage")
+    fun recordRunWithCoverage() = record("runWithCoverage")
 
-    private fun logTestRun() = log("testRun")
+    private fun recordTestRun() = record("testRun")
 
-    private fun logTestFail() = log("testFail")
+    private fun recordTestFail() = record("testFail")
 
-    private fun logTestAdd() = log("testAdd")
+    private fun recordTestAdd() = record("testAdd")
 
     /**
-     * For each test check if it is known, if not mark it as known and log a test add.
+     * For each test check if it is known, if
+     * not mark it as known and log a test add.
      *
      * @param root the test proxy
      */
@@ -82,15 +84,15 @@ class UsageDataService {
             if (test.isLeaf) {
 
                 // log test runs
-                logTestRun()
+                recordTestRun()
 
                 // log test failures
-                if (!test.isPassed) logTestFail()
+                if (!test.isPassed) recordTestFail()
 
                 val hash = "${test.locationUrl}${test.name}".hashCode()
 
                 if (!knownTests.contains(hash)) {
-                    instance.logTestAdd()
+                    instance.recordTestAdd()
                     knownTests.add(hash)
                 }
             }

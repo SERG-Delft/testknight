@@ -74,7 +74,7 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
                 val duplicateTestsService = project!!.service<DuplicateTestsService>()
                 if (editor != null) {
                     duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
-                    UsageDataService.instance.logDuplicateTest()
+                    UsageDataService.instance.recordDuplicateTest()
                     return true
                 }
             } else if (gotoBounds.contains(e.point)) {
@@ -82,7 +82,7 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
 
                 if (editor != null) {
                     gotoTestService.gotoMethod(editor, reference)
-                    UsageDataService.instance.logGotoTest()
+                    UsageDataService.instance.recordGotoTest()
                     return true
                 }
             }

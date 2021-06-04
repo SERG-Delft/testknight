@@ -54,7 +54,7 @@ class ShowCoverageDiffAction : AnAction() {
             .build()
 
         windowWrapper.show()
-        UsageDataService.instance.logSplitDiffView()
+        UsageDataService.instance.recordSplitDiffView()
     }
 
     /**

@@ -76,7 +76,7 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
 
         val assertionsService = project.service<AssertionSuggestionService>()
         assertionsService.appendAssertionsAsComments(parentMethod!!, checkElement!!, project)
-        UsageDataService.instance.logAssertionSuggestion()
+        UsageDataService.instance.recordSuggestAssertion()
     }
 
     /**

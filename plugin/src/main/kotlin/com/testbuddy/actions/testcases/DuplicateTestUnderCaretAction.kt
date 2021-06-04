@@ -25,7 +25,7 @@ class DuplicateTestUnderCaretAction : AnAction() {
         if (duplicateTestsService.duplicateMethodUnderCaret(psiFile, editor)) {
             UserInterfaceHelper.showTab(psiFile.project, "CopyPaste")
         }
-        UsageDataService.instance.logDuplicateTest()
+        UsageDataService.instance.recordDuplicateTest()
     }
 
     /**

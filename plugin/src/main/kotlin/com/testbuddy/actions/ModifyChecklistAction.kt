@@ -90,7 +90,7 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
                 ((node.parent.parent as CheckedTreeNode).userObject as ChecklistUserObject)
                     .checklistNode as TestingChecklistClassNode
             )
-            UsageDataService.instance.logItemDeleted()
+            UsageDataService.instance.recordItemDeleted()
         }
     }
 
@@ -108,6 +108,6 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
             (node.userObject as ChecklistUserObject)
                 .checklistNode as TestingChecklistLeafNode
         )
-        UsageDataService.instance.logGenerateTest()
+        UsageDataService.instance.recordGenerateTest()
     }
 }

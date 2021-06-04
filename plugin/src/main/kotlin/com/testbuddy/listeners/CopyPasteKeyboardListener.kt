@@ -46,12 +46,12 @@ class CopyPasteKeyboardListener(private val tree: Tree, private val project: Pro
                 if (e.isShiftDown) {
                     val duplicateTestsService = project.service<DuplicateTestsService>()
                     duplicateTestsService.duplicateMethod(userObject.reference.psiMethod, userObject.editor!!)
-                    UsageDataService.instance.logDuplicateTest()
+                    UsageDataService.instance.recordDuplicateTest()
                 } else {
                     // else goto
                     val gotoTestService = project.service<GotoTestService>()
                     gotoTestService.gotoMethod(userObject.editor!!, userObject.reference)
-                    UsageDataService.instance.logGotoTest()
+                    UsageDataService.instance.recordGotoTest()
                 }
             } else if (node.userObject is TestClassData) {
                 val userObject = node.userObject as TestClassData

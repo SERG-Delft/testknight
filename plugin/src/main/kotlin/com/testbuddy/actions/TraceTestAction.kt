@@ -71,6 +71,6 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction {
 
         // open method declaration
         fileEditorManager.openTextEditor(descriptor, true)
-        UsageDataService.instance.logTraceTest()
+        UsageDataService.instance.recordTraceTest()
     }
 }
