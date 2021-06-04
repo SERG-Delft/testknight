@@ -112,6 +112,7 @@
         <intentionAction>
             <className>com.testbuddy.actions.AssertionSuggestionsAction</className>
             <category>TestBuddy intentions</category>
+
         </intentionAction>
 
         <intentionAction>
