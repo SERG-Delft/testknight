@@ -5,7 +5,7 @@ import com.testbuddy.settings.SettingsService
 import org.apache.commons.codec.digest.DigestUtils
 
 /**
- * This class represents the usage data of a session.
+ * Represents a session usage data
  *
  * @param actionsRecorded the list of actions to include in the usageData
  */
@@ -18,9 +18,12 @@ data class UsageData(val actionsRecorded: List<ActionData>) {
     val hash: String = DigestUtils.md5Hex("${toHashString()}${ServerMessageBundleHandler.message("hashString")}")
 
     /**
-     * This Function serializes the object in such a way that it is easy to hash with MD5.
+     * Creates a string representation
+     * of the DTO that is suitable for
+     * hashing.
      *
-     * @return A string representation of the object
+     * @return the string that can be used
+     * to generate a hash.
      */
     fun toHashString(): String {
         val builder = StringBuilder()
