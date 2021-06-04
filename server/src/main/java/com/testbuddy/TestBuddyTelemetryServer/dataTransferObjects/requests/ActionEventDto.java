@@ -19,7 +19,7 @@ public class ActionEventDto implements RequestDto {
      * hashing.
      *
      * @return the string that can be used
-     * to generate a hash.
+     *         to generate a hash.
      */
     @Override
     public String toHashString() {

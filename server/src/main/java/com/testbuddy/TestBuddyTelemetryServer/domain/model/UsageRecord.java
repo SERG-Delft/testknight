@@ -26,6 +26,13 @@ public class UsageRecord {
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
+    /**
+     * Creates a new UsageRecord object.
+     *
+     * @param userId the id of the user.
+     * @param actionId the id of the action.
+     * @param dateTime the date-time of the event.
+     */
     public UsageRecord(String userId, Action actionId, LocalDateTime dateTime) {
         this.userId = userId;
         this.actionId = actionId;
