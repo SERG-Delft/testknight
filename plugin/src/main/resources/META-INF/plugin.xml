@@ -142,6 +142,8 @@
                   topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
         <listener class="com.testbuddy.listeners.TestBuddyExecutionListener"
                   topic="com.intellij.execution.ExecutionListener"/>
+        <listener class="com.testbuddy.listeners.AppClosedListener"
+                  topic="com.intellij.ide.AppLifecycleListener"/>
     </projectListeners>
 
 </idea-plugin>
