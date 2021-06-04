@@ -19,7 +19,7 @@ import javax.swing.tree.TreeCellRenderer
  * The test nodes will have the following structure:
  *   [methodName---------------Copy-Goto]
  */
-class CopyPasteCellRenderer : JPanel(), TreeCellRenderer {
+class TestListCellRenderer : JPanel(), TreeCellRenderer {
 
     var methodLabel: JBLabel? = null
     var copyButton: JButton? = null

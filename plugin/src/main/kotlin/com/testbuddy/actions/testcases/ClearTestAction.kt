@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultTreeModel
 class ClearTestAction : AnAction() {
 
     /**
-     * Clears the CopyPaste tree.
+     * Clears the TestList tree.
      *
      * @param event Event received when the associated menu item is chosen.
      */
@@ -20,16 +20,16 @@ class ClearTestAction : AnAction() {
     }
 
     /**
-     * Clears the CopyPaste tree.
+     * Clears the TestList tree.
      *
      * @param project current open project.
      */
     fun actionPerformed(project: Project) {
-        val viewport = UserInterfaceHelper.getTabViewport(project, "CopyPaste") ?: return
-        val copyPasteTree = viewport.view as Tree
-        val root = copyPasteTree.model.root as DefaultMutableTreeNode
+        val viewport = UserInterfaceHelper.getTabViewport(project, "Test List") ?: return
+        val testListTree = viewport.view as Tree
+        val root = testListTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
-        (copyPasteTree.model as DefaultTreeModel).reload()
+        (testListTree.model as DefaultTreeModel).reload()
     }
 
     /**

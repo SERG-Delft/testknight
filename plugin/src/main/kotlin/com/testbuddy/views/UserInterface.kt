@@ -15,14 +15,14 @@ import com.testbuddy.listeners.CheckListKeyboardListener
 import com.testbuddy.listeners.CheckedNodeListener
 import com.testbuddy.listeners.ChecklistMouseListener
 import com.testbuddy.listeners.ChecklistSelectionListener
-import com.testbuddy.listeners.CopyPasteKeyboardListener
-import com.testbuddy.listeners.CopyPasteMouseListener
 import com.testbuddy.listeners.PsiTreeListener
+import com.testbuddy.listeners.TestListKeyboardListener
+import com.testbuddy.listeners.TestListMouseListener
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.trees.ChecklistCellEditor
-import com.testbuddy.views.trees.CopyPasteCellRenderer
+import com.testbuddy.views.trees.TestListCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
 import javax.swing.tree.DefaultMutableTreeNode
@@ -90,16 +90,16 @@ class UserInterface(val project: Project) {
      *
      * @return The SimpleToolWindowPanel with action toolbar and scroll panel with tree for test cases.
      */
-    private fun getCopyPasteTab(): Component {
+    private fun getTestListTab(): Component {
 
         val toolWindowPanel = SimpleToolWindowPanel(true)
 
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
-        val actionGroup = DefaultActionGroup("CopyPasteTabActions", false)
+        val actionGroup = DefaultActionGroup("TestListTabActions", false)
         actionGroup.add(actionManager.getAction("LoadTestAction"))
         actionGroup.add(actionManager.getAction("ClearTestAction"))
-        val actionToolbar = actionManager.createActionToolbar("CopyPasteToolbar", actionGroup, true)
+        val actionToolbar = actionManager.createActionToolbar("TestListToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()
@@ -108,14 +108,14 @@ class UserInterface(val project: Project) {
 
         testCaseTree = Tree(root)
 
-        val cellRenderer = CopyPasteCellRenderer()
+        val cellRenderer = TestListCellRenderer()
         testCaseTree!!.cellRenderer = cellRenderer
         testCaseTree!!.isEditable = false
         testCaseTree!!.isRootVisible = false
         testCaseTree!!.showsRootHandles = true
 
-        val mouseListener = CopyPasteMouseListener(testCaseTree!!, cellRenderer)
-        val keyboardListener = CopyPasteKeyboardListener(testCaseTree!!, project)
+        val mouseListener = TestListMouseListener(testCaseTree!!, cellRenderer)
+        val keyboardListener = TestListKeyboardListener(testCaseTree!!, project)
         mouseListener.installOn(testCaseTree!!)
         testCaseTree!!.addKeyListener(keyboardListener)
 
@@ -155,13 +155,13 @@ class UserInterface(val project: Project) {
 
     /**
      * Constructor which sets up the MainUI.
-     * The MainUI will be a Tabbed pane with a CopyPaste and Checklist tab.
+     * The MainUI will be a Tabbed pane with a testList and Checklist tab.
      */
     init {
         mainUI = JBTabbedPane(JBTabbedPane.TOP, JBTabbedPane.SCROLL_TAB_LAYOUT)
 
         // Function call which returns the tab for copy paste
-        mainUI!!.addTab("CopyPaste", getCopyPasteTab())
+        mainUI!!.addTab("Test List", getTestListTab())
         // Function call which returns the tab for checklist
         mainUI!!.addTab("Checklist", createCheckList())
         // Function call which returns the tab for coverage

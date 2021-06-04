@@ -18,7 +18,7 @@ import javax.swing.tree.DefaultTreeModel
 class LoadTestAction : AnAction() {
 
     /**
-     * Updates the CopyPaste tab to load the test cases from the selected file.
+     * Updates the TestList tab to load the test cases from the selected file.
      *
      * @param event Event received when the associated menu item is chosen.
      */
@@ -32,7 +32,7 @@ class LoadTestAction : AnAction() {
     }
 
     /**
-     * Updates the CopyPaste tab to load the test cases from the selected file.
+     * Updates the TestList tab to load the test cases from the selected file.
      *
      * @param project current open project
      * @param psiFile PsiFile of the current open file
@@ -43,9 +43,9 @@ class LoadTestAction : AnAction() {
         val loadTestsService = project.service<LoadTestsService>()
         val listClasses = loadTestsService.getTestsTree(psiFile)
 
-        val copyPasteViewport = UserInterfaceHelper.getTabViewport(project, "CopyPaste") ?: return
-        val copyPasteTree = copyPasteViewport.view as Tree
-        val root = copyPasteTree.model.root as DefaultMutableTreeNode
+        val testListViewport = UserInterfaceHelper.getTabViewport(project, "Test List") ?: return
+        val testListTree = testListViewport.view as Tree
+        val root = testListTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
 
         for (testClass in listClasses) {
@@ -57,11 +57,11 @@ class LoadTestAction : AnAction() {
                 val methodNode = DefaultMutableTreeNode(testUserObject)
                 classNode.add(methodNode)
             }
-            (copyPasteTree.model.root as DefaultMutableTreeNode).add(classNode)
+            (testListTree.model.root as DefaultMutableTreeNode).add(classNode)
         }
 
-        (copyPasteTree.model as DefaultTreeModel).reload()
-        TreeUtil.expandAll(copyPasteTree)
+        (testListTree.model as DefaultTreeModel).reload()
+        TreeUtil.expandAll(testListTree)
     }
 
     /**

@@ -8,14 +8,14 @@ import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService
 import com.testbuddy.services.UsageDataService
-import com.testbuddy.views.trees.CopyPasteCellRenderer
+import com.testbuddy.views.trees.TestListCellRenderer
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.MouseEvent
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) :
+class TestListMouseListener(private val tree: Tree, private val cellRenderer: TestListCellRenderer) :
     ClickListener() {
 
     private var latestEditor: Editor? = null
