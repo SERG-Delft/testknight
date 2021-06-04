@@ -117,7 +117,7 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
         if (psiElement == null) { return false }
 
         lateinit var elementFile: VirtualFile
-        
+
         try {
             elementFile = psiElement.containingFile.virtualFile ?: return false
         } catch (e: PsiInvalidElementAccessException) {

@@ -36,7 +36,6 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     implementation("org.testng:testng:7.1.0")
     implementation("io.mockk:mockk:1.9.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0")
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
