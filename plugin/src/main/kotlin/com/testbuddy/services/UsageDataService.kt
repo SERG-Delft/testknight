@@ -1,6 +1,9 @@
 package com.testbuddy.services
 
 import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.github.kittinunf.fuel.core.isClientError
+import com.github.kittinunf.fuel.core.isServerError
+import com.github.kittinunf.fuel.core.isSuccessful
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
 import com.intellij.execution.testframework.AbstractTestProxy
@@ -23,7 +26,7 @@ class UsageDataService {
      */
     private val knownTests = HashSet<Int>()
 
-    private val serverUrl = ServerMessageBundleHandler.message("serverUrl")
+    private val serverUrl = ServerMessageBundleHandler.message("debugUrl")
 
     private fun telemetryEnabled() = SettingsService.instance.state.telemetrySettings.isEnabled
 
@@ -102,19 +105,32 @@ class UsageDataService {
     private fun usageDataJson() = Gson().toJson(usageData())
 
     /**
-     * Get the usage data instance
+     * Get the usage data instance.
      *
-     * @return the UsageDataInstance
+     * @return the UsageData instance
      */
     private fun usageData() = UsageData(actionsRecorded)
 
     /**
      * Send the user data to the server in the form of an HTTP Post request
      */
-    fun sendUserData() = "http://$serverUrl/usagedata"
-        .httpPost()
-        .jsonBody(usageDataJson())
-        .responseString()
+    fun sendUserData() {
+        if (telemetryEnabled()) {
+
+            val (req, result, response) = ServerMessageBundleHandler.message("usageData", serverUrl)
+                .httpPost()
+                .jsonBody(usageDataJson())
+                .responseString()
+
+            when {
+                result.isSuccessful -> println("Usage Data sent successfully")
+                result.isClientError ->
+                    println("Failed to send usage data: client error: ${result.statusCode} ${result.responseMessage}")
+                result.isServerError ->
+                    println("Failed to send usage data: server error: ${result.statusCode} ${result.responseMessage}")
+            }
+        }
+    }
 
     companion object {
         val instance: UsageDataService
