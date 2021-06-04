@@ -116,10 +116,11 @@ class ChecklistSelectionListener(val project: Project) : TreeSelectionListener {
     private fun isElementInEditor(editor: Editor, psiElement: PsiElement?): Boolean {
         if (psiElement == null) { return false }
 
-        lateinit var elementFile: VirtualFile
-
-        try {
-            elementFile = psiElement.containingFile.virtualFile ?: return false
+        // Try to get the VirtualFile of the PsiElement.
+        // If the VirtualFile is null or throws PsiInvalidElementAccessException
+        // return false to prevent bad functionality of goto and highlight feature.
+        val elementFile: VirtualFile = try {
+            psiElement.containingFile.virtualFile ?: return false
         } catch (e: PsiInvalidElementAccessException) {
             println("Invalid psi element access : $e")
             return false
