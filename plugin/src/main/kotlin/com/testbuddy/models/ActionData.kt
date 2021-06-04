@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter
  * @param actionId the action logged
  */
 data class ActionData(val actionId: String) {
-    private val dateTime: String = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
+    val dateTime: String = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
 
     /**
      * Creates a string representation
@@ -19,7 +19,5 @@ data class ActionData(val actionId: String) {
      * @return the string that can be used
      * to generate a hash.
      */
-    fun toHashString(): String {
-        return "$actionId$dateTime"
-    }
+    fun toHashString() = "$actionId$dateTime"
 }

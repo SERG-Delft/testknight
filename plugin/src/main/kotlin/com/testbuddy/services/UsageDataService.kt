@@ -19,7 +19,13 @@ class UsageDataService {
     /**
      * List of recorded actions.
      */
-    private val actionsRecorded = mutableListOf<ActionData>()
+    private var actionsRecorded = mutableListOf<ActionData>()
+
+    /**
+     * The amount of actions that are stored before sending them
+     */
+    @Suppress("MagicNumber")
+    private val actionsThreshold = 50
 
     /**
      * A set of hashes of the known tests. Used to detect new tests.
@@ -39,7 +45,13 @@ class UsageDataService {
     private fun record(actionId: String) {
         if (telemetryEnabled()) {
             actionsRecorded.add(ActionData(actionId))
-            println("Action $actionId has been executed")
+            println("Action $actionId has been executed (${actionsRecorded.size}/50)")
+
+            // periodically send the usage data
+            if (actionsRecorded.size >= actionsThreshold) {
+                sendUserData()
+                actionsRecorded = mutableListOf()
+            }
         }
     }
 
@@ -130,6 +142,7 @@ class UsageDataService {
                     println("Failed to send usage data: client error: ${result.statusCode} ${result.responseMessage}")
                 result.isServerError ->
                     println("Failed to send usage data: server error: ${result.statusCode} ${result.responseMessage}")
+                else -> println("Failed to send usage data: ${result.statusCode} ${result.responseMessage}")
             }
         }
     }
