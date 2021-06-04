@@ -11,7 +11,9 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.layout.panel
 import com.intellij.ui.table.JBTable
+import com.testbuddy.models.CoverageStatsObject
 import com.testbuddy.services.CoverageDataService
+import com.testbuddy.views.CoverageStatsCellRenderer
 import java.util.Vector
 import javax.swing.JTabbedPane
 import javax.swing.table.DefaultTableModel
@@ -49,32 +51,27 @@ class LoadCoverageAction : AnAction() {
         vec.add("DiffButton")
         val table = JBTable(DefaultTableModel(vec, 0))
 
+        table.columnModel.getColumn(1).cellRenderer = CoverageStatsCellRenderer()
+
         val model = table.model as DefaultTableModel
 
         for (x in serv.classCoveragesMap) {
-            val vec = Vector<String>()
+            val vec = Vector<Any>()
             vec.add(x.key)
 
-            var newLines = 0
-            var oldLines = 0
             if (x.value.allLines.isNotEmpty()) {
-                newLines = (x.value.coveredNow.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
-                oldLines = (x.value.coveredPrev.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
-
-                val str = StringBuilder("$newLines%")
-
+                val newLines = (x.value.coveredNow.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
+                val oldLines = (x.value.coveredPrev.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
                 val value = x.value
-                if (newLines > oldLines) {
-                    str.append(" (+${newLines - oldLines}%)")
-                } else if (newLines < oldLines) {
-                    str.append(" (${newLines - oldLines}%)")
-                } else {
-                    str.append(" (+0%)")
-                }
 
-                str.append(" (${value.coveredNow.size}/${value.allLines.size})")
-
-                vec.add(str.toString())
+                vec.add(
+                    CoverageStatsObject(
+                        value.coveredNow.size,
+                        value.allLines.size,
+                        newLines,
+                        newLines - oldLines
+                    )
+                )
             } else {
                 vec.add("---")
             }
