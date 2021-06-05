@@ -25,6 +25,7 @@ import com.testbuddy.views.trees.ChecklistCellEditor
 import com.testbuddy.views.trees.TestListCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
+import java.awt.Insets
 import javax.swing.tree.DefaultMutableTreeNode
 
 class UserInterface(val project: Project) {
@@ -47,7 +48,7 @@ class UserInterface(val project: Project) {
      * @return The SimpleToolWindowPanel with action toolbar and scroll panel with tree for checklist.
      */
     private fun createCheckList(): Component {
-        val toolWindowPanel = SimpleToolWindowPanel(true)
+        val toolWindowPanel = SimpleToolWindowPanel(true, true)
 
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
@@ -92,7 +93,7 @@ class UserInterface(val project: Project) {
      */
     private fun getTestListTab(): Component {
 
-        val toolWindowPanel = SimpleToolWindowPanel(true)
+        val toolWindowPanel = SimpleToolWindowPanel(true, true)
 
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
@@ -120,7 +121,6 @@ class UserInterface(val project: Project) {
         testCaseTree!!.addKeyListener(keyboardListener)
 
         panel.setViewportView(testCaseTree)
-
         toolWindowPanel.setContent(panel)
 
         return toolWindowPanel
@@ -134,7 +134,7 @@ class UserInterface(val project: Project) {
      */
     private fun createCoverage(): Component {
 
-        val toolWindowPanel = SimpleToolWindowPanel(true)
+        val toolWindowPanel = SimpleToolWindowPanel(true, true)
 
         // Setting up the action groups for the toolbar
         val actionManager = ActionManager.getInstance()
@@ -159,6 +159,7 @@ class UserInterface(val project: Project) {
      */
     init {
         mainUI = JBTabbedPane(JBTabbedPane.TOP, JBTabbedPane.SCROLL_TAB_LAYOUT)
+        mainUI!!.tabComponentInsets = Insets(0, 0, 0, 0)
 
         // Function call which returns the tab for copy paste
         mainUI!!.addTab("Test List", getTestListTab())
