@@ -28,7 +28,7 @@ class CoverageHighlighterService(val project: Project) {
      * @param editor the editor
      * @param className the class Name
      */
-    private fun showHighlights(editor: Editor, className: String) {
+    fun showHighlights(editor: Editor, className: String) {
 
         covDataService.getDiffLines(project)
         val covDiffObject = covDataService.classCoveragesMap[className] ?: return
@@ -97,7 +97,7 @@ class CoverageHighlighterService(val project: Project) {
      * @param color the color
      * @param attributeKey the text attribute key
      */
-    private fun addGutterHighlighter(
+    fun addGutterHighlighter(
         editor: Editor,
         lineNum: Int,
         color: Color,
@@ -113,6 +113,6 @@ class CoverageHighlighterService(val project: Project) {
         if (highlights[editor] == null) highlights[editor] = mutableSetOf()
         highlights[editor]!!.add(hl)
 
-        hl.lineMarkerRenderer = DiffCoverageLineMarkerRenderer(color)
+        hl.setLineMarkerRenderer(DiffCoverageLineMarkerRenderer(color))
     }
 }
