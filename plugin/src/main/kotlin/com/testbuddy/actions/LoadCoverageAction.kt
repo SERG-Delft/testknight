@@ -9,14 +9,15 @@ import com.intellij.ui.TableSpeedSearch
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
-import com.intellij.ui.layout.panel
 import com.intellij.ui.table.JBTable
 import com.testbuddy.models.CoverageStatsObject
 import com.testbuddy.services.CoverageDataService
+import com.testbuddy.views.ButtonColumn
 import com.testbuddy.views.CoverageStatsCellRenderer
 import java.util.Vector
 import javax.swing.JTabbedPane
 import javax.swing.table.DefaultTableModel
+
 class LoadCoverageAction : AnAction() {
 
     /**
@@ -41,17 +42,22 @@ class LoadCoverageAction : AnAction() {
 
         serv.getDiffLines(project)
 
-        val content = panel {
-        }
-        content.isOpaque = false
-
         val vec = Vector<String>()
-        vec.add("Name")
-        vec.add("Coverage")
-        vec.add("DiffButton")
-        val table = JBTable(DefaultTableModel(vec, 0))
+        vec.add("Element")
+        vec.add("Line, %")
+        vec.add("")
+        // Create un-editable table, except for buttons.
+        val table = JBTable(object : DefaultTableModel(vec, 0) {
+            override fun isCellEditable(row: Int, column: Int): Boolean {
+                if (column == 2) {
+                    return true
+                }
+                return false
+            }
+        })
 
         table.columnModel.getColumn(1).cellRenderer = CoverageStatsCellRenderer()
+        ButtonColumn(table, ShowCoverageDiffAction(table, project), 2)
 
         val model = table.model as DefaultTableModel
 
@@ -73,6 +79,7 @@ class LoadCoverageAction : AnAction() {
                     )
                 )
             } else {
+                // No lines covered?
                 vec.add("---")
             }
 

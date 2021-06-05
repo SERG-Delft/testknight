@@ -143,7 +143,6 @@ class UserInterface(val project: Project) {
         val actionManager = ActionManager.getInstance()
         val actionGroup = DefaultActionGroup("CoverageActions", false)
         actionGroup.add(actionManager.getAction("LoadCoverageAction"))
-        actionGroup.add(actionManager.getAction("ShowCoverageDiffAction"))
         actionGroup.addSeparator()
         actionGroup.add(actionManager.getAction("ShowIntegratedView"))
         actionGroup.add(actionManager.getAction("HideIntegratedView"))

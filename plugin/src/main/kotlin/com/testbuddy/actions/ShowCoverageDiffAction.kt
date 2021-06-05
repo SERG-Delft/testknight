@@ -1,79 +1,71 @@
 package com.testbuddy.actions
 
 import com.intellij.diff.tools.util.side.TwosideContentPanel
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.WindowWrapper
 import com.intellij.openapi.ui.WindowWrapperBuilder
-import com.intellij.psi.PsiClass
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.search.FilenameIndex
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.table.JBTable
 import com.testbuddy.services.CoverageDataService
 import com.testbuddy.services.CoverageHighlighterService
+import java.awt.event.ActionEvent
+import javax.swing.AbstractAction
 
-class ShowCoverageDiffAction : AnAction() {
+class ShowCoverageDiffAction(val table: JBTable, val project: Project) : AbstractAction() {
 
-    /**
-     * Opens a new window which shows the diff view for coverage.
-     *
-     * @param e Event received when the associated menu item is chosen.
-     */
-    override fun actionPerformed(e: AnActionEvent) {
-
-        val editor = e.getData(CommonDataKeys.EDITOR)!!
-        val vFile = e.getData(CommonDataKeys.VIRTUAL_FILE)!!
-        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
-        val className = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.name ?: return
-
-        val editorFactory = EditorFactory.getInstance()
-
-        val coverageHighlighterService = e.project!!.service<CoverageHighlighterService>()
-
-        val leftEditor = editorFactory.createEditor(editor.document, null, vFile, true)
-        val rightEditor = editorFactory.createEditor(editor.document, null, vFile, true)
-
-        coverageHighlighterService.showHighlightsInDiff(leftEditor, rightEditor, className)
-
-        val twoSidePanel = TwosideContentPanel(mutableListOf(leftEditor.component, rightEditor.component))
-
-        val scrollPanel = JBScrollPane()
-        scrollPanel.viewport.view = twoSidePanel
-        val windowWrapper = WindowWrapperBuilder(WindowWrapper.Mode.FRAME, scrollPanel)
-            .setProject(e.project)
-            .setTitle("Diff Coverage")
-            // releaseEditor on close.
-            .setOnCloseHandler {
-                editorFactory.releaseEditor(leftEditor)
-                editorFactory.releaseEditor(rightEditor)
-                true // requires a boolean return, true after releasing editor
-            }
-            .build()
-
-        windowWrapper.show()
-    }
-
-    /**
-     * Determines whether this menu item is available for the current context.
-     * Requires a project to be open and PsiFile, VirtualFile and Editor to be accessible from the action event.
-     *
-     * @param e Event received when the associated group-id menu is chosen.
-     */
-    override fun update(e: AnActionEvent) {
-        // Set the availability based on whether the project, psiFile and editor is not null
-        if (e.project == null) {
-            e.presentation.isEnabled = false
-            return
-        }
-
-        val service = e.project!!.service<CoverageDataService>()
-
-        e.presentation.isEnabled = (
-            e.getData(CommonDataKeys.EDITOR) != null &&
-                e.getData(CommonDataKeys.VIRTUAL_FILE) != null &&
-                e.getData(CommonDataKeys.PSI_FILE) != null
+    override fun actionPerformed(p0: ActionEvent?) {
+        if (p0 != null) {
+            val row = p0.actionCommand.toInt()
+            val className = table.model.getValueAt(row, 0) as String
+            val psiFiles = FilenameIndex.getFilesByName(
+                project,
+                "$className.java",
+                GlobalSearchScope.projectScope(project)
             )
+
+            val serv = project.service<CoverageDataService>()
+            if (serv.currentData?.classes?.contains(className) ?: return) {
+                serv.currentData!!.classes[className]
+            }
+
+            // Couldn't find the file.
+            if (psiFiles.isEmpty()) {
+                return
+            }
+
+            val vFile = psiFiles[0].virtualFile
+            val document = PsiDocumentManager.getInstance(project).getDocument(psiFiles[0]) ?: return
+
+            val editorFactory = EditorFactory.getInstance()
+
+            val coverageHighlighterService = project.service<CoverageHighlighterService>()
+
+            val leftEditor = editorFactory.createEditor(document, null, vFile, true)
+            val rightEditor = editorFactory.createEditor(document, null, vFile, true)
+
+            coverageHighlighterService.showHighlightsInDiff(leftEditor, rightEditor, className)
+
+            val twoSidePanel = TwosideContentPanel(mutableListOf(leftEditor.component, rightEditor.component))
+
+            val scrollPanel = JBScrollPane()
+            scrollPanel.viewport.view = twoSidePanel
+            val windowWrapper = WindowWrapperBuilder(WindowWrapper.Mode.FRAME, scrollPanel)
+                .setProject(project)
+                .setTitle("Diff Coverage")
+                // releaseEditor on close.
+                .setOnCloseHandler {
+                    editorFactory.releaseEditor(leftEditor)
+                    editorFactory.releaseEditor(rightEditor)
+                    true // requires a boolean return, true after releasing editor
+                }
+                .build()
+
+            windowWrapper.show()
+        }
     }
 }
