@@ -14,8 +14,8 @@ import java.awt.Color
 
 class CoverageHighlighterService(val project: Project) {
 
-    private val highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
-    private val covDataService = project.service<CoverageDataService>()
+    private var highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
+    private var covDataService = project.service<CoverageDataService>()
 
     private fun settingsState() = SettingsService.instance.state
 
@@ -114,5 +114,13 @@ class CoverageHighlighterService(val project: Project) {
         highlights[editor]!!.add(hl)
 
         hl.setLineMarkerRenderer(DiffCoverageLineMarkerRenderer(color))
+    }
+
+    fun setHighlights(highlights : HashMap<Editor, MutableSet<RangeHighlighter>>){
+        this.highlights = highlights
+    }
+
+    fun setCoverageDataService(coverageDataService: CoverageDataService){
+        this.covDataService = covDataService
     }
 }

@@ -1,12 +1,12 @@
 package com.testbuddy.services
 
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.testbuddy.extensions.TestBuddyTestCase
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkClass
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Test
@@ -33,32 +33,33 @@ class CoverageHighlighterServiceTest : TestBuddyTestCase() {
     }
 
     @Test
-    fun testRefreshHighlightsHideHighlightsCalled(){
+    fun testRefreshHighlights(){
         val service = CoverageHighlighterService(project)
         val editor = mockk<Editor>()
 
         service.refreshHighlights(editor, "ClassName")
 
         verify {service.hideHighlights(editor)}
-
     }
 
     @Test
-    fun testRefreshHighlightsShowHighlightsCalled(){
-        val service = CoverageHighlighterService(project)
+    fun testHideHighlights(){
+        myFixture.configureByFile("/Methods.java")
+
         val editor = mockk<Editor>()
-        val a = mockk<CoverageHighlighterService>(relaxed = true)
-        //val a = spyk<CoverageHighlighterService>
+        val service = CoverageHighlighterService(project)
+        val rangeHighlighter = mockk<RangeHighlighter>()
+        val mutableHashMap = HashMap<Editor, MutableSet<RangeHighlighter>>()
+        val markupModel = mockk<MarkupModel>()
 
-        every { a.refreshHighlights(any(), any())} returns Unit
-        a.refreshHighlights(editor,"ClassName")
-        verify { a.refreshHighlights(editor, "ClassName") }
+        mutableHashMap[editor] = mutableSetOf(rangeHighlighter)
+        service.setHighlights(mutableHashMap)
 
-        //verify {service.showHighlights(editor, "ClassName")}
-        //service.refreshHighlights(editor, "ClassName")
+        every { editor.markupModel } returns markupModel
+        every { markupModel.removeHighlighter(any()) } returns Unit
 
-
-
+        service.hideHighlights(editor)
+        verify { editor.markupModel }
     }
 
 }
