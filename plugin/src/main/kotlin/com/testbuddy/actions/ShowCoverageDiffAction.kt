@@ -3,12 +3,10 @@ package com.testbuddy.actions
 import com.intellij.diff.tools.util.side.TwosideContentPanel
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.WindowWrapper
 import com.intellij.openapi.ui.WindowWrapperBuilder
-import com.intellij.psi.PsiDocumentManager
-import com.intellij.psi.search.FilenameIndex
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.testbuddy.services.CoverageDataService
@@ -22,24 +20,17 @@ class ShowCoverageDiffAction(val table: JBTable, val project: Project) : Abstrac
         if (p0 != null) {
             val row = p0.actionCommand.toInt()
             val className = table.model.getValueAt(row, 0) as String
-            val psiFiles = FilenameIndex.getFilesByName(
-                project,
-                "$className.java",
-                GlobalSearchScope.projectScope(project)
-            )
 
             val serv = project.service<CoverageDataService>()
-            if (serv.currentData?.classes?.contains(className) ?: return) {
-                serv.currentData!!.classes[className]
-            }
 
             // Couldn't find the file.
-            if (psiFiles.isEmpty()) {
+            val vFile = serv.classCoveragesMap[className]?.virtualFile ?: return
+
+            if (!vFile.isValid) {
                 return
             }
 
-            val vFile = psiFiles[0].virtualFile
-            val document = PsiDocumentManager.getInstance(project).getDocument(psiFiles[0]) ?: return
+            val document = FileDocumentManager.getInstance().getDocument(vFile) ?: return
 
             val editorFactory = EditorFactory.getInstance()
 

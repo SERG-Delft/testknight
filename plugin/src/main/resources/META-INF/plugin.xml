@@ -84,7 +84,7 @@
         </action>
         <!---Actions in Coverage tab -->
         <action id="LoadCoverageAction" class="com.testbuddy.actions.LoadCoverageAction"
-                text="Load Coverage" description="Adds the coverage statistics."
+                text="Update Coverage Statistics" description="Updates the coverage statistics."
                 icon="AllIcons.Actions.Refresh">
         </action>
         <action id="ShowIntegratedView" class="com.testbuddy.actions.RefreshDiffHighlights"

@@ -5,15 +5,12 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowManager
-import com.intellij.ui.TableSpeedSearch
 import com.intellij.ui.components.JBPanelWithEmptyText
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.impl.ContentImpl
 import com.intellij.ui.table.JBTable
 import com.testbuddy.models.CoverageStatsObject
 import com.testbuddy.services.CoverageDataService
-import com.testbuddy.views.ButtonColumn
-import com.testbuddy.views.CoverageStatsCellRenderer
 import java.util.Vector
 import javax.swing.JTabbedPane
 import javax.swing.table.DefaultTableModel
@@ -37,29 +34,13 @@ class LoadCoverageAction : AnAction() {
         val coverageTab = tabbedPane.getComponentAt(2) as JBPanelWithEmptyText
         val coverageScroll = coverageTab.getComponent(1) as JBScrollPane
         val coverageViewport = coverageScroll.viewport
-
+        val table = coverageViewport.view as JBTable
         val serv = project.service<CoverageDataService>()
 
         serv.getDiffLines(project)
 
-        val vec = Vector<String>()
-        vec.add("Element")
-        vec.add("Line, %")
-        vec.add("")
-        // Create un-editable table, except for buttons.
-        val table = JBTable(object : DefaultTableModel(vec, 0) {
-            override fun isCellEditable(row: Int, column: Int): Boolean {
-                if (column == 2) {
-                    return true
-                }
-                return false
-            }
-        })
-
-        table.columnModel.getColumn(1).cellRenderer = CoverageStatsCellRenderer()
-        ButtonColumn(table, ShowCoverageDiffAction(table, project), 2)
-
         val model = table.model as DefaultTableModel
+        model.rowCount = 0 // Clear table
 
         for (x in serv.classCoveragesMap) {
             val vec = Vector<Any>()
@@ -79,22 +60,15 @@ class LoadCoverageAction : AnAction() {
                     )
                 )
             } else {
-                // No lines covered?
-                vec.add("---")
+                // No lines covered
+                // Don't show information in that case.
+                continue
             }
 
             vec.add("Diff")
 
             model.addRow(vec)
         }
-
-        table.tableHeader.reorderingAllowed = false
-        val speedSearch = TableSpeedSearch(table)
-        speedSearch.setClearSearchOnNavigateNoMatch(true)
-        table.autoCreateRowSorter = true
-        table.rowSorter
-
-        coverageViewport.view = table
     }
 
     /**

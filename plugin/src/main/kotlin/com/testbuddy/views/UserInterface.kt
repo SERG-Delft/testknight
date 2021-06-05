@@ -11,9 +11,12 @@ import com.intellij.psi.PsiManager
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.ScrollPaneFactory
+import com.intellij.ui.TableSpeedSearch
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
+import com.intellij.ui.table.JBTable
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.actions.ShowCoverageDiffAction
 import com.testbuddy.listeners.CheckListKeyboardListener
 import com.testbuddy.listeners.CheckedNodeListener
 import com.testbuddy.listeners.ChecklistMouseListener
@@ -29,6 +32,8 @@ import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
+import java.util.Vector
+import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
 
 class UserInterface(val project: Project) {
@@ -150,6 +155,29 @@ class UserInterface(val project: Project) {
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = ScrollPaneFactory.createScrollPane()
+
+        val vec = Vector<String>()
+        vec.add("Element")
+        vec.add("Line Coverage")
+        vec.add("")
+        // Create un-editable table, except for buttons.
+        val table = JBTable(object : DefaultTableModel(vec, 0) {
+            override fun isCellEditable(row: Int, column: Int): Boolean {
+                if (column == 2) {
+                    return true
+                }
+                return false
+            }
+        })
+
+        table.columnModel.getColumn(1).cellRenderer = CoverageStatsCellRenderer()
+        ButtonColumn(table, ShowCoverageDiffAction(table, project), 2)
+        table.tableHeader.reorderingAllowed = false
+        val speedSearch = TableSpeedSearch(table)
+        speedSearch.setClearSearchOnNavigateNoMatch(true)
+        table.autoCreateRowSorter = true
+
+        panel.viewport.view = table
         toolWindowPanel.setContent(panel)
 
         return toolWindowPanel
