@@ -1,5 +1,7 @@
 package com.testbuddy.services
 
+import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.util.ui.tree.TreeUtil
@@ -8,12 +10,13 @@ import com.testbuddy.models.testingChecklist.TestingChecklist
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testbuddy.views.trees.ChecklistCellRenderer
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeNode
 
 @Suppress("TooManyFunctions")
-class ChecklistTreeService {
+class ChecklistTreeService(val project: Project) {
 
     private lateinit var uiTree: CheckboxTree
     private lateinit var dataTree: TestingChecklist
@@ -24,15 +27,44 @@ class ChecklistTreeService {
      * @param uiTree the CheckboxTree which have to be initialized
      */
     fun initTrees(uiTree: CheckboxTree) {
-        dataTree = TestingChecklist(mutableListOf())
+        dataTree = project.service<ChecklistTreePersistent>().state
         this.uiTree = uiTree
+        resetTree()
+    }
+
+    fun getUiTree(): CheckboxTree {
+        return uiTree
+    }
+
+    fun initUiTree() {
+
+        dataTree = project.service<ChecklistTreePersistent>().state
+        val root = CheckedTreeNode("root")
+        uiTree = CheckboxTree(ChecklistCellRenderer(true), root)
+        val uiTreeRoot = uiTree.model.root as CheckedTreeNode
+
+        for (classNode in dataTree.classChecklists) {
+            val uiTreeClassNode = CheckedTreeNode(ChecklistUserObject(classNode))
+            for (methodNode in classNode.children) {
+                val uiTreeMethod = CheckedTreeNode(ChecklistUserObject(methodNode))
+                for (item in methodNode.children) {
+                    val itemNode = CheckedTreeNode(ChecklistUserObject(item))
+                    itemNode.isChecked = (item.checked > 0)
+                    uiTreeMethod.add(itemNode)
+                }
+                uiTreeClassNode.add(uiTreeMethod)
+            }
+            uiTreeRoot.add(uiTreeClassNode)
+        }
+        (uiTree.model as DefaultTreeModel).reload()
+        TreeUtil.expandAll(uiTree)
     }
 
     /**
      * This method resets the tree and all the previous information is lost.
      */
     fun resetTree() {
-        dataTree = TestingChecklist(mutableListOf())
+        dataTree.classChecklists.clear()
         val root = uiTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()
         (uiTree.model as DefaultTreeModel).reload()
@@ -48,16 +80,12 @@ class ChecklistTreeService {
         dataMethod: TestingChecklistMethodNode,
         itemNode: TestingChecklistLeafNode
     ): Boolean {
-        if (itemNode.element == null) {
-            return false
-        }
         var foundItem = false
+
         for (i in 0 until dataMethod.children.size) {
             val dataItem = dataMethod.children[i]
-            // var uiTreeItem = uiTreeMethod.getChildAt(i)
-            if (itemNode.description == dataItem.description &&
-                itemNode.element == dataItem.element
-            ) {
+
+            if (itemNode.description == dataItem.description) {
                 foundItem = true
                 break
                 // i do not have to add this item
@@ -70,7 +98,7 @@ class ChecklistTreeService {
      * This method builds the UI for a checklist item
      *
      * @param foundItem the Boolean which represents if the item was found or not
-     * @param uiTreeMethodNode: the TreeNode which represents the method reference of the UI
+     * @param uiTreeMethod: the TreeNode which represents the method reference of the UI
      * @param dataMethod the TestingChecklistMethodNode which represents the method of the tree
      * @param itemNode the TestingChecklistLeafNode which we have to be append to the tree
      */
@@ -107,9 +135,9 @@ class ChecklistTreeService {
             val dataMethod = dataClass.children[k]
             val uiTreeMethod = uiTreeClassNode.getChildAt(k)
 
-            if (dataMethod.element == methodNode.element) {
+            if (dataMethod.description == methodNode.description) {
                 foundMethod = true
-                dataMethod.description = methodNode.description
+
                 for (itemNode in methodNode.children) {
                     val foundItem: Boolean = findElement(dataMethod, itemNode)
                     buildUiItem(foundItem, uiTreeMethod, dataMethod, itemNode)
@@ -174,9 +202,8 @@ class ChecklistTreeService {
         for (l in 0 until dataTree.classChecklists.size) {
             val dataClass = dataTree.classChecklists[l]
             val uiTreeClassNode = uiTreeRoot.getChildAt(l)
-            if (dataClass.element == newNode.element) {
+            if (dataClass.description == newNode.description) {
                 foundClass = true
-                dataClass.description = newNode.description
                 buildUiMethods(uiTreeClassNode, dataClass, newNode)
             }
             break
@@ -225,7 +252,7 @@ class ChecklistTreeService {
     ): Int {
         for (i in 0 until methodNode.children.size) {
             val itemNode = methodNode.children[i]
-            if (itemNode.element == deleteItem.element && itemNode.description == deleteItem.description) {
+            if (itemNode.description == deleteItem.description) {
                 return i
             }
         }
@@ -245,7 +272,7 @@ class ChecklistTreeService {
 
         for (i in 0 until classNode.children.size) {
             val methodNode = classNode.children[i]
-            if (methodNode.element == deleteMethod.element) {
+            if (methodNode.description == deleteMethod.description) {
                 return i
             }
         }
@@ -261,7 +288,7 @@ class ChecklistTreeService {
 
         for (l in 0 until dataTree.classChecklists.size) {
             val dataClass = dataTree.classChecklists[l]
-            if (dataClass.element == deleteClass.element) {
+            if (dataClass.description == deleteClass.description) {
                 return l
             }
         }

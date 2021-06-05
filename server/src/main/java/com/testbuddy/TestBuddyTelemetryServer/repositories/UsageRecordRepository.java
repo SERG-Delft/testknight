@@ -1,6 +1,6 @@
 package com.testbuddy.TestBuddyTelemetryServer.repositories;
 
-import com.testbuddy.TestBuddyTelemetryServer.model.*;
+import com.testbuddy.TestBuddyTelemetryServer.domain.model.*;
 import org.springframework.data.repository.*;
 import org.springframework.stereotype.Repository;
 

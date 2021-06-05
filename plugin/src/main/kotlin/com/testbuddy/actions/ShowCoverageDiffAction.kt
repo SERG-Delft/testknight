@@ -11,6 +11,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.table.JBTable
 import com.testbuddy.services.CoverageDataService
 import com.testbuddy.services.CoverageHighlighterService
+import com.testbuddy.services.UsageDataService
 import java.awt.event.ActionEvent
 import javax.swing.AbstractAction
 
@@ -57,6 +58,7 @@ class ShowCoverageDiffAction(val table: JBTable, val project: Project) : Abstrac
                 .build()
 
             windowWrapper.show()
+            UsageDataService.instance.logSplitDiffView()
         }
     }
 }

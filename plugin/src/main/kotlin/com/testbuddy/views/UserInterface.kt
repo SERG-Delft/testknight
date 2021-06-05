@@ -8,8 +8,6 @@ import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
 import com.intellij.psi.PsiManager
-import com.intellij.ui.CheckboxTree
-import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.TableSpeedSearch
 import com.intellij.ui.components.JBScrollPane
@@ -28,7 +26,6 @@ import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.utilities.UserInterfaceHelper
 import com.testbuddy.views.trees.ChecklistCellEditor
-import com.testbuddy.views.trees.ChecklistCellRenderer
 import com.testbuddy.views.trees.CopyPasteCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
@@ -40,7 +37,6 @@ class UserInterface(val project: Project) {
 
     private var mainUI: JBTabbedPane? = null
     private var testCaseTree: Tree? = null
-    private var checkListTree: CheckboxTree? = null
 
     /**
      * Gets the component to be displayed on the tool window.
@@ -69,20 +65,22 @@ class UserInterface(val project: Project) {
 
         val service = project.service<ChecklistTreeService>()
         val panel = JBScrollPane()
-        val root = CheckedTreeNode("root")
+        // val root = CheckedTreeNode("root")
 
-        checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
-        val mouseListener = ChecklistMouseListener(checkListTree!!, project)
-        checkListTree!!.addMouseListener(mouseListener)
+        service.initUiTree()
+        val checkListTree = service.getUiTree()
 
-        checkListTree!!.addCheckboxTreeListener(CheckedNodeListener())
-        checkListTree!!.addKeyListener(CheckListKeyboardListener(checkListTree!!))
-        checkListTree!!.addTreeSelectionListener(ChecklistSelectionListener(project))
+        // checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
+        val mouseListener = ChecklistMouseListener(checkListTree, project)
+        checkListTree.addMouseListener(mouseListener)
 
-        checkListTree!!.cellEditor = ChecklistCellEditor()
-        checkListTree!!.isEditable = true
+        checkListTree.addCheckboxTreeListener(CheckedNodeListener())
+        checkListTree.addKeyListener(CheckListKeyboardListener(checkListTree))
+        checkListTree.addTreeSelectionListener(ChecklistSelectionListener(project))
 
-        service.initTrees(checkListTree!!)
+        checkListTree.cellEditor = ChecklistCellEditor()
+        checkListTree.isEditable = true
+
         panel.setViewportView(checkListTree)
 
         toolWindowPanel.setContent(panel)

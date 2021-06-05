@@ -22,8 +22,12 @@
         <projectService serviceImplementation="com.testbuddy.services.TestAnalyzerService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestTracingService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestMethodGenerationService"/>
+        <projectService serviceImplementation="com.testbuddy.services.ChecklistTreePersistent"/>
 
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
+        <applicationService serviceImplementation="com.testbuddy.services.UsageDataService"/>
+        
+        <testStatusListener implementation="com.testbuddy.listeners.TestLoggingListener"/>
     </extensions>
 
     <!-- Extension point for Main User Interface-->
@@ -132,6 +136,10 @@
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
         <listener class="com.testbuddy.listeners.FileEditorListener"
                   topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+        <listener class="com.testbuddy.listeners.TestBuddyExecutionListener"
+                  topic="com.intellij.execution.ExecutionListener"/>
+        <listener class="com.testbuddy.listeners.AppClosedListener"
+                  topic="com.intellij.ide.AppLifecycleListener"/>
     </projectListeners>
 
 </idea-plugin>
