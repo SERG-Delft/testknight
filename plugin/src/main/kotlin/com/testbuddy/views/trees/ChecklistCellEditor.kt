@@ -11,9 +11,10 @@ import javax.swing.AbstractCellEditor
 import javax.swing.JTree
 import javax.swing.tree.TreeCellEditor
 
+@Suppress("MagicNumber")
 class ChecklistCellEditor : TreeCellEditor, AbstractCellEditor() {
 
-    private var textField: JBTextField = JBTextField()
+    private var textField: JBTextField = JBTextField(40)
     private lateinit var currObj: ChecklistUserObject
     private var listener: ActionListener = ActionListener { stopCellEditing() }
 
