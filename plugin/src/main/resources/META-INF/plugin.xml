@@ -94,11 +94,11 @@
                 text="Show Diff View" description="Shows the difference in coverage in a diff view."
                 icon="AllIcons.Actions.Diff">
         </action>
-        <action id="ShowIntegratedView" class="com.testbuddy.actions.RefreshDiffHighlights"
+        <action id="ShowIntegratedView" class="com.testbuddy.actions.diffcoverage.RefreshDiffHighlights"
                 text="Show Newly Covered Lines" description="Shows the coverage line markers in the editor."
                 icon="AllIcons.General.InspectionsEye">
         </action>
-        <action id="HideIntegratedView" class="com.testbuddy.actions.HideDiffCovHighlights"
+        <action id="HideIntegratedView" class="com.testbuddy.actions.diffcoverage.HideDiffCovHighlights"
                 text="Hide Newly Covered Lines" description="Hides the coverage line markers in the editor."
                 icon="AllIcons.Diff.Remove">
         </action>
