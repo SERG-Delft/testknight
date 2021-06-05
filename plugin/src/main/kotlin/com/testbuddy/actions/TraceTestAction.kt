@@ -37,7 +37,7 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction, Iconab
      *
      * @return the intention family name.
      */
-    override fun getFamilyName(): String{
+    override fun getFamilyName(): String {
         return "Trace test"
     }
 
