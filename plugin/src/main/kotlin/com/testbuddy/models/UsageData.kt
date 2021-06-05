@@ -9,10 +9,10 @@ import org.apache.commons.codec.digest.DigestUtils
  *
  * @param actionsRecorded the list of actions to include in the usageData
  */
-data class UsageData(val actionsRecorded: List<ActionData>) {
-
-    // userId is read from the settings. A random userId is made on plugin install
-    val userId: String = SettingsService.instance.state.userId
+data class UsageData(
+    val actionsRecorded: List<ActionData>,
+    val userId: String = SettingsService.instance.state.userId,
+) {
 
     // the hash is used to verify the request.
     val hash: String = DigestUtils.md5Hex("${toHashString()}${ServerMessageBundleHandler.message("hashString")}")

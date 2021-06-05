@@ -8,8 +8,10 @@ import java.time.format.DateTimeFormatter
  *
  * @param actionId the action logged
  */
-data class ActionData(val actionId: String) {
+data class ActionData(
+    val actionId: String,
     val dateTime: String = DateTimeFormatter.ISO_DATE_TIME.format(LocalDateTime.now())
+) {
 
     /**
      * Creates a string representation
