@@ -112,12 +112,8 @@
         </action>
         <!---Actions in Coverage tab -->
         <action id="LoadCoverageAction" class="com.testbuddy.actions.LoadCoverageAction"
-                text="Load Coverage" description="Adds the coverage statistics."
+                text="Update Coverage Statistics" description="Updates the coverage statistics."
                 icon="AllIcons.Actions.Refresh">
-        </action>
-        <action id="ShowCoverageDiffAction" class="com.testbuddy.actions.ShowCoverageDiffAction"
-                text="Show Diff View" description="Shows the difference in coverage in a diff view."
-                icon="AllIcons.Actions.Diff">
         </action>
         <action id="ShowIntegratedView" class="com.testbuddy.actions.RefreshDiffHighlights"
                 text="Show Newly Covered Lines" description="Shows the coverage line markers in the editor."
@@ -167,6 +163,8 @@
                   topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
         <listener class="com.testbuddy.listeners.TestBuddyExecutionListener"
                   topic="com.intellij.execution.ExecutionListener"/>
+        <listener class="com.testbuddy.listeners.AppClosedListener"
+                  topic="com.intellij.ide.AppLifecycleListener"/>
     </projectListeners>
 
 </idea-plugin>
