@@ -25,9 +25,21 @@ import javax.swing.Icon
 
 class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction, Iconable {
 
-    override fun getText(): String = "See lines covered"
+    /**
+     * If this action is applicable, then the "See lines covered" text will be shown in the dropdown menu.
+     */
+    override fun getText(): String {
+        return "See lines covered"
+    }
 
-    override fun getFamilyName(): String = "Coverage"
+    /**
+     * Returns text for name of this family of intentions.
+     *
+     * @return the intention family name.
+     */
+    override fun getFamilyName(): String{
+        return "Trace test"
+    }
 
     override fun isAvailable(project: Project, editor: Editor?, element: PsiElement): Boolean {
 

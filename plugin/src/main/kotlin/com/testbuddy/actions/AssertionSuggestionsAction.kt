@@ -35,7 +35,7 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
      * @return the intention family name.
      */
     override fun getFamilyName(): String {
-        return "AssertionSuggestions"
+        return "Assertion suggestions"
     }
 
     /**
