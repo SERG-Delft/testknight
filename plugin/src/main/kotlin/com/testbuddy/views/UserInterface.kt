@@ -55,6 +55,10 @@ class UserInterface(val project: Project) {
         val actionGroup = DefaultActionGroup("ChecklistTabActions", false)
         actionGroup.add(actionManager.getAction("ChecklistAction"))
         actionGroup.add(actionManager.getAction("ClearChecklistAction"))
+        actionGroup.add(actionManager.getAction("DeleteChecklistAction"))
+        actionGroup.add(actionManager.getAction("AddItemChecklistAction"))
+        actionGroup.add(actionManager.getAction("EditItemChecklistAction"))
+        actionGroup.add(actionManager.getAction("GenerateMethodChecklistAction"))
         val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
