@@ -5,6 +5,8 @@ import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.IconLoader
+import com.intellij.openapi.util.Iconable
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.PsiMethod
@@ -13,11 +15,12 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.services.AssertionSuggestionService
 import com.testbuddy.services.TestAnalyzerService
 import com.testbuddy.services.UsageDataService
+import javax.swing.Icon
 
 /**
  * Implements an intention action to generate the assertions suggestions for the selected method call.
  */
-class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAction {
+class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAction, Iconable {
 
     /**
      * If this action is applicable, then the "Generate assertion suggestions" text will be shown in the dropdown menu
@@ -32,7 +35,7 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
      * @return the intention family name.
      */
     override fun getFamilyName(): String {
-        return "AssertionSuggestions"
+        return "Assertion suggestions"
     }
 
     /**
@@ -86,5 +89,12 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
      */
     override fun startInWriteAction(): Boolean {
         return true
+    }
+
+    /**
+     * Returns the icon for the intention Action
+     */
+    override fun getIcon(flags: Int): Icon {
+        return IconLoader.getIcon("/icons/pluginIcon.svg")
     }
 }
