@@ -7,6 +7,13 @@ import com.intellij.psi.util.PsiTreeUtil
 data class Class(val fields: Map<String, String>) {
 
     companion object Factory {
+        /**
+         * Creates a new Class object, containing information regarding the
+         * class and the class fields.
+         *
+         * @param method a PsiMethod from which the class information is extracted.
+         * @return a new Class object.
+         */
         fun createClassFromMethod(method: PsiMethod): Class {
             val parentClass =
                 PsiTreeUtil.getParentOfType(method, PsiClass::class.java) ?: return Class(emptyMap())
@@ -29,7 +36,7 @@ data class Class(val fields: Map<String, String>) {
      */
     fun isClassField(
         identifier: String,
-        identifiersInMethodScope: Map<String, String>,
+        identifiersInMethodScope: Map<String, String>
     ): Boolean {
         return if (identifier.contains("this.")) {
             val newName = identifier.replaceFirst("this.", "")

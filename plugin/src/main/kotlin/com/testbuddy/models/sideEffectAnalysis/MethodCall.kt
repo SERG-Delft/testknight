@@ -13,6 +13,12 @@ data class MethodCall(val name: String, val args: List<String>) {
     )
 
     companion object Factory {
+        /**
+         * Create a new MethodCall object from a PsiMethodCallExpression.
+         *
+         * @param psiMethodCallExpression the PsiMethodCallExpression to create the object from.
+         * @return a new MethodCall object.
+         */
         fun create(psiMethodCallExpression: PsiMethodCallExpression): MethodCall {
             val methodName = psiMethodCallExpression.methodExpression.qualifiedName
             val arguments = mutableListOf<String>()

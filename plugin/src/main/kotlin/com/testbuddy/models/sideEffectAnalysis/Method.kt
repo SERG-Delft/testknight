@@ -12,7 +12,12 @@ data class Method(
 ) {
 
     companion object Factory {
-
+        /**
+         * Creates a new Method object from a PsiMethod.
+         *
+         * @param psiMethod the PsiMethod to create from.
+         * @return a new Method object.
+         */
         fun createFromMethod(psiMethod: PsiMethod): Method {
             val parameters = getParametersOfMethod(psiMethod)
             val localVariables = getLocalVariablesOfMethod(psiMethod)
