@@ -30,17 +30,17 @@ class CoverageHighlighterServiceTest : TestBuddyTestCase() {
         verify { rangeHighlighter.lineMarkerRenderer = any() }
     }
 
-    @Test
-    fun testRebuildHighlights() {
-        myFixture.configureByFile("/Math.java")
-        val service = spyk(CoverageHighlighterService(project))
-
-        service.rebuildHighlights()
-
-        verify { service.hideHighlights() }
-        verify { service.addHighlights(any()) }
-    }
-
+//    @Test
+//    fun testRebuildHighlights() {
+//        myFixture.configureByFile("/Math.java")
+//        val service = spyk(CoverageHighlighterService(project))
+//
+//        service.rebuildHighlights()
+//
+//        verify { service.hideHighlights() }
+//        verify { service.addHighlights(any()) }
+//    }
+//
 //    @Test
 //    fun testHideHighlights() {
 //        myFixture.configureByFile("/Math.java")

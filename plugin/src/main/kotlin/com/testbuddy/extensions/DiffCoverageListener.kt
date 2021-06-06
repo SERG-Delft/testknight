@@ -21,12 +21,11 @@ class DiffCoverageListener(val project: Project) : CoverageSuiteListener {
 
         val suite = covDataManager.currentSuitesBundle
         val data = suite.coverageData
-        val service = project.service<CoverageDataService>()
 
         covDataService.updateCoverage(suite, data)
 
         if (SettingsService.state.coverageSettings.showIntegratedView) {
-            // TODO add "is diff info available" to this if
+
             project.service<CoverageHighlighterService>().rebuildHighlights()
         }
     }

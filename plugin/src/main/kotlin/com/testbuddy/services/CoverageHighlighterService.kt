@@ -63,7 +63,17 @@ class CoverageHighlighterService(val project: Project) {
         val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
 
         covDataService.getDiffLines(project)
+        covDataService.getDiffLines(project)
         val covDiffObject = covDataService.classCoveragesMap[classQn] ?: return
+
+        val vFile = psiDocumentManager.getPsiFile(editor.document)?.virtualFile ?: return
+
+        // if the editor was modified in between coverage runs skip
+        if (vFile.modificationStamp != covDiffObject.currStamp ||
+            covDiffObject.prevStamp != covDiffObject.currStamp
+        ) {
+            return
+        }
 
         covDiffObject.linesNewlyAdded.forEach { addGutterHighlighter(editor, it, includedColor()) }
         covDiffObject.linesNewlyRemoved.forEach { addGutterHighlighter(editor, it, deletedColor()) }
