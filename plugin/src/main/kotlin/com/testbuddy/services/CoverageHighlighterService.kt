@@ -14,8 +14,8 @@ import java.awt.Color
 
 class CoverageHighlighterService(val project: Project) {
 
-    private val highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
-    private val covDataService = project.service<CoverageDataService>()
+    private var highlights = hashMapOf<Editor, MutableSet<RangeHighlighter>>()
+    private var covDataService = project.service<CoverageDataService>()
 
     private fun settingsState() = SettingsService.instance.state
 
@@ -28,7 +28,7 @@ class CoverageHighlighterService(val project: Project) {
      * @param editor the editor
      * @param className the class Name
      */
-    private fun showHighlights(editor: Editor, className: String) {
+    fun showHighlights(editor: Editor, className: String) {
 
         covDataService.getDiffLines(project)
         val covDiffObject = covDataService.classCoveragesMap[className] ?: return
@@ -97,7 +97,7 @@ class CoverageHighlighterService(val project: Project) {
      * @param color the color
      * @param attributeKey the text attribute key
      */
-    private fun addGutterHighlighter(
+    fun addGutterHighlighter(
         editor: Editor,
         lineNum: Int,
         color: Color,
@@ -113,6 +113,14 @@ class CoverageHighlighterService(val project: Project) {
         if (highlights[editor] == null) highlights[editor] = mutableSetOf()
         highlights[editor]!!.add(hl)
 
-        hl.lineMarkerRenderer = DiffCoverageLineMarkerRenderer(color)
+        hl.setLineMarkerRenderer(DiffCoverageLineMarkerRenderer(color))
+    }
+
+    fun setHighlights(highlights: HashMap<Editor, MutableSet<RangeHighlighter>>) {
+        this.highlights = highlights
+    }
+
+    fun setCoverageDataService(coverageDataService: CoverageDataService) {
+        this.covDataService = coverageDataService
     }
 }

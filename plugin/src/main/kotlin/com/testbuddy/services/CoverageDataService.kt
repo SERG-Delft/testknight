@@ -3,6 +3,7 @@ package com.testbuddy.services
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
@@ -90,7 +91,7 @@ class CoverageDataService : Disposable {
             isDiffAvailable = false
         }
 
-        val testAnalyzerService = TestAnalyzerService()
+        val testAnalyzerService = project.service<TestAnalyzerService>()
 
         // gets all relevant classes in current project (not imports and org.junit or javax classes)
         // filters out all test classes because we aren't interested in tests for those
