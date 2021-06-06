@@ -98,16 +98,16 @@ class CoverageHighlighterService(val project: Project) {
      * @param attributeKey the text attribute key
      */
     fun addGutterHighlighter(
-            editor: Editor,
-            lineNum: Int,
-            color: Color,
-            attributeKey: TextAttributesKey? = null
+        editor: Editor,
+        lineNum: Int,
+        color: Color,
+        attributeKey: TextAttributesKey? = null
     ) {
 
         val hl = editor.markupModel.addLineHighlighter(
-                attributeKey,
-                lineNum - 1,
-                HighlighterLayer.LAST
+            attributeKey,
+            lineNum - 1,
+            HighlighterLayer.LAST
         )
 
         if (highlights[editor] == null) highlights[editor] = mutableSetOf()
@@ -116,11 +116,11 @@ class CoverageHighlighterService(val project: Project) {
         hl.setLineMarkerRenderer(DiffCoverageLineMarkerRenderer(color))
     }
 
-    fun setHighlights(highlights : HashMap<Editor, MutableSet<RangeHighlighter>>){
+    fun setHighlights(highlights: HashMap<Editor, MutableSet<RangeHighlighter>>) {
         this.highlights = highlights
     }
 
-    fun setCoverageDataService(coverageDataService: CoverageDataService){
+    fun setCoverageDataService(coverageDataService: CoverageDataService) {
         this.covDataService = coverageDataService
     }
 }
