@@ -3,9 +3,11 @@ package com.testbuddy.models
 import com.intellij.openapi.vfs.VirtualFile
 
 class CoverageDiffObject(
-    val allLines: Set<Int>,
-    val coveredPrev: Set<Int>,
-    val coveredNow: Set<Int>,
+    val allLines: Set<Int> = emptySet(),
+    val coveredPrev: Set<Int> = emptySet(),
+    val coveredNow: Set<Int> = emptySet(),
+    var prevStamp: Long = 0,
+    var currStamp: Long = 0,
     val virtualFile: VirtualFile? = null
 ) {
 

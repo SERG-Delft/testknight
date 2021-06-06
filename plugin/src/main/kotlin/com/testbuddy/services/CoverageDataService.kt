@@ -61,6 +61,24 @@ class CoverageDataService : Disposable {
 
         currentData = newData
         currentSuite = newSuite
+
+        val testAnalyzerService = TestAnalyzerService()
+
+        val project = newSuite?.project ?: return
+
+        AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
+            .findAll()
+            .filter { !testAnalyzerService.isTestClass(it) }
+            .mapNotNull { it }
+            .forEach {
+                if (!currentData!!.classes.contains(it.name)) {
+                    classCoveragesMap[it.name!!] = CoverageDiffObject()
+                }
+
+                val vFile = it.containingFile.virtualFile
+                classCoveragesMap[it.name!!]!!.prevStamp = classCoveragesMap[it.name!!]!!.currStamp
+                classCoveragesMap[it.name!!]!!.currStamp = vFile.modificationStamp
+            }
     }
 
     /**
@@ -112,7 +130,15 @@ class CoverageDataService : Disposable {
 
             val vFile = it.containingFile.virtualFile
 
-            classCoveragesMap[it.name!!] = CoverageDiffObject(allLines, coveredPrev, coveredNow, vFile)
+            val oldObj = classCoveragesMap[it.name!!]
+            classCoveragesMap[it.name!!] = CoverageDiffObject(
+                allLines,
+                coveredPrev,
+                coveredNow,
+                oldObj?.prevStamp ?: 0,
+                oldObj?.currStamp ?: 0,
+                vFile
+            )
         }
     }
 
