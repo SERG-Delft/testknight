@@ -86,7 +86,7 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction, Iconab
 
         // open method declaration
         fileEditorManager.openTextEditor(descriptor, true)
-        UsageDataService.instance.logTraceTest()
+        UsageDataService.instance.recordTraceTest()
     }
 
     /**

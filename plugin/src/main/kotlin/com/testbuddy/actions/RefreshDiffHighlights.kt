@@ -22,6 +22,6 @@ class RefreshDiffHighlights : AnAction() {
         val coverageHighlighterService = project.service<CoverageHighlighterService>()
 
         coverageHighlighterService.refreshHighlights(editor, className)
-        UsageDataService.instance.logIntegratedDiffView()
+        UsageDataService.instance.recordIntegratedDiffView()
     }
 }

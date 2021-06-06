@@ -74,6 +74,6 @@ class ShowCoverageDiffAction(val table: JBTable, val project: Project) : Abstrac
             .build()
 
         windowWrapper.show()
-        UsageDataService.instance.logSplitDiffView()
+        UsageDataService.instance.recordSplitDiffView()
     }
 }

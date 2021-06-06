@@ -74,7 +74,7 @@ class TestListMouseListener(private val tree: Tree, private val cellRenderer: Te
                 val duplicateTestsService = project!!.service<DuplicateTestsService>()
                 if (editor != null) {
                     duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
-                    UsageDataService.instance.logDuplicateTest()
+                    UsageDataService.instance.recordDuplicateTest()
                     return true
                 }
             } else if (gotoBounds.contains(e.point) || clickCount >= 2) {
@@ -82,7 +82,7 @@ class TestListMouseListener(private val tree: Tree, private val cellRenderer: Te
 
                 if (editor != null) {
                     gotoTestService.gotoMethod(editor, reference)
-                    UsageDataService.instance.logGotoTest()
+                    UsageDataService.instance.recordGotoTest()
                     return true
                 }
             }

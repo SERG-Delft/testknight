@@ -414,7 +414,7 @@ class ChecklistTreeService(val project: Project) {
                 ((node.parent.parent as CheckedTreeNode).userObject as ChecklistUserObject)
                     .checklistNode as TestingChecklistClassNode
             )
-            UsageDataService.instance.logItemDeleted()
+            UsageDataService.instance.recordItemDeleted()
         }
     }
 
