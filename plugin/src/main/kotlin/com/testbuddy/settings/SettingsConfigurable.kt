@@ -1,9 +1,14 @@
 package com.testbuddy.settings
 
-import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.options.BoundConfigurable
+import com.intellij.openapi.options.ConfigurationException
+import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.ui.DialogPanel
+import com.testbuddy.services.CoverageHighlighterService
 import com.testbuddy.services.GenerateTestCaseChecklistService
+import com.testbuddy.services.TestTracingService
 
 class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     private lateinit var mySettingsComponent: SettingsComponent
@@ -40,10 +45,28 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
      *
      * @throws ConfigurationException if values cannot be applied
      */
+    @Throws(ConfigurationException::class)
     override fun apply() {
         super.apply()
         mySettingsComponent.applyCoverageColors(state.coverageSettings)
-        ApplicationManager.getApplication().getService(GenerateTestCaseChecklistService::class.java).rebuildStrategies()
+        ServiceManager.getService(GenerateTestCaseChecklistService::class.java).rebuildStrategies()
+
+        // for each project apply the settings for project services
+        ProjectManager.getInstance().openProjects.forEach {
+
+            // refresh possibly changed highlight colors
+            it.service<TestTracingService>().refreshHighlights()
+            it.service<CoverageHighlighterService>().rebuildHighlights()
+
+            if (!SettingsService.state.coverageSettings.showIntegratedView) {
+                it.service<CoverageHighlighterService>().hideHighlights()
+            }
+
+            if (SettingsService.state.coverageSettings.showIntegratedView) {
+                it.service<CoverageHighlighterService>().rebuildHighlights()
+            }
+        }
+
     }
 
     /**

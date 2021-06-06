@@ -76,6 +76,9 @@ class SettingsService : PersistentStateComponent<SettingsState> {
         val instance: SettingsService
             get() = ServiceManager.getService(SettingsService::class.java)
 
+        val state: SettingsState
+            get() = instance.state
+
         /**
          * Converts colors from Hex form in String to Color object.
          */

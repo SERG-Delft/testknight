@@ -30,7 +30,16 @@ class CoverageHighlighterService(val project: Project) {
     private fun includedColor() = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.addedColor)
 
     /**
-     * Highlight all active editors.
+     * Destroy highlights and re-construct them
+     */
+    fun rebuildHighlights() {
+        hideHighlights()
+        refreshHighlights()
+    }
+
+    /**
+     * Add highlights to any un-highlighted editors
+     *
      */
     fun refreshHighlights() {
         fileEditorManager.allEditors.forEach {
@@ -63,6 +72,7 @@ class CoverageHighlighterService(val project: Project) {
      */
     fun hideHighlights() {
         highlights.forEach { it.dispose() }
+        isHighlighted.keys.forEach { isHighlighted[it] = false }
     }
 
     /**
