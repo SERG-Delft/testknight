@@ -121,6 +121,6 @@ class CoverageHighlighterService(val project: Project) {
     }
 
     fun setCoverageDataService(coverageDataService: CoverageDataService){
-        this.covDataService = covDataService
+        this.covDataService = coverageDataService
     }
 }

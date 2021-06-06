@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.CoverageDiffObject
 import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
@@ -96,6 +97,29 @@ class CoverageHighlighterServiceTest : TestBuddyTestCase() {
         service.showHighlights(myFixture.editor, "ClassName")
 
         TestCase.assertEquals(covService.classCoveragesMap["ClassName"],null)
+    }
+
+    @Test
+    fun testShowHighlights(){
+        myFixture.configureByFile("/Methods.java")
+        val service = spyk(CoverageHighlighterService(project))
+        val covService = mockk<CoverageDataService>()
+        service.setCoverageDataService(covService)
+        every { covService.getDiffLines(any()) } returns Unit
+
+        val allLines = setOf(1,2,3)
+        val coveredPrev = setOf(1,2)
+        val coveredNow = setOf(2,3)
+        val coverageDiffObject = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+
+        val mutableMap = mutableMapOf<String,CoverageDiffObject>()
+        mutableMap.put("ClassName",coverageDiffObject)
+
+
+        every{covService.classCoveragesMap} returns mutableMap
+        println(mutableMap["ClassName"]!!.linesNewlyRemoved)
+        service.showHighlights(myFixture.editor, "ClassName")
+        verify { service.addGutterHighlighter(any(),any(),any()) }
     }
 
 }
