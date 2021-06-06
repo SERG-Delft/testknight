@@ -64,4 +64,36 @@ class SettingsComponentTest : TestBuddyTestCase(){
         let { SettingsService.toColorHex(it) })
     }
 
+
+
+    @Test
+    fun testApplyColorsAddedColorNull(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        TestCase.assertEquals(coverageColors.addedColor, ColorUtil.toHex(java.awt.Color.GREEN) )
+    }
+
+    @Test
+    fun testApplyColorsDeletedColorNull(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        TestCase.assertEquals(coverageColors.deletedColor, ColorUtil.toHex(java.awt.Color.RED))
+    }
+
+    @Test
+    fun testApplyColorsTracedColorNull(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        TestCase.assertEquals(coverageColors.tracedColor, ColorUtil.toHex(java.awt.Color.CYAN))
+    }
+
 }
