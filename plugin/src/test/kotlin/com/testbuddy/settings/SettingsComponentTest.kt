@@ -3,7 +3,6 @@ package com.testbuddy.settings
 import com.intellij.ui.ColorPanel
 import com.intellij.ui.ColorUtil
 import com.testbuddy.extensions.TestBuddyTestCase
-import javafx.scene.paint.Color
 import junit.framework.TestCase
 import org.junit.jupiter.api.Test
 
