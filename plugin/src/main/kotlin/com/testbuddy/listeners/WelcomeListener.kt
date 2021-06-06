@@ -19,7 +19,6 @@ class WelcomeListener(val project: Project) : PluginStateListener {
      * When the user installs the plugin, a Dialog should appear.
      */
     override fun install(descriptor: IdeaPluginDescriptor) {
-        println("install")
 
         val installDialog = InstallDialog()
 
@@ -31,8 +30,7 @@ class WelcomeListener(val project: Project) : PluginStateListener {
     }
 
     override fun uninstall(descriptor: IdeaPluginDescriptor) {
-
-        print("uninstall")
+        // empty body for the uninstall
     }
 
     private class InstallDialog : DialogWrapper(true) {
