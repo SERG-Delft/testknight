@@ -16,7 +16,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     @Test
     fun testInitialisation() {
         val settingsComponent = SettingsComponent()
-        var actualPanel = settingsComponent.getMyPanel()
+        var actualPanel = settingsComponent.getComponent()
         TestCase.assertNotNull(actualPanel)
     }
 
@@ -94,6 +94,55 @@ class SettingsComponentTest : TestBuddyTestCase(){
         settingsComponent.deletedColor = ColorPanel()
         settingsComponent.tracedColor = ColorPanel()
         TestCase.assertEquals(coverageColors.tracedColor, ColorUtil.toHex(java.awt.Color.CYAN))
+    }
+
+    @Test
+    fun testIsColorModifiedAllValuesSet(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
+        assertTrue(settingsComponent.isColorModified(coverageColors))
+    }
+
+    @Test
+    fun testIsColorModifiedNullAddedColor(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
+        assertFalse(settingsComponent.isColorModified(coverageColors))
+    }
+
+    @Test
+    fun testIsColorModifiedNullDeletedColor(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
+        assertFalse(settingsComponent.isColorModified(coverageColors))
+    }
+
+    @Test
+    fun testIsColorModifiedNullTracedColor(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
+        assertFalse(settingsComponent.isColorModified(coverageColors))
     }
 
 }

@@ -32,10 +32,10 @@ class SettingsComponent {
             titledRow("Telemetry") {
                 row {
                     checkBox(
-                        "Allow data collection",
-                        // state.telemetrySettings::isEnabled
-                        { state.telemetrySettings.isEnabled },
-                        { newVal -> state.telemetrySettings.isEnabled = newVal }
+                            "Allow data collection",
+                            // state.telemetrySettings::isEnabled
+                            { state.telemetrySettings.isEnabled },
+                            { newVal -> state.telemetrySettings.isEnabled = newVal }
                     )
                 }
                 row {
@@ -64,39 +64,39 @@ class SettingsComponent {
                 row {
                     label("Coverage Criteria")
                     comboBox(
-                        comboBoxModel,
-                        // checklistSettings::coverageCriteria
-                        { checklistSettings.coverageCriteria },
-                        { newVal ->
-                            if (newVal != null) {
-                                checklistSettings.coverageCriteria = newVal
+                            comboBoxModel,
+                            // checklistSettings::coverageCriteria
+                            { checklistSettings.coverageCriteria },
+                            { newVal ->
+                                if (newVal != null) {
+                                    checklistSettings.coverageCriteria = newVal
+                                }
                             }
-                        }
                     )
                 }
 
                 row {
                     checkBox(
-                        "Show gutter icons",
-                        // checklistSettings::showGutterIcons
-                        { checklistSettings.showGutterIcons },
-                        { newVal -> checklistSettings.showGutterIcons = newVal }
+                            "Show gutter icons",
+                            // checklistSettings::showGutterIcons
+                            { checklistSettings.showGutterIcons },
+                            { newVal -> checklistSettings.showGutterIcons = newVal }
                     )
                 }
                 row {
                     checkBox(
-                        "Goto selected checklist item's source",
-                        // checklistSettings::gotoChecklistItem
-                        { checklistSettings.gotoChecklistItem },
-                        { newVal -> checklistSettings.gotoChecklistItem = newVal }
+                            "Goto selected checklist item's source",
+                            // checklistSettings::gotoChecklistItem
+                            { checklistSettings.gotoChecklistItem },
+                            { newVal -> checklistSettings.gotoChecklistItem = newVal }
                     )
                 }
                 row {
                     checkBox(
-                        "Highlight selected checklist item's source",
-                        // checklistSettings::highlightChecklistItem
-                        { checklistSettings.highlightChecklistItem },
-                        { newVal -> checklistSettings.highlightChecklistItem = newVal }
+                            "Highlight selected checklist item's source",
+                            // checklistSettings::highlightChecklistItem
+                            { checklistSettings.highlightChecklistItem },
+                            { newVal -> checklistSettings.highlightChecklistItem = newVal }
                     )
                 }
 
@@ -142,10 +142,10 @@ class SettingsComponent {
                 val coverageSettings = state.coverageSettings
                 row {
                     checkBox(
-                        "Show newly (un)covered lines in gutter",
-                        // coverageSettings::showIntegratedView
-                        { coverageSettings.showIntegratedView },
-                        { newVal -> coverageSettings.showIntegratedView = newVal }
+                            "Show newly (un)covered lines in gutter",
+                            // coverageSettings::showIntegratedView
+                            { coverageSettings.showIntegratedView },
+                            { newVal -> coverageSettings.showIntegratedView = newVal }
                     )
                 }
                 row {
@@ -173,9 +173,6 @@ class SettingsComponent {
         }
     }
 
-    fun getMyPanel() : DialogPanel{
-        return myPanel
-    }
 
     /**
      * Checks if the settings panel has different colors than the settings state.
@@ -186,8 +183,8 @@ class SettingsComponent {
     fun isColorModified(coverageColors: CoverageSettings): Boolean {
 
         if (this.addedColor.selectedColor == null ||
-            this.deletedColor.selectedColor == null ||
-            this.tracedColor.selectedColor == null
+                this.deletedColor.selectedColor == null ||
+                this.tracedColor.selectedColor == null
         ) {
             return false
         }
@@ -197,10 +194,10 @@ class SettingsComponent {
         val covTracedColor = SettingsService.toColor(coverageColors.tracedColor)
 
         return (
-            covAddedColor != this.addedColor.selectedColor!! ||
-                covDeletedColor != this.deletedColor.selectedColor!! ||
-                covTracedColor != this.tracedColor.selectedColor!!
-            )
+                covAddedColor != this.addedColor.selectedColor!! ||
+                        covDeletedColor != this.deletedColor.selectedColor!! ||
+                        covTracedColor != this.tracedColor.selectedColor!!
+                )
     }
 
     /**
@@ -227,11 +224,11 @@ class SettingsComponent {
      */
     fun applyCoverageColors(coverageColors: CoverageSettings) {
         coverageColors.addedColor = this.addedColor.selectedColor?.let { SettingsService.toColorHex(it) }
-            ?: coverageColors.addedColor
+                ?: coverageColors.addedColor
         coverageColors.deletedColor = this.deletedColor.selectedColor?.let { SettingsService.toColorHex(it) }
-            ?: coverageColors.deletedColor
+                ?: coverageColors.deletedColor
         coverageColors.tracedColor = this.tracedColor.selectedColor?.let { SettingsService.toColorHex(it) }
-            ?: coverageColors.tracedColor
+                ?: coverageColors.tracedColor
     }
 
     /**
