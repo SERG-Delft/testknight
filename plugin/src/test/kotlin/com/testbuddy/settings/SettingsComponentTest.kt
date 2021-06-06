@@ -1,17 +1,13 @@
 package com.testbuddy.settings
 
-
 import com.intellij.ui.ColorPanel
 import com.intellij.ui.ColorUtil
 import com.testbuddy.extensions.TestBuddyTestCase
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
 import javafx.scene.paint.Color
 import junit.framework.TestCase
 import org.junit.jupiter.api.Test
 
-class SettingsComponentTest : TestBuddyTestCase(){
+class SettingsComponentTest : TestBuddyTestCase() {
 
     @Test
     fun testInitialisation() {
@@ -21,7 +17,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testApplyCoverageColorsAddedColor(){
+    fun testApplyCoverageColorsAddedColor() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -35,7 +31,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testApplyCoverageColorsDeletedColor(){
+    fun testApplyCoverageColorsDeletedColor() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -45,12 +41,15 @@ class SettingsComponentTest : TestBuddyTestCase(){
         settingsComponent.deletedColor.selectedColor = java.awt.Color.BLACK
         settingsComponent.tracedColor.selectedColor = java.awt.Color.BLUE
         settingsComponent.applyCoverageColors(coverageColors)
-        TestCase.assertEquals(coverageColors.deletedColor, settingsComponent.deletedColor.selectedColor?.
-        let { SettingsService.toColorHex(it) })
+        TestCase.assertEquals(
+            coverageColors.deletedColor,
+            settingsComponent.deletedColor.selectedColor
+                ?.let { SettingsService.toColorHex(it) }
+        )
     }
 
     @Test
-    fun testApplyCoverageColorsTracedColor(){
+    fun testApplyCoverageColorsTracedColor() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -60,24 +59,25 @@ class SettingsComponentTest : TestBuddyTestCase(){
         settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
         settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
         settingsComponent.applyCoverageColors(coverageColors)
-        TestCase.assertEquals(coverageColors.tracedColor, settingsComponent.tracedColor.selectedColor?.
-        let { SettingsService.toColorHex(it) })
+        TestCase.assertEquals(
+            coverageColors.tracedColor,
+            settingsComponent.tracedColor.selectedColor
+                ?.let { SettingsService.toColorHex(it) }
+        )
     }
 
-
-
     @Test
-    fun testApplyColorsAddedColorNull(){
+    fun testApplyColorsAddedColorNull() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
         settingsComponent.deletedColor = ColorPanel()
         settingsComponent.tracedColor = ColorPanel()
-        TestCase.assertEquals(coverageColors.addedColor, ColorUtil.toHex(java.awt.Color.GREEN) )
+        TestCase.assertEquals(coverageColors.addedColor, ColorUtil.toHex(java.awt.Color.GREEN))
     }
 
     @Test
-    fun testApplyColorsDeletedColorNull(){
+    fun testApplyColorsDeletedColorNull() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -87,7 +87,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testApplyColorsTracedColorNull(){
+    fun testApplyColorsTracedColorNull() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -97,7 +97,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedAllValuesSet(){
+    fun testIsColorModifiedAllValuesSet() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -110,7 +110,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedNullAddedColor(){
+    fun testIsColorModifiedNullAddedColor() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -122,7 +122,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedNullDeletedColor(){
+    fun testIsColorModifiedNullDeletedColor() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -134,7 +134,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedNullTracedColor(){
+    fun testIsColorModifiedNullTracedColor() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -146,7 +146,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedAddedDifferent(){
+    fun testIsColorModifiedAddedDifferent() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -159,7 +159,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedDeletedDifferent(){
+    fun testIsColorModifiedDeletedDifferent() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -172,7 +172,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedTracedDifferent(){
+    fun testIsColorModifiedTracedDifferent() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -185,7 +185,7 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testIsColorModifiedAllDifferent(){
+    fun testIsColorModifiedAllDifferent() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor = ColorPanel()
@@ -198,21 +198,18 @@ class SettingsComponentTest : TestBuddyTestCase(){
     }
 
     @Test
-    fun testResetCoverageColors(){
+    fun testResetCoverageColors() {
         val coverageColors = CoverageSettings()
         val settingsComponent = SettingsComponent()
         settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
         settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
         settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
-        val covAddedColor =  java.awt.Color.GREEN
-        val covDeletedColor =  java.awt.Color.RED
-        val covTracedColor =  java.awt.Color.CYAN
+        val covAddedColor = java.awt.Color.GREEN
+        val covDeletedColor = java.awt.Color.RED
+        val covTracedColor = java.awt.Color.CYAN
         settingsComponent.resetCoverageColors(coverageColors)
         TestCase.assertEquals(settingsComponent.addedColor.selectedColor, covAddedColor)
         TestCase.assertEquals(settingsComponent.deletedColor.selectedColor, covDeletedColor)
         TestCase.assertEquals(settingsComponent.tracedColor.selectedColor, covTracedColor)
-
     }
-
-
 }

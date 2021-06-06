@@ -42,7 +42,7 @@ class CoverageHighlighterServiceTest : TestBuddyTestCase() {
         service.refreshHighlights(editor, "ClassName")
 
         verify { service.hideHighlights(editor) }
-        verify { service.showHighlights(any(),any()) }
+        verify { service.showHighlights(any(), any()) }
     }
 
     @Test
