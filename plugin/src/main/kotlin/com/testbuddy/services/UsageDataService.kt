@@ -25,7 +25,7 @@ class UsageDataService {
      * The amount of actions that are stored before sending them
      */
     @Suppress("MagicNumber")
-    private val actionsThreshold = 50
+    private val actionsThreshold = 150
 
     /**
      * A set of hashes of the known tests. Used to detect new tests.
