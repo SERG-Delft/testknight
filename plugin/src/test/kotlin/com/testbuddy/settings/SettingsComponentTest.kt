@@ -145,4 +145,57 @@ class SettingsComponentTest : TestBuddyTestCase(){
         assertFalse(settingsComponent.isColorModified(coverageColors))
     }
 
+    @Test
+    fun testIsColorModifiedAddedDifferent(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.RED
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.CYAN
+        assertTrue(settingsComponent.isColorModified(coverageColors))
+    }
+
+    @Test
+    fun testIsColorModifiedDeletedDifferent(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.GREEN
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.CYAN
+        assertTrue(settingsComponent.isColorModified(coverageColors))
+    }
+
+    @Test
+    fun testIsColorModifiedTracedDifferent(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.GREEN
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.RED
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
+        assertTrue(settingsComponent.isColorModified(coverageColors))
+    }
+
+    @Test
+    fun testIsColorModifiedAllDifferent(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.GREEN
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.RED
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.CYAN
+        assertFalse(settingsComponent.isColorModified(coverageColors))
+    }
+
+
 }
