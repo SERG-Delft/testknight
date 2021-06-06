@@ -171,6 +171,42 @@ Listeners allow plugins to declaratively subscribe to events delivered through t
 
 You should declaratively register listeners, i.e declare them in the `plugin.xml` file. This way you will achieve better performance because listeners will be created lazily, meaning the listeners will be created only if the event that they subscribe to is fired.
 
+
+## Services 
+
+Services are the classes implementing the main logic of the plugin. They are called by the actions and the listeners and by other services as well. 
+Something interesting to note is that Services are meant to be used as singletons. However, their "single nature" is not enforced by their own class
+but instead by an instance manager. Because of that you should get Service instances in the following way: 
+
+```kt
+// project/application can be obtained in several different ways. To get the current project/app do:
+val project = ProjectManager.getInstance().defaultProject
+val application = ApplicationManager.getApplication()
+
+val projectService = project.service<LoadTestsService>()
+val applicationService = application.getService(SettingsService::class.java)
+```
+
+### Application vs Project Services
+As you might have noticed in the above code snippet there are different kinds of services. They differ in their "scope". 
+The "scope" determines how many instances of the service are created and managed by the instance manager. For project services,
+a service instance will be created for each project. On the other hand, for application services one service instance will be made 
+for the entire application. This means that if the service has state, then this state is shared over all projects that the user
+opens in IntelliJ.
+
+### Declaring Services
+Similar to actions, services need to be declared in the `plugin.xml` file. You can do so in the following way.
+```xml
+<extensions defaultExtensionNs="com.intellij">
+
+    <!-- Example project service -->
+    <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
+
+    <!-- Example application service -->
+    <applicationService serviceImplementation="com.testbuddy.settings.SettingsService"/>
+<extensions>
+```
+
 ## The PSI
 The Program Structure Interface (PSI) is IntelliJ's internal represantation of the code. It is biderectional meaning that a change in the code is refected in the PSI and a change in the PSI is reflected in the code (the text buffer).
 
