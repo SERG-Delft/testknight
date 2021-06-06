@@ -1,11 +1,9 @@
 package com.testbuddy.services
 
-import com.intellij.configurationStore.NOTIFICATION_GROUP_ID
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
-import com.intellij.icons.AllIcons
-import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
+import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
@@ -33,6 +31,7 @@ class TestTracingService(val project: Project) {
     private val fileEditorManager = FileEditorManager.getInstance(project)
     private val psiDocumentManager = PsiDocumentManager.getInstance(project)
     private val highlighters = mutableListOf<RangeHighlighter>()
+    private val exceptionHandlerService = project.service<ExceptionHandlerService>()
 
     /**
      * The current coverage data to show.
@@ -110,28 +109,36 @@ class TestTracingService(val project: Project) {
      * @return a TestCoverageObject representing the lines covered by the test.
      */
     @Throws(NoTestCoverageDataException::class)
+    @Suppress("TooGenericExceptionCaught")
     private fun getLinesForTest(test: String): TestCoverageData? {
-
-        // display a notification with the Provided title and content
-        fun notify(title: String, content: String) {
-            Notification(NOTIFICATION_GROUP_ID, AllIcons.General.Warning, NotificationType.ERROR)
-                .setTitle(title)
-                .setContent(content)
-                .notify(project)
-        }
 
         try {
             val currentSuitesBundle = coverageDataManager.currentSuitesBundle
             val traceFile = getTraceFile(test, currentSuitesBundle)
             return readTraceFile(traceFile)
         } catch (ex: FileNotFoundException) {
-            notify("Test coverage info not found", "Make sure you have ran with coverage and test-tracing")
+            exceptionHandlerService.notify(
+                "Test coverage info not found",
+                "Make sure you have ran with coverage and test-tracing", NotificationType.ERROR
+            )
             println(ex)
         } catch (ex: IllegalStateException) {
-            notify("Test coverage info not found", "Make sure you have ran with coverage and test-tracing")
+            exceptionHandlerService.notify(
+                "Test coverage info not found",
+                "Make sure you have ran with coverage and test-tracing", NotificationType.ERROR
+            )
             println(ex)
         } catch (ex: IOException) {
-            notify("Failed to read trace file", "Rerun coverage")
+            exceptionHandlerService.notify(
+                "Failed to read trace file",
+                "Rerun coverage", NotificationType.ERROR
+            )
+            println(ex)
+        } catch (ex: NullPointerException) {
+            exceptionHandlerService.notify(
+                "Failed to read trace file",
+                "Not coverage suit found", NotificationType.ERROR
+            )
             println(ex)
         }
 
