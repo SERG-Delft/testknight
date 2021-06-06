@@ -185,4 +185,8 @@
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </projectListeners>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.testbuddy.startup.WelcomePage"/>
+    </extensions>
+
 </idea-plugin>
