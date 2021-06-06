@@ -7,14 +7,15 @@ import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.TestMethodUserObject
 import com.testbuddy.services.DuplicateTestsService
 import com.testbuddy.services.GotoTestService
-import com.testbuddy.views.trees.CopyPasteCellRenderer
+import com.testbuddy.services.UsageDataService
+import com.testbuddy.views.trees.TestListCellRenderer
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.MouseEvent
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: CopyPasteCellRenderer) :
+class TestListMouseListener(private val tree: Tree, private val cellRenderer: TestListCellRenderer) :
     ClickListener() {
 
     private var latestEditor: Editor? = null
@@ -73,13 +74,15 @@ class CopyPasteMouseListener(private val tree: Tree, private val cellRenderer: C
                 val duplicateTestsService = project!!.service<DuplicateTestsService>()
                 if (editor != null) {
                     duplicateTestsService.duplicateMethod(reference.psiMethod, editor)
+                    UsageDataService.instance.recordDuplicateTest()
                     return true
                 }
-            } else if (gotoBounds.contains(e.point)) {
+            } else if (gotoBounds.contains(e.point) || clickCount >= 2) {
                 val gotoTestService = project!!.service<GotoTestService>()
 
                 if (editor != null) {
                     gotoTestService.gotoMethod(editor, reference)
+                    UsageDataService.instance.recordGotoTest()
                     return true
                 }
             }

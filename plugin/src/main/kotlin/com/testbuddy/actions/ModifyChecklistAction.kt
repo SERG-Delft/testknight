@@ -1,6 +1,8 @@
 package com.testbuddy.actions
 
 import com.intellij.openapi.components.service
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBMenuItem
 import com.intellij.ui.CheckedTreeNode
@@ -10,6 +12,8 @@ import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.services.ChecklistTreeService
+import com.testbuddy.services.TestMethodGenerationService
+import com.testbuddy.services.UsageDataService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
 
@@ -17,73 +21,58 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
 
     override fun actionPerformed(e: ActionEvent) {
 
+        if (e.source is JBMenuItem) {
+            if ((e.source as JBMenuItem).text == "Delete") {
+                project.service<ChecklistTreeService>().deleteElement(node)
+            }
+            if ((e.source as JBMenuItem).text == "Generate Test Method") generateTestMethod()
+            if ((e.source as JBMenuItem).text == "Add item") addItem()
+        }
+    }
+
+    /**
+     * Add a new checklist item.
+     *
+     */
+    private fun addItem() {
+
         val service = project.service<ChecklistTreeService>()
 
-        // val node = path.lastPathComponent as CheckedTreeNode
+        val newItem = CustomChecklistNode("", null, 0)
+        val testingChecklistMethodNode = (node.userObject as ChecklistUserObject)
+            .checklistNode as TestingChecklistMethodNode
+        val testingChecklistClassNode = (
+            (node.parent as CheckedTreeNode)
+                .userObject as ChecklistUserObject
+            ).checklistNode as TestingChecklistClassNode
 
-        if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Delete") {
+        val descriptionMethod: String = testingChecklistMethodNode.description
+        val elementMethod = testingChecklistMethodNode.element
+        val listItems: MutableList<TestingChecklistLeafNode> = mutableListOf(newItem)
 
-            if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistClassNode) {
+        val descriptionClass: String = testingChecklistClassNode.description
+        val elementClass = testingChecklistClassNode.element
 
-                service.deleteClass(
-                    (node.userObject as ChecklistUserObject)
-                        .checklistNode as TestingChecklistClassNode
-                )
-            } else if ((node.userObject as ChecklistUserObject)
-                .checklistNode is TestingChecklistMethodNode
-            ) {
+        val methodNode = TestingChecklistMethodNode(descriptionMethod, listItems, elementMethod)
+        val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
+        val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
+        service.addChecklist(classNode)
+    }
 
-                service.deleteMethod(
-                    (node.userObject as ChecklistUserObject)
-                        .checklistNode as TestingChecklistMethodNode,
-                    ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject)
-                        .checklistNode as TestingChecklistClassNode
-                )
-            } else if ((node.userObject as ChecklistUserObject)
-                .checklistNode is TestingChecklistLeafNode
-            ) {
+    /**
+     * This method just generate the test method for the selected item.
+     *
+     */
+    private fun generateTestMethod() {
+        val textEditor = (FileEditorManager.getInstance(project).selectedEditor as TextEditor?) ?: return
+        val editor = textEditor.editor
+        val generateMethod = project.service<TestMethodGenerationService>()
 
-                service.deleteItem(
-                    (node.userObject as ChecklistUserObject).checklistNode as TestingChecklistLeafNode,
-                    ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject)
-                        .checklistNode as TestingChecklistMethodNode,
-                    ((node.parent.parent as CheckedTreeNode).userObject as ChecklistUserObject)
-                        .checklistNode as TestingChecklistClassNode
-                )
-            }
-        } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Edit") {
-            println("Edit functionality")
-        } else if (e.source is JBMenuItem && (e.source as JBMenuItem).text == "Add item") {
-
-            val newItem = CustomChecklistNode("", null, 0)
-
-            val descriptionMethod: String = (
-                (node.userObject as ChecklistUserObject)
-                    .checklistNode as TestingChecklistMethodNode
-                ).description
-            val elementMethod = (
-                (node.userObject as ChecklistUserObject)
-                    .checklistNode as TestingChecklistMethodNode
-                ).element
-            val listItems: MutableList<TestingChecklistLeafNode> = mutableListOf(newItem)
-
-            val descriptionClass: String = (
-                (
-                    (node.parent as CheckedTreeNode)
-                        .userObject as ChecklistUserObject
-                    ).checklistNode as TestingChecklistClassNode
-                ).description
-            val elementClass = (
-                (
-                    (node.parent as CheckedTreeNode)
-                        .userObject as ChecklistUserObject
-                    ).checklistNode as TestingChecklistClassNode
-                ).element
-
-            val methodNode = TestingChecklistMethodNode(descriptionMethod, listItems, elementMethod)
-            val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
-            val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
-            service.addChecklist(classNode)
-        }
+        generateMethod.generateTestMethod(
+            project, editor,
+            (node.userObject as ChecklistUserObject)
+                .checklistNode as TestingChecklistLeafNode
+        )
+        UsageDataService.instance.recordGenerateTest()
     }
 }

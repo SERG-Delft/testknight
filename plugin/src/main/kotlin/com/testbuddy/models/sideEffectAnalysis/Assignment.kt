@@ -6,6 +6,12 @@ import com.testbuddy.utilities.StringFormatter
 data class Assignment(val affectedObjectName: String, val fieldAffected: String?) {
 
     companion object Factory {
+        /**
+         * Creates an Assignment object from a PsiAssignmentExpression.
+         *
+         * @param psiAssignmentExpression the PsiAssignmentExpression.
+         * @return an Assignment object.
+         */
         fun create(psiAssignmentExpression: PsiAssignmentExpression): Assignment {
             val nameAffected = psiAssignmentExpression.lExpression.text
             val formattedName = nameAffected.replace("this.", "")
@@ -36,8 +42,14 @@ data class Assignment(val affectedObjectName: String, val fieldAffected: String?
             identifiersInClassScope.contains(this.affectedObjectName)
     }
 
+    /**
+     * Returns the parameters reassigned by the assignment.
+     *
+     * @param methodParameters a map associating parameter names to their types.
+     * @return a list of ParameterFieldReassignmentSideEffect.
+     */
     fun getParameterFieldsReassigned(
-        methodParameters: Map<String, String>,
+        methodParameters: Map<String, String>
     ): List<ParameterFieldReassignmentSideEffect> {
         return if (methodParameters.containsKey(this.affectedObjectName) && this.fieldAffected != null) {
             listOf(

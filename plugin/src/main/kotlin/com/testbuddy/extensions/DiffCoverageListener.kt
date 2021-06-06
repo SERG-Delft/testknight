@@ -5,6 +5,8 @@ import com.intellij.coverage.CoverageSuiteListener
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.testbuddy.services.CoverageDataService
+import com.testbuddy.services.CoverageHighlighterService
+import com.testbuddy.settings.SettingsService
 
 class DiffCoverageListener(val project: Project) : CoverageSuiteListener {
 
@@ -19,9 +21,12 @@ class DiffCoverageListener(val project: Project) : CoverageSuiteListener {
 
         val suite = covDataManager.currentSuitesBundle
         val data = suite.coverageData
-        val service = project.service<CoverageDataService>()
-        service.setIsDiffAvailable(true)
 
         covDataService.updateCoverage(suite, data)
+
+        if (SettingsService.state.coverageSettings.showIntegratedView) {
+
+            project.service<CoverageHighlighterService>().rebuildHighlights()
+        }
     }
 }

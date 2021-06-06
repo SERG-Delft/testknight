@@ -33,6 +33,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
         service.currentSuite = currentSuite
         val newSuite = mockk<CoverageSuitesBundle>()
         val newData = mockk<ProjectData>()
+        every { newSuite.project } returns myFixture.project
         service.updateCoverage(newSuite, newData)
         TestCase.assertEquals(service.currentData, newData)
         TestCase.assertEquals(service.currentSuite, newSuite)

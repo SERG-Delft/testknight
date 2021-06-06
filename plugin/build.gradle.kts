@@ -9,6 +9,8 @@ plugins {
     id("java")
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.4.32"
+    // kotlin serialization
+    kotlin("plugin.serialization") version "1.5.10"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "0.7.2"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -39,6 +41,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     implementation(kotlin("script-runtime"))
+    implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    implementation("com.github.kittinunf.fuel:fuel-gson:2.3.1")
+    implementation("com.google.code.gson:gson:2.8.6")
 }
 
 // Configure gradle-intellij-plugin plugin.

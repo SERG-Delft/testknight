@@ -2,6 +2,7 @@ package com.testbuddy.settings
 
 import com.intellij.ui.ColorUtil
 import java.awt.Color
+import java.util.UUID
 
 /**
  * Data structure for storing the settings.
@@ -10,7 +11,8 @@ data class SettingsState(
     var telemetrySettings: TelemetrySettings = TelemetrySettings(),
     var testListSettings: TestListSettings = TestListSettings(),
     var checklistSettings: ChecklistSettings = ChecklistSettings(),
-    var coverageSettings: CoverageSettings = CoverageSettings()
+    var coverageSettings: CoverageSettings = CoverageSettings(),
+    var userId: String = UUID.randomUUID().toString()
 )
 
 data class TelemetrySettings(var isEnabled: Boolean = false)

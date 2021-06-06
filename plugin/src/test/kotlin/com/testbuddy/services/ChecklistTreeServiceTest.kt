@@ -13,7 +13,6 @@ import org.junit.Test
 
 class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
-    private val service = ChecklistTreeService()
     private val checklistService = GenerateTestCaseChecklistService()
 
     @Test
@@ -21,6 +20,10 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
         val root = CheckedTreeNode("root")
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
+
+        // random file to get project instance
+        this.myFixture.configureByFile("/Math2.java")
+        val service = ChecklistTreeService(this.myFixture.project)
         service.initTrees(checkListTree)
         val expected = ""
         val received = service.print()
@@ -33,6 +36,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val testMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklist = checklistService.generateClassChecklistFromClass(psiClass)
@@ -54,6 +58,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklist = checklistService.generateClassChecklistFromMethod(psiMethod)
@@ -76,6 +81,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklist = checklistService.generateClassChecklistFromMethod(psiMethod)
@@ -99,6 +105,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklist = checklistService.generateClassChecklistFromClass(psiClass)
@@ -116,6 +123,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
             "Math2 add2 Test where a is null\n" +
             "Math2 add2 Test where foreach loop runs multiple times\n"
         val received = service.print()
+        println("RECEOED:\n $received")
         assertEquals(expected, received)
     }
 
@@ -125,6 +133,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklist = checklistService.generateClassChecklistFromClass(psiClass)
@@ -152,6 +161,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -180,6 +190,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -208,6 +219,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -230,6 +242,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -252,6 +265,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -271,6 +285,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -295,6 +310,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -315,6 +331,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -340,6 +357,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -367,6 +385,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -396,6 +415,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -422,12 +442,13 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
 
-        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
-        val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element, 0)
+        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element)
+        val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element)
         val root = CheckedTreeNode("root")
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
@@ -448,12 +469,13 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
 
-        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
-        val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element, 0)
+        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element)
+        val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element)
         val root = CheckedTreeNode("root")
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
@@ -471,6 +493,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)
@@ -495,6 +518,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
+        val service = ChecklistTreeService(project)
         val psiClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val psiMethod = psiClass!!.findMethodsByName("add")[0] as PsiMethod
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(psiClass)

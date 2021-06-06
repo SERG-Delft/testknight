@@ -6,12 +6,15 @@ import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiType
+import com.intellij.util.xmlb.annotations.OptionTag
 import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 import com.testbuddy.models.testingChecklist.TestingChecklistNode
+import com.testbuddy.utilities.PsiConverter
 
 abstract class TestingChecklistLeafNode(
-    open var description: String,
-    open val element: PsiElement?,
+    open var description: String = "",
+    @OptionTag(converter = PsiConverter::class)
+    open var element: PsiElement? = null,
     override var checked: Int = 0
 ) : TestingChecklistNode() {
     /**
