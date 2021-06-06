@@ -102,11 +102,13 @@
         <!---Actions for hotkeys-->
         <action id="DuplicateTestAction" class="com.testbuddy.actions.testcases.DuplicateTestUnderCaretAction"
                 text="Duplicate Test Under Caret"
+                icon="/icons/pluginIcon.svg"
                 description="Duplicates the test under caret of the current open file">
             <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>
         </action>
         <action id="GenerateChecklistAction" class="com.testbuddy.actions.GenerateChecklistUnderCaretAction"
                 text="Generate Checklist for Method/Class Under Caret"
+                icon="/icons/pluginIcon.svg"
                 description="Generates the checklist for the method/class under caret of the current open file.">
             <keyboard-shortcut first-keystroke="control shift G" keymap="$default"/>
         </action>
@@ -125,6 +127,7 @@
         </action>
         <action id="com.testbuddy.HideTracedTestHighlightsAction"
                 class="com.testbuddy.actions.HideTracedTestHighlightsAction"
+                icon="/icons/pluginIcon.svg"
                 text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
     </actions>
 
@@ -142,7 +145,8 @@
     </extensions>
 
     <actions>
-        <action id="TestAction" class="com.testbuddy.actions.TestAction" text="Test Action"/>
+        <action id="TestAction" class="com.testbuddy.actions.TestAction" text="Test Action"
+                icon="/icons/pluginIcon.svg"/>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
