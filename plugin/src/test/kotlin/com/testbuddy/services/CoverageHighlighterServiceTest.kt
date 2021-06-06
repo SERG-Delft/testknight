@@ -35,12 +35,14 @@ class CoverageHighlighterServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testRefreshHighlights() {
-        val service = CoverageHighlighterService(project)
-        val editor = mockk<Editor>()
+        myFixture.configureByFile("/Math.java")
+        val service = spyk(CoverageHighlighterService(project))
+        val editor = myFixture.editor
 
         service.refreshHighlights(editor, "ClassName")
 
         verify { service.hideHighlights(editor) }
+        verify { service.showHighlights(any(),any()) }
     }
 
     @Test
