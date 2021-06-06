@@ -23,7 +23,7 @@ import javax.swing.tree.TreePath
  * @param tree Tree the listener listens to.
  * @param project The current open project for which the tree shows information.
  */
-class CopyPasteKeyboardListener(private val tree: Tree, private val project: Project) : KeyAdapter() {
+class TestListKeyboardListener(private val tree: Tree, private val project: Project) : KeyAdapter() {
 
     /**
      * Goes to the test method/class if ENTER has been pressed.

@@ -1,0 +1,8 @@
+@Test
+void setYTest2() {
+  Point p = new Point(0, 0);
+
+   p.<spot>setY</spot>(5);
+
+   assertEquals(5, p.getY());
+}

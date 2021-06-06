@@ -17,7 +17,7 @@ import javax.swing.JViewport
 class UserInterfaceHelper private constructor() {
     companion object {
         /**
-         * Updates the CopyPasteTab by calling the LoadTestAction.
+         * Updates the TestListTab by calling the LoadTestAction.
          * Uses the project to get editor and psi file information.
          *
          * @param project the current project.

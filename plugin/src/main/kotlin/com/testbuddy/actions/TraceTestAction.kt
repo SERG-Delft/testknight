@@ -7,6 +7,8 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.OpenFileDescriptor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.IconLoader
+import com.intellij.openapi.util.Iconable
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -19,12 +21,25 @@ import com.testbuddy.exceptions.NoTestCoverageDataException
 import com.testbuddy.services.TestAnalyzerService
 import com.testbuddy.services.TestTracingService
 import com.testbuddy.services.UsageDataService
+import javax.swing.Icon
 
-class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction {
+class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction, Iconable {
 
-    override fun getText(): String = "See lines covered"
+    /**
+     * If this action is applicable, then the "See lines covered" text will be shown in the dropdown menu.
+     */
+    override fun getText(): String {
+        return "See lines covered"
+    }
 
-    override fun getFamilyName(): String = "Coverage"
+    /**
+     * Returns text for name of this family of intentions.
+     *
+     * @return the intention family name.
+     */
+    override fun getFamilyName(): String {
+        return "Trace test"
+    }
 
     override fun isAvailable(project: Project, editor: Editor?, element: PsiElement): Boolean {
 
@@ -72,5 +87,12 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction {
         // open method declaration
         fileEditorManager.openTextEditor(descriptor, true)
         UsageDataService.instance.recordTraceTest()
+    }
+
+    /**
+     * Returns the icon for the intention Action
+     */
+    override fun getIcon(flags: Int): Icon {
+        return IconLoader.getIcon("/icons/pluginIcon.svg")
     }
 }

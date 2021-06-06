@@ -381,6 +381,44 @@ class ChecklistTreeService(val project: Project) {
     }
 
     /**
+     * Delete a node from the tree.
+     *
+     * @param node The CheckedTreeNode which have to be deleted
+     */
+    fun deleteElement(node: CheckedTreeNode) {
+
+        if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistClassNode) {
+
+            deleteClass(
+                (node.userObject as ChecklistUserObject)
+                    .checklistNode as TestingChecklistClassNode
+            )
+        } else if ((node.userObject as ChecklistUserObject)
+            .checklistNode is TestingChecklistMethodNode
+        ) {
+
+            deleteMethod(
+                (node.userObject as ChecklistUserObject)
+                    .checklistNode as TestingChecklistMethodNode,
+                ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject)
+                    .checklistNode as TestingChecklistClassNode
+            )
+        } else if ((node.userObject as ChecklistUserObject)
+            .checklistNode is TestingChecklistLeafNode
+        ) {
+
+            deleteItem(
+                (node.userObject as ChecklistUserObject).checklistNode as TestingChecklistLeafNode,
+                ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject)
+                    .checklistNode as TestingChecklistMethodNode,
+                ((node.parent.parent as CheckedTreeNode).userObject as ChecklistUserObject)
+                    .checklistNode as TestingChecklistClassNode
+            )
+            UsageDataService.instance.recordItemDeleted()
+        }
+    }
+
+    /**
      * This function return a String which represents the tree.
      */
     fun print(): String {

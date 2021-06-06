@@ -88,7 +88,6 @@ class CoverageDataService : Disposable {
         if (currentData == null) return
         if (previousData == null) {
             isDiffAvailable = false
-            return
         }
 
         val testAnalyzerService = TestAnalyzerService()
@@ -98,20 +97,22 @@ class CoverageDataService : Disposable {
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll()
             .filter { !testAnalyzerService.isTestClass(it) }
-            .mapNotNull { it.name }
+            .mapNotNull { it }
 
         classesInProject.forEach {
-            if (currentData!!.classes.contains(it)) {
-                val classData = currentData!!.classes[it]
+            if (currentData!!.classes.contains(it.name)) {
+                val classData = currentData!!.classes[it.name]
                 allLines = getTotalLinesAndNewlyCoveredLines(classData).first
                 coveredNow = getTotalLinesAndNewlyCoveredLines(classData).second
             }
 
-            if (previousData!!.classes.contains(it)) {
-                coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it])
+            if (previousData != null && previousData!!.classes.contains(it.name)) {
+                coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it.name])
             }
 
-            classCoveragesMap[it] = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+            val vFile = it.containingFile.virtualFile
+
+            classCoveragesMap[it.name!!] = CoverageDiffObject(allLines, coveredPrev, coveredNow, vFile)
         }
     }
 
