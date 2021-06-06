@@ -6,9 +6,11 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
+import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
@@ -20,7 +22,6 @@ import java.awt.Color
 class CoverageHighlighterService(val project: Project) {
 
     private val highlights = mutableListOf<RangeHighlighter>()
-    private val isHighlighted = hashMapOf<Editor, Boolean>()
 
     private val covDataService = project.service<CoverageDataService>()
     private val fileEditorManager = FileEditorManager.getInstance(project)
@@ -30,24 +31,27 @@ class CoverageHighlighterService(val project: Project) {
     private fun includedColor() = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.addedColor)
 
     /**
-     * Destroy highlights and re-construct them
+     * Destroy highlights and re-construct them for open editors
      */
     fun rebuildHighlights() {
         hideHighlights()
-        refreshHighlights()
+        fileEditorManager.allEditors.forEach {
+            if (it is TextEditor) highlightEditor(it.editor)
+        }
     }
 
     /**
      * Add highlights to any un-highlighted editors
-     *
      */
-    fun refreshHighlights() {
-        fileEditorManager.allEditors.forEach {
-            if (it is TextEditor) {
-                val editor = it.editor
-                if (isHighlighted[editor] == null || isHighlighted[editor] == false) highlightEditor(editor)
-            }
-        }
+    fun addHighlights(editors: List<Editor>) {
+        editors.forEach { highlightEditor(it) }
+    }
+
+    /**
+     * Hide all diff-coverage highlights in the given editor and class.
+     */
+    fun hideHighlights() {
+        highlights.forEach { it.dispose() }
     }
 
     /**
@@ -65,14 +69,6 @@ class CoverageHighlighterService(val project: Project) {
 
         covDiffObject.linesNewlyAdded.forEach { addGutterHighlighter(editor, it, includedColor()) }
         covDiffObject.linesNewlyRemoved.forEach { addGutterHighlighter(editor, it, deletedColor()) }
-    }
-
-    /**
-     * Hide all diff-coverage highlights in the given editor and class.
-     */
-    fun hideHighlights() {
-        highlights.forEach { it.dispose() }
-        isHighlighted.keys.forEach { isHighlighted[it] = false }
     }
 
     /**

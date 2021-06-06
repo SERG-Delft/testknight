@@ -8,6 +8,6 @@ import com.testbuddy.services.CoverageHighlighterService
 class RefreshDiffHighlights : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        e.project?.service<CoverageHighlighterService>()?.refreshHighlights()
+        e.project?.service<CoverageHighlighterService>()?.rebuildHighlights()
     }
 }

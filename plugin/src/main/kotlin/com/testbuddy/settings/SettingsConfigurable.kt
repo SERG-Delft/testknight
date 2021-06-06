@@ -55,7 +55,7 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
         ProjectManager.getInstance().openProjects.forEach {
 
             // refresh possibly changed highlight colors
-            it.service<TestTracingService>().refreshHighlights()
+            it.service<TestTracingService>().rebuildHighlights()
             it.service<CoverageHighlighterService>().rebuildHighlights()
 
             if (!SettingsService.state.coverageSettings.showIntegratedView) {

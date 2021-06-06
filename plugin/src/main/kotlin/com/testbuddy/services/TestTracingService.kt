@@ -45,22 +45,24 @@ class TestTracingService(val project: Project) {
      * @param testName the string representation of the test.
      */
     fun highlightTest(testName: String) {
-        removeHighlights()
         activeCovData = getLinesForTest(testName)
-        refreshHighlights()
+        rebuildHighlights()
+    }
+
+    /**
+     * Add highlights to any un-highlighted editors
+     */
+    fun addHighlights(editors: List<Editor>) {
+        editors.forEach { highlightEditor(it, activeCovData!!) }
     }
 
     /**
      * Highlight all active editors.
      */
-    fun refreshHighlights() {
-
-        activeCovData ?: return
-
+    fun rebuildHighlights() {
+        removeHighlights()
         fileEditorManager.allEditors.forEach {
-            if (it is TextEditor) {
-                highlightEditor(it.editor, activeCovData!!)
-            }
+            if (it is TextEditor) highlightEditor(it.editor, activeCovData!!)
         }
     }
 
