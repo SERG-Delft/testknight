@@ -20,21 +20,19 @@ class WelcomeListener(val project: Project) : PluginStateListener {
      */
     override fun install(descriptor: IdeaPluginDescriptor) {
         println("install")
+
+        val installDialog = InstallDialog()
+
+        val usePluginChoice = installDialog.showAndGet()
+        if (usePluginChoice) {
+            println(installDialog)
+            settingsState.telemetrySettings.isEnabled = installDialog.getCheckboxValue()
+        }
     }
 
     override fun uninstall(descriptor: IdeaPluginDescriptor) {
 
-        val installDialog = InstallDialog()
-
-        val x = installDialog.showAndGet()
-        println(x)
-        if (x) {
-            println(installDialog)
-            println("am ajuns la true si sa vedem daca e bifata casuta")
-            val y = installDialog.getCheckboxValue()
-            println(y)
-            settingsState.telemetrySettings.isEnabled = y
-        }
+        print("uninstall")
     }
 
     private class InstallDialog : DialogWrapper(true) {
