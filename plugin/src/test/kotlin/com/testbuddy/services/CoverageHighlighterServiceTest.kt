@@ -1,5 +1,6 @@
 package com.testbuddy.services
 
+import com.intellij.openapi.diff.DiffColors
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.MarkupModel
 import com.intellij.openapi.editor.markup.RangeHighlighter
@@ -121,5 +122,60 @@ class CoverageHighlighterServiceTest : TestBuddyTestCase() {
         service.showHighlights(myFixture.editor, "ClassName")
         verify { service.addGutterHighlighter(any(),any(),any()) }
     }
+
+    @Test
+    fun testShowHighlightsInDiffCoveredPrev(){
+        myFixture.configureByFile("/Math.java")
+        val service = spyk(CoverageHighlighterService(project))
+        val covService = mockk<CoverageDataService>()
+        service.setCoverageDataService(covService)
+        every { covService.getDiffLines(any()) } returns Unit
+
+        val allLines = setOf(1,2,3,4,5)
+        val coveredPrev = setOf(1, 3, 4)
+        val coveredNow = emptySet<Int>()
+        val coverageDiffObject = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+
+        val mutableMap = mutableMapOf<String,CoverageDiffObject>()
+        mutableMap.put("ClassName",coverageDiffObject)
+
+
+        every{covService.classCoveragesMap} returns mutableMap
+        println(mutableMap["ClassName"]!!.linesNewlyRemoved)
+        every { service.addGutterHighlighter(any(),any(),any(),any()) } returns Unit
+        service.showHighlightsInDiff(myFixture.editor, myFixture.editor,"ClassName")
+
+        verify { service.addGutterHighlighter(any(),1,any(),DiffColors.DIFF_INSERTED) }
+        verify { service.addGutterHighlighter(any(),3,any(),DiffColors.DIFF_INSERTED) }
+        verify { service.addGutterHighlighter(any(),4,any(),DiffColors.DIFF_INSERTED) }
+    }
+
+    @Test
+    fun testShowHighlightsInDiffAllButCoveredPrev(){
+        myFixture.configureByFile("/Math.java")
+        val service = spyk(CoverageHighlighterService(project))
+        val covService = mockk<CoverageDataService>()
+        service.setCoverageDataService(covService)
+        every { covService.getDiffLines(any()) } returns Unit
+
+        val allLines = setOf(1,2,3,4,5,6)
+        val coveredPrev = setOf(2,4,6)
+        val coveredNow = setOf(3)
+        val coverageDiffObject = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+
+        val mutableMap = mutableMapOf<String,CoverageDiffObject>()
+        mutableMap.put("ClassName",coverageDiffObject)
+
+
+        every{covService.classCoveragesMap} returns mutableMap
+        println(mutableMap["ClassName"]!!.linesNewlyRemoved)
+        every { service.addGutterHighlighter(any(),any(),any(),any()) } returns Unit
+        service.showHighlightsInDiff(myFixture.editor, myFixture.editor,"ClassName")
+
+        verify { service.addGutterHighlighter(any(),1,any(),DiffColors.DIFF_CONFLICT) }
+        verify { service.addGutterHighlighter(any(),3,any(),DiffColors.DIFF_CONFLICT) }
+        verify { service.addGutterHighlighter(any(),5,any(),DiffColors.DIFF_CONFLICT) }
+    }
+
 
 }
