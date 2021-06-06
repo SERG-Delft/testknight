@@ -21,10 +21,9 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
 
     override fun actionPerformed(e: ActionEvent) {
 
-
         if (e.source is JBMenuItem) {
-            if ((e.source as JBMenuItem).text == "Delete"){
-               project.service<ChecklistTreeService>().deleteElement(node)
+            if ((e.source as JBMenuItem).text == "Delete") {
+                project.service<ChecklistTreeService>().deleteElement(node)
             }
             if ((e.source as JBMenuItem).text == "Generate Test Method") generateTestMethod()
             if ((e.source as JBMenuItem).text == "Add item") addItem()
@@ -59,7 +58,7 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
         val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
         service.addChecklist(classNode)
     }
-    
+
     /**
      * This method just generate the test method for the selected item.
      *

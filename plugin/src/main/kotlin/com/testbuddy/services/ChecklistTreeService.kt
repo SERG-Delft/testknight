@@ -385,7 +385,7 @@ class ChecklistTreeService(val project: Project) {
      *
      * @param node The CheckedTreeNode which have to be deleted
      */
-    fun deleteElement(node: CheckedTreeNode){
+    fun deleteElement(node: CheckedTreeNode) {
 
         if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistClassNode) {
 
@@ -394,7 +394,7 @@ class ChecklistTreeService(val project: Project) {
                     .checklistNode as TestingChecklistClassNode
             )
         } else if ((node.userObject as ChecklistUserObject)
-                .checklistNode is TestingChecklistMethodNode
+            .checklistNode is TestingChecklistMethodNode
         ) {
 
             deleteMethod(
@@ -404,7 +404,7 @@ class ChecklistTreeService(val project: Project) {
                     .checklistNode as TestingChecklistClassNode
             )
         } else if ((node.userObject as ChecklistUserObject)
-                .checklistNode is TestingChecklistLeafNode
+            .checklistNode is TestingChecklistLeafNode
         ) {
 
             deleteItem(
