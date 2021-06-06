@@ -8,6 +8,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
 import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.ProjectData
+import com.testbuddy.exceptions.ProjectNotFoundException
 import com.testbuddy.models.CoverageDiffObject
 
 class CoverageDataService : Disposable {
@@ -44,7 +45,7 @@ class CoverageDataService : Disposable {
 
         val testAnalyzerService = TestAnalyzerService()
 
-        val project = newSuite?.project ?: return
+        val project = newSuite?.project ?: throw ProjectNotFoundException()
 
         AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll()
