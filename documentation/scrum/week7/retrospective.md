@@ -72,14 +72,22 @@ a new name, make the logo and perform all of the required changes in our documen
     In hind-sight I should have decided on this simpler solution from the beginning since it does not really have any significant disadvantages over the alternative.
 
 - **Cristian:**
-  -
+  - For the first part of this week, I was busy with integrating checklist UI and test method generation. Afterward, I had to refine the UI according to the feedback which we received from the clients. 
+    For this issue, I had also to do a little bit of research by reading the UI IntelliJ Guidelines. However, during the testing and reviewing phase, I have realized that I can implement more refinements (eg. logos for the actions, move the TestBuddy tool window to the top right side, etc.) Moreover, I worked on the Welcome popup which has to be shown after the installation process. Lastly, I had to implement a Handler that notifies the user in case of TestBuddy Exceptions. 
+    Furthermore, for some of the exceptions, I have to change the code in such a way that the plugin avoids them.
 
 - **Pavlos:**
   - This week's task were fairly simple for me, so I would not say I encountered any major issues. I used the designs we did in the previous week to implement the 
-  telemetry server. The server is a simple Spring application so no suprises there. After I was done with that I moved on to write Wiki entries and other documentation.
+  telemetry server. The server is a simple Spring application so no suprises there. This proved once again to me that it is important to spend time designing thoroughly 
+    before implementing. After I was done with that I moved on to write Wiki entries and other documentation.
 
 - **Piyush:**
-  -
+  -This week, I worked on testing, researching on deploying the plugin and modifying the diff coverage service after discussing with the frontend team. 
+  Modifying diff coverage was quite straightforward to code. However, this required some careful thinking to adapt the existing architecture to fit in this feature without too much modification. 
+  To summarise, we noticed that greying out wasn't the most optimal way of indicating that the diff view may not be accurate to the user.
+  This is because the grey out would mean adding a check to the update UI method which is called twice a second. 
+  To prevent workflow intrusion and to keep computations to a minimum, we switched to a timestamp based approach. This involves giving an indication to the user that source code was modified which happens when the button is clicked instead of dynamic (twice a second). I was mostly held off with testing. It took longer than I expected because I was working under the assumption that I had the final source code that I could write tests on. However, issues this week conflicted with mine and I had to scrap away some fully tested classes that I wrote. However, I was able to tests services (other than newly modified ones) for coverage over 90% in general and even improved coverage of settings to 88%. The modified classes can be tested during the cleanup next week. Overall, I was satisfied with the progress this week but I feel that I wasted some time on writing tests which I didn't use eventually. 
+  I can focus on better issue planning in the future especially for test issues to avoid conflicts.
 
 - **Mathan:**
   -This week, I worked on making a coverage statistics panel and making checklist persistent. 
@@ -89,7 +97,7 @@ a new name, make the logo and perform all of the required changes in our documen
 
 ## What can we improve?
 We can improve a bit on our global planning so that we know, if more than of us affects the same file. 
-That way we can improve on forseeing merge conflicts and catching them earlier.
+That way we can improve on foreseeing merge conflicts and catching them earlier.
 
 ## State of the Project
 All must-have, could-have and should-have requirements have been completed. 
