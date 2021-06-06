@@ -17,9 +17,9 @@ class SettingsComponent {
     private var myPanel: DialogPanel
     private val state = SettingsService.instance.state
 
-    private lateinit var addedColor: ColorPanel
-    private lateinit var deletedColor: ColorPanel
-    private lateinit var tracedColor: ColorPanel
+    lateinit var addedColor: ColorPanel
+    lateinit var deletedColor: ColorPanel
+    lateinit var tracedColor: ColorPanel
 
     // KMutableProperty0 has been changed to Setters and Getters
     // For some reason, the following error was thrown when using KMutableProperty0
@@ -171,6 +171,10 @@ class SettingsComponent {
                 }
             }
         }
+    }
+
+    fun getMyPanel() : DialogPanel{
+        return myPanel
     }
 
     /**
