@@ -17,7 +17,6 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.startOffset
-import com.testbuddy.exceptions.NoTestCoverageDataException
 import com.testbuddy.services.TestAnalyzerService
 import com.testbuddy.services.TestTracingService
 import com.testbuddy.services.UsageDataService
@@ -65,12 +64,8 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction, Iconab
         // highlight the data
         val testName = "${parentClass.name},${parentMethod.name}"
 
-        try {
-            project.service<TestTracingService>().highlightTest(testName)
-        } catch (ex: NoTestCoverageDataException) {
-            println(ex)
-            return
-        }
+        project.service<TestTracingService>().highlightTest(testName)
+        // try catch for the  NoTestCoverageDataException no necessary
 
         // get method declaration information
         val methodDeclaration = methodCall.resolveMethod()

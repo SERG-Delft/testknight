@@ -23,6 +23,7 @@
         <projectService serviceImplementation="com.testbuddy.services.TestTracingService"/>
         <projectService serviceImplementation="com.testbuddy.services.TestMethodGenerationService"/>
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreePersistent"/>
+        <projectService serviceImplementation="com.testbuddy.services.ExceptionHandlerService"/>
 
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <applicationService serviceImplementation="com.testbuddy.services.UsageDataService"/>

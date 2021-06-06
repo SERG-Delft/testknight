@@ -174,7 +174,7 @@ class UserInterface(val project: Project) {
         })
 
         table.columnModel.getColumn(1).cellRenderer = CoverageStatsCellRenderer()
-        ButtonColumn(table, ShowCoverageDiffAction(table, project), 2)
+        ButtonColumn(table, ShowCoverageDiffAction(table, project), 2, project)
         table.tableHeader.reorderingAllowed = false
         val speedSearch = TableSpeedSearch(table)
         speedSearch.setClearSearchOnNavigateNoMatch(true)

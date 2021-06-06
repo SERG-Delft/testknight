@@ -1,5 +1,9 @@
 package com.testbuddy.views
 
+import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
+import com.testbuddy.exceptions.TestBuddyException
+import com.testbuddy.services.ExceptionHandlerService
 import java.awt.Component
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -28,7 +32,7 @@ import javax.swing.table.TableCellRenderer
  *
  * source: https://tips4java.wordpress.com/2009/07/12/table-button-column/
  */
-class ButtonColumn(private val table: JTable, action: Action, column: Int) :
+class ButtonColumn(private val table: JTable, action: Action, column: Int, private val project: Project) :
     AbstractCellEditor(),
     TableCellRenderer,
     TableCellEditor,
@@ -113,7 +117,11 @@ class ButtonColumn(private val table: JTable, action: Action, column: Int) :
             ActionEvent.ACTION_PERFORMED,
             "$row"
         )
-        action.actionPerformed(event)
+        try {
+            action.actionPerformed(event)
+        } catch (e: TestBuddyException) {
+            project.service<ExceptionHandlerService>().notify(e)
+        }
     }
 
     //
