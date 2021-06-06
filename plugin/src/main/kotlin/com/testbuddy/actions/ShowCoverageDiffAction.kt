@@ -46,6 +46,12 @@ class ShowCoverageDiffAction(val table: JBTable, val project: Project) : Abstrac
             )
         }
 
+        val covObj = serv.classCoveragesMap[className]!!
+
+        if (vFile.modificationStamp != covObj.currStamp || covObj.prevStamp != covObj.currStamp) {
+            return
+        }
+
         val document = FileDocumentManager.getInstance().getDocument(vFile)
             ?: throw DocumentNotFoundException()
 

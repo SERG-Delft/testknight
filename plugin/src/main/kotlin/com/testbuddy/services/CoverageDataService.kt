@@ -9,6 +9,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
 import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.ProjectData
+import com.testbuddy.exceptions.ProjectNotFoundException
 import com.testbuddy.models.CoverageDiffObject
 
 class CoverageDataService : Disposable {
@@ -18,26 +19,6 @@ class CoverageDataService : Disposable {
     var currentData: ProjectData? = null
     var currentSuite: CoverageSuitesBundle? = null
     var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
-    private var isDiffAvailable = true
-
-    /**
-     * Getter to get isDiffAvailable.
-     *
-     * @return isDiffAvailable.
-     */
-    fun getIsDiffAvailable(): Boolean {
-        return isDiffAvailable
-    }
-
-    /**
-     * Getter to get isDiffAvailable.
-     *
-     * @return isDiffAvailable.
-     */
-    fun setIsDiffAvailable(flag: Boolean): Boolean {
-        isDiffAvailable = flag
-        return isDiffAvailable
-    }
 
     /**
      * Sets previous data and suite to null.
@@ -62,6 +43,24 @@ class CoverageDataService : Disposable {
 
         currentData = newData
         currentSuite = newSuite
+
+        val testAnalyzerService = TestAnalyzerService()
+
+        val project = newSuite?.project ?: throw ProjectNotFoundException()
+
+        AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
+            .findAll()
+            .filter { !testAnalyzerService.isTestClass(it) }
+            .mapNotNull { it }
+            .forEach {
+                if (!currentData!!.classes.contains(it.name)) {
+                    classCoveragesMap[it.name!!] = CoverageDiffObject()
+                }
+
+                val vFile = it.containingFile.virtualFile
+                classCoveragesMap[it.name!!]!!.prevStamp = classCoveragesMap[it.name!!]!!.currStamp
+                classCoveragesMap[it.name!!]!!.currStamp = vFile.modificationStamp
+            }
     }
 
     /**
@@ -87,9 +86,6 @@ class CoverageDataService : Disposable {
         var coveredPrev = emptySet<Int>()
         var coveredNow = emptySet<Int>()
         if (currentData == null) return
-        if (previousData == null) {
-            isDiffAvailable = false
-        }
 
         val testAnalyzerService = project.service<TestAnalyzerService>()
 
@@ -113,7 +109,15 @@ class CoverageDataService : Disposable {
 
             val vFile = it.containingFile.virtualFile
 
-            classCoveragesMap[it.name!!] = CoverageDiffObject(allLines, coveredPrev, coveredNow, vFile)
+            val oldObj = classCoveragesMap[it.name!!]
+            classCoveragesMap[it.name!!] = CoverageDiffObject(
+                allLines,
+                coveredPrev,
+                coveredNow,
+                oldObj?.prevStamp ?: 0,
+                oldObj?.currStamp ?: 0,
+                vFile
+            )
         }
     }
 
