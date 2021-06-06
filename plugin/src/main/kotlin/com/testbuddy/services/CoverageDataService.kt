@@ -17,26 +17,6 @@ class CoverageDataService : Disposable {
     var currentData: ProjectData? = null
     var currentSuite: CoverageSuitesBundle? = null
     var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
-    private var isDiffAvailable = true
-
-    /**
-     * Getter to get isDiffAvailable.
-     *
-     * @return isDiffAvailable.
-     */
-    fun getIsDiffAvailable(): Boolean {
-        return isDiffAvailable
-    }
-
-    /**
-     * Getter to get isDiffAvailable.
-     *
-     * @return isDiffAvailable.
-     */
-    fun setIsDiffAvailable(flag: Boolean): Boolean {
-        isDiffAvailable = flag
-        return isDiffAvailable
-    }
 
     /**
      * Sets previous data and suite to null.
@@ -104,9 +84,6 @@ class CoverageDataService : Disposable {
         var coveredPrev = emptySet<Int>()
         var coveredNow = emptySet<Int>()
         if (currentData == null) return
-        if (previousData == null) {
-            isDiffAvailable = false
-        }
 
         val testAnalyzerService = TestAnalyzerService()
 
