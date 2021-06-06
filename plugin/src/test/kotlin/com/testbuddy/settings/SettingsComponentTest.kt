@@ -197,5 +197,22 @@ class SettingsComponentTest : TestBuddyTestCase(){
         assertFalse(settingsComponent.isColorModified(coverageColors))
     }
 
+    @Test
+    fun testResetCoverageColors(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
+        val covAddedColor =  java.awt.Color.GREEN
+        val covDeletedColor =  java.awt.Color.RED
+        val covTracedColor =  java.awt.Color.CYAN
+        settingsComponent.resetCoverageColors(coverageColors)
+        TestCase.assertEquals(settingsComponent.addedColor.selectedColor, covAddedColor)
+        TestCase.assertEquals(settingsComponent.deletedColor.selectedColor, covDeletedColor)
+        TestCase.assertEquals(settingsComponent.tracedColor.selectedColor, covTracedColor)
+
+    }
+
 
 }
