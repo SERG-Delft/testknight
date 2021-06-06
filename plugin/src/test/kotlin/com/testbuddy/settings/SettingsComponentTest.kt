@@ -20,4 +20,48 @@ class SettingsComponentTest : TestBuddyTestCase(){
         TestCase.assertNotNull(actualPanel)
     }
 
+    @Test
+    fun testApplyCoverageColorsAddedColor(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.BLACK
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.BLUE
+        settingsComponent.applyCoverageColors(coverageColors)
+        TestCase.assertEquals(coverageColors.addedColor, settingsComponent.addedColor.selectedColor?.let { SettingsService.toColorHex(it) })
+    }
+
+    @Test
+    fun testApplyCoverageColorsDeletedColor(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.BLACK
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.BLUE
+        settingsComponent.applyCoverageColors(coverageColors)
+        TestCase.assertEquals(coverageColors.deletedColor, settingsComponent.deletedColor.selectedColor?.
+        let { SettingsService.toColorHex(it) })
+    }
+
+    @Test
+    fun testApplyCoverageColorsTracedColor(){
+        val coverageColors = CoverageSettings()
+        val settingsComponent = SettingsComponent()
+        settingsComponent.addedColor = ColorPanel()
+        settingsComponent.deletedColor = ColorPanel()
+        settingsComponent.tracedColor = ColorPanel()
+        settingsComponent.addedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.deletedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.tracedColor.selectedColor = java.awt.Color.WHITE
+        settingsComponent.applyCoverageColors(coverageColors)
+        TestCase.assertEquals(coverageColors.tracedColor, settingsComponent.tracedColor.selectedColor?.
+        let { SettingsService.toColorHex(it) })
+    }
+
 }
