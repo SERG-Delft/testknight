@@ -77,7 +77,7 @@ class TestListMouseListener(private val tree: Tree, private val cellRenderer: Te
                     UsageDataService.instance.logDuplicateTest()
                     return true
                 }
-            } else if (gotoBounds.contains(e.point) || clickCount == 2) {
+            } else if (gotoBounds.contains(e.point) || clickCount >= 2) {
                 val gotoTestService = project!!.service<GotoTestService>()
 
                 if (editor != null) {
