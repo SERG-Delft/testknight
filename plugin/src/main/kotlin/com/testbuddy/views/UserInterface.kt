@@ -81,7 +81,7 @@ class UserInterface(val project: Project) {
         checkListTree.addMouseListener(mouseListener)
 
         checkListTree.addCheckboxTreeListener(CheckedNodeListener())
-        checkListTree.addKeyListener(CheckListKeyboardListener(checkListTree))
+        checkListTree.addKeyListener(CheckListKeyboardListener(checkListTree, project))
         checkListTree.addTreeSelectionListener(ChecklistSelectionListener(project))
 
         checkListTree.cellEditor = ChecklistCellEditor()

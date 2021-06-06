@@ -34,7 +34,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
-        <toolWindow id="TestBuddy" secondary="true" icon="AllIcons.General.Modified" anchor="right"
+        <toolWindow id="TestBuddy" secondary="false" icon="/icons/pluginIcon.svg" anchor="right"
                     factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
 
         <!--        TestBuddy Settings-->
