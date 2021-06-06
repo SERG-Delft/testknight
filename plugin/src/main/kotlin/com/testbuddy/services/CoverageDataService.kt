@@ -53,7 +53,7 @@ class CoverageDataService : Disposable {
             .filter { !testAnalyzerService.isTestClass(it) }
             .mapNotNull { it }
             .forEach {
-                if (!currentData!!.classes.contains(it.name)) {
+                if (!classCoveragesMap.keys.contains(it.name)) {
                     classCoveragesMap[it.name!!] = CoverageDiffObject()
                 }
 
