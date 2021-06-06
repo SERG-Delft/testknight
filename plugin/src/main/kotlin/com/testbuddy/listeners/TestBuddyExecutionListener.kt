@@ -8,6 +8,6 @@ import com.testbuddy.services.UsageDataService
 class TestBuddyExecutionListener : ExecutionListener {
 
     override fun processStarted(executorId: String, env: ExecutionEnvironment, handler: ProcessHandler) {
-        if (executorId == "Coverage") UsageDataService.instance.logRunWithCoverage()
+        if (executorId == "Coverage") UsageDataService.instance.recordRunWithCoverage()
     }
 }

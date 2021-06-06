@@ -23,9 +23,9 @@ class DuplicateTestUnderCaretAction : AnAction() {
         val editor = event.getData(CommonDataKeys.EDITOR)!!
 
         if (duplicateTestsService.duplicateMethodUnderCaret(psiFile, editor)) {
-            UserInterfaceHelper.showTab(psiFile.project, "CopyPaste")
+            UserInterfaceHelper.showTab(psiFile.project, "Test List")
         }
-        UsageDataService.instance.logDuplicateTest()
+        UsageDataService.instance.recordDuplicateTest()
     }
 
     /**

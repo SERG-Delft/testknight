@@ -21,20 +21,22 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
 
     override fun actionPerformed(e: ActionEvent) {
 
-        val service = project.service<ChecklistTreeService>()
         if (e.source is JBMenuItem) {
-            if ((e.source as JBMenuItem).text == "Delete") deleteNode(service)
+            if ((e.source as JBMenuItem).text == "Delete") {
+                project.service<ChecklistTreeService>().deleteElement(node)
+            }
             if ((e.source as JBMenuItem).text == "Generate Test Method") generateTestMethod()
-            if ((e.source as JBMenuItem).text == "Add item") addItem(service)
+            if ((e.source as JBMenuItem).text == "Add item") addItem()
         }
     }
 
     /**
      * Add a new checklist item.
      *
-     * @param service ChecklistTreeService which will add the item to the ChecklistTree
      */
-    private fun addItem(service: ChecklistTreeService) {
+    private fun addItem() {
+
+        val service = project.service<ChecklistTreeService>()
 
         val newItem = CustomChecklistNode("", null, 0)
         val testingChecklistMethodNode = (node.userObject as ChecklistUserObject)
@@ -58,43 +60,6 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
     }
 
     /**
-     * Delete a node from the tree.
-     *
-     * @param service ChecklistTreeService which will delete the node from the ChecklistTree
-     */
-    private fun deleteNode(service: ChecklistTreeService) {
-        if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistClassNode) {
-
-            service.deleteClass(
-                (node.userObject as ChecklistUserObject)
-                    .checklistNode as TestingChecklistClassNode
-            )
-        } else if ((node.userObject as ChecklistUserObject)
-            .checklistNode is TestingChecklistMethodNode
-        ) {
-
-            service.deleteMethod(
-                (node.userObject as ChecklistUserObject)
-                    .checklistNode as TestingChecklistMethodNode,
-                ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject)
-                    .checklistNode as TestingChecklistClassNode
-            )
-        } else if ((node.userObject as ChecklistUserObject)
-            .checklistNode is TestingChecklistLeafNode
-        ) {
-
-            service.deleteItem(
-                (node.userObject as ChecklistUserObject).checklistNode as TestingChecklistLeafNode,
-                ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject)
-                    .checklistNode as TestingChecklistMethodNode,
-                ((node.parent.parent as CheckedTreeNode).userObject as ChecklistUserObject)
-                    .checklistNode as TestingChecklistClassNode
-            )
-            UsageDataService.instance.logItemDeleted()
-        }
-    }
-
-    /**
      * This method just generate the test method for the selected item.
      *
      */
@@ -108,6 +73,6 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
             (node.userObject as ChecklistUserObject)
                 .checklistNode as TestingChecklistLeafNode
         )
-        UsageDataService.instance.logGenerateTest()
+        UsageDataService.instance.recordGenerateTest()
     }
 }

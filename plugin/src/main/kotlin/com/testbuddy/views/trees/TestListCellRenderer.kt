@@ -17,9 +17,9 @@ import javax.swing.tree.TreeCellRenderer
  * Since it also extends from JPanel, this component can be returned as the rendering component.
  *
  * The test nodes will have the following structure:
- *   [methodName---------------Copy-Goto]
+ *   [methodName---------------Duplicate-Goto]
  */
-class CopyPasteCellRenderer : JPanel(), TreeCellRenderer {
+class TestListCellRenderer : JPanel(), TreeCellRenderer {
 
     var methodLabel: JBLabel? = null
     var copyButton: JButton? = null
@@ -33,7 +33,7 @@ class CopyPasteCellRenderer : JPanel(), TreeCellRenderer {
         this.layout = BoxLayout(this, BoxLayout.LINE_AXIS)
         methodLabel = JBLabel()
         horizontalGlue = Box.createHorizontalGlue()
-        copyButton = JButton("Copy")
+        copyButton = JButton("Duplicate")
         gotoButton = JButton("Goto")
 
         copyButton!!.isOpaque = false

@@ -19,11 +19,11 @@ import java.awt.Color
 
 class CoverageHighlighterService(val project: Project) {
 
-    private val highlights = mutableListOf<RangeHighlighter>()
+    private var highlights = mutableListOf<RangeHighlighter>()
 
-    private val covDataService = project.service<CoverageDataService>()
     private val fileEditorManager = FileEditorManager.getInstance(project)
     private val psiDocumentManager = PsiDocumentManager.getInstance(project)
+    private var covDataService = project.service<CoverageDataService>()
 
     private fun deletedColor() = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.deletedColor)
     private fun includedColor() = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.addedColor)
@@ -104,7 +104,7 @@ class CoverageHighlighterService(val project: Project) {
      * @param color the color
      * @param attributeKey the text attribute key
      */
-    private fun addGutterHighlighter(
+    fun addGutterHighlighter(
         editor: Editor,
         lineNum: Int,
         color: Color,
@@ -120,5 +120,13 @@ class CoverageHighlighterService(val project: Project) {
         highlights.add(hl)
 
         hl.lineMarkerRenderer = DiffCoverageLineMarkerRenderer(color)
+    }
+
+    fun setHighlights(highlights: MutableList<RangeHighlighter>) {
+        this.highlights = highlights
+    }
+
+    fun setCoverageDataService(coverageDataService: CoverageDataService) {
+        this.covDataService = coverageDataService
     }
 }

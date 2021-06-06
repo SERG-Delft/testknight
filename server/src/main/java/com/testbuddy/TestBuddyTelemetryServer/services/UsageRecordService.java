@@ -19,6 +19,13 @@ public class UsageRecordService {
     private final UsageRecordFactory usageRecordFactory;
     private final ActionRepository actionRepository;
 
+    /**
+     * Creates a new UsageRecordService.
+     *
+     * @param usageRecordRepository the repository that accesses usage records.
+     * @param usageRecordFactory the factory that creates usage records.
+     * @param actionRepository the repository that accesses actions.
+     */
     @Autowired
     public UsageRecordService(UsageRecordRepository usageRecordRepository, UsageRecordFactory usageRecordFactory,
                               ActionRepository actionRepository) {
@@ -45,7 +52,7 @@ public class UsageRecordService {
      * Creates a validation chain for the UsageDataDto objects.
      *
      * @return a request validator representing the first validator
-     * in the chain.
+     *         in the chain.
      */
     private RequestValidator<UsageDataDto> createValidationChain() {
         HashValidator hashValidator = new HashValidator(new Md5Hasher());

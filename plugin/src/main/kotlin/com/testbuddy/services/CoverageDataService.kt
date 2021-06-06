@@ -3,11 +3,13 @@ package com.testbuddy.services
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
 import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.ProjectData
+import com.testbuddy.exceptions.ProjectNotFoundException
 import com.testbuddy.models.CoverageDiffObject
 
 class CoverageDataService : Disposable {
@@ -17,26 +19,6 @@ class CoverageDataService : Disposable {
     var currentData: ProjectData? = null
     var currentSuite: CoverageSuitesBundle? = null
     var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
-    private var isDiffAvailable = true
-
-    /**
-     * Getter to get isDiffAvailable.
-     *
-     * @return isDiffAvailable.
-     */
-    fun getIsDiffAvailable(): Boolean {
-        return isDiffAvailable
-    }
-
-    /**
-     * Getter to get isDiffAvailable.
-     *
-     * @return isDiffAvailable.
-     */
-    fun setIsDiffAvailable(flag: Boolean): Boolean {
-        isDiffAvailable = flag
-        return isDiffAvailable
-    }
 
     /**
      * Sets previous data and suite to null.
@@ -61,6 +43,24 @@ class CoverageDataService : Disposable {
 
         currentData = newData
         currentSuite = newSuite
+
+        val testAnalyzerService = TestAnalyzerService()
+
+        val project = newSuite?.project ?: throw ProjectNotFoundException()
+
+        AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
+            .findAll()
+            .filter { !testAnalyzerService.isTestClass(it) }
+            .mapNotNull { it }
+            .forEach {
+                if (!currentData!!.classes.contains(it.name)) {
+                    classCoveragesMap[it.name!!] = CoverageDiffObject()
+                }
+
+                val vFile = it.containingFile.virtualFile
+                classCoveragesMap[it.name!!]!!.prevStamp = classCoveragesMap[it.name!!]!!.currStamp
+                classCoveragesMap[it.name!!]!!.currStamp = vFile.modificationStamp
+            }
     }
 
     /**
@@ -86,32 +86,38 @@ class CoverageDataService : Disposable {
         var coveredPrev = emptySet<Int>()
         var coveredNow = emptySet<Int>()
         if (currentData == null) return
-        if (previousData == null) {
-            isDiffAvailable = false
-            return
-        }
 
-        val testAnalyzerService = TestAnalyzerService()
+        val testAnalyzerService = project.service<TestAnalyzerService>()
 
         // gets all relevant classes in current project (not imports and org.junit or javax classes)
         // filters out all test classes because we aren't interested in tests for those
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll()
             .filter { !testAnalyzerService.isTestClass(it) }
-            .mapNotNull { it.name }
+            .mapNotNull { it }
 
         classesInProject.forEach {
-            if (currentData!!.classes.contains(it)) {
-                val classData = currentData!!.classes[it]
+            if (currentData!!.classes.contains(it.name)) {
+                val classData = currentData!!.classes[it.name]
                 allLines = getTotalLinesAndNewlyCoveredLines(classData).first
                 coveredNow = getTotalLinesAndNewlyCoveredLines(classData).second
             }
 
-            if (previousData!!.classes.contains(it)) {
-                coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it])
+            if (previousData != null && previousData!!.classes.contains(it.name)) {
+                coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it.name])
             }
 
-            classCoveragesMap[it] = CoverageDiffObject(allLines, coveredPrev, coveredNow)
+            val vFile = it.containingFile.virtualFile
+
+            val oldObj = classCoveragesMap[it.name!!]
+            classCoveragesMap[it.name!!] = CoverageDiffObject(
+                allLines,
+                coveredPrev,
+                coveredNow,
+                oldObj?.prevStamp ?: 0,
+                oldObj?.currStamp ?: 0,
+                vFile
+            )
         }
     }
 

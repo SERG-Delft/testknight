@@ -23,7 +23,7 @@ import javax.swing.tree.TreePath
  * @param tree Tree the listener listens to.
  * @param project The current open project for which the tree shows information.
  */
-class CopyPasteKeyboardListener(private val tree: Tree, private val project: Project) : KeyAdapter() {
+class TestListKeyboardListener(private val tree: Tree, private val project: Project) : KeyAdapter() {
 
     /**
      * Goes to the test method/class if ENTER has been pressed.
@@ -46,12 +46,12 @@ class CopyPasteKeyboardListener(private val tree: Tree, private val project: Pro
                 if (e.isShiftDown) {
                     val duplicateTestsService = project.service<DuplicateTestsService>()
                     duplicateTestsService.duplicateMethod(userObject.reference.psiMethod, userObject.editor!!)
-                    UsageDataService.instance.logDuplicateTest()
+                    UsageDataService.instance.recordDuplicateTest()
                 } else {
                     // else goto
                     val gotoTestService = project.service<GotoTestService>()
                     gotoTestService.gotoMethod(userObject.editor!!, userObject.reference)
-                    UsageDataService.instance.logGotoTest()
+                    UsageDataService.instance.recordGotoTest()
                 }
             } else if (node.userObject is TestClassData) {
                 val userObject = node.userObject as TestClassData
