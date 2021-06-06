@@ -1,6 +1,13 @@
 package com.testbuddy.models
 
-class CoverageDiffObject(val allLines: Set<Int>, val coveredPrev: Set<Int>, val coveredNow: Set<Int>) {
+import com.intellij.openapi.vfs.VirtualFile
+
+class CoverageDiffObject(
+    val allLines: Set<Int>,
+    val coveredPrev: Set<Int>,
+    val coveredNow: Set<Int>,
+    val virtualFile: VirtualFile? = null
+) {
 
     val linesNewlyRemoved: Set<Int>
     val linesNewlyAdded: Set<Int>
