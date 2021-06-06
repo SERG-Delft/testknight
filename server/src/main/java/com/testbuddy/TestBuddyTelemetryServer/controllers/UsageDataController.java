@@ -25,9 +25,9 @@ public class UsageDataController {
         return usageDataService.persistUsageData(usageData);
     }
 
-    @ExceptionHandler(value = InvalidActionId.class)
+    @ExceptionHandler(value = InvalidActionIdException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionDto invalidActionIdHandler(InvalidActionId exception) {
+    public ExceptionDto invalidActionIdHandler(InvalidActionIdException exception) {
         return new ExceptionDto(400, exception.getMessage());
     }
 

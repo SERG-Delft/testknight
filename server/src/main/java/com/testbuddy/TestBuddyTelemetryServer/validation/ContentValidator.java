@@ -22,7 +22,7 @@ public class ContentValidator extends BaseValidator<UsageDataDto> {
     public void handle(UsageDataDto requestDto) throws ValidationException {
         for (ActionEventDto actionEventDto : requestDto.getActionsRecorded()) {
             if (!actionRepository.existsById(actionEventDto.getActionId())) {
-                throw new InvalidActionId(actionEventDto.getActionId());
+                throw new InvalidActionIdException(actionEventDto.getActionId());
             }
         }
         super.handle(requestDto);
