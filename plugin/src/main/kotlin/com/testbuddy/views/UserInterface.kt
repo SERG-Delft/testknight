@@ -61,6 +61,7 @@ class UserInterface(val project: Project) {
         val actionGroup = DefaultActionGroup("ChecklistTabActions", false)
         actionGroup.add(actionManager.getAction("ChecklistAction"))
         actionGroup.add(actionManager.getAction("ClearChecklistAction"))
+        actionGroup.addSeparator()
         actionGroup.add(actionManager.getAction("DeleteChecklistAction"))
         actionGroup.add(actionManager.getAction("AddItemChecklistAction"))
         actionGroup.add(actionManager.getAction("EditItemChecklistAction"))
