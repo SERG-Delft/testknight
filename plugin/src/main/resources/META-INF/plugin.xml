@@ -145,6 +145,17 @@
         </intentionAction>
     </extensions>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <notification.parentGroup
+                id="testbuddy.notifications"
+                title="TestBuddy notifications"/>
+
+        <notification.group
+                parentId="testbuddy.notifications"
+                groupId="testbuddy.notifications.toolWindow"/>
+    </extensions>
+
+
     <actions>
         <action id="TestAction" class="com.testbuddy.actions.TestAction" text="Test Action"
                 icon="/icons/pluginIcon.svg"/>
