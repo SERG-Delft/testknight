@@ -15,10 +15,9 @@ class FileEditorListener(val project: Project) : FileEditorManagerListener {
     override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
 
         val editors = mutableListOf<Editor>()
-
         source.getEditors(file).forEach { if (it is TextEditor) editors.add(it.editor) }
 
-        project.service<TestTracingService>().addHighlights(editors)
+        project.service<TestTracingService>().refreshHighlights()
         project.service<CoverageHighlighterService>().addHighlights(editors)
     }
 }

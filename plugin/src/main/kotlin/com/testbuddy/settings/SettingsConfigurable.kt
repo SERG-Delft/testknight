@@ -8,7 +8,6 @@ import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.ui.DialogPanel
 import com.testbuddy.services.CoverageHighlighterService
 import com.testbuddy.services.GenerateTestCaseChecklistService
-import com.testbuddy.services.TestTracingService
 
 class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     private lateinit var mySettingsComponent: SettingsComponent
@@ -55,7 +54,6 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
         ProjectManager.getInstance().openProjects.forEach {
 
             // refresh possibly changed highlight colors
-            it.service<TestTracingService>().rebuildHighlights()
             it.service<CoverageHighlighterService>().rebuildHighlights()
 
             if (!SettingsService.state.coverageSettings.showIntegratedView) {
@@ -66,7 +64,6 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
                 it.service<CoverageHighlighterService>().rebuildHighlights()
             }
         }
-
     }
 
     /**
