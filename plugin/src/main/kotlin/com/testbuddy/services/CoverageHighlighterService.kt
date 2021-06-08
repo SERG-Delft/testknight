@@ -63,7 +63,6 @@ class CoverageHighlighterService(val project: Project) {
         val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
 
         covDataService.getDiffLines(project)
-        covDataService.getDiffLines(project)
         val covDiffObject = covDataService.classCoveragesMap[classQn] ?: return
 
         val vFile = psiDocumentManager.getPsiFile(editor.document)?.virtualFile ?: return

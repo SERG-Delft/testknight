@@ -82,9 +82,7 @@ class CoverageDataService : Disposable {
      * 2) covered in the suite associated with the previous run
      */
     fun getDiffLines(project: Project) {
-        var allLines = emptySet<Int>()
-        var coveredPrev = emptySet<Int>()
-        var coveredNow = emptySet<Int>()
+
         if (currentData == null) return
 
         val testAnalyzerService = project.service<TestAnalyzerService>()
@@ -97,11 +95,16 @@ class CoverageDataService : Disposable {
             .mapNotNull { it }
 
         classesInProject.forEach {
+
+            var allLines = emptySet<Int>()
+            var coveredPrev = emptySet<Int>()
+            var coveredNow = emptySet<Int>()
+
             if (currentData!!.classes.contains(it.name)) {
                 val classData = currentData!!.classes[it.name]
                 allLines = getTotalLinesAndNewlyCoveredLines(classData).first
                 coveredNow = getTotalLinesAndNewlyCoveredLines(classData).second
-            }
+            } 
 
             if (previousData != null && previousData!!.classes.contains(it.name)) {
                 coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it.name])
