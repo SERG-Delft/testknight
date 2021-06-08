@@ -1,4 +1,4 @@
-package com.testbuddy
+package com.testbuddy.services
 
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.RangeHighlighter
@@ -11,7 +11,10 @@ import com.intellij.openapi.project.Project
  */
 abstract class GlobalHighlighter(project: Project) {
 
-    var highlighters = mutableListOf<RangeHighlighter>()
+    /**
+     * Keeps track of the
+     */
+    private var highlighters = mutableMapOf<Editor, MutableList<RangeHighlighter>>()
     private val fileEditorManager = FileEditorManager.getInstance(project)
 
     /**
@@ -22,12 +25,12 @@ abstract class GlobalHighlighter(project: Project) {
         // remove all highlights
         removeHighlights()
 
-        // highlight active editors
-        fileEditorManager.allEditors.forEach {
-            if (it is TextEditor) {
-                highlightEditor(it.editor)
-            }
-        }
+        // get all open editors
+        val editors = mutableListOf<Editor>()
+        fileEditorManager.allEditors.forEach { if (it is TextEditor) editors.add(it.editor) }
+
+        // highlight them
+        addHighlights(editors)
     }
 
     /**
@@ -36,14 +39,23 @@ abstract class GlobalHighlighter(project: Project) {
      * @param editors the editors
      */
     fun addHighlights(editors: List<Editor>) {
-        editors.forEach { highlightEditor(it) }
+        editors.forEach {
+            val newHls = highlightEditor(it)
+            if (highlighters[it] == null) highlighters[it] = mutableListOf()
+            highlighters[it]!!.addAll(newHls)
+        }
     }
 
     /**
      * Remove all Highlights
      */
     fun removeHighlights() {
-        highlighters.forEach { it.dispose() }
+
+        // foreach editor, remove all of its highlights
+        highlighters.keys.forEach { ed ->
+            val hls = highlighters[ed]
+            hls?.forEach { hl -> ed.markupModel.removeHighlighter(hl) }
+        }
     }
 
     /**
@@ -51,5 +63,5 @@ abstract class GlobalHighlighter(project: Project) {
      *
      * @param editor the editor
      */
-    abstract fun highlightEditor(editor: Editor)
+    abstract fun highlightEditor(editor: Editor): List<RangeHighlighter>
 }

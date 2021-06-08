@@ -6,6 +6,7 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.HighlighterLayer
+import com.intellij.openapi.editor.markup.RangeHighlighter
 import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
@@ -13,7 +14,6 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.ColorUtil
-import com.testbuddy.GlobalHighlighter
 import com.testbuddy.exceptions.NoTestCoverageDataException
 import com.testbuddy.models.TestCoverageData
 import com.testbuddy.settings.SettingsService
@@ -48,25 +48,28 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
      * Highlight the lines covered within an editor.
      *
      * @param editor the editor
+     * @return a list of the added highlighters
      */
-    override fun highlightEditor(editor: Editor) {
+    override fun highlightEditor(editor: Editor): List<RangeHighlighter> {
 
-        activeCovData ?: return
+        activeCovData ?: return listOf()
 
         val psiFile = psiDocumentManager.getPsiFile(editor.document)
         val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
 
-        if (psiFile == null || classQn == null) return
+        if (psiFile == null || classQn == null) return listOf()
 
         // get the coverage data
-        val lines = activeCovData!!.classes[classQn] ?: return
+        val lines = activeCovData!!.classes[classQn] ?: return listOf()
 
         val textAttributes = TextAttributes()
         textAttributes.backgroundColor = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.tracedColor)
 
+        val hls = mutableListOf<RangeHighlighter>()
+
         // highlight each line
         lines.forEach {
-            highlighters.add(
+            hls.add(
                 editor.markupModel.addLineHighlighter(
                     it - 1,
                     HighlighterLayer.ADDITIONAL_SYNTAX,
@@ -74,6 +77,8 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
                 )
             )
         }
+
+        return hls
     }
 
     /**

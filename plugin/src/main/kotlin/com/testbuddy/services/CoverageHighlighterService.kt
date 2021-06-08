@@ -11,7 +11,6 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.ColorUtil
-import com.testbuddy.GlobalHighlighter
 import com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
 import com.testbuddy.settings.SettingsService
 import java.awt.Color
@@ -29,24 +28,29 @@ class CoverageHighlighterService(val project: Project) : GlobalHighlighter(proje
      *
      * @param editor the editor
      */
-    override fun highlightEditor(editor: Editor) {
+    override fun highlightEditor(editor: Editor): List<RangeHighlighter> {
 
         val psiFile = psiDocumentManager.getPsiFile(editor.document)
         val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
 
         covDataService.getDiffLines(project)
         covDataService.getDiffLines(project)
-        val covDiffObject = covDataService.classCoveragesMap[classQn] ?: return
+        val covDiffObject = covDataService.classCoveragesMap[classQn] ?: return listOf()
 
-        val vFile = psiDocumentManager.getPsiFile(editor.document)?.virtualFile ?: return
+        val vFile = psiDocumentManager.getPsiFile(editor.document)?.virtualFile ?: return listOf()
 
         // if the editor was modified in between coverage runs skip
         if (vFile.modificationStamp != covDiffObject.currStamp ||
             covDiffObject.prevStamp != covDiffObject.currStamp
-        ) return
+        ) return listOf()
 
-        covDiffObject.linesNewlyAdded.forEach { addGutterHighlighter(editor, it, includedColor()) }
-        covDiffObject.linesNewlyRemoved.forEach { addGutterHighlighter(editor, it, deletedColor()) }
+        // collect the newly added highlighters
+        val hls = mutableListOf<RangeHighlighter>()
+
+        covDiffObject.linesNewlyAdded.forEach { hls.add(addGutterHighlighter(editor, it, includedColor())) }
+        covDiffObject.linesNewlyRemoved.forEach { hls.add(addGutterHighlighter(editor, it, deletedColor())) }
+
+        return hls
     }
 
     /**
@@ -89,7 +93,7 @@ class CoverageHighlighterService(val project: Project) : GlobalHighlighter(proje
         lineNum: Int,
         color: Color,
         attributeKey: TextAttributesKey? = null
-    ) {
+    ): RangeHighlighter {
 
         val hl = editor.markupModel.addLineHighlighter(
             attributeKey,
@@ -97,16 +101,8 @@ class CoverageHighlighterService(val project: Project) : GlobalHighlighter(proje
             HighlighterLayer.LAST
         )
 
-        highlighters.add(hl)
-
         hl.lineMarkerRenderer = DiffCoverageLineMarkerRenderer(color)
-    }
 
-    fun setHighlights(highlights: MutableList<RangeHighlighter>) {
-        this.highlighters = highlights
-    }
-
-    fun setCoverageDataService(coverageDataService: CoverageDataService) {
-        this.covDataService = coverageDataService
+        return hl
     }
 }
