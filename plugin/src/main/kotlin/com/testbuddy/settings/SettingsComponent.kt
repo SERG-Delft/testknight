@@ -1,18 +1,24 @@
 package com.testbuddy.settings
 
 import com.intellij.ide.BrowserUtil
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.ColorPanel
 import com.intellij.ui.TreeSpeedSearch
 import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import com.intellij.ui.treeStructure.Tree
+import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
-import com.testbuddy.models.SettingsTypeCaseTree
+import com.testbuddy.models.SettingsTypeCaseTreeModel
+import javax.swing.JPanel
 import javax.swing.event.TreeModelEvent
 import javax.swing.event.TreeModelListener
+import javax.swing.tree.TreeSelectionModel
 
 class SettingsComponent {
 
@@ -20,7 +26,7 @@ class SettingsComponent {
     private val state = SettingsService.instance.state
     var isTypeCaseTreeModified = false
     lateinit var typeCaseTreeInfo: MutableMap<String, MutableList<String>>
-    lateinit var typeCaseTreeModel: SettingsTypeCaseTree
+    lateinit var typeCaseTreeModel: SettingsTypeCaseTreeModel
 
     lateinit var addedColor: ColorPanel
     lateinit var deletedColor: ColorPanel
@@ -116,9 +122,9 @@ class SettingsComponent {
                 row("Type Cases") {
 
                     row {
-                        val panel = JBScrollPane()
+                        val scrollPanel = JBScrollPane()
                         typeCaseTreeInfo = SettingsService.createTreeDeepCopy(checklistSettings.typeCaseMap)
-                        typeCaseTreeModel = SettingsTypeCaseTree(typeCaseTreeInfo)
+                        typeCaseTreeModel = SettingsTypeCaseTreeModel(typeCaseTreeInfo)
                         typeCaseTreeModel.addTreeModelListener(object : TreeModelListener {
                             override fun treeNodesChanged(p0: TreeModelEvent?) {
                                 if (p0?.children != null) {
@@ -149,15 +155,28 @@ class SettingsComponent {
                         tree.isRootVisible = false
                         tree.showsRootHandles = true
                         tree.isEditable = true
+                        tree.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
 
                         TreeUtil.expand(tree, 1)
-                        panel.setViewportView(tree)
+                        scrollPanel.setViewportView(tree)
                         TreeSpeedSearch(tree)
 
-                        (tree.model as SettingsTypeCaseTree)
+                        (tree.model as SettingsTypeCaseTreeModel)
 
-                        // UI component gets generated here
-                        panel()
+                        val actionManager = ActionManager.getInstance()
+                        val actionGroup = DefaultActionGroup("TestListTabActions", false)
+                        actionGroup.add(actionManager.getAction("AddSettingsItem"))
+                        actionGroup.add(actionManager.getAction("DeleteSettingsItem"))
+                        actionGroup.add(actionManager.getAction("EditSettingsItem"))
+                        actionGroup.add(actionManager.getAction("ResetSettingsTree"))
+                        val actionToolbar =
+                            actionManager.createActionToolbar("SettingsTreeToolbar", actionGroup, false)
+
+                        val treePanel: JPanel = JBUI.Panels.simplePanel()
+                            .addToCenter(scrollPanel)
+                            .addToLeft(actionToolbar.component)
+
+                        treePanel().constraints(CCFlags.growX)
                     }
                 }
             }

@@ -4,7 +4,7 @@ import com.intellij.ui.tree.BaseTreeModel
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class SettingsTypeCaseTree(private var typeCaseMap: MutableMap<String, MutableList<String>>) : BaseTreeModel<String>() {
+class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, MutableList<String>>) : BaseTreeModel<String>() {
     private val rootNode = DefaultMutableTreeNode("root")
     override fun getRoot(): Any {
         return rootNode
