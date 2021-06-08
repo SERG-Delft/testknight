@@ -10,6 +10,7 @@ import com.intellij.ui.layout.panel
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.models.SettingsTypeCaseTree
 import javax.swing.tree.DefaultMutableTreeNode
 
 class SettingsComponent {
@@ -112,21 +113,11 @@ class SettingsComponent {
 
                     row {
                         val panel = JBScrollPane()
-                        val root = DefaultMutableTreeNode("root")
-                        val tree = Tree(root)
+                        val tree = Tree(SettingsTypeCaseTree(checklistSettings.typeCaseMap))
 
                         tree.isRootVisible = false
                         tree.showsRootHandles = true
-
-                        for (typeCase in checklistSettings.typeCaseMap) {
-                            val dataType = DefaultMutableTreeNode(typeCase.key)
-
-                            for (value in typeCase.value) {
-                                dataType.add(DefaultMutableTreeNode(value))
-                            }
-
-                            root.add(dataType)
-                        }
+                        tree.isEditable = true
 
                         TreeUtil.expand(tree, 1)
                         panel.setViewportView(tree)
