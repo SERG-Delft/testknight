@@ -57,7 +57,7 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
             it.service<CoverageHighlighterService>().rebuildHighlights()
 
             if (!SettingsService.state.coverageSettings.showIntegratedView) {
-                it.service<CoverageHighlighterService>().hideHighlights()
+                it.service<CoverageHighlighterService>().removeHighlights()
             }
 
             if (SettingsService.state.coverageSettings.showIntegratedView) {

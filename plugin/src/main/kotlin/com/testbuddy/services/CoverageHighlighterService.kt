@@ -6,22 +6,18 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
-import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.ColorUtil
+import com.testbuddy.GlobalHighlighter
 import com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
 import com.testbuddy.settings.SettingsService
 import java.awt.Color
 
-class CoverageHighlighterService(val project: Project) {
+class CoverageHighlighterService(val project: Project) : GlobalHighlighter(project) {
 
-    private var highlights = mutableListOf<RangeHighlighter>()
-
-    private val fileEditorManager = FileEditorManager.getInstance(project)
     private val psiDocumentManager = PsiDocumentManager.getInstance(project)
     private var covDataService = project.service<CoverageDataService>()
 
@@ -29,35 +25,11 @@ class CoverageHighlighterService(val project: Project) {
     private fun includedColor() = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.addedColor)
 
     /**
-     * Destroy highlights and re-construct them for open editors
-     */
-    fun rebuildHighlights() {
-        hideHighlights()
-        fileEditorManager.allEditors.forEach {
-            if (it is TextEditor) highlightEditor(it.editor)
-        }
-    }
-
-    /**
-     * Add highlights to any un-highlighted editors
-     */
-    fun addHighlights(editors: List<Editor>) {
-        editors.forEach { highlightEditor(it) }
-    }
-
-    /**
-     * Hide all diff-coverage highlights in the given editor and class.
-     */
-    fun hideHighlights() {
-        highlights.forEach { it.dispose() }
-    }
-
-    /**
      * Display a all diff-coverage highlights in a given editor and class.
      *
      * @param editor the editor
      */
-    private fun highlightEditor(editor: Editor) {
+    override fun highlightEditor(editor: Editor) {
 
         val psiFile = psiDocumentManager.getPsiFile(editor.document)
         val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
@@ -71,9 +43,7 @@ class CoverageHighlighterService(val project: Project) {
         // if the editor was modified in between coverage runs skip
         if (vFile.modificationStamp != covDiffObject.currStamp ||
             covDiffObject.prevStamp != covDiffObject.currStamp
-        ) {
-            return
-        }
+        ) return
 
         covDiffObject.linesNewlyAdded.forEach { addGutterHighlighter(editor, it, includedColor()) }
         covDiffObject.linesNewlyRemoved.forEach { addGutterHighlighter(editor, it, deletedColor()) }
@@ -127,13 +97,13 @@ class CoverageHighlighterService(val project: Project) {
             HighlighterLayer.LAST
         )
 
-        highlights.add(hl)
+        highlighters.add(hl)
 
         hl.lineMarkerRenderer = DiffCoverageLineMarkerRenderer(color)
     }
 
     fun setHighlights(highlights: MutableList<RangeHighlighter>) {
-        this.highlights = highlights
+        this.highlighters = highlights
     }
 
     fun setCoverageDataService(coverageDataService: CoverageDataService) {
