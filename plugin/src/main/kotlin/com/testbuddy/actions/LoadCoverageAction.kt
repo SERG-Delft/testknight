@@ -46,15 +46,15 @@ class LoadCoverageAction : AnAction() {
             val vec = Vector<Any>()
             vec.add(x.key)
 
-            if (x.value.allLines.isNotEmpty()) {
-                val newLines = (x.value.coveredNow.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
-                val oldLines = (x.value.coveredPrev.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
+            if (x.value.allLinesNow.isNotEmpty()) {
+                val newLines = (x.value.coveredNow.size.toFloat() / x.value.allLinesNow.size.toFloat() * 100).toInt()
+                val oldLines = (x.value.coveredPrev.size.toFloat() / x.value.allLinesNow.size.toFloat() * 100).toInt()
                 val value = x.value
 
                 vec.add(
                     CoverageStatsObject(
                         value.coveredNow.size,
-                        value.allLines.size,
+                        value.allLinesNow.size,
                         newLines,
                         newLines - oldLines
                     )

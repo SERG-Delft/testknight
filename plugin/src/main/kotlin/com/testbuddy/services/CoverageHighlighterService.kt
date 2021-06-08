@@ -93,14 +93,14 @@ class CoverageHighlighterService(val project: Project) {
         for (line in covDiffObject.coveredPrev) {
             addGutterHighlighter(leftEditor, line, includedColor(), DiffColors.DIFF_INSERTED)
         }
-        for (line in (covDiffObject.allLines - covDiffObject.coveredPrev)) {
+        for (line in (covDiffObject.allLinesNow - covDiffObject.coveredPrev)) {
             addGutterHighlighter(leftEditor, line, deletedColor(), DiffColors.DIFF_CONFLICT)
         }
 
         for (line in covDiffObject.coveredNow) {
             addGutterHighlighter(rightEditor, line, includedColor(), DiffColors.DIFF_INSERTED)
         }
-        for (line in (covDiffObject.allLines - covDiffObject.coveredNow)) {
+        for (line in (covDiffObject.allLinesNow - covDiffObject.coveredNow)) {
             addGutterHighlighter(rightEditor, line, deletedColor(), DiffColors.DIFF_CONFLICT)
         }
     }

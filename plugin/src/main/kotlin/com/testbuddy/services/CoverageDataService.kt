@@ -96,25 +96,28 @@ class CoverageDataService : Disposable {
 
         classesInProject.forEach {
 
-            var allLines = emptySet<Int>()
+            var allLinesNow = emptySet<Int>()
+            var allLinesPrev = emptySet<Int>()
             var coveredPrev = emptySet<Int>()
             var coveredNow = emptySet<Int>()
 
             if (currentData!!.classes.contains(it.name)) {
                 val classData = currentData!!.classes[it.name]
-                allLines = getTotalLinesAndNewlyCoveredLines(classData).first
+                allLinesNow = getTotalLinesAndNewlyCoveredLines(classData).first
                 coveredNow = getTotalLinesAndNewlyCoveredLines(classData).second
-            } 
+            }
 
             if (previousData != null && previousData!!.classes.contains(it.name)) {
-                coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it.name])
+                allLinesPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.name]).first
+                coveredPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.name]).second
             }
 
             val vFile = it.containingFile.virtualFile
 
             val oldObj = classCoveragesMap[it.name!!]
             classCoveragesMap[it.name!!] = CoverageDiffObject(
-                allLines,
+                allLinesPrev,
+                allLinesNow,
                 coveredPrev,
                 coveredNow,
                 oldObj?.prevStamp ?: 0,
