@@ -35,7 +35,8 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
         val state = SettingsService.instance.state.coverageSettings
 
         val colorChanged = mySettingsComponent.isColorModified(state)
-        return (colorChanged || super.isModified())
+        val typeCaseTreeChanged = mySettingsComponent.isTypeCaseTreeModified
+        return (typeCaseTreeChanged || colorChanged || super.isModified())
     }
 
     /**
@@ -47,6 +48,12 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     @Throws(ConfigurationException::class)
     override fun apply() {
         super.apply()
+
+        if (mySettingsComponent.isTypeCaseTreeModified) {
+            state.checklistSettings.typeCaseMap = SettingsService.createTreeDeepCopy(mySettingsComponent.typeCaseTreeInfo)
+            mySettingsComponent.isTypeCaseTreeModified = false
+        }
+
         mySettingsComponent.applyCoverageColors(state.coverageSettings)
         ServiceManager.getService(GenerateTestCaseChecklistService::class.java).rebuildStrategies()
 
@@ -71,9 +78,17 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
      * This method is called on EDT immediately after the form creation or later upon user's request.
      */
     override fun reset() {
-        super.reset()
+        if (mySettingsComponent.isTypeCaseTreeModified) {
+            mySettingsComponent.typeCaseTreeInfo.clear()
+            for (item in state.checklistSettings.typeCaseMap) {
+                mySettingsComponent.typeCaseTreeInfo[item.key] = item.value.toMutableList() // Creates a copy
+            }
+            mySettingsComponent.isTypeCaseTreeModified = false
+            mySettingsComponent.typeCaseTreeModel.reload()
+        }
 
         mySettingsComponent.resetCoverageColors(state.coverageSettings)
+        super.reset()
     }
 
     /**

@@ -1,13 +1,10 @@
 package com.testbuddy.models
 
 import com.intellij.ui.tree.BaseTreeModel
-import com.intellij.ui.tree.ChildrenProvider
-import io.mockk.InternalPlatformDsl.toArray
 import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreePath
 
-class SettingsTypeCaseTree(private val typeCaseMap: MutableMap<String, MutableList<String>>) : BaseTreeModel<String>() {
+class SettingsTypeCaseTree(private var typeCaseMap: MutableMap<String, MutableList<String>>) : BaseTreeModel<String>() {
     private val rootNode = DefaultMutableTreeNode("root")
     override fun getRoot(): Any {
         return rootNode
@@ -19,18 +16,16 @@ class SettingsTypeCaseTree(private val typeCaseMap: MutableMap<String, MutableLi
      */
     override fun getChildren(parent: Any?): MutableList<out String>? {
 
-
-        if(parent is DefaultMutableTreeNode) {
-            if(parent == rootNode) {
+        if (parent is DefaultMutableTreeNode) {
+            if (parent == rootNode) {
                 return typeCaseMap.keys.toMutableList()
             }
         }
 
         if (parent is String) {
-            if(typeCaseMap.containsKey(parent)) {
+            if (typeCaseMap.containsKey(parent)) {
                 return typeCaseMap[parent]
             }
-
         }
 
         return null
@@ -38,13 +33,13 @@ class SettingsTypeCaseTree(private val typeCaseMap: MutableMap<String, MutableLi
 
     override fun valueForPathChanged(path: TreePath?, value: Any?) {
 
-        if(path == null)
+        if (path == null)
             return
 
-        if(path.parentPath.lastPathComponent == rootNode) {
+        if (path.parentPath.lastPathComponent == rootNode) {
             val className = path.lastPathComponent as String
 
-            if(getIndexOfChild(rootNode, value.toString()) != -1) {
+            if (getIndexOfChild(rootNode, value.toString()) != -1) {
                 return
             }
 
@@ -59,8 +54,8 @@ class SettingsTypeCaseTree(private val typeCaseMap: MutableMap<String, MutableLi
             val className = path.parentPath.lastPathComponent as String
             val typeName = path.lastPathComponent as String
 
-            if(getIndexOfChild(className, value.toString()) != -1) {
-                //Already exists.
+            if (getIndexOfChild(className, value.toString()) != -1) {
+                // Already exists.
                 return
             }
 
@@ -70,5 +65,9 @@ class SettingsTypeCaseTree(private val typeCaseMap: MutableMap<String, MutableLi
 
             treeStructureChanged(path, intArrayOf(index), arrayOf(typeName))
         }
+    }
+
+    fun reload() {
+        treeStructureChanged(TreePath(rootNode), null, null)
     }
 }

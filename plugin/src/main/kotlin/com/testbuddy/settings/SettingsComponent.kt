@@ -11,12 +11,16 @@ import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.models.SettingsTypeCaseTree
-import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.event.TreeModelEvent
+import javax.swing.event.TreeModelListener
 
 class SettingsComponent {
 
     private var myPanel: DialogPanel
     private val state = SettingsService.instance.state
+    var isTypeCaseTreeModified = false
+    lateinit var typeCaseTreeInfo: MutableMap<String, MutableList<String>>
+    lateinit var typeCaseTreeModel: SettingsTypeCaseTree
 
     lateinit var addedColor: ColorPanel
     lateinit var deletedColor: ColorPanel
@@ -113,7 +117,34 @@ class SettingsComponent {
 
                     row {
                         val panel = JBScrollPane()
-                        val tree = Tree(SettingsTypeCaseTree(checklistSettings.typeCaseMap))
+                        typeCaseTreeInfo = SettingsService.createTreeDeepCopy(checklistSettings.typeCaseMap)
+                        typeCaseTreeModel = SettingsTypeCaseTree(typeCaseTreeInfo)
+                        typeCaseTreeModel.addTreeModelListener(object : TreeModelListener {
+                            override fun treeNodesChanged(p0: TreeModelEvent?) {
+                                if (p0?.children != null) {
+                                    isTypeCaseTreeModified = true
+                                }
+                            }
+
+                            override fun treeNodesInserted(p0: TreeModelEvent?) {
+                                if (p0?.children != null) {
+                                    isTypeCaseTreeModified = true
+                                }
+                            }
+
+                            override fun treeNodesRemoved(p0: TreeModelEvent?) {
+                                if (p0?.children != null) {
+                                    isTypeCaseTreeModified = true
+                                }
+                            }
+
+                            override fun treeStructureChanged(p0: TreeModelEvent?) {
+                                if (p0?.children != null) {
+                                    isTypeCaseTreeModified = true
+                                }
+                            }
+                        })
+                        val tree = Tree(typeCaseTreeModel)
 
                         tree.isRootVisible = false
                         tree.showsRootHandles = true
@@ -122,6 +153,8 @@ class SettingsComponent {
                         TreeUtil.expand(tree, 1)
                         panel.setViewportView(tree)
                         TreeSpeedSearch(tree)
+
+                        (tree.model as SettingsTypeCaseTree)
 
                         // UI component gets generated here
                         panel()
