@@ -4,20 +4,15 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
-import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.services.ExceptionHandlerService
-import com.testbuddy.services.TestMethodGenerationService
-import com.testbuddy.services.UsageDataService
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class GenerateTestMethodAction : AnAction() {
-
+class EditItemChecklistAction : AnAction() {
     private lateinit var tree: Tree
 
     /**
@@ -35,7 +30,7 @@ class GenerateTestMethodAction : AnAction() {
 
         val node = path.lastPathComponent as CheckedTreeNode
         if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistLeafNode) {
-            generateTestMethod(e, node)
+            tree.startEditingAtPath(path)
             return
         }
     }
@@ -58,25 +53,6 @@ class GenerateTestMethodAction : AnAction() {
             e.presentation.isEnabled = false
             return
         }
-    }
-
-    /**
-     * This method just generate the test method for the selected item.
-     *
-     */
-    private fun generateTestMethod(e: AnActionEvent, node: CheckedTreeNode) {
-
-        val project = e.project ?: return
-        val textEditor = (FileEditorManager.getInstance(project).selectedEditor as TextEditor?) ?: return
-        val editor = textEditor.editor
-        val generateMethod = project.service<TestMethodGenerationService>()
-
-        generateMethod.generateTestMethod(
-            project, editor,
-            (node.userObject as ChecklistUserObject)
-                .checklistNode as TestingChecklistLeafNode
-        )
-        UsageDataService.instance.recordGenerateTest()
     }
 
     /**
@@ -104,8 +80,8 @@ class GenerateTestMethodAction : AnAction() {
      */
     private fun notifyUser(e: AnActionEvent) {
         e.project?.service<ExceptionHandlerService>()?.notify(
-            "Generate Test Method not available",
-            "Checklist item not selected", NotificationType.WARNING
+            "Edit item not available",
+            "The item for edit not selected", NotificationType.WARNING
         ) ?: return
     }
 }

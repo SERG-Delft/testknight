@@ -83,7 +83,7 @@
                 icon="AllIcons.General.Add">
         </action>
 
-        <action id="EditItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="EditItemChecklistAction" class="com.testbuddy.actions.EditItemChecklistAction"
                 text="Edit Item"
                 description="Edit the selected item in the tree."
                 icon="AllIcons.Actions.EditSource">

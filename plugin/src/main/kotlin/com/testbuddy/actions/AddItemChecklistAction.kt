@@ -16,7 +16,7 @@ import com.testbuddy.services.ExceptionHandlerService
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class AddItemChecklistAction : AnAction(){
+class AddItemChecklistAction : AnAction() {
 
     private lateinit var tree: Tree
 
@@ -29,26 +29,26 @@ class AddItemChecklistAction : AnAction(){
 
         val path: TreePath = tree.selectionPath
 
-        if (path.lastPathComponent !is DefaultMutableTreeNode){
+        if (path.lastPathComponent !is DefaultMutableTreeNode) {
             notifyUser(e)
         }
 
         val node = path.lastPathComponent as CheckedTreeNode
         if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
-         addItem(e, node)
+            addItem(e, node)
             return
         }
     }
 
     override fun update(e: AnActionEvent) {
         super.update(e)
-        if(tree.selectionPath == null) {
+        if (tree.selectionPath == null) {
             e.presentation.isEnabled = false
             return
         }
         val path: TreePath = tree.selectionPath
 
-        if (path.lastPathComponent !is DefaultMutableTreeNode){
+        if (path.lastPathComponent !is DefaultMutableTreeNode) {
             e.presentation.isEnabled = false
             return
         }
@@ -58,9 +58,7 @@ class AddItemChecklistAction : AnAction(){
             e.presentation.isEnabled = false
             return
         }
-
     }
-
 
     /**
      * Add a new checklist item.
@@ -78,9 +76,9 @@ class AddItemChecklistAction : AnAction(){
         val testingChecklistMethodNode = (node.userObject as ChecklistUserObject)
             .checklistNode as TestingChecklistMethodNode
         val testingChecklistClassNode = (
-                (node.parent as CheckedTreeNode)
-                    .userObject as ChecklistUserObject
-                ).checklistNode as TestingChecklistClassNode
+            (node.parent as CheckedTreeNode)
+                .userObject as ChecklistUserObject
+            ).checklistNode as TestingChecklistClassNode
 
         val descriptionMethod: String = testingChecklistMethodNode.description
         val elementMethod = testingChecklistMethodNode.element
@@ -93,6 +91,8 @@ class AddItemChecklistAction : AnAction(){
         val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
         val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
         service?.addChecklist(classNode) ?: return
+//        val path = (tree.model as DefaultTreeModel).getPathToRoot(classNode)
+//        tree.startEditingAtPath(path)
     }
 
     /**
@@ -118,10 +118,10 @@ class AddItemChecklistAction : AnAction(){
      *
      * @param e the AnActionEvent for which the user must be notified
      */
-    private fun notifyUser(e: AnActionEvent)
-    {
-        e.project?.service<ExceptionHandlerService>()?.notify("Add item not available",
-            "The method for the item is not selected", NotificationType.WARNING) ?: return
-
+    private fun notifyUser(e: AnActionEvent) {
+        e.project?.service<ExceptionHandlerService>()?.notify(
+            "Add item not available",
+            "The method for the item is not selected", NotificationType.WARNING
+        ) ?: return
     }
 }
