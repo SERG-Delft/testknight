@@ -302,7 +302,7 @@ class ChecklistTreeService(val project: Project) {
      * @param deleteMethod the TestingChecklistMethodNode which contains the item
      * @param deleteClass the TestingChecklistClassNode which contains the method
      */
-    fun deleteItem(
+    private fun deleteItem(
         deleteItem: TestingChecklistLeafNode,
         deleteMethod: TestingChecklistMethodNode,
         deleteClass: TestingChecklistClassNode
@@ -339,7 +339,7 @@ class ChecklistTreeService(val project: Project) {
      * @param deleteMethod the TestingChecklistMethodNode which we have to delete it
      * @param deleteClass the TestingChecklistClassNode which contains the method
      */
-    fun deleteMethod(
+    private fun deleteMethod(
         deleteMethod: TestingChecklistMethodNode,
         deleteClass: TestingChecklistClassNode
     ) {
@@ -368,7 +368,7 @@ class ChecklistTreeService(val project: Project) {
      *
      * @param deleteClass the TestingChecklistClassNode which we have to delete it
      */
-    fun deleteClass(deleteClass: TestingChecklistClassNode) {
+    private fun deleteClass(deleteClass: TestingChecklistClassNode) {
 
         val uiTreeRoot = uiTree.model.root as CheckedTreeNode
         val index = getIndexClass(deleteClass)

@@ -95,7 +95,7 @@
                 icon="AllIcons.Nodes.Method">
         </action>
 
-        <action id="DeleteChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="DeleteElementChecklistAction" class="com.testbuddy.actions.DeleteElementChecklistAction"
                 text="Delete Element"
                 description="Deletes the selected element from the tree."
                 icon="AllIcons.Diff.Remove">
