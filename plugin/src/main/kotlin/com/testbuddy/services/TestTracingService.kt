@@ -2,8 +2,6 @@ package com.testbuddy.services
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
-import com.intellij.notification.NotificationType
-import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.HighlighterLayer
 import com.intellij.openapi.editor.markup.RangeHighlighter
@@ -14,7 +12,8 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.ColorUtil
-import com.testbuddy.exceptions.NoTestCoverageDataException
+import com.testbuddy.exceptions.CorruptedTraceFileException
+import com.testbuddy.exceptions.TraceFileNotFoundException
 import com.testbuddy.models.TestCoverageData
 import com.testbuddy.settings.SettingsService
 import java.io.DataInputStream
@@ -27,17 +26,18 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
 
     private val coverageDataManager = CoverageDataManager.getInstance(project)
     private val psiDocumentManager = PsiDocumentManager.getInstance(project)
-    private val exceptionHandlerService = project.service<ExceptionHandlerService>()
 
     /**
      * The current coverage data to show.
      */
-    private var activeCovData: TestCoverageData? = null
+    var activeCovData: TestCoverageData? = null
 
     /**
      * Highlight the lines covered by testName.
      *
      * @param testName the string representation of the test.
+     * @throws TraceFileNotFoundException
+     * @throws CorruptedTraceFileException
      */
     fun highlightTest(testName: String) {
         activeCovData = getLinesForTest(testName)
@@ -86,42 +86,13 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
      *
      * @param test the test in string format: ClassName,testName.
      * @return a TestCoverageObject representing the lines covered by the test.
+     * @throws TraceFileNotFoundException
+     * @throws CorruptedTraceFileException
      */
-    @Throws(NoTestCoverageDataException::class)
-    @Suppress("TooGenericExceptionCaught")
-    private fun getLinesForTest(test: String): TestCoverageData? {
-
-        try {
-            val currentSuitesBundle = coverageDataManager.currentSuitesBundle
-            val traceFile = getTraceFile(test, currentSuitesBundle)
-            return readTraceFile(traceFile)
-        } catch (ex: FileNotFoundException) {
-            exceptionHandlerService.notify(
-                "Test coverage info not found",
-                "Make sure you have ran with coverage and test-tracing", NotificationType.ERROR
-            )
-            println(ex)
-        } catch (ex: IllegalStateException) {
-            exceptionHandlerService.notify(
-                "Test coverage info not found",
-                "Make sure you have ran with coverage and test-tracing", NotificationType.ERROR
-            )
-            println(ex)
-        } catch (ex: IOException) {
-            exceptionHandlerService.notify(
-                "Failed to read trace file",
-                "Rerun coverage", NotificationType.ERROR
-            )
-            println(ex)
-        } catch (ex: NullPointerException) {
-            exceptionHandlerService.notify(
-                "Failed to read trace file",
-                "Not coverage suit found", NotificationType.ERROR
-            )
-            println(ex)
-        }
-
-        throw NoTestCoverageDataException()
+    private fun getLinesForTest(test: String): TestCoverageData {
+        val currentSuitesBundle = CoverageSuitesBundle(coverageDataManager.suites)
+        val traceFile = getTraceFile(test, currentSuitesBundle)
+        return readTraceFile(traceFile)
     }
 
     /**
@@ -130,12 +101,13 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
      * @param test the test.
      * @param coverageSuitesBundle the coverage suite to extract the data from.
      * @return the file pointer of the trace file.
+     * @throws TraceFileNotFoundException
      */
     @Throws(FileNotFoundException::class)
     private fun getTraceFile(test: String, coverageSuitesBundle: CoverageSuitesBundle): File {
 
-        val traceDirs = coverageSuitesBundle.suites.map {
-            val filePath = it.coverageDataFileName
+        val traceDirs = coverageSuitesBundle.suites.map { suite ->
+            val filePath = suite.coverageDataFileName
             val dirName = FileUtilRt.getNameWithoutExtension(File(filePath).name)
             val parentDir = File(filePath).parentFile
             File(parentDir, dirName)
@@ -152,7 +124,8 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
                 }
             }
 
-        throw FileNotFoundException("no trace file found")
+        // if the exception is not found throw an exception
+        throw TraceFileNotFoundException()
     }
 
     /**
@@ -160,16 +133,18 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
      *
      * @param traceFile the traceFile.
      * @return the lines of code covered by the test.
+     * @throws CorruptedTraceFileException
      */
-    @Suppress("TooGenericExceptionCaught")
-    @Throws(IOException::class)
+    @Throws(CorruptedTraceFileException::class)
     fun readTraceFile(traceFile: File): TestCoverageData {
 
-        try {
-            val coverage = TestCoverageData(traceFile.nameWithoutExtension)
-            val stream = DataInputStream(FileInputStream(traceFile))
-            val numClasses = stream.readInt()
+        val coverage = TestCoverageData(traceFile.nameWithoutExtension)
+        val stream = DataInputStream(FileInputStream(traceFile))
+        val numClasses = stream.readInt()
 
+        try {
+
+            // foreach class
             repeat(numClasses) {
 
                 val className = stream.readUTF()
@@ -177,17 +152,18 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
 
                 coverage.classes[className] = mutableListOf()
 
+                // for each line in the class
                 repeat(linesSize) {
                     val line = stream.readInt()
-                    (coverage.classes[className] as MutableList).add(line)
+                    coverage.classes[className]!!.add(line)
                 }
             }
-            stream.close()
-            return coverage
         } catch (ex: IOException) {
-
-            println("tracefile could not be read" + ex.message)
-            throw ex
+            throw CorruptedTraceFileException(ex)
+        } finally {
+            stream.close()
         }
+
+        return coverage
     }
 }
