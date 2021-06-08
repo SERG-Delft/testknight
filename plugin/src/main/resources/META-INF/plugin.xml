@@ -77,7 +77,7 @@
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="G" keymap="$default"/>
         </action>
 
-        <action id="AddItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="AddItemChecklistAction" class="com.testbuddy.actions.AddItemChecklistAction"
                 text="Add Item"
                 description="Add an item in the tree under the selected method."
                 icon="AllIcons.General.Add">

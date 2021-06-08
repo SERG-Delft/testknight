@@ -14,6 +14,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.table.JBTable
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.actions.AddItemChecklistAction
 import com.testbuddy.actions.DeleteElementChecklistAction
 import com.testbuddy.actions.GenerateTestMethodAction
 import com.testbuddy.actions.ShowCoverageDiffAction
@@ -66,8 +67,9 @@ class UserInterface(val project: Project) {
         actionGroup.addSeparator()
         val deleteElement = actionManager.getAction("DeleteElementChecklistAction")
         val generateTestMethod = actionManager.getAction("GenerateMethodChecklistAction")
+        val addItem = actionManager.getAction("AddItemChecklistAction")
         actionGroup.add(deleteElement)
-        actionGroup.add(actionManager.getAction("AddItemChecklistAction"))
+        actionGroup.add(addItem)
         actionGroup.add(actionManager.getAction("EditItemChecklistAction"))
         actionGroup.add(generateTestMethod)
         val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
@@ -81,6 +83,7 @@ class UserInterface(val project: Project) {
         val checkListTree = service.getUiTree()
         (deleteElement as DeleteElementChecklistAction).setTree(checkListTree)
         (generateTestMethod as GenerateTestMethodAction).setTree(checkListTree)
+        (addItem as AddItemChecklistAction).setTree(checkListTree)
 
         // checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         val mouseListener = ChecklistMouseListener(checkListTree, project)
