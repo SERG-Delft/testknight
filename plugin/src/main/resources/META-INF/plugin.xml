@@ -89,7 +89,7 @@
                 icon="AllIcons.Actions.EditSource">
         </action>
 
-        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.GenerateTestMethodAction"
                 text="Generate Test Method"
                 description="Generates the Test Method for the selected tree."
                 icon="AllIcons.Nodes.Method">

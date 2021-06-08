@@ -15,6 +15,7 @@ import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.table.JBTable
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.actions.DeleteElementChecklistAction
+import com.testbuddy.actions.GenerateTestMethodAction
 import com.testbuddy.actions.ShowCoverageDiffAction
 import com.testbuddy.listeners.CheckListKeyboardListener
 import com.testbuddy.listeners.CheckedNodeListener
@@ -64,10 +65,11 @@ class UserInterface(val project: Project) {
         actionGroup.add(actionManager.getAction("ClearChecklistAction"))
         actionGroup.addSeparator()
         val deleteElement = actionManager.getAction("DeleteElementChecklistAction")
+        val generateTestMethod = actionManager.getAction("GenerateMethodChecklistAction")
         actionGroup.add(deleteElement)
         actionGroup.add(actionManager.getAction("AddItemChecklistAction"))
         actionGroup.add(actionManager.getAction("EditItemChecklistAction"))
-        actionGroup.add(actionManager.getAction("GenerateMethodChecklistAction"))
+        actionGroup.add(generateTestMethod)
         val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
@@ -78,6 +80,7 @@ class UserInterface(val project: Project) {
         service.initUiTree()
         val checkListTree = service.getUiTree()
         (deleteElement as DeleteElementChecklistAction).setTree(checkListTree)
+        (generateTestMethod as GenerateTestMethodAction).setTree(checkListTree)
 
         // checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         val mouseListener = ChecklistMouseListener(checkListTree, project)
