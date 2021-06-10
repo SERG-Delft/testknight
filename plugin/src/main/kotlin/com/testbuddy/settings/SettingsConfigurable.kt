@@ -50,7 +50,8 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
         super.apply()
 
         if (mySettingsComponent.isTypeCaseTreeModified) {
-            state.checklistSettings.typeCaseMap = SettingsService.createTreeDeepCopy(mySettingsComponent.typeCaseTreeInfo)
+            state.checklistSettings.typeCaseMap =
+                SettingsService.createTreeDeepCopy(mySettingsComponent.typeCaseTreeInfo)
             mySettingsComponent.isTypeCaseTreeModified = false
         }
 

@@ -138,6 +138,10 @@
                 text="Add Element" description="Adds new Parameter Suggestions Tree element in the settings panel."
                 icon="AllIcons.General.Add">
         </action>
+        <action id="AddSettingsClass" class="com.testbuddy.actions.settings.AddClassAction"
+                text="Add Class" description="Adds new Parameter Suggestions Tree class in the settings panel."
+                icon="AllIcons.ToolbarDecorator.AddClass">
+        </action>
         <action id="DeleteSettingsItem" class="com.testbuddy.actions.settings.DeleteElementAction"
                 text="Delete Element" description="Deletes selected Parameter Suggestions Tree element in the settings panel."
                 icon="AllIcons.Diff.Remove">

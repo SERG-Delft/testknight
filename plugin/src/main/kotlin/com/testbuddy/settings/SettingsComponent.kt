@@ -14,6 +14,8 @@ import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.actions.settings.AddClassAction
+import com.testbuddy.actions.settings.AddElementAction
 import com.testbuddy.actions.settings.DeleteElementAction
 import com.testbuddy.actions.settings.EditElementAction
 import com.testbuddy.actions.settings.ResetTreeAction
@@ -168,15 +170,23 @@ class SettingsComponent {
 
                         val actionManager = ActionManager.getInstance()
                         val actionGroup = DefaultActionGroup("TestListTabActions", false)
-                        actionGroup.add(actionManager.getAction("AddSettingsItem"))
-                        val deleteAction = actionManager.getAction("DeleteSettingsItem")
-                        (deleteAction as DeleteElementAction).init(tree)
+                        val addElementAction = actionManager.getAction("AddSettingsItem") as AddElementAction
+                        val addClassAction = actionManager.getAction("AddSettingsClass") as AddClassAction
+                        val deleteAction = actionManager.getAction("DeleteSettingsItem") as DeleteElementAction
+                        val editAction = actionManager.getAction("EditSettingsItem") as EditElementAction
+                        val resetAction = actionManager.getAction("ResetSettingsTree") as ResetTreeAction
+
+                        addElementAction.init(tree)
+                        addClassAction.init(tree)
+                        deleteAction.init(tree)
+                        editAction.init(tree)
+                        resetAction.init(this@SettingsComponent)
+
+                        actionGroup.add(addElementAction)
+                        actionGroup.add(addClassAction)
                         actionGroup.add(deleteAction)
-                        val editAction = actionManager.getAction("EditSettingsItem")
-                        (editAction as EditElementAction).init(tree)
                         actionGroup.add(editAction)
-                        val resetAction = actionManager.getAction("ResetSettingsTree")
-                        (resetAction as ResetTreeAction).init(this@SettingsComponent)
+
                         actionGroup.add(resetAction)
                         val actionToolbar =
                             actionManager.createActionToolbar("SettingsTreeToolbar", actionGroup, false)

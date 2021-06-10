@@ -4,7 +4,8 @@ import com.intellij.ui.tree.BaseTreeModel
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, MutableList<String>>) : BaseTreeModel<String>() {
+class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, MutableList<String>>) :
+    BaseTreeModel<String>() {
     private val rootNode = DefaultMutableTreeNode("root")
     override fun getRoot(): Any {
         return rootNode
@@ -31,6 +32,26 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
         return null
     }
 
+    fun addPathElement(path: TreePath) {
+        if (path.parentPath.lastPathComponent == rootNode) {
+            val className = path.lastPathComponent as String
+            typeCaseMap[className] = mutableListOf()
+
+            val index = getIndexOfChild(rootNode, className)
+            treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
+            treeNodesInserted(path, intArrayOf(index), arrayOf(className))
+        } else {
+            val className = path.parentPath.lastPathComponent as String
+            val typeName = path.lastPathComponent as String
+
+            typeCaseMap[className]!!.add(typeName)
+
+            val index = getIndexOfChild(className, typeName)
+            treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
+            treeNodesInserted(path, intArrayOf(index), arrayOf(className))
+        }
+    }
+
     fun removePathElement(path: TreePath) {
         if (path.parentPath.lastPathComponent == rootNode) {
             val className = path.lastPathComponent as String
@@ -55,8 +76,9 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
 
     override fun valueForPathChanged(path: TreePath?, value: Any?) {
 
-        if (path == null)
+        if (path == null || value == null || value.toString() == "") {
             return
+        }
 
         if (path.parentPath.lastPathComponent == rootNode) {
             val className = path.lastPathComponent as String
