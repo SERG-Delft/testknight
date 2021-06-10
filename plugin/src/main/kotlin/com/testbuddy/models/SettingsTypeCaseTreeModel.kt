@@ -31,6 +31,28 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
         return null
     }
 
+    fun removePathElement(path: TreePath) {
+        if (path.parentPath.lastPathComponent == rootNode) {
+            val className = path.lastPathComponent as String
+
+            val index = getIndexOfChild(rootNode, className)
+
+            typeCaseMap.remove(className)
+            treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
+            treeNodesRemoved(path, intArrayOf(index), arrayOf(className))
+        } else {
+            val className = path.parentPath.lastPathComponent as String
+            val typeName = path.lastPathComponent as String
+
+            val index = getIndexOfChild(className, typeName)
+
+            typeCaseMap[className]!!.removeAt(index)
+
+            treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
+            treeNodesRemoved(path, intArrayOf(index), arrayOf(className))
+        }
+    }
+
     override fun valueForPathChanged(path: TreePath?, value: Any?) {
 
         if (path == null)
@@ -63,7 +85,7 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
 
             typeCaseMap[className]!![index] = value.toString()
 
-            treeStructureChanged(path, intArrayOf(index), arrayOf(typeName))
+            treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
         }
     }
 

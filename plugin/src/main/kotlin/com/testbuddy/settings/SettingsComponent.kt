@@ -14,6 +14,8 @@ import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.actions.settings.DeleteElementAction
+import com.testbuddy.actions.settings.EditElementAction
 import com.testbuddy.actions.settings.ResetTreeAction
 import com.testbuddy.models.SettingsTypeCaseTreeModel
 import javax.swing.JPanel
@@ -167,8 +169,12 @@ class SettingsComponent {
                         val actionManager = ActionManager.getInstance()
                         val actionGroup = DefaultActionGroup("TestListTabActions", false)
                         actionGroup.add(actionManager.getAction("AddSettingsItem"))
-                        actionGroup.add(actionManager.getAction("DeleteSettingsItem"))
-                        actionGroup.add(actionManager.getAction("EditSettingsItem"))
+                        val deleteAction = actionManager.getAction("DeleteSettingsItem")
+                        (deleteAction as DeleteElementAction).init(tree)
+                        actionGroup.add(deleteAction)
+                        val editAction = actionManager.getAction("EditSettingsItem")
+                        (editAction as EditElementAction).init(tree)
+                        actionGroup.add(editAction)
                         val resetAction = actionManager.getAction("ResetSettingsTree")
                         (resetAction as ResetTreeAction).init(this@SettingsComponent)
                         actionGroup.add(resetAction)
