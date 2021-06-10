@@ -134,19 +134,19 @@
                 text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
 
         <!---Actions in Settings Panel -->
-        <action id="AddSettingsItem" class="com.testbuddy.actions.diffcoverage.HideDiffCovHighlights"
+        <action id="AddSettingsItem" class="com.testbuddy.actions.settings.AddElementAction"
                 text="Add Element" description="Adds new Parameter Suggestions Tree element in the settings panel."
                 icon="AllIcons.General.Add">
         </action>
-        <action id="DeleteSettingsItem" class="com.testbuddy.actions.diffcoverage.HideDiffCovHighlights"
+        <action id="DeleteSettingsItem" class="com.testbuddy.actions.settings.DeleteElementAction"
                 text="Delete Element" description="Deletes selected Parameter Suggestions Tree element in the settings panel."
                 icon="AllIcons.Diff.Remove">
         </action>
-        <action id="EditSettingsItem" class="com.testbuddy.actions.diffcoverage.HideDiffCovHighlights"
+        <action id="EditSettingsItem" class="com.testbuddy.actions.settings.EditElementAction"
                 text="Edit Element" description="Edits selected Parameter Suggestions Tree element in the settings panel."
                 icon="AllIcons.Actions.EditSource">
         </action>
-        <action id="ResetSettingsTree" class="com.testbuddy.actions.diffcoverage.HideDiffCovHighlights"
+        <action id="ResetSettingsTree" class="com.testbuddy.actions.settings.ResetTreeAction"
                 text="Reset To Default" description="Resets Parameter Suggestions Tree to default in the settings panel."
                 icon="AllIcons.General.Reset">
         </action>

@@ -14,6 +14,7 @@ import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
+import com.testbuddy.actions.settings.ResetTreeAction
 import com.testbuddy.models.SettingsTypeCaseTreeModel
 import javax.swing.JPanel
 import javax.swing.event.TreeModelEvent
@@ -168,7 +169,9 @@ class SettingsComponent {
                         actionGroup.add(actionManager.getAction("AddSettingsItem"))
                         actionGroup.add(actionManager.getAction("DeleteSettingsItem"))
                         actionGroup.add(actionManager.getAction("EditSettingsItem"))
-                        actionGroup.add(actionManager.getAction("ResetSettingsTree"))
+                        val resetAction = actionManager.getAction("ResetSettingsTree")
+                        (resetAction as ResetTreeAction).init(this@SettingsComponent)
+                        actionGroup.add(resetAction)
                         val actionToolbar =
                             actionManager.createActionToolbar("SettingsTreeToolbar", actionGroup, false)
 
