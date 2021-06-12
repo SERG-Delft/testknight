@@ -118,7 +118,7 @@ class AddItemChecklistAction : AnAction() {
     }
 
     /**
-     * Notify the user in case that something goes wrong.
+     * Notify the user in case that the selected node is not a DefaultMutableTreeNode.
      *
      * @param e the AnActionEvent for which the user must be notified
      */
