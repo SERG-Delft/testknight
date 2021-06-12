@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
+import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
@@ -34,8 +35,10 @@ class AddItemChecklistAction : AnAction() {
         }
 
         val node = path.lastPathComponent as CheckedTreeNode
+        println(path)
+        println("Am ales un path")
         if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
-            addItem(e, node)
+            addItem(e, node, path)
             return
         }
     }
@@ -67,7 +70,7 @@ class AddItemChecklistAction : AnAction() {
      * @param node the CheckedTreeNode which have to be added.
      *
      */
-    private fun addItem(e: AnActionEvent, node: CheckedTreeNode) {
+    private fun addItem(e: AnActionEvent, node: CheckedTreeNode, path: TreePath) {
 
         val project = e.project
         val service = project?.service<ChecklistTreeService>()
@@ -90,9 +93,30 @@ class AddItemChecklistAction : AnAction() {
         val methodNode = TestingChecklistMethodNode(descriptionMethod, listItems, elementMethod)
         val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
         val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
-        service?.addChecklist(classNode) ?: return
-//        val path = (tree.model as DefaultTreeModel).getPathToRoot(classNode)
+        service?.addChecklist(classNode)
+//        service?.addChecklist(classNode) ?: return
+
+        // val path = (tree.model as DefaultTreeModel).getPathToRoot(CheckedTreeNode(ChecklistUserObject(classNode)))
+
 //        tree.startEditingAtPath(path)
+        // val treePath = TreePath(path)
+        println(path)
+        println("iajwijaiwjaijs")
+        val selectionPath = path.pathByAddingChild(CheckedTreeNode(ChecklistUserObject(newItem)))
+        //  var selectionPath = path
+        // selectionPath = selectionPath.pathByAddingChild(CheckedTreeNode(ChecklistUserObject(newItem)))
+//        (tree.model as DefaultTreeModel)
+        // tree.startEditingAtPath(selectionPath)
+        val node = selectionPath.lastPathComponent as CheckedTreeNode
+        if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistLeafNode) {
+            println("da am ajuns la leaf")
+        }
+        tree.selectionPath = selectionPath
+        TreeUtil.selectPath(tree, selectionPath)
+        // tree.scrollPathToVisible(selectionPath)
+        // tree.setExpandedState(selectionPath, true)
+        //  tree.addSelectionPath(selectionPath)
+        tree.startEditingAtPath(selectionPath)
     }
 
     /**
