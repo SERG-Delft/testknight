@@ -29,7 +29,7 @@ class GenerateTestMethodAction : AnAction() {
 
         val path: TreePath = tree.selectionPath
 
-        if (path.lastPathComponent !is DefaultMutableTreeNode) {
+        if (path.lastPathComponent !is CheckedTreeNode) {
             notifyUser(e)
         }
 

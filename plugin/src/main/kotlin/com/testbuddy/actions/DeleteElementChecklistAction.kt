@@ -8,7 +8,6 @@ import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.ExceptionHandlerService
-import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
 class DeleteElementChecklistAction : AnAction() {
@@ -19,7 +18,7 @@ class DeleteElementChecklistAction : AnAction() {
 
         val path: TreePath = tree.selectionPath
 
-        if (path.lastPathComponent !is DefaultMutableTreeNode) {
+        if (path.lastPathComponent !is CheckedTreeNode) {
             notifyUser(e)
             return
         }
