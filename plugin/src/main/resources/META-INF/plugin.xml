@@ -77,25 +77,25 @@
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="G" keymap="$default"/>
         </action>
 
-        <action id="AddItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="AddItemChecklistAction" class="com.testbuddy.actions.AddItemChecklistAction"
                 text="Add Item"
                 description="Add an item in the tree under the selected method."
                 icon="AllIcons.General.Add">
         </action>
 
-        <action id="EditItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="EditItemChecklistAction" class="com.testbuddy.actions.EditItemChecklistAction"
                 text="Edit Item"
                 description="Edit the selected item in the tree."
                 icon="AllIcons.Actions.EditSource">
         </action>
 
-        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.GenerateTestMethodAction"
                 text="Generate Test Method"
                 description="Generates the Test Method for the selected tree."
                 icon="AllIcons.Nodes.Method">
         </action>
 
-        <action id="DeleteChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="DeleteElementChecklistAction" class="com.testbuddy.actions.DeleteElementChecklistAction"
                 text="Delete Element"
                 description="Deletes the selected element from the tree."
                 icon="AllIcons.Diff.Remove">
