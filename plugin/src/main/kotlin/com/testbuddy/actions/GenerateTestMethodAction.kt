@@ -13,7 +13,6 @@ import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.services.ExceptionHandlerService
 import com.testbuddy.services.TestMethodGenerationService
 import com.testbuddy.services.UsageDataService
-import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
 class GenerateTestMethodAction : AnAction() {
@@ -48,7 +47,7 @@ class GenerateTestMethodAction : AnAction() {
         }
         val path: TreePath = tree.selectionPath
 
-        if (path.lastPathComponent !is DefaultMutableTreeNode) {
+        if (path.lastPathComponent !is CheckedTreeNode) {
             e.presentation.isEnabled = false
             return
         }
@@ -103,9 +102,13 @@ class GenerateTestMethodAction : AnAction() {
      * @param e the AnActionEvent for which the user must be notified
      */
     private fun notifyUser(e: AnActionEvent) {
-        e.project?.service<ExceptionHandlerService>()?.notify(
-            "Generate Test Method not available",
-            "Checklist item not selected", NotificationType.WARNING
-        ) ?: return
+        if (e.project == null) {
+            return
+        } else {
+            e.project!!.service<ExceptionHandlerService>().notify(
+                "Generate Test Method not available",
+                "Checklist item not selected", NotificationType.WARNING
+            )
+        }
     }
 }

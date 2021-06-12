@@ -9,7 +9,6 @@ import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.services.ExceptionHandlerService
-import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
 class EditItemChecklistAction : AnAction() {
@@ -43,7 +42,7 @@ class EditItemChecklistAction : AnAction() {
         }
         val path: TreePath = tree.selectionPath
 
-        if (path.lastPathComponent !is DefaultMutableTreeNode) {
+        if (path.lastPathComponent !is CheckedTreeNode) {
             e.presentation.isEnabled = false
             return
         }
@@ -79,9 +78,13 @@ class EditItemChecklistAction : AnAction() {
      * @param e the AnActionEvent for which the user must be notified
      */
     private fun notifyUser(e: AnActionEvent) {
-        e.project?.service<ExceptionHandlerService>()?.notify(
-            "Edit item not available",
-            "The item for edit not selected", NotificationType.WARNING
-        ) ?: return
+        if (e.project == null) {
+            return
+        } else {
+            e.project!!.service<ExceptionHandlerService>().notify(
+                "Edit item not available",
+                "The item for edit not selected", NotificationType.WARNING
+            )
+        }
     }
 }

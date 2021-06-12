@@ -13,7 +13,6 @@ import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNo
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.ExceptionHandlerService
-import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
 class AddItemChecklistAction : AnAction() {
@@ -48,7 +47,7 @@ class AddItemChecklistAction : AnAction() {
         }
         val path: TreePath = tree.selectionPath
 
-        if (path.lastPathComponent !is DefaultMutableTreeNode) {
+        if (path.lastPathComponent !is CheckedTreeNode) {
             e.presentation.isEnabled = false
             return
         }
@@ -71,7 +70,11 @@ class AddItemChecklistAction : AnAction() {
     private fun addItem(e: AnActionEvent, node: CheckedTreeNode, path: TreePath) {
 
         val project = e.project
-        val service = project?.service<ChecklistTreeService>()
+        if (project == null) {
+            return
+        }
+
+        val service = project.service<ChecklistTreeService>()
 
         val newItem = CustomChecklistNode("", null, 0)
         val testingChecklistMethodNode = (node.userObject as ChecklistUserObject)
@@ -91,7 +94,7 @@ class AddItemChecklistAction : AnAction() {
         val methodNode = TestingChecklistMethodNode(descriptionMethod, listItems, elementMethod)
         val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
         val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
-        service?.addChecklist(classNode)
+        service.addChecklist(classNode)
 
         // It always edit the last child as that would be the newly added node.
         val newChild = tree.model.getChild(node, tree.model.getChildCount(node) - 1)
@@ -123,9 +126,14 @@ class AddItemChecklistAction : AnAction() {
      * @param e the AnActionEvent for which the user must be notified
      */
     private fun notifyUser(e: AnActionEvent) {
-        e.project?.service<ExceptionHandlerService>()?.notify(
-            "Add item not available",
-            "The method for the item is not selected", NotificationType.WARNING
-        ) ?: return
+        if (e.project == null) {
+            return
+        } else {
+
+            e.project!!.service<ExceptionHandlerService>().notify(
+                "Add item not available",
+                "The method for the item is not selected", NotificationType.WARNING
+            )
+        }
     }
 }

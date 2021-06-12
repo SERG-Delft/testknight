@@ -24,7 +24,11 @@ class DeleteElementChecklistAction : AnAction() {
         }
 
         val node = path.lastPathComponent as CheckedTreeNode
-        e.project?.service<ChecklistTreeService>()?.deleteElement(node) ?: return
+        if (e.project == null) {
+            return
+        } else {
+            e.project!!.service<ChecklistTreeService>().deleteElement(node)
+        }
     }
 
     override fun update(e: AnActionEvent) {
@@ -58,9 +62,13 @@ class DeleteElementChecklistAction : AnAction() {
      * @param e the AnActionEvent for which the user must be notified
      */
     private fun notifyUser(e: AnActionEvent) {
-        e.project?.service<ExceptionHandlerService>()?.notify(
-            "Delete Element not available",
-            "Not selected element", NotificationType.WARNING
-        ) ?: return
+        if (e.project == null) {
+            return
+        } else {
+            e.project!!.service<ExceptionHandlerService>().notify(
+                "Delete Element not available",
+                "Not selected element", NotificationType.WARNING
+            )
+        }
     }
 }
