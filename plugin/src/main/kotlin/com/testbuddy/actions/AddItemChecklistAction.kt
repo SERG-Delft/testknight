@@ -34,8 +34,6 @@ class AddItemChecklistAction : AnAction() {
         }
 
         val node = path.lastPathComponent as CheckedTreeNode
-        println(path)
-        println("Am ales un path")
         if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
             addItem(e, node, path)
             return
