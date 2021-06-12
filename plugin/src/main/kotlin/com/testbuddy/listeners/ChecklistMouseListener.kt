@@ -29,14 +29,14 @@ class ChecklistMouseListener(private val tree: Tree, private val project: Projec
 
             val menu = JBPopupMenu()
             val delete = JBMenuItem("Delete")
-            delete.addActionListener(ModifyChecklistAction(node, project))
+            delete.addActionListener(ModifyChecklistAction(node, tree, path, project))
             menu.add(delete)
 
             if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistLeafNode) {
                 val edit = JBMenuItem("Edit")
                 val generate = JBMenuItem("Generate Test Method")
 
-                generate.addActionListener(ModifyChecklistAction(node, project))
+                generate.addActionListener(ModifyChecklistAction(node, tree, path, project))
 
                 edit.addActionListener {
                     it.apply { tree.startEditingAtPath(path) }
@@ -46,7 +46,7 @@ class ChecklistMouseListener(private val tree: Tree, private val project: Projec
                 menu.add(generate)
             } else if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistMethodNode) {
                 val addItem = JBMenuItem("Add item")
-                addItem.addActionListener(ModifyChecklistAction(node, project))
+                addItem.addActionListener(ModifyChecklistAction(node, tree, path, project))
                 menu.add(addItem)
             }
 

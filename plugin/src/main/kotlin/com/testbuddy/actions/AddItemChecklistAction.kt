@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
-import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
@@ -68,6 +67,7 @@ class AddItemChecklistAction : AnAction() {
      *
      * @param e the AnActionEvent which triggers the adding a new item.
      * @param node the CheckedTreeNode which have to be added.
+     * @param path the TreePath which represents the path for which a node will be added.
      *
      */
     private fun addItem(e: AnActionEvent, node: CheckedTreeNode, path: TreePath) {
@@ -94,28 +94,10 @@ class AddItemChecklistAction : AnAction() {
         val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
         val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
         service?.addChecklist(classNode)
-//        service?.addChecklist(classNode) ?: return
 
-        // val path = (tree.model as DefaultTreeModel).getPathToRoot(CheckedTreeNode(ChecklistUserObject(classNode)))
-
-//        tree.startEditingAtPath(path)
-        // val treePath = TreePath(path)
-        println(path)
-        println("iajwijaiwjaijs")
-        val selectionPath = path.pathByAddingChild(CheckedTreeNode(ChecklistUserObject(newItem)))
-        //  var selectionPath = path
-        // selectionPath = selectionPath.pathByAddingChild(CheckedTreeNode(ChecklistUserObject(newItem)))
-//        (tree.model as DefaultTreeModel)
-        // tree.startEditingAtPath(selectionPath)
-        val node = selectionPath.lastPathComponent as CheckedTreeNode
-        if ((node.userObject as ChecklistUserObject).checklistNode is TestingChecklistLeafNode) {
-            println("da am ajuns la leaf")
-        }
-        tree.selectionPath = selectionPath
-        TreeUtil.selectPath(tree, selectionPath)
-        // tree.scrollPathToVisible(selectionPath)
-        // tree.setExpandedState(selectionPath, true)
-        //  tree.addSelectionPath(selectionPath)
+        // It always edit the last child as that would be the newly added node.
+        val newChild = tree.model.getChild(node, tree.model.getChildCount(node) - 1)
+        val selectionPath = path.pathByAddingChild(newChild)
         tree.startEditingAtPath(selectionPath)
     }
 
