@@ -18,12 +18,13 @@ open class TestBuddyTestCase : BasePlatformTestCase() {
 
     override fun getTestDataPath() = "testdata"
 
-    fun getBasicTestInfo(filepath: String) {
+    fun getBasicTestInfo(filepath: String): Data {
         myFixture.configureByFile(filepath)
         val project = myFixture.project
         val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
         val psiFile = myFixture.file
         val testClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java)
+        return Data(filepath, project, psiClass, psiFile, testClasses)
     }
 
     fun getMethodConstruct(methodName: String): PsiMethod {
@@ -32,3 +33,11 @@ open class TestBuddyTestCase : BasePlatformTestCase() {
         return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
     }
 }
+
+data class Data(
+    var filepath: String,
+    var project: Project,
+    var psiClass: PsiClass?,
+    var psiFile: PsiFile,
+    val testClasses: @NotNull MutableCollection<PsiClass>
+)
