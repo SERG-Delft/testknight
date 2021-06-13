@@ -26,6 +26,7 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
 
     private val coverageDataManager = CoverageDataManager.getInstance(project)
     private val psiDocumentManager = PsiDocumentManager.getInstance(project)
+    private val highlightsPerTest = mutableMapOf<String, MutableList<RangeHighlighter>>()
 
     /**
      * The current coverage data to show.
@@ -42,6 +43,18 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
     fun highlightTest(testName: String) {
         activeCovData = getLinesForTest(testName)
         rebuildHighlights()
+    }
+
+    /**
+     * Un-highlight the lines covered by testName.
+     *
+     * @param testName the string representation of the test.
+     */
+    fun removeHighlightsForTest(testName: String) {
+        val highlightsForTest = highlightsPerTest[testName]
+        highlightsForTest ?: return
+
+        highlightsForTest.forEach { it.dispose() }
     }
 
     /**
@@ -77,6 +90,12 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
                 )
             )
         }
+
+        // keep track of which highlights belong to each test
+        if (highlightsPerTest[activeCovData!!.testName] == null) {
+            highlightsPerTest[activeCovData!!.testName] = mutableListOf()
+        }
+        highlightsPerTest[activeCovData!!.testName]!!.addAll(hls)
 
         return hls
     }
