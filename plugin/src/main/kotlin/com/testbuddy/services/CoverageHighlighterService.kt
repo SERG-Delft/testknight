@@ -33,8 +33,7 @@ class CoverageHighlighterService(val project: Project) : GlobalHighlighter(proje
         val psiFile = psiDocumentManager.getPsiFile(editor.document)
         val classQn = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java)?.qualifiedName
 
-        covDataService.getDiffLines(project)
-        covDataService.getDiffLines(project)
+        covDataService.getDiffLines()
         val covDiffObject = covDataService.classCoveragesMap[classQn] ?: return listOf()
 
         val vFile = psiDocumentManager.getPsiFile(editor.document)?.virtualFile ?: return listOf()
@@ -62,7 +61,7 @@ class CoverageHighlighterService(val project: Project) : GlobalHighlighter(proje
      */
     fun showHighlightsInDiff(leftEditor: Editor, rightEditor: Editor, className: String) {
 
-        covDataService.getDiffLines(project)
+        covDataService.getDiffLines()
         val covDiffObject = covDataService.classCoveragesMap[className] ?: return
 
         for (line in covDiffObject.coveredPrev) {

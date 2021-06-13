@@ -37,7 +37,7 @@ class LoadCoverageAction : AnAction() {
         val table = coverageViewport.view as JBTable
         val serv = project.service<CoverageDataService>()
 
-        serv.getDiffLines(project)
+        serv.getDiffLines()
 
         val model = table.model as DefaultTableModel
         model.rowCount = 0 // Clear table
