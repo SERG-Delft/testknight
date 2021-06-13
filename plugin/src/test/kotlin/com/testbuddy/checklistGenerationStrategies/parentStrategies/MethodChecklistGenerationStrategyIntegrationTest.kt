@@ -2,11 +2,9 @@ package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
 import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiCatchSection
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDoWhileStatement
 import com.intellij.psi.PsiForStatement
 import com.intellij.psi.PsiForeachStatement
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParenthesizedExpression
 import com.intellij.psi.PsiPrefixExpression
 import com.intellij.psi.PsiReferenceExpression
@@ -30,12 +28,13 @@ import org.junit.Test
 
 internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestCase() {
 
+
     @Test
     fun testTernaryOperator() {
-        val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Methods.java")
-        val methodToGenerateOn = getMethod("ternary")
+        getBasicTestInfo("/Methods.java")
 
+        val methodGenerator = MethodChecklistGenerationStrategy.create()
+        val methodToGenerateOn = getMethodByName("ternary")
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiParenthesizedExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
             ConditionChecklistNode(
@@ -47,16 +46,19 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
                 expr!!
             )
         )
+
         val expectedNode = TestingChecklistMethodNode("ternary", expectedChildren, methodToGenerateOn)
         val actual = methodGenerator.generateChecklist(methodToGenerateOn)
+
         assertEquals(expectedNode, actual)
     }
 
     @Test
     fun testIfStatement() {
+        getBasicTestInfo("/Methods.java")
+
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Methods.java")
-        val methodToGenerateOn = getMethod("twoBranchesNoParameter")
+        val methodToGenerateOn = getMethodByName("twoBranchesNoParameter")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiReferenceExpression::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
@@ -76,9 +78,10 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
 
     @Test
     fun testTryStatement() {
+        getBasicTestInfo("/Person.java")
+
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("getSpouseNameCatchAndFinally")
+        val methodToGenerateOn = getMethodByName("getSpouseNameCatchAndFinally")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiTryStatement::class.java)
         val catch = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiCatchSection::class.java)
@@ -102,9 +105,9 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
 
     @Test
     fun testSwitchStatement() {
+        getBasicTestInfo("/Person.java")
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("commentOnAge")
+        val methodToGenerateOn = getMethodByName("commentOnAge")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiSwitchStatement::class.java)
         val switchLabels = PsiTreeUtil.findChildrenOfType(methodToGenerateOn, PsiSwitchLabelStatement::class.java)
@@ -148,9 +151,9 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
 
     @Test
     fun testDoWhileStatement() {
+        getBasicTestInfo("/Person.java")
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("doWhileExample")
+        val methodToGenerateOn = getMethodByName("doWhileExample")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiPrefixExpression::class.java)
         val doWhile = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiDoWhileStatement::class.java)
@@ -175,9 +178,10 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
 
     @Test
     fun testForEachStatement() {
+        getBasicTestInfo("/Person.java")
+
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("spellWithForEach")
+        val methodToGenerateOn = getMethodByName("spellWithForEach")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiForeachStatement::class.java)
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
@@ -209,9 +213,9 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
 
     @Test
     fun testForStatement() {
+        getBasicTestInfo("/Person.java")
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("spellName")
+        val methodToGenerateOn = getMethodByName("spellName")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiForStatement::class.java)
         val bin = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiBinaryExpression::class.java)
@@ -236,9 +240,9 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
 
     @Test
     fun testWhileStatement() {
+        getBasicTestInfo("/Person.java")
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("countToTen")
+        val methodToGenerateOn = getMethodByName("countToTen")
 
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiBinaryExpression::class.java)
         val whileStatement = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiWhileStatement::class.java)
@@ -262,11 +266,52 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
     }
 
     @Test
-    fun testParameters() {
+    fun testCombination() {
+        getBasicTestInfo("/Person.java")
         // setFullName
         val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("multipleStructs")
+        val methodToGenerateOn = getMethodByName("mysteriousMethodWithArray")
+
+        val expr = methodToGenerateOn.parameterList.parameters[0]
+        val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
+                ParameterChecklistNode(
+                        "Test method parameter \"a\" equal to: null",
+                        expr!!,
+                        "a",
+                        "null"
+                ),
+                ParameterChecklistNode(
+                        "Test method parameter \"a\" equal to: [1,2,3,4]",
+                        expr!!,
+                        "a",
+                        "[1,2,3,4]"
+                ),
+                ParameterChecklistNode(
+                        "Test method parameter \"a\" equal to: [4,3,2,1]",
+                        expr!!,
+                        "a",
+                        "[4,3,2,1]"
+                ),
+                ParameterChecklistNode(
+                        "Test method parameter \"a\" equal to: []",
+                        expr!!,
+                        "a",
+                        "[]"
+                )
+        )
+
+        val expectedNode = TestingChecklistMethodNode("mysteriousMethodWithArray", expectedChildren, methodToGenerateOn)
+        val actual = methodGenerator.generateChecklist(methodToGenerateOn)
+
+        assertEquals(expectedNode, actual)
+    }
+
+    @Test
+    fun testParameters() {
+        getBasicTestInfo("/Person.java")
+        // setFullName
+        val methodGenerator = MethodChecklistGenerationStrategy.create()
+        val methodToGenerateOn = getMethodByName("multipleStructs")
 
         val param = methodToGenerateOn.parameterList.parameters[0]
         val expr = PsiTreeUtil.findChildOfType(methodToGenerateOn, PsiPrefixExpression::class.java)
@@ -314,48 +359,4 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
         assertEquals(expectedNode, actual)
     }
 
-    @Test
-    fun testCombination() {
-        // setFullName
-        val methodGenerator = MethodChecklistGenerationStrategy.create()
-        this.myFixture.configureByFile("/Person.java")
-        val methodToGenerateOn = getMethod("mysteriousMethodWithArray")
-
-        val expr = methodToGenerateOn.parameterList.parameters[0]
-        val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-            ParameterChecklistNode(
-                "Test method parameter \"a\" equal to: null",
-                expr!!,
-                "a",
-                "null"
-            ),
-            ParameterChecklistNode(
-                "Test method parameter \"a\" equal to: [1,2,3,4]",
-                expr!!,
-                "a",
-                "[1,2,3,4]"
-            ),
-            ParameterChecklistNode(
-                "Test method parameter \"a\" equal to: [4,3,2,1]",
-                expr!!,
-                "a",
-                "[4,3,2,1]"
-            ),
-            ParameterChecklistNode(
-                "Test method parameter \"a\" equal to: []",
-                expr!!,
-                "a",
-                "[]"
-            )
-        )
-        val expectedNode = TestingChecklistMethodNode("mysteriousMethodWithArray", expectedChildren, methodToGenerateOn)
-        val actual = methodGenerator.generateChecklist(methodToGenerateOn)
-        assertEquals(expectedNode, actual)
-    }
-
-    private fun getMethod(methodName: String): PsiMethod {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
-    }
 }
