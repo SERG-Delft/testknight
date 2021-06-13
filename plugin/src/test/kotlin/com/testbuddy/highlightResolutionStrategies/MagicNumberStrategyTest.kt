@@ -11,11 +11,9 @@ internal class MagicNumberStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testBasic() {
+        val data = getBasicTestInfo("PointTest.java")
 
-        this.myFixture.configureByFile("/PointTest.java")
-
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val testMethod = testClass.findMethodsByName("translateTest")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod
 
         val toBeChangedTxt = MagicNumberStrategy.getElements(testMethod).map { it.text }.toSet()
 

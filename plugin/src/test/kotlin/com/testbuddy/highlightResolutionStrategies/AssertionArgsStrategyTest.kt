@@ -12,12 +12,9 @@ internal class AssertionArgsStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testBasic() {
+        val data = getBasicTestInfo("PointTest.java")
 
-        this.myFixture.configureByFile("/PointTest.java")
-        val testAnalyzerService = TestAnalyzerService()
-
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val testMethod = testClass.findMethodsByName("translateTest")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod
 
         val toBeChangedTxt = AssertionArgsStrategy.getElements(testMethod).map { it.text }
 

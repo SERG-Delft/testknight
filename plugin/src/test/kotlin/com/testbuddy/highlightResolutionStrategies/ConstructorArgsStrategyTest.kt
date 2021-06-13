@@ -11,12 +11,9 @@ internal class ConstructorArgsStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testGetConstructorArgs() {
+        val data = getBasicTestInfo("PointTest.java")
 
-        this.myFixture.configureByFile("/PointTest.java")
-
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val testMethod = testClass.findMethodsByName("translateTest")[0] as PsiMethod
-
+        val testMethod = data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod
         val toBeChangedTxt = ConstructorArgsStrategy.getElements(testMethod).map { it.text }
 
         assertContainsElements(toBeChangedTxt, "0", "0", "1", "2")
