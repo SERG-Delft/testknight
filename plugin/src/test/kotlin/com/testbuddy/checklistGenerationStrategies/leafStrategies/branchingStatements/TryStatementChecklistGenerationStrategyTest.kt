@@ -16,89 +16,107 @@ internal class TryStatementChecklistGenerationStrategyTest : TestBuddyTestCase()
 
     private val generationStrategy = TryStatementChecklistGenerationStrategy.create()
 
-    @Before
-    public override fun setUp() {
-        super.setUp()
-        this.myFixture.configureByFile("/Person.java")
-    }
-
     @Test
     fun testSimpleTry() {
-        val method = getMethod("getSpouseName")
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("getSpouseName")
         val tryStatement = PsiTreeUtil.findChildOfType(method, PsiTryStatement::class.java)
         val catchStatement = PsiTreeUtil.findChildOfType(tryStatement, PsiCatchSection::class.java)
+
         val expected = listOf(
             TryStatementChecklistNode("Test with the try block running successfully", tryStatement!!, null),
             TryStatementChecklistNode("Test with the try block throwing a NotMarriedException", catchStatement!!, "NotMarriedException")
         )
         val actual = generationStrategy.generateChecklist(tryStatement!!)
+
         assertEquals(expected, actual)
     }
 
     @Test
     fun testTryWithoutCatch() {
-        val method = getMethod("getSpouseNameNoCatch")
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("getSpouseNameNoCatch")
         val tryStatement = PsiTreeUtil.findChildOfType(method, PsiTryStatement::class.java)
+
         val expected = listOf(
             TryStatementChecklistNode("Test with the try block running successfully", tryStatement!!, null),
             TryStatementChecklistNode("Test with the try block throwing an exception", tryStatement!!, "AnyException")
         )
         val actual = generationStrategy.generateChecklist(tryStatement!!)
+
         assertEquals(expected, actual)
     }
 
     @Test
     fun testTryWithMultipleCatches() {
-        val method = getMethod("getSpouseNameMultipleCatches")
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("getSpouseNameMultipleCatches")
         val tryStatement = PsiTreeUtil.findChildOfType(method, PsiTryStatement::class.java)
         val catches = PsiTreeUtil.findChildrenOfType(tryStatement, PsiCatchSection::class.java)
         val notMarriedCatch = catches.elementAt(0)
         val nullPointerCatch = catches.elementAt(1)
+
         val expected = listOf(
             TryStatementChecklistNode("Test with the try block running successfully", tryStatement!!, null),
             TryStatementChecklistNode("Test with the try block throwing a NotMarriedException", notMarriedCatch, "NotMarriedException"),
             TryStatementChecklistNode("Test with the try block throwing a NullPointerException", nullPointerCatch, "NullPointerException")
         )
         val actual = generationStrategy.generateChecklist(tryStatement!!)
+
         assertEquals(expected, actual)
     }
 
     @Test
     fun testTryWithCatchAndFinally() {
-        val method = getMethod("getSpouseNameCatchAndFinally")
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("getSpouseNameCatchAndFinally")
         val tryStatement = PsiTreeUtil.findChildOfType(method, PsiTryStatement::class.java)
         val catchStatement = PsiTreeUtil.findChildOfType(tryStatement, PsiCatchSection::class.java)
+
         val expected = listOf(
             TryStatementChecklistNode("Test with the try block running successfully", tryStatement!!, null),
             TryStatementChecklistNode("Test with the try block throwing a NotMarriedException", catchStatement!!, "NotMarriedException")
         )
         val actual = generationStrategy.generateChecklist(tryStatement!!)
+
         assertEquals(expected, actual)
     }
 
     @Test
     fun testWithIncompleteCatch() {
-        val method = getMethod("getSpouseNameIncompleteCatch")
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("getSpouseNameIncompleteCatch")
         val tryStatement = PsiTreeUtil.findChildOfType(method, PsiTryStatement::class.java)
         val catchStatement = PsiTreeUtil.findChildOfType(tryStatement, PsiCatchSection::class.java)
+
         val expected = listOf(
             TryStatementChecklistNode("Test with the try block running successfully", tryStatement!!, null),
             TryStatementChecklistNode("Test with the try block throwing a NotMarriedException", catchStatement!!, "NotMarriedException")
         )
         val actual = generationStrategy.generateChecklist(tryStatement!!)
+
         assertEquals(expected, actual)
     }
 
     @Test
     fun testTryMultipleCatchesBinaryGeneration() {
+        getBasicTestInfo("/Person.java")
+
         val generationStrategy = TryStatementChecklistGenerationStrategy.createFromString("BinaryCaseGeneration")
-        val method = getMethod("getSpouseNameMultipleCatches")
+        val method = getMethodByName("getSpouseNameMultipleCatches")
         val tryStatement = PsiTreeUtil.findChildOfType(method, PsiTryStatement::class.java)
+
         val expected = listOf(
             TryStatementChecklistNode("Test with the try block running successfully", tryStatement!!, null),
             TryStatementChecklistNode("Test with the try block throwing an exception", tryStatement!!, "AnyException")
         )
         val actual = generationStrategy.generateChecklist(tryStatement!!)
+
         assertEquals(expected, actual)
     }
 
@@ -107,9 +125,4 @@ internal class TryStatementChecklistGenerationStrategyTest : TestBuddyTestCase()
         assertFailsWith<InvalidConfigurationException> { TryStatementChecklistGenerationStrategy.createFromString("Foo") }
     }
 
-    private fun getMethod(methodName: String): PsiMethod {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
-    }
 }
