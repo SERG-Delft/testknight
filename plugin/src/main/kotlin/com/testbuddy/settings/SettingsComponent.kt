@@ -15,7 +15,7 @@ import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
 import com.testbuddy.actions.settings.AddClassAction
-import com.testbuddy.actions.settings.AddElementAction
+import com.testbuddy.actions.settings.AddTypeAction
 import com.testbuddy.actions.settings.DeleteElementAction
 import com.testbuddy.actions.settings.EditElementAction
 import com.testbuddy.actions.settings.ResetTreeAction
@@ -165,20 +165,20 @@ class SettingsComponent {
 
                         val actionManager = ActionManager.getInstance()
                         val actionGroup = DefaultActionGroup("TestListTabActions", false)
-                        val addElementAction = actionManager.getAction("AddSettingsItem") as AddElementAction
+                        val addTypeAction = actionManager.getAction("AddSettingsItem") as AddTypeAction
                         val addClassAction = actionManager.getAction("AddSettingsClass") as AddClassAction
                         val deleteAction = actionManager.getAction("DeleteSettingsItem") as DeleteElementAction
                         val editAction = actionManager.getAction("EditSettingsItem") as EditElementAction
                         val resetAction = actionManager.getAction("ResetSettingsTree") as ResetTreeAction
 
-                        addElementAction.init(tree)
+                        addTypeAction.init(tree)
                         addClassAction.init(tree)
                         deleteAction.init(tree)
                         editAction.init(tree)
                         resetAction.init(this@SettingsComponent)
 
-                        actionGroup.add(addElementAction)
                         actionGroup.add(addClassAction)
+                        actionGroup.add(addTypeAction)
                         actionGroup.add(deleteAction)
                         actionGroup.add(editAction)
                         actionGroup.add(resetAction)

@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.ParameterSuggestionTreeModel
 
-class AddElementAction : AnAction() {
+class AddTypeAction : AnAction() {
     var tree: Tree? = null
     /**
      * Adds a new case element and starts editing the element node.

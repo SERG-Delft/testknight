@@ -1,6 +1,8 @@
 package com.testbuddy.models
 
+import com.intellij.openapi.actionSystem.ToggleAction
 import com.intellij.ui.tree.BaseTreeModel
+import com.testbuddy.exceptions.InvalidTreePathException
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
@@ -45,6 +47,7 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
      */
     fun addPathElement(path: TreePath) {
         if (path.parentPath.lastPathComponent == rootNode) {
+            checkPath(path, true)
             val className = path.lastPathComponent as String
             paramSuggestionMap[className] = mutableListOf()
 
@@ -52,10 +55,12 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
             treeNodesInserted(path, intArrayOf(index), arrayOf(className))
         } else {
+            checkPath(path, false)
             val className = path.parentPath.lastPathComponent as String
             val typeName = path.lastPathComponent as String
 
-            paramSuggestionMap[className]!!.add(typeName)
+            paramSuggestionMap[className]?.add(typeName)
+                ?: throw InvalidTreePathException("Class doesn't exist in Parameter Suggestion")
 
             val index = getIndexOfChild(className, typeName)
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
@@ -70,14 +75,20 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
      */
     fun removePathElement(path: TreePath) {
         if (path.parentPath.lastPathComponent == rootNode) {
+            checkPath(path, true)
             val className = path.lastPathComponent as String
 
             val index = getIndexOfChild(rootNode, className)
 
+            if (index == -1) {
+                // Node doesn't exist.
+                return
+            }
             paramSuggestionMap.remove(className)
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
             treeNodesRemoved(path, intArrayOf(index), arrayOf(className))
         } else {
+            checkPath(path, false)
             val className = path.parentPath.lastPathComponent as String
             val typeName = path.lastPathComponent as String
 
@@ -143,5 +154,50 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
         // It is important to have children null (at least)
         // so that the listener doesn't think that that the tree got updated.
         treeStructureChanged(TreePath(rootNode), null, null)
+    }
+
+    /**
+     * Checks if the given TreePath is valid.
+     * Throws InvalidTreePathException with reason if its not.
+     *
+     * Suppressing magic number because of path count checks.
+     * @param path The tree path to check.
+     * @param isClassNode boolean to do check for class node or type node.
+     */
+    @SuppressWarnings("MagicNumber")
+    private fun checkPath(path: TreePath, isClassNode: Boolean) {
+
+        var throwException = false
+        var reason = ""
+        if (path.pathCount > 3) {
+            reason = "Path is bigger than expected."
+            throwException = true
+        }
+        if (isClassNode) {
+            if (path.pathCount != 2) {
+                reason = "Invalid path size. Should be 2 for Class nodes."
+                throwException = true
+            }
+            if (path.lastPathComponent !is String) {
+                reason = "Class node is not a string."
+                throwException = true
+            }
+        } else {
+            if (path.pathCount != 3) {
+                reason = "Invalid path size. Should be 3 for Type nodes."
+                throwException = true
+            }
+            if (path.parentPath.lastPathComponent !is String) {
+                reason = "Class node is not a string."
+                throwException = true
+            }
+            if (path.lastPathComponent !is String) {
+                reason = "Type node is not a string."
+                throwException = true
+            }
+        }
+        if (throwException) {
+            throw InvalidTreePathException(reason)
+        }
     }
 }
