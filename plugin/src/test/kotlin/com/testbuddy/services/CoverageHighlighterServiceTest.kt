@@ -8,10 +8,13 @@ import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.LineData
 import com.intellij.rt.coverage.data.ProjectData
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
+import com.intellij.ui.ColorUtil
 import com.testbuddy.extensions.DiffCoverageLineMarkerRenderer
+import com.testbuddy.settings.SettingsService
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import junit.framework.TestCase
 import org.junit.Test
 import java.awt.Color
 
@@ -81,18 +84,32 @@ class CoverageHighlighterServiceTest : LightJavaCodeInsightFixtureTestCase() {
         // highlight the editor
         project.service<CoverageHighlighterService>().highlightEditor(myFixture.editor)
 
-        val highlights = editor.markupModel
+        // get which lines have been highlighted
+        val highlights = mutableMapOf<Int, Color>()
+        editor.markupModel
             .allHighlighters
-            .map {
+            .forEach {
                 val color = (it.lineMarkerRenderer as DiffCoverageLineMarkerRenderer).color
                 val line = document.getLineNumber(it.startOffset) + 1
-                Pair(line, color)
+                highlights[line] = color
             }
 
-        val green = Color(0, 255, 0)
-        val red = Color(255, 0, 0)
+        val red = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.deletedColor)
+        val green = ColorUtil.fromHex(SettingsService.instance.state.coverageSettings.addedColor)
 
-        assertContainsElements(highlights, Pair(16, green), Pair(17, green), Pair(18, green), Pair(19, green))
-        assertContainsElements(highlights, Pair(6, red), Pair(7, red), Pair(8, red), Pair(9, red))
+        // the expected behavior is that lines 6..8 are no longer covered
+        // and lines 16..19 are newly covered
+        val expected = mapOf(
+            6 to red,
+            7 to red,
+            8 to red,
+            9 to red,
+            16 to green,
+            17 to green,
+            18 to green,
+            19 to green
+        )
+
+        TestCase.assertEquals(expected, highlights)
     }
 }
