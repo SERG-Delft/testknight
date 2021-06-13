@@ -38,9 +38,26 @@ test {
 	useJUnitPlatform()
 	jacoco {
 		enabled = true
-		includes = ['com.testbuddy.server.*']
 	}
 }
+
+jacocoTestCoverageVerification() {
+	dependsOn test
+	violationRules {
+		rule {
+			enabled = true
+			element = 'CLASS'
+			includes = ['com.testbuddy.server.*']
+
+			limit {
+				counter = 'BRANCH'
+				value = 'COVEREDRATIO'
+				minimum = 0.1
+			}
+		}
+	}
+}
+
 
 checkstyle {
 	toolVersion "8.37"

@@ -20,6 +20,12 @@ public class ContentValidator extends BaseValidator<UsageDataDto> {
      */
     @Override
     public void handle(UsageDataDto requestDto) throws ValidationException {
+        if (requestDto.getActionsRecorded() == null) {
+            throw new NullFieldException("actionsRecorded");
+        }
+        if (requestDto.getUserId() == null) {
+            throw new NullFieldException("userId");
+        }
         for (ActionEventDto actionEventDto : requestDto.getActionsRecorded()) {
             if (!actionRepository.existsById(actionEventDto.getActionId())) {
                 throw new InvalidActionIdException(actionEventDto.getActionId());
