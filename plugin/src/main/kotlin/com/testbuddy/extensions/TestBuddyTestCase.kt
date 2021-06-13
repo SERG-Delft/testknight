@@ -25,4 +25,10 @@ open class TestBuddyTestCase : BasePlatformTestCase() {
         val psiFile = myFixture.file
         val testClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java)
     }
+
+    fun getMethodConstruct(methodName: String): PsiMethod {
+        val psi = this.myFixture.file
+        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
+    }
 }
