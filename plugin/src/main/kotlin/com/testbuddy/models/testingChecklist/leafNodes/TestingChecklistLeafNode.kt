@@ -2,11 +2,12 @@ package com.testbuddy.models.testingChecklist.leafNodes
 
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
+import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiParserFacade
 import com.intellij.psi.PsiType
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
 import com.testbuddy.models.testingChecklist.TestingChecklistNode
@@ -37,14 +38,19 @@ abstract class TestingChecklistLeafNode(
      * @return the PsiMethod representing the test.
      */
     protected fun generateTestMethod(project: Project, methodName: String): PsiMethod {
+        val parentMethod = PsiTreeUtil.getParentOfType(this.element, PsiMethod::class.java)
+        val name = parentMethod?.name?.capitalize() ?: ""
         val factory = JavaPsiFacade.getInstance(project).elementFactory
-        val method = factory.createMethod(methodName, PsiType.VOID)
+        val method = if (name == "") factory.createMethod(
+            methodName,
+            PsiType.VOID
+        ) else factory.createMethod("${methodName}In$name", PsiType.VOID)
         val comment = factory.createDocCommentFromText(
             "/** ${
-                TestMethodGenerationMessageBundleHandler.message(
-                    "testMethodComment",
-                    this.description
-                )
+            TestMethodGenerationMessageBundleHandler.message(
+                "testMethodComment",
+                this.description
+            )
             } **/"
         )
         method.modifierList.addAnnotation("Test")
