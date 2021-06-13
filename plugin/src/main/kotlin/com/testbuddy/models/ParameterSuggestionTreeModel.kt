@@ -1,6 +1,5 @@
 package com.testbuddy.models
 
-import com.intellij.openapi.actionSystem.ToggleAction
 import com.intellij.ui.tree.BaseTreeModel
 import com.testbuddy.exceptions.InvalidTreePathException
 import javax.swing.tree.DefaultMutableTreeNode
