@@ -14,70 +14,59 @@ class GotoTestServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testInitialOffsetZero() {
-        this.myFixture.configureByFile("/AnimalTest.java")
-        val psi = this.myFixture.file
-        val editor = this.myFixture.editor
-        val initialOffset = this.myFixture.editor.scrollingModel.verticalScrollOffset
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        if (testClass != null) {
+        val data = getBasicTestInfo("/AnimalTest.java")
 
-            service.gotoMethod(
-                editor,
+        val initialOffset = this.myFixture.editor.scrollingModel.verticalScrollOffset
+        val testClass = PsiTreeUtil.findChildOfType(data.psiFile, PsiClass::class.java)
+
+        service.gotoMethod(
+                data.editor,
                 TestMethodData(
-                    "setYTest", "AnimalTest",
-                    psiMethod = testClass.findMethodsByName("setSoundTest")[0] as PsiMethod
+                        "setYTest", "AnimalTest",
+                        psiMethod = testClass!!.findMethodsByName("setSoundTest")[0] as PsiMethod
                 )
-            )
-            val finalOffset = editor.scrollingModel.verticalScrollOffset
-            TestCase.assertEquals(0, initialOffset) // initial offset without scrolling is 0
-            TestCase.assertNotSame(initialOffset, finalOffset) // asserts that scroll position in fact changed
-        } else {
-            fail()
-        }
+        )
+        val finalOffset = data.editor.scrollingModel.verticalScrollOffset
+
+        TestCase.assertEquals(0, initialOffset) // initial offset without scrolling is 0
+        TestCase.assertNotSame(initialOffset, finalOffset) // asserts that scroll position in fact changed
+
     }
 
     @Test
     fun testSetSoundTestOffset() {
-        this.myFixture.configureByFile("/AnimalTest.java")
-        val psi = this.myFixture.file
-        val editor = this.myFixture.editor
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        if (testClass != null) {
+        val data = getBasicTestInfo("/AnimalTest.java")
+        val testClass = PsiTreeUtil.findChildOfType(data.psiFile, PsiClass::class.java)
 
-            service.gotoMethod(
-                editor,
+        service.gotoMethod(
+                data.editor,
                 TestMethodData(
-                    "setYTest",
-                    "AnimalTest", psiMethod = testClass.findMethodsByName("setSoundTest")[0] as PsiMethod
+                        "setYTest",
+                        "AnimalTest", psiMethod = testClass!!.findMethodsByName("setSoundTest")[0] as PsiMethod
                 )
-            )
-            val offsetAfterScrolling = this.myFixture.editor.scrollingModel.verticalScrollOffset
-            TestCase.assertNotSame(0, offsetAfterScrolling)
-        } else {
-            fail()
-        }
+        )
+        val offsetAfterScrolling = data.editor.scrollingModel.verticalScrollOffset
+
+        TestCase.assertNotSame(0, offsetAfterScrolling)
+
     }
 
     @Test
     fun testAnimalSoundOffsetChanged() {
-        this.myFixture.configureByFile("/AnimalTest.java")
+        val data = getBasicTestInfo("/AnimalTest.java")
         val psi = this.myFixture.file
         val editor = this.myFixture.editor
         val initialOffset = this.myFixture.editor.scrollingModel.verticalScrollOffset
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        if (testClass != null) {
 
-            service.gotoMethod(
+        service.gotoMethod(
                 editor,
                 TestMethodData(
-                    "setYTest",
-                    "AnimalTest", psiMethod = testClass.findMethodsByName("AnimalSoundTest")[0] as PsiMethod
+                        "setYTest",
+                        "AnimalTest", psiMethod = testClass!!.findMethodsByName("AnimalSoundTest")[0] as PsiMethod
                 )
-            )
-            val finalOffset = this.myFixture.editor.scrollingModel.verticalScrollOffset
-            TestCase.assertNotSame(initialOffset, finalOffset)
-        } else {
-            fail()
-        }
+        )
+        val finalOffset = data.editor.scrollingModel.verticalScrollOffset
+        TestCase.assertNotSame(initialOffset, finalOffset)
     }
 }
