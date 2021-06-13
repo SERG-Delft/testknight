@@ -28,7 +28,6 @@ import org.junit.Test
 
 internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestCase() {
 
-
     @Test
     fun testTernaryOperator() {
         getBasicTestInfo("/Methods.java")
@@ -274,30 +273,30 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
 
         val expr = methodToGenerateOn.parameterList.parameters[0]
         val expectedChildren = mutableListOf<TestingChecklistLeafNode>(
-                ParameterChecklistNode(
-                        "Test method parameter \"a\" equal to: null",
-                        expr!!,
-                        "a",
-                        "null"
-                ),
-                ParameterChecklistNode(
-                        "Test method parameter \"a\" equal to: [1,2,3,4]",
-                        expr!!,
-                        "a",
-                        "[1,2,3,4]"
-                ),
-                ParameterChecklistNode(
-                        "Test method parameter \"a\" equal to: [4,3,2,1]",
-                        expr!!,
-                        "a",
-                        "[4,3,2,1]"
-                ),
-                ParameterChecklistNode(
-                        "Test method parameter \"a\" equal to: []",
-                        expr!!,
-                        "a",
-                        "[]"
-                )
+            ParameterChecklistNode(
+                "Test method parameter \"a\" equal to: null",
+                expr!!,
+                "a",
+                "null"
+            ),
+            ParameterChecklistNode(
+                "Test method parameter \"a\" equal to: [1,2,3,4]",
+                expr!!,
+                "a",
+                "[1,2,3,4]"
+            ),
+            ParameterChecklistNode(
+                "Test method parameter \"a\" equal to: [4,3,2,1]",
+                expr!!,
+                "a",
+                "[4,3,2,1]"
+            ),
+            ParameterChecklistNode(
+                "Test method parameter \"a\" equal to: []",
+                expr!!,
+                "a",
+                "[]"
+            )
         )
 
         val expectedNode = TestingChecklistMethodNode("mysteriousMethodWithArray", expectedChildren, methodToGenerateOn)
@@ -358,5 +357,4 @@ internal class MethodChecklistGenerationStrategyIntegrationTest : TestBuddyTestC
         val actual = methodGenerator.generateChecklist(methodToGenerateOn)
         assertEquals(expectedNode, actual)
     }
-
 }

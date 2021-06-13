@@ -20,17 +20,16 @@ class GotoTestServiceTest : TestBuddyTestCase() {
         val testClass = PsiTreeUtil.findChildOfType(data.psiFile, PsiClass::class.java)
 
         service.gotoMethod(
-                data.editor,
-                TestMethodData(
-                        "setYTest", "AnimalTest",
-                        psiMethod = testClass!!.findMethodsByName("setSoundTest")[0] as PsiMethod
-                )
+            data.editor,
+            TestMethodData(
+                "setYTest", "AnimalTest",
+                psiMethod = testClass!!.findMethodsByName("setSoundTest")[0] as PsiMethod
+            )
         )
         val finalOffset = data.editor.scrollingModel.verticalScrollOffset
 
         TestCase.assertEquals(0, initialOffset) // initial offset without scrolling is 0
         TestCase.assertNotSame(initialOffset, finalOffset) // asserts that scroll position in fact changed
-
     }
 
     @Test
@@ -39,16 +38,15 @@ class GotoTestServiceTest : TestBuddyTestCase() {
         val testClass = PsiTreeUtil.findChildOfType(data.psiFile, PsiClass::class.java)
 
         service.gotoMethod(
-                data.editor,
-                TestMethodData(
-                        "setYTest",
-                        "AnimalTest", psiMethod = testClass!!.findMethodsByName("setSoundTest")[0] as PsiMethod
-                )
+            data.editor,
+            TestMethodData(
+                "setYTest",
+                "AnimalTest", psiMethod = testClass!!.findMethodsByName("setSoundTest")[0] as PsiMethod
+            )
         )
         val offsetAfterScrolling = data.editor.scrollingModel.verticalScrollOffset
 
         TestCase.assertNotSame(0, offsetAfterScrolling)
-
     }
 
     @Test
@@ -60,11 +58,11 @@ class GotoTestServiceTest : TestBuddyTestCase() {
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
 
         service.gotoMethod(
-                editor,
-                TestMethodData(
-                        "setYTest",
-                        "AnimalTest", psiMethod = testClass!!.findMethodsByName("AnimalSoundTest")[0] as PsiMethod
-                )
+            editor,
+            TestMethodData(
+                "setYTest",
+                "AnimalTest", psiMethod = testClass!!.findMethodsByName("AnimalSoundTest")[0] as PsiMethod
+            )
         )
         val finalOffset = data.editor.scrollingModel.verticalScrollOffset
         TestCase.assertNotSame(initialOffset, finalOffset)

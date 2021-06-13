@@ -1,13 +1,10 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
 internal class ParameterListChecklistGenerationStrategyTest : TestBuddyTestCase() {
@@ -34,7 +31,6 @@ internal class ParameterListChecklistGenerationStrategyTest : TestBuddyTestCase(
     )
 
     private val generationStrategy = ParameterListChecklistGenerationStrategy.create(typeCaseMap)
-
 
     @Test
     fun testKnownTypeParameters() {

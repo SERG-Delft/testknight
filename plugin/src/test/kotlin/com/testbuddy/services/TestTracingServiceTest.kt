@@ -1,6 +1,5 @@
 package com.testbuddy.services
 
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.extensions.TestBuddyTestCase
 import org.junit.jupiter.api.Test
 import java.io.File

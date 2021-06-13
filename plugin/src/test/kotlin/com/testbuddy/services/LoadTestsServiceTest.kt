@@ -1,8 +1,6 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.TestClassData
 import com.testbuddy.models.TestMethodData
@@ -19,10 +17,10 @@ internal class LoadTestsServiceTest : TestBuddyTestCase() {
 
         val result = service.getTests(data.psiFile)
         val expected = if (data.psiClass != null) listOf(
-                TestMethodData("translateTest", "PointTest", data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod),
-                TestMethodData("setXTest", "PointTest", data.psiClass!!.findMethodsByName("setXTest")[0] as PsiMethod),
-                TestMethodData("setYTest", "PointTest", data.psiClass!!.findMethodsByName("setYTest")[0] as PsiMethod),
-                TestMethodData("parameterizedTest", "PointTest", data.psiClass!!.findMethodsByName("parameterizedTest")[0] as PsiMethod)
+            TestMethodData("translateTest", "PointTest", data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod),
+            TestMethodData("setXTest", "PointTest", data.psiClass!!.findMethodsByName("setXTest")[0] as PsiMethod),
+            TestMethodData("setYTest", "PointTest", data.psiClass!!.findMethodsByName("setYTest")[0] as PsiMethod),
+            TestMethodData("parameterizedTest", "PointTest", data.psiClass!!.findMethodsByName("parameterizedTest")[0] as PsiMethod)
         ) else listOf<TestMethodData>()
 
         TestCase.assertEquals(expected, result)
@@ -33,10 +31,10 @@ internal class LoadTestsServiceTest : TestBuddyTestCase() {
         val data = getBasicTestInfo("/PointTestFullAnnotations.java")
         val result = service.getTests(data.psiFile)
         val expected = if (data.psiClass != null) listOf(
-                TestMethodData("translateTest", "PointTest", data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod),
-                TestMethodData("setXTest", "PointTest", data.psiClass!!.findMethodsByName("setXTest")[0] as PsiMethod),
-                TestMethodData("setYTest", "PointTest", data.psiClass!!.findMethodsByName("setYTest")[0] as PsiMethod),
-                TestMethodData("parameterizedTest", "PointTest", data.psiClass!!.findMethodsByName("parameterizedTest")[0] as PsiMethod)
+            TestMethodData("translateTest", "PointTest", data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod),
+            TestMethodData("setXTest", "PointTest", data.psiClass!!.findMethodsByName("setXTest")[0] as PsiMethod),
+            TestMethodData("setYTest", "PointTest", data.psiClass!!.findMethodsByName("setYTest")[0] as PsiMethod),
+            TestMethodData("parameterizedTest", "PointTest", data.psiClass!!.findMethodsByName("parameterizedTest")[0] as PsiMethod)
         ) else listOf<TestMethodData>()
         TestCase.assertEquals(expected, result)
     }
@@ -49,8 +47,8 @@ internal class LoadTestsServiceTest : TestBuddyTestCase() {
         val secondClass = data.testClasses.elementAt(1)
         val result = service.getTests(data.psiFile)
         val expected = if (firstClass != null && secondClass != null) listOf(
-                TestMethodData("firstTest", "FirstTest", firstClass.findMethodsByName("firstTest")[0] as PsiMethod),
-                TestMethodData("secondTest", "SecondTest", secondClass.findMethodsByName("secondTest")[0] as PsiMethod)
+            TestMethodData("firstTest", "FirstTest", firstClass.findMethodsByName("firstTest")[0] as PsiMethod),
+            TestMethodData("secondTest", "SecondTest", secondClass.findMethodsByName("secondTest")[0] as PsiMethod)
         ) else listOf<TestMethodData>()
         TestCase.assertEquals(expected, result)
     }
@@ -64,29 +62,29 @@ internal class LoadTestsServiceTest : TestBuddyTestCase() {
         val result = service.getTestsTree(data.psiFile)
 
         val expected = listOf(
-                TestClassData(
+            TestClassData(
+                "FirstTest",
+                listOf(
+                    TestMethodData(
+                        "firstTest",
                         "FirstTest",
-                        listOf(
-                                TestMethodData(
-                                        "firstTest",
-                                        "FirstTest",
-                                        firstClass.findMethodsByName("firstTest")[0] as PsiMethod
-                                )
-                        ),
-                        firstClass
+                        firstClass.findMethodsByName("firstTest")[0] as PsiMethod
+                    )
                 ),
+                firstClass
+            ),
 
-                TestClassData(
+            TestClassData(
+                "SecondTest",
+                listOf(
+                    TestMethodData(
+                        "secondTest",
                         "SecondTest",
-                        listOf(
-                                TestMethodData(
-                                        "secondTest",
-                                        "SecondTest",
-                                        secondClass.findMethodsByName("secondTest")[0] as PsiMethod
-                                )
-                        ),
-                        secondClass
-                )
+                        secondClass.findMethodsByName("secondTest")[0] as PsiMethod
+                    )
+                ),
+                secondClass
+            )
         )
 
         TestCase.assertEquals(expected, result)

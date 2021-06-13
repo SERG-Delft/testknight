@@ -1,8 +1,6 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.testbuddy.extensions.TestBuddyTestCase
@@ -285,7 +283,6 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         assertEquals(expected, received)
     }
 
-
     @Test
     fun testDeleteMethodNonExistMethod() {
         val data = getBasicTestInfo("/Math2.java")
@@ -303,9 +300,9 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         service.deleteMethod(backendChecklistClass.children[1], backendChecklistClass)
 
         val expected = "Math2 add Test where a is empty\n" +
-                "Math2 add Test where a has one element\n" +
-                "Math2 add Test where a is null\n" +
-                "Math2 add Test where foreach loop runs multiple times\n"
+            "Math2 add Test where a has one element\n" +
+            "Math2 add Test where a is null\n" +
+            "Math2 add Test where foreach loop runs multiple times\n"
         val received = service.print()
 
         assertEquals(expected, received)
@@ -371,11 +368,11 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         service.deleteItem(backendChecklistClass.children[0].children[0], backendChecklistClass.children[0], backendChecklistClass)
 
         val expected = "Math2 add Test where a is null\n" +
-                "Math2 add Test where foreach loop runs multiple times\n" +
-                "Math2 add2 Test where a is empty\n" +
-                "Math2 add2 Test where a has one element\n" +
-                "Math2 add2 Test where a is null\n" +
-                "Math2 add2 Test where foreach loop runs multiple times\n"
+            "Math2 add Test where foreach loop runs multiple times\n" +
+            "Math2 add2 Test where a is empty\n" +
+            "Math2 add2 Test where a has one element\n" +
+            "Math2 add2 Test where a is null\n" +
+            "Math2 add2 Test where foreach loop runs multiple times\n"
         val received = service.print()
         assertEquals(expected, received)
     }
@@ -398,9 +395,9 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         service.deleteItem(deleteItem, deleteMethod, backendChecklistClass)
 
         val expected = "Math2 add2 Test where a is empty\n" +
-                "Math2 add2 Test where a has one element\n" +
-                "Math2 add2 Test where a is null\n" +
-                "Math2 add2 Test where foreach loop runs multiple times\n"
+            "Math2 add2 Test where a has one element\n" +
+            "Math2 add2 Test where a is null\n" +
+            "Math2 add2 Test where foreach loop runs multiple times\n"
         val received = service.print()
 
         assertEquals(expected, received)
@@ -456,7 +453,6 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
         assertEquals(expected, received)
     }
-
 
     @Test
     fun testDeleteItemNonExistClass() {

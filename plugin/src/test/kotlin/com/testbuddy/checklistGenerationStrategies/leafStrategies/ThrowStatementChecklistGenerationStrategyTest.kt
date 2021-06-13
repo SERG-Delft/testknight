@@ -1,13 +1,10 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiThrowStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.ThrowStatementChecklistNode
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
 internal class ThrowStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {
@@ -52,5 +49,4 @@ internal class ThrowStatementChecklistGenerationStrategyTest : TestBuddyTestCase
 
         TestCase.assertEquals(expected, actual)
     }
-
 }

@@ -11,7 +11,6 @@ import com.testbuddy.models.sideEffectAnalysis.ReassignmentOfTransitiveField
 import com.testbuddy.models.sideEffectAnalysis.ReassignsClassFieldSideEffect
 import com.testbuddy.models.sideEffectAnalysis.SideEffect
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 import java.lang.AssertionError
 

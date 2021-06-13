@@ -1,15 +1,11 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiForeachStatement
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.loopStatements.ForEachStatementChecklistNode
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
 internal class ForEachStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {

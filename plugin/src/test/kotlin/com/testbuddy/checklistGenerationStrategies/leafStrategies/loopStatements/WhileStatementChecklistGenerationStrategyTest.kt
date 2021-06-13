@@ -1,18 +1,14 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 
 import com.intellij.psi.PsiBinaryExpression
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
 internal class WhileStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {

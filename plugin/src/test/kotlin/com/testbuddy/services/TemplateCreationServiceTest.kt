@@ -1,12 +1,9 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.highlightResolutionStrategies.AssertionArgsStrategy
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
 internal class TemplateCreationServiceTest : TestBuddyTestCase() {
@@ -50,9 +47,9 @@ internal class TemplateCreationServiceTest : TestBuddyTestCase() {
         val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test\n" +
-                "    public static void (){\n" +
-                "        // contents\n" +
-                "    }"
+            "    public static void (){\n" +
+            "        // contents\n" +
+            "    }"
 
         TestCase.assertEquals(expected, template.templateText)
     }
@@ -66,8 +63,8 @@ internal class TemplateCreationServiceTest : TestBuddyTestCase() {
         val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test <A, B>void (){\n" +
-                "        // contents\n" +
-                "    }"
+            "        // contents\n" +
+            "    }"
 
         TestCase.assertEquals(expected, template.templateText)
     }
@@ -81,8 +78,8 @@ internal class TemplateCreationServiceTest : TestBuddyTestCase() {
         val template = serv.createBasicTemplate(methodToBeDuplicated)
 
         val expected = "@Test void ()throws Exception{\n" +
-                "        // contents\n" +
-                "    }"
+            "        // contents\n" +
+            "    }"
 
         TestCase.assertEquals(expected, template.templateText)
     }

@@ -37,10 +37,10 @@ open class TestBuddyTestCase : BasePlatformTestCase() {
 }
 
 data class Data(
-        var filepath: String,
-        var project: Project,
-        var psiClass: PsiClass?,
-        var psiFile: PsiFile,
-        val testClasses: @NotNull MutableCollection<PsiClass>,
-        val editor: Editor
+    var filepath: String,
+    var project: Project,
+    var psiClass: PsiClass?,
+    var psiFile: PsiFile,
+    val testClasses: @NotNull MutableCollection<PsiClass>,
+    val editor: Editor
 )

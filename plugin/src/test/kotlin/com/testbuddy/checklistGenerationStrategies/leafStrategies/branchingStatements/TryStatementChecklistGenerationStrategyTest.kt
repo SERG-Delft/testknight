@@ -1,14 +1,11 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiCatchSection
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiTryStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.exceptions.InvalidConfigurationException
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.branchingStatements.TryStatementChecklistNode
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFailsWith
 
@@ -124,5 +121,4 @@ internal class TryStatementChecklistGenerationStrategyTest : TestBuddyTestCase()
     fun testInvalidStringForCreation() {
         assertFailsWith<InvalidConfigurationException> { TryStatementChecklistGenerationStrategy.createFromString("Foo") }
     }
-
 }

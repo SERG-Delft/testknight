@@ -1,9 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiBinaryExpression
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiIfStatement
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.extensions.TestBuddyTestCase
@@ -59,5 +57,4 @@ internal class IfStatementChecklistGenerationStrategyTest : TestBuddyTestCase() 
 
         TestCase.assertEquals(expected, actual)
     }
-
 }

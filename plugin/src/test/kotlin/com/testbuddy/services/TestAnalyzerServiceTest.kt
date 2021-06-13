@@ -1,7 +1,5 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiClass
-import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
 import junit.framework.TestCase
 import org.junit.Test

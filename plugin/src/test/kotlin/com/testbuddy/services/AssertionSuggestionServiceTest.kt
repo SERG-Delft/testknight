@@ -28,10 +28,10 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
 
         val testMethod = data.psiClass!!.findMethodsByName("test")[0] as PsiMethod
         val methodUnderTestCall =
-                PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(1)
+            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(1)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
         this.myFixture.checkResultByFile(
-                "/expected/AssertionSuggestionServiceTest.testGetAssertionsReturnsNothing.java"
+            "/expected/AssertionSuggestionServiceTest.testGetAssertionsReturnsNothing.java"
         )
     }
 
@@ -46,17 +46,17 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
             "/expected/AssertionSuggestionServiceTest.testGetAssertionsOnReturnType.java"
         )
     }
-    
+
     @Test
     fun testDijkstraTest() {
         val data = getBasicTestInfo("/Dijkstra.java")
 
         val testMethod = data.psiClass!!.findMethodsByName("testDijkstra")[0] as PsiMethod
         val methodUnderTestCall =
-                PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
+            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
         this.myFixture.checkResultByFile(
-                "/expected/Dijkstra.testDijkstraTest.java"
+            "/expected/Dijkstra.testDijkstraTest.java"
         )
     }
 
@@ -72,7 +72,6 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
             "/expected/PersonMixed.testSetSpouse.java"
         )
     }
-
 
     @Test
     fun testReferenceChangedAssertions() {
