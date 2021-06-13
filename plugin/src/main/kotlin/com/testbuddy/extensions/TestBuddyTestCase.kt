@@ -1,5 +1,6 @@
 package com.testbuddy.extensions
 
+import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiFile
@@ -24,7 +25,8 @@ open class TestBuddyTestCase : BasePlatformTestCase() {
         val psiClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)
         val psiFile = myFixture.file
         val testClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java)
-        return Data(filepath, project, psiClass, psiFile, testClasses)
+        val editor = myFixture.editor
+        return Data(filepath, project, psiClass, psiFile, testClasses, editor)
     }
 
     fun getMethodByName(methodName: String): PsiMethod {
@@ -35,9 +37,10 @@ open class TestBuddyTestCase : BasePlatformTestCase() {
 }
 
 data class Data(
-    var filepath: String,
-    var project: Project,
-    var psiClass: PsiClass?,
-    var psiFile: PsiFile,
-    val testClasses: @NotNull MutableCollection<PsiClass>
+        var filepath: String,
+        var project: Project,
+        var psiClass: PsiClass?,
+        var psiFile: PsiFile,
+        val testClasses: @NotNull MutableCollection<PsiClass>,
+        val editor: Editor
 )

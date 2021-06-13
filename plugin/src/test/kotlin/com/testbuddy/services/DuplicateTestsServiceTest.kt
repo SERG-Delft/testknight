@@ -1,8 +1,6 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.startOffset
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.settings.SettingsService
@@ -12,26 +10,20 @@ import org.junit.jupiter.api.Test
 class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     /**
-     * This test class is responsble for verifying the test duplication and highlight-conflict algorithm work
+     * This test class is responsible for verifying the test duplication and highlight-conflict algorithm work
      * correctly. To test the individual highlight resolution strategies see their own test classes
      */
 
     @Test
     fun testDuplicateMethodUnderCaret() {
-
-        this.myFixture.configureByFile("/PointTest.java")
-        val psi = this.myFixture.file
-        val editor = this.myFixture.editor
-        val project = this.myFixture.project
+        val data = getBasicTestInfo("/PointTest.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        if (data.psiClass != null) {
+            val methodToBeDuplicated = data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod
+            data.editor.caretModel.primaryCaret.moveToOffset(methodToBeDuplicated.startOffset)
 
-        if (testClass != null) {
-            val methodToBeDuplicated = testClass.findMethodsByName("translateTest")[0] as PsiMethod
-            editor.caretModel.primaryCaret.moveToOffset(methodToBeDuplicated.startOffset)
-
-            service.duplicateMethodUnderCaret(psi, editor)
+            service.duplicateMethodUnderCaret(data.psiFile, data.editor)
 
             this.myFixture.checkResultByFile(
                 "/expected/DuplicateTestsServiceTest.testDuplicateMethodUnderCaret.java"
@@ -41,19 +33,13 @@ class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDuplicateMethod() {
-
-        this.myFixture.configureByFile("/PointTest.java")
-        val psi = this.myFixture.file
-        val editor = this.myFixture.editor
-        val project = this.myFixture.project
+        val data = getBasicTestInfo("/PointTest.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        if (data.psiClass != null) {
+            val methodToBeDuplicated = data.psiClass!!.findMethodsByName("translateTest")[0] as PsiMethod
 
-        if (testClass != null) {
-            val methodToBeDuplicated = testClass.findMethodsByName("translateTest")[0] as PsiMethod
-
-            service.duplicateMethod(methodToBeDuplicated, editor)
+            service.duplicateMethod(methodToBeDuplicated, data.editor)
 
             this.myFixture.checkResultByFile(
                 "/expected/DuplicateTestsServiceTest.testDuplicateMethod.java"
@@ -63,13 +49,10 @@ class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDuplicates() {
-
-        this.myFixture.configureByFile("/TestDuplication.java")
+        val data = getBasicTestInfo("/TestDuplication.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val methodToBeDuplicated = testClass.findMethodsByName("duplicate")[0] as PsiMethod
-
+        val methodToBeDuplicated = data.psiClass!!.findMethodsByName("duplicate")[0] as PsiMethod
         val strategySettings = SettingsService.instance.state.testListSettings.highlightStrategies
         for (key in strategySettings.keys) {
             strategySettings[key] = true
@@ -83,13 +66,10 @@ class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testContaining() {
-
-        this.myFixture.configureByFile("/TestDuplication.java")
+        val data = getBasicTestInfo("/TestDuplication.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val methodToBeDuplicated = testClass.findMethodsByName("containing")[0] as PsiMethod
-
+        val methodToBeDuplicated = data.psiClass!!.findMethodsByName("containing")[0] as PsiMethod
         val strategySettings = SettingsService.instance.state.testListSettings.highlightStrategies
         for (key in strategySettings.keys) {
             strategySettings[key] = true
@@ -103,13 +83,10 @@ class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testNestedContaining() {
-
-        this.myFixture.configureByFile("/TestDuplication.java")
+        val data = getBasicTestInfo("/TestDuplication.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val methodToBeDuplicated = testClass.findMethodsByName("nestedContains")[0] as PsiMethod
-
+        val methodToBeDuplicated = data.psiClass!!.findMethodsByName("nestedContains")[0] as PsiMethod
         val strategySettings = SettingsService.instance.state.testListSettings.highlightStrategies
         for (key in strategySettings.keys) {
             strategySettings[key] = true
@@ -123,12 +100,10 @@ class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testHighlightingInQuotes() {
-
-        this.myFixture.configureByFile("/TestDuplication.java")
+        val data = getBasicTestInfo("/TestDuplication.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val methodToBeDuplicated = testClass.findMethodsByName("strAndChar")[0] as PsiMethod
+        val methodToBeDuplicated = data.psiClass!!.findMethodsByName("strAndChar")[0] as PsiMethod
 
         val strategySettings = SettingsService.instance.state.testListSettings.highlightStrategies
         for (key in strategySettings.keys) {
@@ -145,13 +120,10 @@ class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testHighlightingOutOfQuotes() {
-
-        this.myFixture.configureByFile("/TestDuplication.java")
+        val data = getBasicTestInfo("/TestDuplication.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val methodToBeDuplicated = testClass.findMethodsByName("strAndChar")[0] as PsiMethod
-
+        val methodToBeDuplicated = data.psiClass!!.findMethodsByName("strAndChar")[0] as PsiMethod
         val strategySettings = SettingsService.instance.state.testListSettings.highlightStrategies
         for (key in strategySettings.keys) {
             strategySettings[key] = false
@@ -166,13 +138,10 @@ class DuplicateTestsServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDisableStrategy() {
-
-        this.myFixture.configureByFile("/TestDuplication.java")
+        val data = getBasicTestInfo("/TestDuplication.java")
 
         val service = DuplicateTestsService(project)
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        val methodToBeDuplicated = testClass.findMethodsByName("hasAll")[0] as PsiMethod
-
+        val methodToBeDuplicated = data.psiClass!!.findMethodsByName("hasAll")[0] as PsiMethod
         val strategySettings = SettingsService.instance.state.testListSettings.highlightStrategies
         for (key in strategySettings.keys) {
             strategySettings[key] = true
