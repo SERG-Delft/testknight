@@ -42,6 +42,9 @@ class LoadTestAction : AnAction() {
 
         val loadTestsService = project.service<LoadTestsService>()
         val listClasses = loadTestsService.getTestsTree(psiFile)
+        if (listClasses.isEmpty()) {
+            return
+        }
 
         val testListViewport = UserInterfaceHelper.getTabViewport(project, "Test List") ?: return
         val testListTree = testListViewport.view as Tree
