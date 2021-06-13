@@ -32,6 +32,11 @@ class CoverageDataService : Disposable {
         // classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
     }
 
+    fun isDiffAvailable(className: String, fileStamp: Long): Boolean {
+        val covObj = classCoveragesMap[className] ?: return false
+        return (fileStamp == covObj.currStamp && covObj.prevStamp == covObj.currStamp)
+    }
+
     /**
      * Updates coverage at the end of every execution of runWithCoverage.
      * Swaps current data and suite with previous and sets current to the passed
@@ -48,19 +53,29 @@ class CoverageDataService : Disposable {
 
         val project = newSuite?.project ?: throw ProjectNotFoundException()
 
+        // Temporary class to filter out deleted classes.
+        val tempClassMap = mutableMapOf<String, CoverageDiffObject>()
         AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll()
-            .filter { !testAnalyzerService.isTestClass(it) }
-            .mapNotNull { it }
             .forEach {
-                if (!classCoveragesMap.keys.contains(it.name)) {
-                    classCoveragesMap[it.name!!] = CoverageDiffObject()
+
+                if (it == null || testAnalyzerService.isTestClass(it)) {
+                    return
+                }
+
+                // Create copy from old map, and remove non existing classes.
+                if (classCoveragesMap.keys.contains(it.name)) {
+                    tempClassMap[it.name!!] = classCoveragesMap[it.name!!]!!
+                } else {
+                    tempClassMap[it.name!!] = CoverageDiffObject()
                 }
 
                 val vFile = it.containingFile.virtualFile
-                classCoveragesMap[it.name!!]!!.prevStamp = classCoveragesMap[it.name!!]!!.currStamp
-                classCoveragesMap[it.name!!]!!.currStamp = vFile.modificationStamp
+                tempClassMap[it.name!!]!!.prevStamp = tempClassMap[it.name!!]!!.currStamp
+                tempClassMap[it.name!!]!!.currStamp = vFile.modificationStamp
             }
+
+        classCoveragesMap = tempClassMap
     }
 
     /**
@@ -91,10 +106,11 @@ class CoverageDataService : Disposable {
         // filters out all test classes because we aren't interested in tests for those
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll()
-            .filter { !testAnalyzerService.isTestClass(it) }
-            .mapNotNull { it }
-
         classesInProject.forEach {
+
+            if (it == null || testAnalyzerService.isTestClass(it)) {
+                return
+            }
 
             var allLinesNow = emptySet<Int>()
             var allLinesPrev = emptySet<Int>()
