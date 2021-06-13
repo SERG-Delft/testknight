@@ -145,6 +145,8 @@
         <action id="DeleteSettingsItem" class="com.testbuddy.actions.settings.DeleteElementAction"
                 text="Delete Element" description="Deletes selected Parameter Suggestions Tree element in the settings panel."
                 icon="AllIcons.Diff.Remove">
+
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
         </action>
         <action id="EditSettingsItem" class="com.testbuddy.actions.settings.EditElementAction"
                 text="Edit Element" description="Edits selected Parameter Suggestions Tree element in the settings panel."

@@ -6,9 +6,9 @@ import com.intellij.ui.treeStructure.Tree
 
 class EditElementAction : AnAction() {
 
-    public var tree: Tree? = null
+    var tree: Tree? = null
     /**
-     * Implement this method to provide your action handler.
+     * Starts editing at the selected node.
      *
      * @param e Carries information on the invocation place
      */
@@ -16,10 +16,19 @@ class EditElementAction : AnAction() {
         tree!!.startEditingAtPath(tree!!.selectionPath)
     }
 
+    /**
+     * Updates the state of the action.
+     * The action is enabled only if the tree is not null and atleast one node has been selected.
+     *
+     * @param e Carries information on the invocation place
+     */
     override fun update(e: AnActionEvent) {
         e.presentation.isEnabled = (tree != null && tree!!.selectionCount > 0)
     }
 
+    /**
+     * Sets the tree attribute which is used for accessing tree functions.
+     */
     fun init(tree: Tree) {
         this.tree = tree
     }

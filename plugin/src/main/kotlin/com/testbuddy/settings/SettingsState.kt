@@ -41,7 +41,7 @@ data class ChecklistSettings(
         "Throw Statement" to true,
         "Ternary Operator" to true
     ),
-    var typeCaseMap: MutableMap<String, MutableList<String>> = mutableMapOf(
+    var paramSuggestionMap: MutableMap<String, MutableList<String>> = mutableMapOf(
         "byte" to mutableListOf("Byte.MAX_VALUE", "Byte.MIN_VALUE"),
         "short" to mutableListOf("Short.MAX_VALUE", "Short.MIN_VALUE"),
         "int" to mutableListOf("1", "0", "Integer.MAX_VALUE", "Integer.MIN_VALUE", "-42"),

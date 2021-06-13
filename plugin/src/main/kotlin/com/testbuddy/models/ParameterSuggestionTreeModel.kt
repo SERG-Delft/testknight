@@ -4,14 +4,20 @@ import com.intellij.ui.tree.BaseTreeModel
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreePath
 
-class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, MutableList<String>>) :
+class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<String, MutableList<String>>) :
     BaseTreeModel<String>() {
     private val rootNode = DefaultMutableTreeNode("root")
+
+    /**
+     * Returns the root node
+     */
     override fun getRoot(): Any {
         return rootNode
     }
 
     /**
+     * gets the children of a given parent node.
+     *
      * @param parent a tree node
      * @return all children of the specified parent node or `null` if they are not ready yet
      */
@@ -19,23 +25,28 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
 
         if (parent is DefaultMutableTreeNode) {
             if (parent == rootNode) {
-                return typeCaseMap.keys.toMutableList()
+                return paramSuggestionMap.keys.toMutableList()
             }
         }
 
         if (parent is String) {
-            if (typeCaseMap.containsKey(parent)) {
-                return typeCaseMap[parent]
+            if (paramSuggestionMap.containsKey(parent)) {
+                return paramSuggestionMap[parent]
             }
         }
 
         return null
     }
 
+    /**
+     * Adds the node pointed by the TreePath.
+     *
+     * @param path The path of the node to be added.
+     */
     fun addPathElement(path: TreePath) {
         if (path.parentPath.lastPathComponent == rootNode) {
             val className = path.lastPathComponent as String
-            typeCaseMap[className] = mutableListOf()
+            paramSuggestionMap[className] = mutableListOf()
 
             val index = getIndexOfChild(rootNode, className)
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
@@ -44,7 +55,7 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
             val className = path.parentPath.lastPathComponent as String
             val typeName = path.lastPathComponent as String
 
-            typeCaseMap[className]!!.add(typeName)
+            paramSuggestionMap[className]!!.add(typeName)
 
             val index = getIndexOfChild(className, typeName)
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
@@ -52,13 +63,18 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
         }
     }
 
+    /**
+     * Removes the node pointed by the TreePath.
+     *
+     * @param path The path of the node to be removed.
+     */
     fun removePathElement(path: TreePath) {
         if (path.parentPath.lastPathComponent == rootNode) {
             val className = path.lastPathComponent as String
 
             val index = getIndexOfChild(rootNode, className)
 
-            typeCaseMap.remove(className)
+            paramSuggestionMap.remove(className)
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
             treeNodesRemoved(path, intArrayOf(index), arrayOf(className))
         } else {
@@ -67,13 +83,19 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
 
             val index = getIndexOfChild(className, typeName)
 
-            typeCaseMap[className]!!.removeAt(index)
+            paramSuggestionMap[className]!!.removeAt(index)
 
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
             treeNodesRemoved(path, intArrayOf(index), arrayOf(className))
         }
     }
 
+    /**
+     * Receives information about edited nodes and updates it according to the data model we have.
+     *
+     * @param path The path which got modified
+     * @param value the new modified value
+     */
     override fun valueForPathChanged(path: TreePath?, value: Any?) {
 
         if (path == null || value == null || value.toString() == "") {
@@ -89,9 +111,9 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
 
             val index = getIndexOfChild(rootNode, className)
 
-            val children = typeCaseMap.remove(className)
+            val children = paramSuggestionMap.remove(className)
 
-            typeCaseMap[value.toString()] = children!!
+            paramSuggestionMap[value.toString()] = children!!
 
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
         } else {
@@ -105,13 +127,21 @@ class SettingsTypeCaseTreeModel(private var typeCaseMap: MutableMap<String, Muta
 
             val index = getIndexOfChild(className, typeName)
 
-            typeCaseMap[className]!![index] = value.toString()
+            paramSuggestionMap[className]!![index] = value.toString()
 
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
         }
     }
 
+    /**
+     * Used to refresh the Tree shown in the user interface.
+     *
+     * Passes a TreeStructureChanged event, with the rootnode being the parent node.
+     * Causes the whole tree to get updated (UI Wise).
+     */
     fun reload() {
+        // It is important to have children null (at least)
+        // so that the listener doesn't think that that the tree got updated.
         treeStructureChanged(TreePath(rootNode), null, null)
     }
 }

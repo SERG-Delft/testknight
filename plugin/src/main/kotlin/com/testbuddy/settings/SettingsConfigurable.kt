@@ -35,7 +35,7 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
         val state = SettingsService.instance.state.coverageSettings
 
         val colorChanged = mySettingsComponent.isColorModified(state)
-        val typeCaseTreeChanged = mySettingsComponent.isTypeCaseTreeModified
+        val typeCaseTreeChanged = mySettingsComponent.paramSuggestionModified
         return (typeCaseTreeChanged || colorChanged || super.isModified())
     }
 
@@ -49,10 +49,10 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     override fun apply() {
         super.apply()
 
-        if (mySettingsComponent.isTypeCaseTreeModified) {
-            state.checklistSettings.typeCaseMap =
-                SettingsService.createTreeDeepCopy(mySettingsComponent.typeCaseTreeInfo)
-            mySettingsComponent.isTypeCaseTreeModified = false
+        if (mySettingsComponent.paramSuggestionModified) {
+            state.checklistSettings.paramSuggestionMap =
+                SettingsService.createTreeDeepCopy(mySettingsComponent.paramSuggestionTreeInfo)
+            mySettingsComponent.paramSuggestionModified = false
         }
 
         mySettingsComponent.applyCoverageColors(state.coverageSettings)
@@ -79,13 +79,13 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
      * This method is called on EDT immediately after the form creation or later upon user's request.
      */
     override fun reset() {
-        if (mySettingsComponent.isTypeCaseTreeModified) {
-            mySettingsComponent.typeCaseTreeInfo.clear()
-            for (item in state.checklistSettings.typeCaseMap) {
-                mySettingsComponent.typeCaseTreeInfo[item.key] = item.value.toMutableList() // Creates a copy
+        if (mySettingsComponent.paramSuggestionModified) {
+            mySettingsComponent.paramSuggestionTreeInfo.clear()
+            for (item in state.checklistSettings.paramSuggestionMap) {
+                mySettingsComponent.paramSuggestionTreeInfo[item.key] = item.value.toMutableList() // Creates a copy
             }
-            mySettingsComponent.isTypeCaseTreeModified = false
-            mySettingsComponent.typeCaseTreeModel.reload()
+            mySettingsComponent.paramSuggestionModified = false
+            mySettingsComponent.paramSuggestionTreeModel.reload()
         }
 
         mySettingsComponent.resetCoverageColors(state.coverageSettings)

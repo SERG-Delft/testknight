@@ -19,7 +19,7 @@ import com.testbuddy.actions.settings.AddElementAction
 import com.testbuddy.actions.settings.DeleteElementAction
 import com.testbuddy.actions.settings.EditElementAction
 import com.testbuddy.actions.settings.ResetTreeAction
-import com.testbuddy.models.SettingsTypeCaseTreeModel
+import com.testbuddy.models.ParameterSuggestionTreeModel
 import javax.swing.JPanel
 import javax.swing.event.TreeModelEvent
 import javax.swing.event.TreeModelListener
@@ -29,9 +29,9 @@ class SettingsComponent {
 
     private var myPanel: DialogPanel
     private val state = SettingsService.instance.state
-    var isTypeCaseTreeModified = false
-    lateinit var typeCaseTreeInfo: MutableMap<String, MutableList<String>>
-    lateinit var typeCaseTreeModel: SettingsTypeCaseTreeModel
+    var paramSuggestionModified = false
+    lateinit var paramSuggestionTreeInfo: MutableMap<String, MutableList<String>>
+    lateinit var paramSuggestionTreeModel: ParameterSuggestionTreeModel
 
     lateinit var addedColor: ColorPanel
     lateinit var deletedColor: ColorPanel
@@ -124,38 +124,35 @@ class SettingsComponent {
                     }
                 }
 
-                row("Type Cases") {
+                row("Parameter Suggestions") {
 
                     row {
                         val scrollPanel = JBScrollPane()
-                        typeCaseTreeInfo = SettingsService.createTreeDeepCopy(checklistSettings.typeCaseMap)
-                        typeCaseTreeModel = SettingsTypeCaseTreeModel(typeCaseTreeInfo)
-                        typeCaseTreeModel.addTreeModelListener(object : TreeModelListener {
-                            override fun treeNodesChanged(p0: TreeModelEvent?) {
-                                if (p0?.children != null) {
-                                    isTypeCaseTreeModified = true
-                                }
+                        paramSuggestionTreeInfo = SettingsService.createTreeDeepCopy(
+                            checklistSettings.paramSuggestionMap
+                        )
+                        paramSuggestionTreeModel = ParameterSuggestionTreeModel(paramSuggestionTreeInfo)
+                        paramSuggestionTreeModel.addTreeModelListener(object : TreeModelListener {
+                            override fun treeNodesChanged(e: TreeModelEvent?) {
+                                // Empty
                             }
 
-                            override fun treeNodesInserted(p0: TreeModelEvent?) {
-                                if (p0?.children != null) {
-                                    isTypeCaseTreeModified = true
-                                }
+                            override fun treeNodesInserted(e: TreeModelEvent?) {
+                                // Empty
                             }
 
-                            override fun treeNodesRemoved(p0: TreeModelEvent?) {
-                                if (p0?.children != null) {
-                                    isTypeCaseTreeModified = true
-                                }
+                            override fun treeNodesRemoved(e: TreeModelEvent?) {
+                                // Empty
                             }
-
-                            override fun treeStructureChanged(p0: TreeModelEvent?) {
-                                if (p0?.children != null) {
-                                    isTypeCaseTreeModified = true
+                            override fun treeStructureChanged(e: TreeModelEvent?) {
+                                // Gets called whenever any of the operation happens.
+                                if (e?.children != null) {
+                                    // children is null only when we call reload()
+                                    paramSuggestionModified = true
                                 }
                             }
                         })
-                        val tree = Tree(typeCaseTreeModel)
+                        val tree = Tree(paramSuggestionTreeModel)
 
                         tree.isRootVisible = false
                         tree.showsRootHandles = true
@@ -165,8 +162,6 @@ class SettingsComponent {
                         TreeUtil.expand(tree, 1)
                         scrollPanel.setViewportView(tree)
                         TreeSpeedSearch(tree)
-
-                        (tree.model as SettingsTypeCaseTreeModel)
 
                         val actionManager = ActionManager.getInstance()
                         val actionGroup = DefaultActionGroup("TestListTabActions", false)
@@ -186,8 +181,8 @@ class SettingsComponent {
                         actionGroup.add(addClassAction)
                         actionGroup.add(deleteAction)
                         actionGroup.add(editAction)
-
                         actionGroup.add(resetAction)
+
                         val actionToolbar =
                             actionManager.createActionToolbar("SettingsTreeToolbar", actionGroup, false)
 
