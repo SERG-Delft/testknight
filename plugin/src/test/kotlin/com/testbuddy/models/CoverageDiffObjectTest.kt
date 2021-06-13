@@ -1,20 +1,12 @@
 package com.testbuddy.models
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.extensions.TestBuddyTestCase
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 
-class CoverageDiffObjectTest : BasePlatformTestCase() {
-
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
+class CoverageDiffObjectTest : TestBuddyTestCase() {
 
     @Test
     fun testEmptyNewlyRemoved() {
