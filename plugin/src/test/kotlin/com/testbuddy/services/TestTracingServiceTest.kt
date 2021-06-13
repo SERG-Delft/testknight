@@ -1,16 +1,11 @@
 package com.testbuddy.services
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.testbuddy.extensions.TestBuddyTestCase
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class TestTracingServiceTest : BasePlatformTestCase() {
-
-    override fun setUp() {
-        super.setUp()
-    }
-
-    override fun getTestDataPath(): String = "testdata"
+internal class TestTracingServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testBasic() {
