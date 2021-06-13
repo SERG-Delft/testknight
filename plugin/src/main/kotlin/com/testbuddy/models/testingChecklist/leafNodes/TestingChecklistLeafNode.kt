@@ -2,9 +2,10 @@ package com.testbuddy.models.testingChecklist.leafNodes
 
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
-import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.JavaPsiFacade
+import com.intellij.psi.PsiParserFacade
 import com.intellij.psi.PsiType
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.testbuddy.messageBundleHandlers.TestMethodGenerationMessageBundleHandler
@@ -40,14 +41,16 @@ abstract class TestingChecklistLeafNode(
         val method = factory.createMethod(methodName, PsiType.VOID)
         val comment = factory.createDocCommentFromText(
             "/** ${
-            TestMethodGenerationMessageBundleHandler.message(
-                "testMethodComment",
-                this.description
-            )
+                TestMethodGenerationMessageBundleHandler.message(
+                    "testMethodComment",
+                    this.description
+                )
             } **/"
         )
         method.modifierList.addAnnotation("Test")
+        val whitespace = PsiParserFacade.SERVICE.getInstance(project).createWhiteSpaceFromText("\n")
         WriteCommandAction.runWriteCommandAction(project) { method.body!!.add(comment) }
+        WriteCommandAction.runWriteCommandAction(project) { method.body!!.add(whitespace) }
         return method
     }
 }
