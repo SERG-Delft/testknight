@@ -1,4 +1,4 @@
-# Sprint retrospective week <NUM>
+# Sprint retrospective week 7
 
 - **Scrum Master:** Pavlos Makridis
 - **Note Taker:** Cristian Botocan
@@ -7,21 +7,21 @@
 
 - **All team members:**
   - [x] Improve README
-      - Add running instructions
-      - Small tutorials for core features
-      - Remove code smells requirement
-    - [x] Restructure the Repo
-        - Make it multi-module (1 pipeline for the plugin and another for the server)
-        - If needed, optimize pipelines (remove any duplicate stages)
-        - Add coverage tools (JaCoCo / Kotlin equivalent)
-        - restructure the frontend directory structure
-    - [x] Research on GitHub migration
-        - GitHub CI/CD
-    - [x] Create a logo
-        - Ask client if they have a logo or if they want us to make one
-    - [x] Update Documentation
-        - Wiki for existing services
-        - IntelliJ SDK Educational Document
+    - Add running instructions
+    - Small tutorials for core features
+    - Remove code smells requirement
+  - [x] Restructure the Repo
+    - Make it multi-module (1 pipeline for the plugin and another for the server)
+    - If needed, optimize pipelines (remove any duplicate stages)
+    - Add coverage tools (JaCoCo / Kotlin equivalent)
+    - restructure the frontend directory structure
+  - [x] Research on GitHub migration
+    - GitHub CI/CD
+  - [x] Create a logo
+    - Ask client if they have a logo or if they want us to make one
+  - [x] Update Documentation
+    - Wiki for existing services
+    - IntelliJ SDK Educational Document
 
 - **Jorge:**
   - [x] Make coverage in buffer be automatic
@@ -82,7 +82,7 @@ a new name, make the logo and perform all of the required changes in our documen
     before implementing. After I was done with that I moved on to write Wiki entries and other documentation.
 
 - **Piyush:**
-  -This week, I worked on testing, researching on deploying the plugin and modifying the diff coverage service after discussing with the frontend team. 
+  - This week, I worked on testing, researching on deploying the plugin and modifying the diff coverage service after discussing with the frontend team. 
   Modifying diff coverage was quite straightforward to code. However, this required some careful thinking to adapt the existing architecture to fit in this feature without too much modification. 
   To summarise, we noticed that greying out wasn't the most optimal way of indicating that the diff view may not be accurate to the user.
   This is because the grey out would mean adding a check to the update UI method which is called twice a second. 
@@ -90,10 +90,10 @@ a new name, make the logo and perform all of the required changes in our documen
   I can focus on better issue planning in the future especially for test issues to avoid conflicts.
 
 - **Mathan:**
-  -This week, I worked on making a coverage statistics panel and making checklist persistent. 
+  - This week, I worked on making a coverage statistics panel and making checklist persistent. 
   Making the checklist persistent turned out to be not as direct as we thought because there was an issue were child classes were loaded as null. 
   It took a lot of research to find out possible ways to overcome this issue and we finally found that adding a @XCollection with a list of all child classes. The other main issue I worked on is the coverage tab statistics panel. Initially we were planning to see if we could extend the existing coverage statistics table but it seemed to be more complicated than we thought. So instead, we made our own table with the coverage information we had. The final issue I worked on is the grey out diff view option. This issue was relatively easy once we found out that we can implement it using modificationStamp on virtual files. 
-  But it took quite some research time to finally decide that modificationStamp would be a good approach.
+  But, it took quite some research time to finally decide that modificationStamp would be a good approach.
 
 ## What can we improve?
 We can improve a bit on our global planning so that we know, if more than of us affects the same file. 

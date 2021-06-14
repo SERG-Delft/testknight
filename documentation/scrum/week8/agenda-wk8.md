@@ -24,7 +24,7 @@
     - Refine test case generation from checklist
 
 - **Piyush**:
-    - Refactor tests to be less repititive
+    - Refactor tests to be less repetitive
     - Refine coverage backend logic
 
 - **Mathan**:
