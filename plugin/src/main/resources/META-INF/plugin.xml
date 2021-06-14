@@ -93,6 +93,12 @@
                 icon="AllIcons.General.Remove">
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="D" keymap="$default"/>
         </action>
+        <action id="TestListTraceabilityAction" class="com.testbuddy.actions.testcases.TestListTraceabilityAction"
+                text="Traceability Test Cases UI"
+                description="Show covered lines per test."
+                icon="AllIcons.RunConfigurations.TrackCoverage">
+            <keyboard-shortcut first-keystroke="control alt C" second-keystroke="T" keymap="$default"/>
+        </action>
         <!---Actions in CheckList tab -->
         <action id="ChecklistAction" class="com.testbuddy.actions.LoadChecklistAction"
                 text="Load Checklist for Class from Current File" description="Adds a new template test case."

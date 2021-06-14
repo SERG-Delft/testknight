@@ -13,6 +13,7 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.ColorUtil
 import com.testbuddy.exceptions.CorruptedTraceFileException
+import com.testbuddy.exceptions.NoTestCoverageDataException
 import com.testbuddy.exceptions.TraceFileNotFoundException
 import com.testbuddy.models.TestCoverageData
 import com.testbuddy.settings.SettingsService
@@ -109,7 +110,8 @@ class TestTracingService(val project: Project) : GlobalHighlighter(project) {
      * @throws CorruptedTraceFileException
      */
     private fun getLinesForTest(test: String): TestCoverageData {
-        val currentSuitesBundle = CoverageSuitesBundle(coverageDataManager.suites)
+        val coverageSuite = coverageDataManager.suites ?: throw NoTestCoverageDataException()
+        val currentSuitesBundle = CoverageSuitesBundle(coverageSuite)
         val traceFile = getTraceFile(test, currentSuitesBundle)
         return readTraceFile(traceFile)
     }
