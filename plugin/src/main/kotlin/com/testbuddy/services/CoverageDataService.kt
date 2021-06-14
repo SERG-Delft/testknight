@@ -9,6 +9,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.AllClassesSearch
 import com.intellij.rt.coverage.data.ClassData
 import com.intellij.rt.coverage.data.ProjectData
+import com.testbuddy.exceptions.ProjectNotFoundException
 import com.testbuddy.models.CoverageDiffObject
 
 class CoverageDataService(val project: Project) : Disposable {
@@ -31,6 +32,11 @@ class CoverageDataService(val project: Project) : Disposable {
         // classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
     }
 
+    fun isDiffAvailable(className: String, fileStamp: Long): Boolean {
+        val covObj = classCoveragesMap[className] ?: return false
+        return (fileStamp == covObj.currStamp && covObj.prevStamp == covObj.currStamp)
+    }
+
     /**
      * Updates coverage at the end of every execution of runWithCoverage.
      * Swaps current data and suite with previous and sets current to the passed
@@ -45,19 +51,31 @@ class CoverageDataService(val project: Project) : Disposable {
 
         val testAnalyzerService = TestAnalyzerService()
 
+        val project = newSuite?.project ?: throw ProjectNotFoundException()
+
+        // Temporary class to filter out deleted classes.
+        val tempClassMap = mutableMapOf<String, CoverageDiffObject>()
         AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll()
-            .filter { !testAnalyzerService.isTestClass(it) }
-            .mapNotNull { it }
             .forEach {
-                if (!classCoveragesMap.keys.contains(it.name)) {
-                    classCoveragesMap[it.name!!] = CoverageDiffObject()
+
+                if (it == null || testAnalyzerService.isTestClass(it)) {
+                    return
+                }
+
+                // Create copy from old map, and remove non existing classes.
+                if (classCoveragesMap.keys.contains(it.name)) {
+                    tempClassMap[it.name!!] = classCoveragesMap[it.name!!]!!
+                } else {
+                    tempClassMap[it.name!!] = CoverageDiffObject()
                 }
 
                 val vFile = it.containingFile.virtualFile
-                classCoveragesMap[it.name!!]!!.prevStamp = classCoveragesMap[it.name!!]!!.currStamp
-                classCoveragesMap[it.name!!]!!.currStamp = vFile.modificationStamp
+                tempClassMap[it.name!!]!!.prevStamp = tempClassMap[it.name!!]!!.currStamp
+                tempClassMap[it.name!!]!!.currStamp = vFile.modificationStamp
             }
+
+        classCoveragesMap = tempClassMap
     }
 
     /**
@@ -79,9 +97,7 @@ class CoverageDataService(val project: Project) : Disposable {
      * 2) covered in the suite associated with the previous run
      */
     fun getDiffLines() {
-        var allLines = emptySet<Int>()
-        var coveredPrev = emptySet<Int>()
-        var coveredNow = emptySet<Int>()
+
         if (currentData == null) return
 
         val testAnalyzerService = project.service<TestAnalyzerService>()
@@ -90,25 +106,34 @@ class CoverageDataService(val project: Project) : Disposable {
         // filters out all test classes because we aren't interested in tests for those
         val classesInProject = AllClassesSearch.search(GlobalSearchScope.projectScope(project), project)
             .findAll()
-            .filter { !testAnalyzerService.isTestClass(it) }
-            .mapNotNull { it }
-
         classesInProject.forEach {
+
+            if (it == null || testAnalyzerService.isTestClass(it)) {
+                return
+            }
+
+            var allLinesNow = emptySet<Int>()
+            var allLinesPrev = emptySet<Int>()
+            var coveredPrev = emptySet<Int>()
+            var coveredNow = emptySet<Int>()
+
             if (currentData!!.classes.contains(it.name)) {
                 val classData = currentData!!.classes[it.name]
-                allLines = getTotalLinesAndNewlyCoveredLines(classData).first
+                allLinesNow = getTotalLinesAndNewlyCoveredLines(classData).first
                 coveredNow = getTotalLinesAndNewlyCoveredLines(classData).second
             }
 
             if (previousData != null && previousData!!.classes.contains(it.name)) {
-                coveredPrev = getLinesCoveredPreviously(previousData!!.classes[it.name])
+                allLinesPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.name]).first
+                coveredPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.name]).second
             }
 
             val vFile = it.containingFile.virtualFile
 
             val oldObj = classCoveragesMap[it.name!!]
             classCoveragesMap[it.name!!] = CoverageDiffObject(
-                allLines,
+                allLinesPrev,
+                allLinesNow,
                 coveredPrev,
                 coveredNow,
                 oldObj?.prevStamp ?: 0,

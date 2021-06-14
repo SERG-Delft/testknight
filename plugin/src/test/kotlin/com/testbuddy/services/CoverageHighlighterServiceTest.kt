@@ -1,5 +1,6 @@
 package com.testbuddy.services
 
+import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.markup.MarkupModel
@@ -45,6 +46,7 @@ class CoverageHighlighterServiceTest : LightJavaCodeInsightFixtureTestCase() {
         myFixture.configureByFile("Point.java")
         val editor = myFixture.editor
         val document = editor.document
+        val project = myFixture.project
 
         // old coverage data
         val pointPrevLines = Array(21) { i -> LineData(i, "") }
@@ -73,11 +75,12 @@ class CoverageHighlighterServiceTest : LightJavaCodeInsightFixtureTestCase() {
         // set up projectData mocks
         val prevData = mockk<ProjectData>(); every { prevData.classes } returns mapOf("Point" to prevClassData)
         val newData = mockk<ProjectData>(); every { newData.classes } returns mapOf("Point" to newClassData)
+        val newSuite = mockk<CoverageSuitesBundle>(); every { newSuite.project } returns project
 
         val covDataService = project.service<CoverageDataService>()
 
-        covDataService.updateCoverage(null, prevData)
-        covDataService.updateCoverage(null, newData)
+        covDataService.updateCoverage(newSuite, prevData)
+        covDataService.updateCoverage(newSuite, newData)
 
         covDataService.getDiffLines()
 

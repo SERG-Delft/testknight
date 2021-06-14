@@ -45,25 +45,23 @@ class LoadCoverageAction : AnAction() {
         for (x in serv.classCoveragesMap) {
             val vec = Vector<Any>()
             vec.add(x.key)
+            val value = x.value
 
-            if (x.value.allLines.isNotEmpty()) {
-                val newLines = (x.value.coveredNow.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
-                val oldLines = (x.value.coveredPrev.size.toFloat() / x.value.allLines.size.toFloat() * 100).toInt()
-                val value = x.value
-
-                vec.add(
-                    CoverageStatsObject(
-                        value.coveredNow.size,
-                        value.allLines.size,
-                        newLines,
-                        newLines - oldLines
-                    )
-                )
-            } else {
-                // No lines covered
-                // Don't show information in that case.
-                continue
+            val newLines = if (value.allLinesNow.isEmpty()) { 0 } else {
+                (value.coveredNow.size.toFloat() / value.allLinesNow.size.toFloat() * 100).toInt()
             }
+            val oldLines = if (value.allLinesPrev.isEmpty()) { 0 } else {
+                (value.coveredPrev.size.toFloat() / value.allLinesPrev.size.toFloat() * 100).toInt()
+            }
+
+            vec.add(
+                CoverageStatsObject(
+                    value.coveredNow.size,
+                    value.allLinesNow.size,
+                    newLines,
+                    newLines - oldLines
+                )
+            )
 
             vec.add("Diff")
 
