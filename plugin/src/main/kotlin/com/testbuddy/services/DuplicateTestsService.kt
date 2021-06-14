@@ -64,7 +64,6 @@ class DuplicateTestsService(project: Project) {
      * @param editor represents the current instance of a text editor.
      */
     fun duplicateMethodUnderCaret(file: PsiFile, editor: Editor): Boolean {
-
         val caret = editor.caretModel.primaryCaret
         val offset = caret.offset
         val element = file.findElementAt(offset)
@@ -72,6 +71,7 @@ class DuplicateTestsService(project: Project) {
 
         val template = templateCreationService.createAdvancedTemplate(method, getHighlights(method))
 
+        editor.document
         // prepare for template
         caret.moveToOffset(method.endOffset)
         editor.scrollingModel.scrollToCaret(ScrollType.CENTER)
