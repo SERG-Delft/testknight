@@ -7,7 +7,7 @@ import java.awt.Color
 import java.awt.Graphics
 import java.awt.Rectangle
 
-class DiffCoverageLineMarkerRenderer(private val color: Color) : LineMarkerRendererWithErrorStripe {
+class DiffCoverageLineMarkerRenderer(val color: Color) : LineMarkerRendererWithErrorStripe {
 
     override fun paint(editor: Editor, g: Graphics, r: Rectangle) {
         g.color = color

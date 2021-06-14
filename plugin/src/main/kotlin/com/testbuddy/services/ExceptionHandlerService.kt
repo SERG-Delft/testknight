@@ -3,7 +3,6 @@ package com.testbuddy.services
 import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.Project
-import com.testbuddy.exceptions.DocumentNotFoundException
 import com.testbuddy.exceptions.TestBuddyException
 
 class ExceptionHandlerService(private val project: Project) {
@@ -35,10 +34,7 @@ class ExceptionHandlerService(private val project: Project) {
      * @param exception the TestBuddyException for which the user should be notified
      */
     fun notify(exception: TestBuddyException) {
-
-        if (exception is DocumentNotFoundException) {
-            val notification = group.createNotification(exception.title, exception.content, exception.type)
-            notification.notify(project)
-        }
+        val notification = group.createNotification(exception.title, exception.content, exception.type)
+        notification.notify(project)
     }
 }
