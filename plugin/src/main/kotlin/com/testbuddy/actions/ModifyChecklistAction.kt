@@ -80,7 +80,7 @@ class ModifyChecklistAction(
         val generateMethod = project.service<TestMethodGenerationService>()
 
         generateMethod.generateTestMethod(
-            project, editor,
+            editor,
             (node.userObject as ChecklistUserObject)
                 .checklistNode as TestingChecklistLeafNode
         )

@@ -13,18 +13,16 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.endOffset
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 
-class TestMethodGenerationService {
+class TestMethodGenerationService(val project: Project) {
 
     /**
      * Generates and appends a test method for the given checklist item
      * in the current caret position.
      *
-     * @param file the fule currently open.
-     * @param project the current project.
      * @param editor the current editor.
      * @param checklistItem the checklist item with to generate the method for.
      */
-    fun generateTestMethod(project: Project, editor: Editor, checklistItem: TestingChecklistLeafNode) {
+    fun generateTestMethod(editor: Editor, checklistItem: TestingChecklistLeafNode) {
         val templateCreationService = project.service<TemplateCreationService>()
         val testMethod = checklistItem.generateTestMethod(project)
         val caret = editor.caretModel.primaryCaret
