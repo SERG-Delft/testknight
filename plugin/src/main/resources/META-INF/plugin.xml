@@ -10,6 +10,7 @@
     <depends>Coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Project services -->
         <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
@@ -25,30 +26,58 @@
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreePersistent"/>
         <projectService serviceImplementation="com.testbuddy.services.ExceptionHandlerService"/>
 
+        <!-- Application services -->
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <applicationService serviceImplementation="com.testbuddy.services.UsageDataService"/>
-        
-        <testStatusListener implementation="com.testbuddy.listeners.TestLoggingListener"/>
-    </extensions>
-
-    <!-- Extension point for Main User Interface-->
-
-    <extensions defaultExtensionNs="com.intellij">
-
-        <toolWindow id="TestBuddy" secondary="false" icon="/icons/pluginIcon.svg" anchor="right"
-                    factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
-
-        <!--        TestBuddy Settings-->
-        <applicationConfigurable parentId="tools" instance="com.testbuddy.settings.SettingsConfigurable"
-                                 id="SettingsConfigurable"
-                                 displayName="TestBuddy"/>
         <applicationService serviceImplementation="com.testbuddy.settings.SettingsService"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
 
-    </extensions>
+        <!-- Tool Window -->
+        <toolWindow id="TestBuddy"
+                    secondary="false"
+                    icon="/icons/pluginIcon.svg"
+                    anchor="right"
+                    factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
 
+        <!-- Settings panel -->
+        <applicationConfigurable parentId="tools"
+                                 instance="com.testbuddy.settings.SettingsConfigurable"
+                                 id="SettingsConfigurable"
+                                 displayName="TestBuddy"/>
+
+        <!-- Welcome page -->
+        <postStartupActivity implementation="com.testbuddy.startup.WelcomePage"/>
+
+        <!-- Gutter icons-->
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.actions.ChecklistClassLineMarkerProvider"/>
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.actions.ChecklistMethodLineMarkerProvider"/>
+
+        <!-- Test Listener -->
+        <testStatusListener implementation="com.testbuddy.listeners.TestLoggingListener"/>
+
+        <!-- Notifications -->
+        <notification.parentGroup id="testbuddy.notifications"
+                                  title="TestBuddy notifications"/>
+
+        <notification.group parentId="testbuddy.notifications"
+                            groupId="testbuddy.notifications.toolWindow"/>
+
+        <!-- Intentions -->
+        <intentionAction>
+            <className>com.testbuddy.actions.AssertionSuggestionsAction</className>
+            <category>TestBuddy intentions</category>
+        </intentionAction>
+
+        <intentionAction>
+            <className>com.testbuddy.actions.TraceTestAction</className>
+            <category>TestBuddy intentions</category>
+        </intentionAction>
+    </extensions>
 
     <actions>
         <!---Actions in TestList tab -->
@@ -158,45 +187,12 @@
         </action>
     </actions>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <intentionAction>
-            <className>com.testbuddy.actions.AssertionSuggestionsAction</className>
-            <category>TestBuddy intentions</category>
-
-        </intentionAction>
-
-        <intentionAction>
-            <className>com.testbuddy.actions.TraceTestAction</className>
-            <category>TestBuddy intentions</category>
-        </intentionAction>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <notification.parentGroup
-                id="testbuddy.notifications"
-                title="TestBuddy notifications"/>
-
-        <notification.group
-                parentId="testbuddy.notifications"
-                groupId="testbuddy.notifications.toolWindow"/>
-    </extensions>
-
-
     <actions>
-        <action id="TestAction" class="com.testbuddy.actions.TestAction" text="Test Action"
+        <action id="TestAction"
+                class="com.testbuddy.actions.TestAction"
+                text="Test Action"
                 icon="/icons/pluginIcon.svg"/>
     </actions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testbuddy.actions.ChecklistClassLineMarkerProvider"
-        />
-
-        <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testbuddy.actions.ChecklistMethodLineMarkerProvider"
-        />
-
-    </extensions>
 
     <projectListeners>
         <listener class="com.testbuddy.listeners.InitializationListener"
@@ -208,9 +204,5 @@
         <listener class="com.testbuddy.listeners.AppClosedListener"
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </projectListeners>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <postStartupActivity implementation="com.testbuddy.startup.WelcomePage"/>
-    </extensions>
 
 </idea-plugin>

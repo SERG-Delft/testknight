@@ -1,33 +1,63 @@
-# TestBuddy
+# TestKnight
+
+The repository includes the TestKnight's plugin code as well as the code of the telemetry server used to collect
+usage information.
 
 <!-- Plugin description -->
-The IDE plugin that helps you during testing.
+## What is TestKnight?
+
+TestKnight is an all in one plugin for IntelliJ IDEA that helps you write automatic tests for your codebase.
+Specifically, TestKnight extends your IDE to allow you to design test-suites based on structural and side-effect
+analysis of your code as well as inspect how your test-suite evolves.`
+
+## Key Features:
+
+#### Test Duplication
+
+Easily duplicate an existing test method and change the values of often-changed code elements such as constructor arguments and literals.
+ 
+<img src="https://jorgerom.eu/assets/testKnight/duplicate-test.gif" width="600">
+
+#### Test case List
+
+Quickly navigate between the test cases within a test file.
+
+<img src="https://jorgerom.eu/assets/testKnight/test-list.gif" width="600">
+
+### Testing checklist
+
+Generate testing checklists for methods/classes based on structural and black-box testing.
+
+<img src="https://jorgerom.eu/assets/testKnight/testing-checklist.png" width=600>
+
+### Differential coverage
+
+When you run with coverage twice you can see the lines of code covered by the most recent test-run in a brighter green.
+  
+<img src="https://jorgerom.eu/assets/testKnight/diff-cov.png" width=600>
+
+Additionally you can compare coverage with the previous run by pressing the "Diff" button for the class:
+
+<img src="https://jorgerom.eu/assets/testKnight/diff-window.png" width=600>
+
+### Assertion suggestions
+
+TestKnight can detect the side-effects in a method and suggest assertions for the method under test.
+
+<img src="https://jorgerom.eu/assets/testKnight/assertion-suggestions.gif" width=600>
+
+### See lines covered by a test
+
+If coverage information is available, testKnight will allow you to highlight the lines covered by a specific test case.
+
+<img src="https://jorgerom.eu/assets/testKnight/traceability.gif" width=600>
+
+TestKnight is designed with the user in mind.
+We have strived to create a tool that is intuitive to use and unintrusive. That means no annoying pop-ups while coding, no error messages and no breaking your flow.
 <!-- Plugin description end -->
 
-The repository includes the TestBuddy's plugin code as well as the code of the telemetry server used to collect
-usage information. 
-
-## What is TestBuddy?
-
-TestBuddy is an all in one plugin for the IntelliJ IDEA that helps you write automatic tests for your codebase.
-Specifically, TestBuddy extends your IDE to allow you to design test-suites based on structural and side-effect 
-analysis of your code as well as inspect how your test-suite evolves.
-
-TestBuddy offers multiple functionalities designed to enhance your testing process. 
-Concretely, TestBuddy allows you to:
-
-* Easily duplicate and adapt test-cases
-* Generate testing checklists based on structural and black-box testing
-* Review your code coverage history
-* Get assertion suggestion based on side-effect analysis
-* Trace the production code exercised by tests
-
-TestBuddy is designed with the user in mind. 
-We have strived to create a tool that is intuitive to use and unintrusive. That means no annoying pop-ups while coding, no error messages and no breaking your flow.
-
-
 ## Some background information
-TestBuddy was originally envisioned by the TU Delft Software Engineering Research Group. The project was assigned to 5 Bachelor students at the same university
+TestKnight was originally envisioned by the TU Delft Software Engineering Research Group. The project was assigned to 5 Bachelor students at the same university
 as part of the CSE2000 course. The original version of it was developed within 2 months in a university GitLab instance and in the end the project was migrated
 to GitHub for everyone to see. 
 
@@ -43,15 +73,20 @@ Additionally, the `/documentation` directory includes useful documentation and d
 documents to help you get started with Kotlin and with the IntelliJ SDK.  
 
 ## Running Instructions
-In this section you can find instructions on how to run the different parts of TestBuddy.
+In this section you can find instructions on how to run the different parts of TestKnight.
 
 ### Running the Plugin
-After cloning the repository you can navigate to the `/plugin` directory with your terminal. 
-From there you can run `gradle runIde`, this should open an IntelliJ instance with the plugin
-already installed.
+After cloning the repository you can navigate to the `/plugin` directory. From there you can run: 
 
-Alternatively, after cloning the project you can open it with IntelliJ IDEA and from there you can use the 'Gradle' tab 
-and run options. From the tab you can go to `plugin -> Tasks -> intellij -> runIde`. Otherwise, you can set the run configuration to `Run Plugin`.
+```
+gradle runIde
+```
+
+this should open an IntelliJ instance with the plugin loaded.
+
+#### Running from within IntelliJ
+
+Alternatively, after cloning the project you can open it with IntelliJ IDEA and from there you can use the 'Gradle' tab and run options. From the tab you can go to `plugin -> Tasks -> intellij -> runIde`. Otherwise, you can set the run configuration to `Run Plugin`.
 
 ### Running the Server
 Similarly to above, after cloning the repository you can navigate to the `/server` directory and run `gradle bootRun`.
