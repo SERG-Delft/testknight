@@ -12,7 +12,7 @@ import com.intellij.rt.coverage.data.ProjectData
 import com.testbuddy.exceptions.ProjectNotFoundException
 import com.testbuddy.models.CoverageDiffObject
 
-class CoverageDataService : Disposable {
+class CoverageDataService(val project: Project) : Disposable {
 
     var previousData: ProjectData? = null
     var previousSuite: CoverageSuitesBundle? = null
@@ -83,7 +83,7 @@ class CoverageDataService : Disposable {
      *
      * @return a ProjectData which is null if no coverage suite is selected
      */
-    fun getCurrentSuiteData(project: Project): ProjectData? {
+    fun getCurrentSuiteData(): ProjectData? {
         val covDataManager = CoverageDataManager.getInstance(project)
         val suite = covDataManager.currentSuitesBundle
         return suite.coverageData
@@ -96,7 +96,7 @@ class CoverageDataService : Disposable {
      * 1) covered in the suite associated with the latest run
      * 2) covered in the suite associated with the previous run
      */
-    fun getDiffLines(project: Project) {
+    fun getDiffLines() {
 
         if (currentData == null) return
 

@@ -13,8 +13,6 @@ import org.junit.Test
 
 class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
-    private val checklistService = GenerateTestCaseChecklistService()
-
     @Test
     fun testInit() {
 
@@ -32,6 +30,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testReset() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -54,6 +53,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testAddChecklistMethodOnce() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -77,6 +77,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testAddChecklistMethodTwice() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -101,6 +102,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testAddChecklistClassOnce() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -129,6 +131,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testAddChecklistClassTwice() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -157,6 +160,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testAddChecklistMethodThenClass() {
+
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -187,6 +192,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
     @Test
     fun testAddChecklistClassThenMethod() {
 
+        val checklistService = GenerateTestCaseChecklistService()
+
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
@@ -216,6 +223,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
     @Test
     fun testDeleteClassExistClass() {
 
+        val checklistService = GenerateTestCaseChecklistService()
+
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
@@ -238,6 +247,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteClassExistMethod() {
+
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -262,6 +273,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
     @Test
     fun testDeleteClassNotExists() {
 
+        val checklistService = GenerateTestCaseChecklistService()
+
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
@@ -281,6 +294,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteMethodExist() {
+
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -306,6 +321,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteMethodNonExistClass() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -327,6 +343,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteMethodNonExistMethod() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -353,6 +370,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteItemExists() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -381,6 +399,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteItemNonExists() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -411,6 +430,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteItemTwice() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -439,6 +459,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteItemNonExistsMethod() {
+        val checklistService = GenerateTestCaseChecklistService()
+
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
@@ -466,6 +488,8 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteItemNonExistClass() {
+        val checklistService = GenerateTestCaseChecklistService()
+
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
         val project = this.myFixture.project
@@ -489,6 +513,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteClassTwice() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file
@@ -514,6 +539,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDeleteMethodTwice() {
+        val checklistService = GenerateTestCaseChecklistService()
 
         this.myFixture.configureByFile("/Math2.java")
         val psi = this.myFixture.file

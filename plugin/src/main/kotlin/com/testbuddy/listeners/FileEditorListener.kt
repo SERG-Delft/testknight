@@ -17,7 +17,7 @@ class FileEditorListener(val project: Project) : FileEditorManagerListener {
         val editors = mutableListOf<Editor>()
         source.getEditors(file).forEach { if (it is TextEditor) editors.add(it.editor) }
 
-        project.service<TestTracingService>().refreshHighlights()
+        project.service<TestTracingService>().addHighlights(editors)
         project.service<CoverageHighlighterService>().addHighlights(editors)
     }
 }

@@ -92,5 +92,15 @@ class SettingsService : PersistentStateComponent<SettingsState> {
         fun toColorHex(color: Color): String {
             return ColorUtil.toHex(color)
         }
+
+        fun createTreeDeepCopy(map: MutableMap<String, MutableList<String>>): MutableMap<String, MutableList<String>> {
+            val out = mutableMapOf<String, MutableList<String>>()
+
+            for (item in map) {
+                out[item.key] = item.value.toMutableList() // Creates a copy
+            }
+
+            return out
+        }
     }
 }

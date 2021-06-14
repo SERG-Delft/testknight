@@ -1,21 +1,37 @@
 package com.testbuddy.settings
 
 import com.intellij.ide.BrowserUtil
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.ColorPanel
 import com.intellij.ui.TreeSpeedSearch
 import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.layout.CCFlags
 import com.intellij.ui.layout.panel
 import com.intellij.ui.treeStructure.Tree
+import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.tree.TreeUtil
-import javax.swing.tree.DefaultMutableTreeNode
+import com.testbuddy.actions.settings.AddClassAction
+import com.testbuddy.actions.settings.AddTypeAction
+import com.testbuddy.actions.settings.DeleteElementAction
+import com.testbuddy.actions.settings.EditElementAction
+import com.testbuddy.actions.settings.ResetTreeAction
+import com.testbuddy.models.ParameterSuggestionTreeModel
+import javax.swing.JPanel
+import javax.swing.event.TreeModelEvent
+import javax.swing.event.TreeModelListener
+import javax.swing.tree.TreeSelectionModel
 
 class SettingsComponent {
 
     private var myPanel: DialogPanel
     private val state = SettingsService.instance.state
+    var paramSuggestionModified = false
+    lateinit var paramSuggestionTreeInfo: MutableMap<String, MutableList<String>>
+    lateinit var paramSuggestionTreeModel: ParameterSuggestionTreeModel
 
     lateinit var addedColor: ColorPanel
     lateinit var deletedColor: ColorPanel
@@ -108,32 +124,73 @@ class SettingsComponent {
                     }
                 }
 
-                row("Type Cases") {
+                row("Parameter Suggestions") {
 
                     row {
-                        val panel = JBScrollPane()
-                        val root = DefaultMutableTreeNode("root")
-                        val tree = Tree(root)
+                        val scrollPanel = JBScrollPane()
+                        paramSuggestionTreeInfo = SettingsService.createTreeDeepCopy(
+                            checklistSettings.paramSuggestionMap
+                        )
+                        paramSuggestionTreeModel = ParameterSuggestionTreeModel(paramSuggestionTreeInfo)
+                        paramSuggestionTreeModel.addTreeModelListener(object : TreeModelListener {
+                            override fun treeNodesChanged(e: TreeModelEvent?) {
+                                // Empty
+                            }
+
+                            override fun treeNodesInserted(e: TreeModelEvent?) {
+                                // Empty
+                            }
+
+                            override fun treeNodesRemoved(e: TreeModelEvent?) {
+                                // Empty
+                            }
+                            override fun treeStructureChanged(e: TreeModelEvent?) {
+                                // Gets called whenever any of the operation happens.
+                                if (e?.children != null) {
+                                    // children is null only when we call reload()
+                                    paramSuggestionModified = true
+                                }
+                            }
+                        })
+                        val tree = Tree(paramSuggestionTreeModel)
 
                         tree.isRootVisible = false
                         tree.showsRootHandles = true
-
-                        for (typeCase in checklistSettings.typeCaseMap) {
-                            val dataType = DefaultMutableTreeNode(typeCase.key)
-
-                            for (value in typeCase.value) {
-                                dataType.add(DefaultMutableTreeNode(value))
-                            }
-
-                            root.add(dataType)
-                        }
+                        tree.isEditable = true
+                        tree.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
 
                         TreeUtil.expand(tree, 1)
-                        panel.setViewportView(tree)
+                        scrollPanel.setViewportView(tree)
                         TreeSpeedSearch(tree)
 
-                        // UI component gets generated here
-                        panel()
+                        val actionManager = ActionManager.getInstance()
+                        val actionGroup = DefaultActionGroup("TestListTabActions", false)
+                        val addTypeAction = actionManager.getAction("AddSettingsItem") as AddTypeAction
+                        val addClassAction = actionManager.getAction("AddSettingsClass") as AddClassAction
+                        val deleteAction = actionManager.getAction("DeleteSettingsItem") as DeleteElementAction
+                        val editAction = actionManager.getAction("EditSettingsItem") as EditElementAction
+                        val resetAction = actionManager.getAction("ResetSettingsTree") as ResetTreeAction
+
+                        addTypeAction.init(tree)
+                        addClassAction.init(tree)
+                        deleteAction.init(tree)
+                        editAction.init(tree)
+                        resetAction.init(this@SettingsComponent)
+
+                        actionGroup.add(addClassAction)
+                        actionGroup.add(addTypeAction)
+                        actionGroup.add(deleteAction)
+                        actionGroup.add(editAction)
+                        actionGroup.add(resetAction)
+
+                        val actionToolbar =
+                            actionManager.createActionToolbar("SettingsTreeToolbar", actionGroup, false)
+
+                        val treePanel: JPanel = JBUI.Panels.simplePanel()
+                            .addToCenter(scrollPanel)
+                            .addToLeft(actionToolbar.component)
+
+                        treePanel().constraints(CCFlags.growX)
                     }
                 }
             }

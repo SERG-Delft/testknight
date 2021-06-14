@@ -77,25 +77,25 @@
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="G" keymap="$default"/>
         </action>
 
-        <action id="AddItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="AddItemChecklistAction" class="com.testbuddy.actions.AddItemChecklistAction"
                 text="Add Item"
                 description="Add an item in the tree under the selected method."
                 icon="AllIcons.General.Add">
         </action>
 
-        <action id="EditItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="EditItemChecklistAction" class="com.testbuddy.actions.EditItemChecklistAction"
                 text="Edit Item"
                 description="Edit the selected item in the tree."
                 icon="AllIcons.Actions.EditSource">
         </action>
 
-        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.GenerateTestMethodAction"
                 text="Generate Test Method"
                 description="Generates the Test Method for the selected tree."
                 icon="AllIcons.Nodes.Method">
         </action>
 
-        <action id="DeleteChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="DeleteElementChecklistAction" class="com.testbuddy.actions.DeleteElementChecklistAction"
                 text="Delete Element"
                 description="Deletes the selected element from the tree."
                 icon="AllIcons.Diff.Remove">
@@ -132,6 +132,30 @@
                 class="com.testbuddy.actions.HideTracedTestHighlightsAction"
                 icon="/icons/pluginIcon.svg"
                 text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
+
+        <!---Actions in Settings Panel -->
+        <action id="AddSettingsItem" class="com.testbuddy.actions.settings.AddTypeAction"
+                text="Add Type" description="Adds new Parameter Suggestions Tree type in the settings panel."
+                icon="AllIcons.General.Add">
+        </action>
+        <action id="AddSettingsClass" class="com.testbuddy.actions.settings.AddClassAction"
+                text="Add Class" description="Adds new Parameter Suggestions Tree class in the settings panel."
+                icon="AllIcons.ToolbarDecorator.AddClass">
+        </action>
+        <action id="DeleteSettingsItem" class="com.testbuddy.actions.settings.DeleteElementAction"
+                text="Delete Element" description="Deletes selected Parameter Suggestions Tree element in the settings panel."
+                icon="AllIcons.Diff.Remove">
+
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+        </action>
+        <action id="EditSettingsItem" class="com.testbuddy.actions.settings.EditElementAction"
+                text="Edit Element" description="Edits selected Parameter Suggestions Tree element in the settings panel."
+                icon="AllIcons.Actions.EditSource">
+        </action>
+        <action id="ResetSettingsTree" class="com.testbuddy.actions.settings.ResetTreeAction"
+                text="Reset To Default" description="Resets Parameter Suggestions Tree to default in the settings panel."
+                icon="AllIcons.General.Reset">
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">

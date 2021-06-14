@@ -14,8 +14,6 @@ import org.junit.Test
 
 class CoverageDataServiceTest : BasePlatformTestCase() {
 
-    val service = CoverageDataService()
-
     @Before
     public override fun setUp() {
         super.setUp()
@@ -27,6 +25,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testReassignmentUpdateCoverage() {
+        val service = CoverageDataService(project)
         val currentData = mockk<ProjectData>()
         val currentSuite = mockk<CoverageSuitesBundle>()
         service.currentData = currentData
@@ -43,6 +42,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testBoilerplateSetReturn() {
+        val service = CoverageDataService(project)
 
         val line1 = LineData(
             1,
@@ -71,6 +71,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testNullLinesInClassDataPassedPrevious() {
+        val service = CoverageDataService(project)
 
         // some null lines
         val line0 = null
@@ -110,6 +111,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testFilterByHitsCoveredPreviously() {
+        val service = CoverageDataService(project)
 
         val line0 = LineData(
             0,
@@ -173,6 +175,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testBoilerplateSetReturnNewlyCovered() {
+        val service = CoverageDataService(project)
 
         val line1 = LineData(
             1,
@@ -205,6 +208,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testNullLinesInClassDataPassedNew() {
+        val service = CoverageDataService(project)
 
         // some null lines
         val line0 = null
@@ -247,6 +251,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testFilterByHitsCoveredNewly() {
+        val service = CoverageDataService(project)
 
         // All lines only excludes cases where LineData is null
         // Because LineData can not have negative hits
@@ -316,6 +321,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testNullClassDataPreviousCoverage() {
+        val service = CoverageDataService(project)
         val classData = null
         TestCase.assertEquals(
             service.getLinesCoveredPreviously(classData),
@@ -325,6 +331,7 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testNullClassDataNewCoverage() {
+        val service = CoverageDataService(project)
         val classData = null
         TestCase.assertEquals(
             service.getTotalLinesAndNewlyCoveredLines(classData),
@@ -334,22 +341,24 @@ class CoverageDataServiceTest : BasePlatformTestCase() {
 
     @Test
     fun testPreviousDataNullGetDiffLines() {
+        val service = CoverageDataService(project)
         service.previousData = null
         val obj = CoverageDiffObject(setOf(1, 2, 3), setOf(1, 2, 3), setOf(1, 2, 3))
         val classCoveragesMap = mutableMapOf("PointClass" to obj)
         service.classCoveragesMap = classCoveragesMap
-        service.getDiffLines(project)
+        service.getDiffLines()
         // check that the map hasn't been modified after call
         assertEquals(service.classCoveragesMap, classCoveragesMap)
     }
 
     @Test
     fun testCurrentDataNullGetDiffLines() {
+        val service = CoverageDataService(project)
         service.currentData = null
         val obj = CoverageDiffObject(setOf(1, 2, 3), setOf(1, 2, 3), setOf(1, 2, 3))
         val classCoveragesMap = mutableMapOf("PointClass" to obj)
         service.classCoveragesMap = classCoveragesMap
-        service.getDiffLines(project)
+        service.getDiffLines()
         // check that the map hasn't been modified after call
         assertEquals(service.classCoveragesMap, classCoveragesMap)
     }

@@ -35,7 +35,8 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
         val state = SettingsService.instance.state.coverageSettings
 
         val colorChanged = mySettingsComponent.isColorModified(state)
-        return (colorChanged || super.isModified())
+        val typeCaseTreeChanged = mySettingsComponent.paramSuggestionModified
+        return (typeCaseTreeChanged || colorChanged || super.isModified())
     }
 
     /**
@@ -47,6 +48,13 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
     @Throws(ConfigurationException::class)
     override fun apply() {
         super.apply()
+
+        if (mySettingsComponent.paramSuggestionModified) {
+            state.checklistSettings.paramSuggestionMap =
+                SettingsService.createTreeDeepCopy(mySettingsComponent.paramSuggestionTreeInfo)
+            mySettingsComponent.paramSuggestionModified = false
+        }
+
         mySettingsComponent.applyCoverageColors(state.coverageSettings)
         ServiceManager.getService(GenerateTestCaseChecklistService::class.java).rebuildStrategies()
 
@@ -57,7 +65,7 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
             it.service<CoverageHighlighterService>().rebuildHighlights()
 
             if (!SettingsService.state.coverageSettings.showIntegratedView) {
-                it.service<CoverageHighlighterService>().hideHighlights()
+                it.service<CoverageHighlighterService>().removeHighlights()
             }
 
             if (SettingsService.state.coverageSettings.showIntegratedView) {
@@ -71,9 +79,17 @@ class SettingsConfigurable : BoundConfigurable("TestBuddy") {
      * This method is called on EDT immediately after the form creation or later upon user's request.
      */
     override fun reset() {
-        super.reset()
+        if (mySettingsComponent.paramSuggestionModified) {
+            mySettingsComponent.paramSuggestionTreeInfo.clear()
+            for (item in state.checklistSettings.paramSuggestionMap) {
+                mySettingsComponent.paramSuggestionTreeInfo[item.key] = item.value.toMutableList() // Creates a copy
+            }
+            mySettingsComponent.paramSuggestionModified = false
+            mySettingsComponent.paramSuggestionTreeModel.reload()
+        }
 
         mySettingsComponent.resetCoverageColors(state.coverageSettings)
+        super.reset()
     }
 
     /**
