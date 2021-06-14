@@ -1,9 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiBinaryExpression
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiIfStatement
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.extensions.TestBuddyTestCase
@@ -16,48 +14,47 @@ import org.junit.Test
 
 internal class IfStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
+    private val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
+    private val generationStrategy = IfStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
+
     @Test
     fun testNoCondition() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = IfStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
+        getBasicTestInfo("/BrokenClass.java")
+        val method = getMethodByName("incompleteCondition")
 
-        this.myFixture.configureByFile("/BrokenClass.java")
-        val method = getMethod("incompleteCondition")
         val ifStatement = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
+
         val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(ifStatement!!)
-        TestCase.assertEquals(expected, actual)
-    }
 
-    @Test
-    fun testLiteralCondition() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = IfStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
-
-        this.myFixture.configureByFile("/BrokenClass.java")
-        val method = getMethod("conditionalWithLiteral")
-        val ifStatement = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
-        val expected = emptyList<ConditionChecklistNode>()
-        val actual = generationStrategy.generateChecklist(ifStatement!!)
         TestCase.assertEquals(expected, actual)
     }
 
     @Test
     fun testIfStatementGeneration() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = IfStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
-        this.myFixture.configureByFile("/Person.java")
-        val method = getMethod("setAge")
+
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("setAge")
         val conditional = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
         val condition = PsiTreeUtil.getChildOfType(conditional, PsiBinaryExpression::class.java)
+
         every { conditionGenerationStrategy.generateChecklist(condition!!) } returns emptyList()
         generationStrategy.generateChecklist(conditional!!)
         verify { conditionGenerationStrategy.generateChecklist(condition!!) }
     }
 
-    private fun getMethod(methodName: String): PsiMethod {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
+    @Test
+    fun testLiteralCondition() {
+
+        getBasicTestInfo("/BrokenClass.java")
+
+        val method = getMethodByName("conditionalWithLiteral")
+        val ifStatement = PsiTreeUtil.findChildOfType(method, PsiIfStatement::class.java)
+
+        val expected = emptyList<ConditionChecklistNode>()
+        val actual = generationStrategy.generateChecklist(ifStatement!!)
+
+        TestCase.assertEquals(expected, actual)
     }
 }

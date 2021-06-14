@@ -51,7 +51,6 @@ class UsageDataServiceTest : TestBuddyTestCase() {
         SettingsService.instance.state.telemetrySettings.isEnabled = true
 
         val actions = recordActions()!!
-        val userId = SettingsService.instance.state.userId
 
         val expected = Gson().toJson(UsageData(actions))
         val actual = UsageDataService.instance.usageDataJson()

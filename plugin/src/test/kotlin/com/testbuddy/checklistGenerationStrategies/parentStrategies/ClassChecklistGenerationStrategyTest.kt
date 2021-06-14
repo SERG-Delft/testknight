@@ -1,6 +1,5 @@
 package com.testbuddy.checklistGenerationStrategies.parentStrategies
 
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
@@ -15,27 +14,25 @@ internal class ClassChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
     @Test
     fun testEmptyClass() {
+        val data = getBasicTestInfo("/EmptyClass.java")
         val generator = ClassChecklistGenerationStrategy.create(MethodChecklistGenerationStrategy.create())
-        this.myFixture.configureByFile("/EmptyClass.java")
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+
         val expected = TestingChecklistClassNode(
             "EmtpyClass",
             mutableListOf<TestingChecklistMethodNode>(),
-            testClass!!
+            data.psiClass!!
         )
-        val actual = generator.generateChecklist(testClass)
+        val actual = generator.generateChecklist(data.psiClass!!)
+
         TestCase.assertEquals(expected, actual)
     }
 
     @Test
     fun testClassChecklist() {
+        val data = getBasicTestInfo("/Math.java")
         val methodChecklistGenerationStrategy = mockk<MethodChecklistGenerationStrategy>()
 
-        this.myFixture.configureByFile("/Math.java")
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val methodsInClass = PsiTreeUtil.findChildrenOfType(testClass, PsiMethod::class.java)
+        val methodsInClass = PsiTreeUtil.findChildrenOfType(data.psiClass, PsiMethod::class.java)
 
         every { methodChecklistGenerationStrategy.generateChecklist(methodsInClass.elementAt(0)) } returns
             TestingChecklistMethodNode("add", mutableListOf(), methodsInClass.elementAt(0))
@@ -56,11 +53,11 @@ internal class ClassChecklistGenerationStrategyTest : TestBuddyTestCase() {
         val expected = TestingChecklistClassNode(
             "Math",
             expectedChildren,
-            testClass!!
+            data.psiClass!!
         )
-
         val result =
-            ClassChecklistGenerationStrategy.create(methodChecklistGenerationStrategy).generateChecklist(testClass)
+            ClassChecklistGenerationStrategy.create(methodChecklistGenerationStrategy).generateChecklist(data.psiClass!!)
+
         TestCase.assertEquals(expected, result)
     }
 }
