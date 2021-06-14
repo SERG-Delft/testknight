@@ -67,6 +67,32 @@ class UsageDataControllerIntegrationTest {
         performRequest(path, usageDataDto, status().isBadRequest());
     }
 
+    //suppressed because PMD does not recognise the mockMvc assertion
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @Test
+    public void testNullUserId() throws Exception {
+        usageDataDto.setUserId(null);
+        usageDataDto.setHash(hasher.hash(usageDataDto.toHashString() + "exampleMagicString"));
+        performRequest(path, usageDataDto, status().isBadRequest());
+    }
+
+    //suppressed because PMD does not recognise the mockMvc assertion
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @Test
+    public void testNullActions() throws Exception {
+        usageDataDto.setActionsRecorded(null);
+        usageDataDto.setHash(hasher.hash(usageDataDto.toHashString() + "exampleMagicString"));
+        performRequest(path, usageDataDto, status().isBadRequest());
+    }
+
+    //suppressed because PMD does not recognise the mockMvc assertion
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @Test
+    public void testNullHash() throws Exception {
+        usageDataDto.setHash(null);
+        performRequest(path, usageDataDto, status().isUnauthorized());
+    }
+
 
     /**
      * Turns an Java object to a JSON string.

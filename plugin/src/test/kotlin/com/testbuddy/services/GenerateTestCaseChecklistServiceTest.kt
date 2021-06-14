@@ -90,7 +90,7 @@ internal class GenerateTestCaseChecklistServiceTest : TestBuddyTestCase() {
         val serv = ApplicationManager.getApplication().getService(GenerateTestCaseChecklistService::class.java)
         val psiMethod = data.psiClass!!.findMethodsByName("customType")[0] as PsiMethod
 
-        SettingsService.instance.state.checklistSettings.typeCaseMap["type"] = listOf("a", "aa", "aaa")
+        SettingsService.instance.state.checklistSettings.paramSuggestionMap["type"] = mutableListOf("a", "aa", "aaa")
         serv.rebuildStrategies()
 
         val output = serv.generateMethodChecklist(psiMethod)

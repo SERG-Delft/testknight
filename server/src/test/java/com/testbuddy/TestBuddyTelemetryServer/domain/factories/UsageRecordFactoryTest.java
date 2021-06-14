@@ -2,6 +2,7 @@ package com.testbuddy.TestBuddyTelemetryServer.domain.factories;
 
 import com.testbuddy.TestBuddyTelemetryServer.dataTransferObjects.requests.*;
 import com.testbuddy.TestBuddyTelemetryServer.domain.model.*;
+import com.testbuddy.TestBuddyTelemetryServer.exceptions.*;
 import org.junit.jupiter.api.*;
 
 import java.time.*;
@@ -39,6 +40,30 @@ class UsageRecordFactoryTest {
         usageDataDto.setActionsRecorded(new ArrayList<>());
         List<UsageRecord> actualList = usageRecordFactory.createUsageRecordFromDto(usageDataDto);
         assertEquals(0, actualList.size());
+    }
+
+    @Test
+    public void testNullUserId() {
+        usageDataDto.setUserId(null);
+        assertThrows(NullFieldException.class, () -> {
+            usageRecordFactory.createUsageRecordFromDto(usageDataDto);
+        });
+    }
+
+    @Test
+    public void testNullHash() {
+        usageDataDto.setHash(null);
+        assertThrows(NullFieldException.class, () -> {
+            usageRecordFactory.createUsageRecordFromDto(usageDataDto);
+        });
+    }
+
+    @Test
+    public void testNullActions() {
+        usageDataDto.setActionsRecorded(null);
+        assertThrows(NullFieldException.class, () -> {
+            usageRecordFactory.createUsageRecordFromDto(usageDataDto);
+        });
     }
 
 }

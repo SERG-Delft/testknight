@@ -132,6 +132,30 @@
                 class="com.testbuddy.actions.HideTracedTestHighlightsAction"
                 icon="/icons/pluginIcon.svg"
                 text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
+
+        <!---Actions in Settings Panel -->
+        <action id="AddSettingsItem" class="com.testbuddy.actions.settings.AddTypeAction"
+                text="Add Type" description="Adds new Parameter Suggestions Tree type in the settings panel."
+                icon="AllIcons.General.Add">
+        </action>
+        <action id="AddSettingsClass" class="com.testbuddy.actions.settings.AddClassAction"
+                text="Add Class" description="Adds new Parameter Suggestions Tree class in the settings panel."
+                icon="AllIcons.ToolbarDecorator.AddClass">
+        </action>
+        <action id="DeleteSettingsItem" class="com.testbuddy.actions.settings.DeleteElementAction"
+                text="Delete Element" description="Deletes selected Parameter Suggestions Tree element in the settings panel."
+                icon="AllIcons.Diff.Remove">
+
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+        </action>
+        <action id="EditSettingsItem" class="com.testbuddy.actions.settings.EditElementAction"
+                text="Edit Element" description="Edits selected Parameter Suggestions Tree element in the settings panel."
+                icon="AllIcons.Actions.EditSource">
+        </action>
+        <action id="ResetSettingsTree" class="com.testbuddy.actions.settings.ResetTreeAction"
+                text="Reset To Default" description="Resets Parameter Suggestions Tree to default in the settings panel."
+                icon="AllIcons.General.Reset">
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
