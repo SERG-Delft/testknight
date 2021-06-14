@@ -1,9 +1,7 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.branchingStatements
 
 import com.intellij.psi.PsiBinaryExpression
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiConditionalExpression
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
 import com.testbuddy.extensions.TestBuddyTestCase
@@ -16,48 +14,44 @@ import org.junit.Test
 
 internal class ConditionalExpressionChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
-    @Test
-    fun testMissingConditionReturnsEmptyChecklist() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = ConditionalExpressionChecklistGenerationStrategy.create(conditionGenerationStrategy)
-
-        this.myFixture.configureByFile("/BrokenTernary.java")
-        val method = getMethod("incompleteConditionalExpression")
-        val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
-        val expected = emptyList<ConditionChecklistNode>()
-        val actual = generationStrategy.generateChecklist(conditionalExpression!!)
-        TestCase.assertEquals(expected, actual)
-    }
-
-    private fun getMethod(methodName: String): PsiMethod {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
-    }
+    private val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
+    private val generationStrategy = ConditionalExpressionChecklistGenerationStrategy.create(conditionGenerationStrategy)
 
     @Test
     fun testLiteralCondition() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = ConditionalExpressionChecklistGenerationStrategy.create(conditionGenerationStrategy)
-
-        this.myFixture.configureByFile("/BrokenTernary.java")
-        val method = getMethod("conditionalExpressionWithLiteral")
+        getBasicTestInfo("/BrokenTernary.java")
+        val method = getMethodByName("conditionalExpressionWithLiteral")
         val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
+
         val expected = emptyList<ConditionChecklistNode>()
         val actual = generationStrategy.generateChecklist(conditionalExpression!!)
+
         TestCase.assertEquals(expected, actual)
     }
 
     @Test
     fun testTernaryOperatorGeneration() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = ConditionalExpressionChecklistGenerationStrategy.create(conditionGenerationStrategy)
-        this.myFixture.configureByFile("/Person.java")
-        val method = getMethod("setAgeConditional")
+        getBasicTestInfo("/Person.java")
+        val method = getMethodByName("setAgeConditional")
+
         val conditional = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
         val condition = PsiTreeUtil.getChildOfType(conditional, PsiBinaryExpression::class.java)
+
         every { conditionGenerationStrategy.generateChecklist(condition!!) } returns emptyList()
         generationStrategy.generateChecklist(conditional!!)
         verify { conditionGenerationStrategy.generateChecklist(condition!!) }
+    }
+
+    @Test
+    fun testMissingConditionReturnsEmptyChecklist() {
+        val data = getBasicTestInfo("/BrokenTernary.java")
+        val method = getMethodByName("incompleteConditionalExpression")
+
+        val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)
+
+        val expected = emptyList<ConditionChecklistNode>()
+        val actual = generationStrategy.generateChecklist(conditionalExpression!!)
+
+        TestCase.assertEquals(expected, actual)
     }
 }

@@ -1,13 +1,10 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies
 
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiParameter
 import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.ParameterChecklistNode
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
 internal class ParameterListChecklistGenerationStrategyTest : TestBuddyTestCase() {
@@ -35,15 +32,11 @@ internal class ParameterListChecklistGenerationStrategyTest : TestBuddyTestCase(
 
     private val generationStrategy = ParameterListChecklistGenerationStrategy.create(typeCaseMap)
 
-    @Before
-    public override fun setUp() {
-        super.setUp()
-        this.myFixture.configureByFile("/Person.java")
-    }
-
     @Test
     fun testKnownTypeParameters() {
-        val method = getMethod("getYearBorn")
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("getYearBorn")
         val parameter = PsiTreeUtil.findChildrenOfType(method!!, PsiParameter::class.java).elementAt(0)
         val expected = listOf(
             ParameterChecklistNode("Test method parameter \"currentYear\" equal to: 1", parameter, "currentYear", "1"),
@@ -68,21 +61,20 @@ internal class ParameterListChecklistGenerationStrategyTest : TestBuddyTestCase(
             )
         )
         val actual = generationStrategy.generateChecklistForParameter(parameter)
+
         TestCase.assertEquals(expected, actual)
     }
 
     @Test
     fun testUnknownTypeParameters() {
-        val method = getMethod("marryTo")
+        getBasicTestInfo("/Person.java")
+
+        val method = getMethodByName("marryTo")
         val parameter = PsiTreeUtil.findChildrenOfType(method!!, PsiParameter::class.java).elementAt(0)
+
         val expected = emptyList<ParameterChecklistNode>()
         val actual = generationStrategy.generateChecklistForParameter(parameter)
-        TestCase.assertEquals(expected, actual)
-    }
 
-    private fun getMethod(methodName: String): PsiMethod {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
+        TestCase.assertEquals(expected, actual)
     }
 }

@@ -6,6 +6,7 @@ import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBMenuItem
 import com.intellij.ui.CheckedTreeNode
+import com.intellij.ui.treeStructure.Tree
 import com.testbuddy.models.ChecklistUserObject
 import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
@@ -16,8 +17,14 @@ import com.testbuddy.services.TestMethodGenerationService
 import com.testbuddy.services.UsageDataService
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import javax.swing.tree.TreePath
 
-class ModifyChecklistAction(private val node: CheckedTreeNode, private val project: Project) : ActionListener {
+class ModifyChecklistAction(
+    private val node: CheckedTreeNode,
+    private val tree: Tree,
+    private val path: TreePath,
+    private val project: Project
+) : ActionListener {
 
     override fun actionPerformed(e: ActionEvent) {
 
@@ -26,7 +33,7 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
                 project.service<ChecklistTreeService>().deleteElement(node)
             }
             if ((e.source as JBMenuItem).text == "Generate Test Method") generateTestMethod()
-            if ((e.source as JBMenuItem).text == "Add item") addItem()
+            if ((e.source as JBMenuItem).text == "Add item") addItem(tree, path)
         }
     }
 
@@ -34,7 +41,7 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
      * Add a new checklist item.
      *
      */
-    private fun addItem() {
+    private fun addItem(tree: Tree, path: TreePath) {
 
         val service = project.service<ChecklistTreeService>()
 
@@ -57,6 +64,10 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
         val listMethod: MutableList<TestingChecklistMethodNode> = mutableListOf(methodNode)
         val classNode = TestingChecklistClassNode(descriptionClass, listMethod, elementClass)
         service.addChecklist(classNode)
+
+        val newChild = tree.model.getChild(node, tree.model.getChildCount(node) - 1)
+        val selectionPath = path.pathByAddingChild(newChild)
+        tree.startEditingAtPath(selectionPath)
     }
 
     /**
@@ -69,7 +80,7 @@ class ModifyChecklistAction(private val node: CheckedTreeNode, private val proje
         val generateMethod = project.service<TestMethodGenerationService>()
 
         generateMethod.generateTestMethod(
-            project, editor,
+            editor,
             (node.userObject as ChecklistUserObject)
                 .checklistNode as TestingChecklistLeafNode
         )

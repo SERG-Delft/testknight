@@ -10,6 +10,7 @@
     <depends>Coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Project services -->
         <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.DuplicateTestsService"/>
         <projectService serviceImplementation="com.testbuddy.services.MethodAnalyzerService"/>
@@ -25,30 +26,58 @@
         <projectService serviceImplementation="com.testbuddy.services.ChecklistTreePersistent"/>
         <projectService serviceImplementation="com.testbuddy.services.ExceptionHandlerService"/>
 
+        <!-- Application services -->
         <applicationService serviceImplementation="com.testbuddy.services.GenerateTestCaseChecklistService"/>
         <applicationService serviceImplementation="com.testbuddy.services.UsageDataService"/>
-        
-        <testStatusListener implementation="com.testbuddy.listeners.TestLoggingListener"/>
-    </extensions>
-
-    <!-- Extension point for Main User Interface-->
-
-    <extensions defaultExtensionNs="com.intellij">
-
-        <toolWindow id="TestBuddy" secondary="false" icon="/icons/pluginIcon.svg" anchor="right"
-                    factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
-
-        <!--        TestBuddy Settings-->
-        <applicationConfigurable parentId="tools" instance="com.testbuddy.settings.SettingsConfigurable"
-                                 id="SettingsConfigurable"
-                                 displayName="TestBuddy"/>
         <applicationService serviceImplementation="com.testbuddy.settings.SettingsService"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
 
-    </extensions>
+        <!-- Tool Window -->
+        <toolWindow id="TestBuddy"
+                    secondary="false"
+                    icon="/icons/pluginIcon.svg"
+                    anchor="right"
+                    factoryClass="com.testbuddy.views.UserInterfaceFactory"/>
 
+        <!-- Settings panel -->
+        <applicationConfigurable parentId="tools"
+                                 instance="com.testbuddy.settings.SettingsConfigurable"
+                                 id="SettingsConfigurable"
+                                 displayName="TestBuddy"/>
+
+        <!-- Welcome page -->
+        <postStartupActivity implementation="com.testbuddy.startup.WelcomePage"/>
+
+        <!-- Gutter icons-->
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.actions.ChecklistClassLineMarkerProvider"/>
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.testbuddy.actions.ChecklistMethodLineMarkerProvider"/>
+
+        <!-- Test Listener -->
+        <testStatusListener implementation="com.testbuddy.listeners.TestLoggingListener"/>
+
+        <!-- Notifications -->
+        <notification.parentGroup id="testbuddy.notifications"
+                                  title="TestBuddy notifications"/>
+
+        <notification.group parentId="testbuddy.notifications"
+                            groupId="testbuddy.notifications.toolWindow"/>
+
+        <!-- Intentions -->
+        <intentionAction>
+            <className>com.testbuddy.actions.AssertionSuggestionsAction</className>
+            <category>TestBuddy intentions</category>
+        </intentionAction>
+
+        <intentionAction>
+            <className>com.testbuddy.actions.TraceTestAction</className>
+            <category>TestBuddy intentions</category>
+        </intentionAction>
+    </extensions>
 
     <actions>
         <!---Actions in TestList tab -->
@@ -64,6 +93,12 @@
                 icon="AllIcons.General.Remove">
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="D" keymap="$default"/>
         </action>
+        <action id="TestListTraceabilityAction" class="com.testbuddy.actions.testcases.TestListTraceabilityAction"
+                text="Traceability Test Cases UI"
+                description="Show covered lines per test."
+                icon="AllIcons.RunConfigurations.TrackCoverage">
+            <keyboard-shortcut first-keystroke="control alt C" second-keystroke="T" keymap="$default"/>
+        </action>
         <!---Actions in CheckList tab -->
         <action id="ChecklistAction" class="com.testbuddy.actions.LoadChecklistAction"
                 text="Load Checklist for Class from Current File" description="Adds a new template test case."
@@ -77,25 +112,25 @@
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="G" keymap="$default"/>
         </action>
 
-        <action id="AddItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="AddItemChecklistAction" class="com.testbuddy.actions.AddItemChecklistAction"
                 text="Add Item"
                 description="Add an item in the tree under the selected method."
                 icon="AllIcons.General.Add">
         </action>
 
-        <action id="EditItemChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="EditItemChecklistAction" class="com.testbuddy.actions.EditItemChecklistAction"
                 text="Edit Item"
                 description="Edit the selected item in the tree."
                 icon="AllIcons.Actions.EditSource">
         </action>
 
-        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="GenerateMethodChecklistAction" class="com.testbuddy.actions.GenerateTestMethodAction"
                 text="Generate Test Method"
                 description="Generates the Test Method for the selected tree."
                 icon="AllIcons.Nodes.Method">
         </action>
 
-        <action id="DeleteChecklistAction" class="com.testbuddy.actions.ClearChecklistAction"
+        <action id="DeleteElementChecklistAction" class="com.testbuddy.actions.DeleteElementChecklistAction"
                 text="Delete Element"
                 description="Deletes the selected element from the tree."
                 icon="AllIcons.Diff.Remove">
@@ -132,47 +167,38 @@
                 class="com.testbuddy.actions.HideTracedTestHighlightsAction"
                 icon="/icons/pluginIcon.svg"
                 text="Hide Traced Test coverage" description="Hide Traced Test coverage"/>
+
+        <!---Actions in Settings Panel -->
+        <action id="AddSettingsItem" class="com.testbuddy.actions.settings.AddTypeAction"
+                text="Add Type" description="Adds new Parameter Suggestions Tree type in the settings panel."
+                icon="AllIcons.General.Add">
+        </action>
+        <action id="AddSettingsClass" class="com.testbuddy.actions.settings.AddClassAction"
+                text="Add Class" description="Adds new Parameter Suggestions Tree class in the settings panel."
+                icon="AllIcons.ToolbarDecorator.AddClass">
+        </action>
+        <action id="DeleteSettingsItem" class="com.testbuddy.actions.settings.DeleteElementAction"
+                text="Delete Element" description="Deletes selected Parameter Suggestions Tree element in the settings panel."
+                icon="AllIcons.Diff.Remove">
+
+            <keyboard-shortcut first-keystroke="DELETE" keymap="$default"/>
+        </action>
+        <action id="EditSettingsItem" class="com.testbuddy.actions.settings.EditElementAction"
+                text="Edit Element" description="Edits selected Parameter Suggestions Tree element in the settings panel."
+                icon="AllIcons.Actions.EditSource">
+        </action>
+        <action id="ResetSettingsTree" class="com.testbuddy.actions.settings.ResetTreeAction"
+                text="Reset To Default" description="Resets Parameter Suggestions Tree to default in the settings panel."
+                icon="AllIcons.General.Reset">
+        </action>
     </actions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <intentionAction>
-            <className>com.testbuddy.actions.AssertionSuggestionsAction</className>
-            <category>TestBuddy intentions</category>
-
-        </intentionAction>
-
-        <intentionAction>
-            <className>com.testbuddy.actions.TraceTestAction</className>
-            <category>TestBuddy intentions</category>
-        </intentionAction>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <notification.parentGroup
-                id="testbuddy.notifications"
-                title="TestBuddy notifications"/>
-
-        <notification.group
-                parentId="testbuddy.notifications"
-                groupId="testbuddy.notifications.toolWindow"/>
-    </extensions>
-
 
     <actions>
-        <action id="TestAction" class="com.testbuddy.actions.TestAction" text="Test Action"
+        <action id="TestAction"
+                class="com.testbuddy.actions.TestAction"
+                text="Test Action"
                 icon="/icons/pluginIcon.svg"/>
     </actions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testbuddy.actions.ChecklistClassLineMarkerProvider"
-        />
-
-        <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testbuddy.actions.ChecklistMethodLineMarkerProvider"
-        />
-
-    </extensions>
 
     <projectListeners>
         <listener class="com.testbuddy.listeners.InitializationListener"
@@ -184,9 +210,5 @@
         <listener class="com.testbuddy.listeners.AppClosedListener"
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </projectListeners>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <postStartupActivity implementation="com.testbuddy.startup.WelcomePage"/>
-    </extensions>
 
 </idea-plugin>

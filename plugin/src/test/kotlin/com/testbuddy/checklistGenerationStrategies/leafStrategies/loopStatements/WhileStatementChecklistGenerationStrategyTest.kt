@@ -1,69 +1,54 @@
 package com.testbuddy.checklistGenerationStrategies.leafStrategies.loopStatements
 
 import com.intellij.psi.PsiBinaryExpression
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiWhileStatement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.testbuddy.checklistGenerationStrategies.leafStrategies.ConditionChecklistGenerationStrategy
+import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
-import org.junit.Before
 import org.junit.Test
 
-internal class WhileStatementChecklistGenerationStrategyTest : BasePlatformTestCase() {
+internal class WhileStatementChecklistGenerationStrategyTest : TestBuddyTestCase() {
 
-    @Before
-    public override fun setUp() {
-        super.setUp()
-    }
-
-    public override fun getTestDataPath(): String {
-        return "testdata"
-    }
-
-    private fun getMethod(methodName: String): PsiMethod {
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        return testClass!!.findMethodsByName(methodName)[0] as PsiMethod
-    }
+    private val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
+    private val generationStrategy = WhileStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
 
     @Test
     fun testMissingConditionReturnsEmptyList() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = WhileStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
+        getBasicTestInfo("/SimpleArray.java")
 
-        this.myFixture.configureByFile("/SimpleArray.java")
-        val method = getMethod("brokenWhile")
+        val method = getMethodByName("brokenWhile")
         val whileStatement = PsiTreeUtil.findChildOfType(method, PsiWhileStatement::class.java)
+
         val expected = emptyList<TestingChecklistLeafNode>()
         val actual = generationStrategy.generateChecklist(whileStatement!!)
+
         TestCase.assertEquals(expected, actual)
     }
 
     @Test
     fun testWhileChecklistReturnsOnlyOneItem() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = WhileStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
-        this.myFixture.configureByFile("/SimpleArray.java")
-        val method = getMethod("incrementByOneWhile")
+        getBasicTestInfo("/SimpleArray.java")
+
+        val method = getMethodByName("incrementByOneWhile")
         val whileStatement = PsiTreeUtil.findChildOfType(method, PsiWhileStatement::class.java)
         val condition = PsiTreeUtil.getChildOfType(whileStatement, PsiBinaryExpression::class.java)
+
         every { conditionGenerationStrategy.generateChecklist(condition!!) } returns emptyList()
         TestCase.assertTrue(generationStrategy.generateChecklist(whileStatement!!).size == 1)
     }
 
     @Test
     fun testWhileChecklistCorrectDescription() {
-        val conditionGenerationStrategy = mockk<ConditionChecklistGenerationStrategy>()
-        val generationStrategy = WhileStatementChecklistGenerationStrategy.create(conditionGenerationStrategy)
-        this.myFixture.configureByFile("/SimpleArray.java")
-        val method = getMethod("incrementByOneWhile")
+        getBasicTestInfo("/SimpleArray.java")
+
+        val method = getMethodByName("incrementByOneWhile")
         val whileStatement = PsiTreeUtil.findChildOfType(method, PsiWhileStatement::class.java)
         val condition = PsiTreeUtil.getChildOfType(whileStatement, PsiBinaryExpression::class.java)
+
         every { conditionGenerationStrategy.generateChecklist(condition!!) } returns emptyList()
         TestCase.assertTrue(
             generationStrategy.generateChecklist(whileStatement!!)

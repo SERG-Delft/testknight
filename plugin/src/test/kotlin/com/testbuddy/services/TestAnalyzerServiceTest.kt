@@ -1,7 +1,5 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiClass
-import com.intellij.psi.util.PsiTreeUtil
 import com.testbuddy.extensions.TestBuddyTestCase
 import junit.framework.TestCase
 import org.junit.Test
@@ -10,25 +8,22 @@ internal class TestAnalyzerServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testIsTestClassTrue() {
-        this.myFixture.configureByFile("/PointTest.java")
+        val data = getBasicTestInfo("/PointTest.java")
         val testAnalyzerService = TestAnalyzerService()
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        TestCase.assertTrue(testAnalyzerService.isTestClass(testClass))
+        TestCase.assertTrue(testAnalyzerService.isTestClass(data.psiClass!!))
     }
 
     @Test
     fun testIsTestClassFalse() {
-        this.myFixture.configureByFile("/Person.java")
+        val data = getBasicTestInfo("/Person.java")
         val testAnalyzerService = TestAnalyzerService()
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        TestCase.assertFalse(testAnalyzerService.isTestClass(testClass))
+        TestCase.assertFalse(testAnalyzerService.isTestClass(data.psiClass!!))
     }
 
     @Test
     fun testIsTestClassEmptyClass() {
-        this.myFixture.configureByFile("/EmptyClass.java")
+        val data = getBasicTestInfo("/EmptyClass.java")
         val testAnalyzerService = TestAnalyzerService()
-        val testClass = PsiTreeUtil.findChildOfType(myFixture.file, PsiClass::class.java)!!
-        TestCase.assertFalse(testAnalyzerService.isTestClass(testClass))
+        TestCase.assertFalse(testAnalyzerService.isTestClass(data.psiClass!!))
     }
 }

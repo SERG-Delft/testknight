@@ -94,27 +94,31 @@ internal class ConditionChecklistGenerationStrategyTest : TestBuddyTestCase() {
         val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
+
         val expected = listOf(
             ConditionChecklistNode("Test where \"age <= 0\" is true", condition!!),
             ConditionChecklistNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
+
         TestCase.assertEquals(expected, results)
     }
 
     @Test
     fun testCreationFromValidString() {
+        val data = getBasicTestInfo("Person.java")
+
         val strategy = ConditionChecklistGenerationStrategy.createFromString("BRANCH")
-        this.myFixture.configureByFile("/Person.java")
-        val psi = this.myFixture.file
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
+        val testClass = PsiTreeUtil.findChildOfType(data.psiFile, PsiClass::class.java)
         val testMethod = testClass!!.findMethodsByName("setAge")[0] as PsiMethod
         val condition = PsiTreeUtil.findChildOfType(testMethod, PsiBinaryExpression::class.java)
+
         val expected = listOf(
             ConditionChecklistNode("Test where \"age <= 0\" is true", condition!!),
             ConditionChecklistNode("Test where \"age <= 0\" is false", condition!!),
         )
         val results = strategy.generateChecklist(condition!!)
+
         TestCase.assertEquals(expected, results)
     }
 
@@ -131,10 +135,9 @@ internal class ConditionChecklistGenerationStrategyTest : TestBuddyTestCase() {
     fun testBindingsToStringSimple() {
         val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
         val bindings = strategy.TestCaseBindings(mapOf("A" to true, "B" to false))
-
         val assignments = mapOf("A" to "a", "B" to "b")
-
         val desc = bindings.getDescription(assignments)
+
         assertEquals("Test where \"a\" is true, \"b\" is false", desc)
     }
 
@@ -142,10 +145,9 @@ internal class ConditionChecklistGenerationStrategyTest : TestBuddyTestCase() {
     fun testBindingsToStringSingle() {
         val strategy = ConditionChecklistGenerationStrategy.createFromString("MC/DC")
         val bindings = strategy.TestCaseBindings(mapOf("A" to true))
-
         val assignments = mapOf("A" to "a")
-
         val desc = bindings.getDescription(assignments)
+
         assertEquals("Test where \"a\" is true", desc)
     }
 }

@@ -43,7 +43,7 @@ class ParameterListChecklistGenerationStrategy private constructor(
             .getService(SettingsService::class.java)
             .state
             .checklistSettings
-            .typeCaseMap
+            .paramSuggestionMap
     }
 
     /**

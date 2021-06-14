@@ -14,7 +14,12 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.ui.table.JBTable
 import com.intellij.ui.treeStructure.Tree
+import com.testbuddy.actions.AddItemChecklistAction
+import com.testbuddy.actions.DeleteElementChecklistAction
+import com.testbuddy.actions.EditItemChecklistAction
+import com.testbuddy.actions.GenerateTestMethodAction
 import com.testbuddy.actions.ShowCoverageDiffAction
+import com.testbuddy.actions.testcases.TestListTraceabilityAction
 import com.testbuddy.listeners.CheckListKeyboardListener
 import com.testbuddy.listeners.CheckedNodeListener
 import com.testbuddy.listeners.ChecklistMouseListener
@@ -22,6 +27,7 @@ import com.testbuddy.listeners.ChecklistSelectionListener
 import com.testbuddy.listeners.PsiTreeListener
 import com.testbuddy.listeners.TestListKeyboardListener
 import com.testbuddy.listeners.TestListMouseListener
+import com.testbuddy.listeners.TestListSelectionListener
 import com.testbuddy.services.ChecklistTreeService
 import com.testbuddy.services.LoadTestsService
 import com.testbuddy.utilities.UserInterfaceHelper
@@ -62,10 +68,14 @@ class UserInterface(val project: Project) {
         actionGroup.add(actionManager.getAction("ChecklistAction"))
         actionGroup.add(actionManager.getAction("ClearChecklistAction"))
         actionGroup.addSeparator()
-        actionGroup.add(actionManager.getAction("DeleteChecklistAction"))
-        actionGroup.add(actionManager.getAction("AddItemChecklistAction"))
-        actionGroup.add(actionManager.getAction("EditItemChecklistAction"))
-        actionGroup.add(actionManager.getAction("GenerateMethodChecklistAction"))
+        val deleteElement = actionManager.getAction("DeleteElementChecklistAction")
+        val generateTestMethod = actionManager.getAction("GenerateMethodChecklistAction")
+        val addItem = actionManager.getAction("AddItemChecklistAction")
+        val editItem = actionManager.getAction("EditItemChecklistAction")
+        actionGroup.add(deleteElement)
+        actionGroup.add(addItem)
+        actionGroup.add(editItem)
+        actionGroup.add(generateTestMethod)
         val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
@@ -75,6 +85,10 @@ class UserInterface(val project: Project) {
 
         service.initUiTree()
         val checkListTree = service.getUiTree()
+        (deleteElement as DeleteElementChecklistAction).setTree(checkListTree)
+        (generateTestMethod as GenerateTestMethodAction).setTree(checkListTree)
+        (addItem as AddItemChecklistAction).setTree(checkListTree)
+        (editItem as EditItemChecklistAction).setTree(checkListTree)
 
         // checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         val mouseListener = ChecklistMouseListener(checkListTree, project)
@@ -111,6 +125,9 @@ class UserInterface(val project: Project) {
         val actionGroup = DefaultActionGroup("TestListTabActions", false)
         actionGroup.add(actionManager.getAction("LoadTestAction"))
         actionGroup.add(actionManager.getAction("ClearTestAction"))
+        actionGroup.addSeparator()
+        val traceabilityAction = actionManager.getAction("TestListTraceabilityAction")
+        actionGroup.add(traceabilityAction)
         val actionToolbar = actionManager.createActionToolbar("TestListToolbar", actionGroup, true)
         toolWindowPanel.toolbar = actionToolbar.component
 
@@ -130,6 +147,14 @@ class UserInterface(val project: Project) {
         val keyboardListener = TestListKeyboardListener(testCaseTree!!, project)
         mouseListener.installOn(testCaseTree!!)
         testCaseTree!!.addKeyListener(keyboardListener)
+        testCaseTree!!.addTreeSelectionListener(
+            TestListSelectionListener(
+                project,
+                traceabilityAction as TestListTraceabilityAction
+            )
+        )
+
+        traceabilityAction.setTree(testCaseTree!!)
 
         panel.setViewportView(testCaseTree)
         toolWindowPanel.setContent(panel)

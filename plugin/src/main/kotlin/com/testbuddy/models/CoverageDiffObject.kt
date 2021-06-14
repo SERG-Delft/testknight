@@ -2,8 +2,10 @@ package com.testbuddy.models
 
 import com.intellij.openapi.vfs.VirtualFile
 
+@Suppress("LongParameterList")
 class CoverageDiffObject(
-    val allLines: Set<Int> = emptySet(),
+    val allLinesPrev: Set<Int> = emptySet(),
+    val allLinesNow: Set<Int> = emptySet(),
     val coveredPrev: Set<Int> = emptySet(),
     val coveredNow: Set<Int> = emptySet(),
     var prevStamp: Long = 0,
@@ -20,6 +22,6 @@ class CoverageDiffObject(
         linesNewlyRemoved = coveredPrev - coveredNow
         linesNewlyAdded = coveredNow - coveredPrev
         linesCoveredInBoth = coveredPrev.intersect(coveredNow)
-        linesNotCovered = (allLines - coveredPrev).intersect(allLines - coveredNow)
+        linesNotCovered = (allLinesNow - coveredPrev).intersect(allLinesNow - coveredNow)
     }
 }

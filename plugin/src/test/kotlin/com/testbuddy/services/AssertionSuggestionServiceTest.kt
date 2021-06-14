@@ -1,6 +1,5 @@
 package com.testbuddy.services
 
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
@@ -9,15 +8,13 @@ import org.junit.Test
 
 internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
 
+    val service = AssertionSuggestionService()
+
     @Test
     fun testGetAssertionsWithSideEffects() {
-        this.myFixture.configureByFile("/MixedTestAndNoTestMethods.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
+        val data = getBasicTestInfo("/MixedTestAndNoTestMethods.java")
 
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("testMethod")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("testMethod")[0] as PsiMethod
         val methodUnderTestCall = PsiTreeUtil.findChildOfType(testMethod!!, PsiMethodCallExpression::class.java)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
         this.myFixture.checkResultByFile(
@@ -26,30 +23,10 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
     }
 
     @Test
-    fun testGetAssertionsOnReturnType() {
-        this.myFixture.configureByFile("/MixedTestAndNoTestMethods.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
-
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("test")[0] as PsiMethod
-        val methodUnderTestCall = PsiTreeUtil.findChildOfType(testMethod!!, PsiMethodCallExpression::class.java)
-        service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
-        this.myFixture.checkResultByFile(
-            "/expected/AssertionSuggestionServiceTest.testGetAssertionsOnReturnType.java"
-        )
-    }
-
-    @Test
     fun testGetAssertionsReturnsNothing() {
-        this.myFixture.configureByFile("/MixedTestAndNoTestMethods.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
+        val data = getBasicTestInfo("/MixedTestAndNoTestMethods.java")
 
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("test")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("test")[0] as PsiMethod
         val methodUnderTestCall =
             PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(1)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
@@ -59,31 +36,22 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
     }
 
     @Test
-    fun testSetSpouseAssertions() {
-        this.myFixture.configureByFile("/PersonMixed.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
+    fun testGetAssertionsOnReturnType() {
+        val data = getBasicTestInfo("/MixedTestAndNoTestMethods.java")
 
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("testSetSpouse")[0] as PsiMethod
-        val methodUnderTestCall =
-            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
+        val testMethod = data.psiClass!!.findMethodsByName("test")[0] as PsiMethod
+        val methodUnderTestCall = PsiTreeUtil.findChildOfType(testMethod!!, PsiMethodCallExpression::class.java)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
         this.myFixture.checkResultByFile(
-            "/expected/PersonMixed.testSetSpouse.java"
+            "/expected/AssertionSuggestionServiceTest.testGetAssertionsOnReturnType.java"
         )
     }
 
     @Test
     fun testDijkstraTest() {
-        this.myFixture.configureByFile("/Dijkstra.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
+        val data = getBasicTestInfo("/Dijkstra.java")
 
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("testDijkstra")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("testDijkstra")[0] as PsiMethod
         val methodUnderTestCall =
             PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
@@ -93,14 +61,23 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
     }
 
     @Test
-    fun testReferenceChangedAssertions() {
-        this.myFixture.configureByFile("/PersonMixed.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
+    fun testSetSpouseAssertions() {
+        val data = getBasicTestInfo("/PersonMixed.java")
 
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("testMarryToReferenceChanged")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("testSetSpouse")[0] as PsiMethod
+        val methodUnderTestCall =
+            PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
+        service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
+        this.myFixture.checkResultByFile(
+            "/expected/PersonMixed.testSetSpouse.java"
+        )
+    }
+
+    @Test
+    fun testReferenceChangedAssertions() {
+        val data = getBasicTestInfo("/PersonMixed.java")
+
+        val testMethod = data.psiClass!!.findMethodsByName("testMarryToReferenceChanged")[0] as PsiMethod
         val methodUnderTestCall =
             PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
@@ -111,13 +88,9 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testDoubleShadowingAssertions() {
-        this.myFixture.configureByFile("/PersonMixed.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
+        val data = getBasicTestInfo("/PersonMixed.java")
 
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("testMarryToDoubleShadowing")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("testMarryToDoubleShadowing")[0] as PsiMethod
         val methodUnderTestCall =
             PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
@@ -128,13 +101,9 @@ internal class AssertionSuggestionServiceTest : TestBuddyTestCase() {
 
     @Test
     fun testParameterFieldAffectedAssertions() {
-        this.myFixture.configureByFile("/PersonMixed.java")
-        val psi = this.myFixture.file
-        val project = this.myFixture.project
+        val data = getBasicTestInfo("/PersonMixed.java")
 
-        val service = AssertionSuggestionService()
-        val testClass = PsiTreeUtil.findChildOfType(psi, PsiClass::class.java)
-        val testMethod = testClass!!.findMethodsByName("testMarryToParameterFieldAffected")[0] as PsiMethod
+        val testMethod = data.psiClass!!.findMethodsByName("testMarryToParameterFieldAffected")[0] as PsiMethod
         val methodUnderTestCall =
             PsiTreeUtil.findChildrenOfType(testMethod!!, PsiMethodCallExpression::class.java).elementAt(0)
         service.appendAssertionsAsComments(testMethod, methodUnderTestCall!!, project)
