@@ -8,6 +8,6 @@ import com.testbuddy.services.CoverageHighlighterService
 class HideDiffCovHighlights : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        e.project?.service<CoverageHighlighterService>()?.hideHighlights()
+        e.project?.service<CoverageHighlighterService>()?.removeHighlights()
     }
 }

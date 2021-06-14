@@ -25,8 +25,10 @@ public class UsageDataDto implements RequestDto {
     public String toHashString() {
         StringBuilder builder = new StringBuilder();
         builder.append(userId);
-        for (ActionEventDto actionEventDto : actionsRecorded) {
-            builder.append(actionEventDto.toHashString());
+        if (actionsRecorded != null) {
+            for (ActionEventDto actionEventDto : actionsRecorded) {
+                builder.append(actionEventDto.toHashString());
+            }
         }
         return builder.toString();
     }

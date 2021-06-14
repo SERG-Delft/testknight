@@ -17,6 +17,9 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.refactoring.suggested.startOffset
+import com.testbuddy.exceptions.CorruptedTraceFileException
+import com.testbuddy.exceptions.TraceFileNotFoundException
+import com.testbuddy.services.ExceptionHandlerService
 import com.testbuddy.services.TestAnalyzerService
 import com.testbuddy.services.TestTracingService
 import com.testbuddy.services.UsageDataService
@@ -64,8 +67,15 @@ class TraceTestAction : PsiElementBaseIntentionAction(), IntentionAction, Iconab
         // highlight the data
         val testName = "${parentClass.name},${parentMethod.name}"
 
-        project.service<TestTracingService>().highlightTest(testName)
-        // try catch for the  NoTestCoverageDataException no necessary
+        try {
+            project.service<TestTracingService>().highlightTest(testName)
+        } catch (ex: TraceFileNotFoundException) {
+            project.service<ExceptionHandlerService>().notify(ex)
+            return
+        } catch (ex: CorruptedTraceFileException) {
+            project.service<ExceptionHandlerService>().notify(ex)
+            return
+        }
 
         // get method declaration information
         val methodDeclaration = methodCall.resolveMethod()
