@@ -13,7 +13,10 @@ import javax.swing.event.TreeSelectionEvent
 import javax.swing.event.TreeSelectionListener
 import javax.swing.tree.DefaultMutableTreeNode
 
-class TestListSelectionListener(private val project: Project, private val traceabilityButton: TestListTraceabilityAction) : TreeSelectionListener {
+class TestListSelectionListener(
+    private val project: Project,
+    private val traceabilityButton: TestListTraceabilityAction
+) : TreeSelectionListener {
 
     private val tracingService = project.service<TestTracingService>()
 
@@ -31,7 +34,8 @@ class TestListSelectionListener(private val project: Project, private val tracea
         if (component is DefaultMutableTreeNode && component.userObject is TestMethodUserObject) {
             val testUserObject = (component.userObject as TestMethodUserObject)
             try {
-                tracingService.highlightTest("${testUserObject.reference.testClassName},${testUserObject.reference.name}")
+                tracingService
+                    .highlightTest("${testUserObject.reference.testClassName},${testUserObject.reference.name}")
             } catch (ex: TraceFileNotFoundException) {
                 project.service<ExceptionHandlerService>().notify(ex)
                 return

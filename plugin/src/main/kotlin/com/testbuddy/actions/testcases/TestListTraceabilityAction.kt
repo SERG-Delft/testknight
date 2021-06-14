@@ -15,7 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode
 class TestListTraceabilityAction : ToggleAction() {
 
     private var selected = false
-    private lateinit var tree:Tree
+    private lateinit var tree: Tree
 
     /**
      * Returns the state value (true/false)
@@ -37,7 +37,7 @@ class TestListTraceabilityAction : ToggleAction() {
         selected = state
         if (!state) {
             e.project?.service<TestTracingService>()?.removeHighlights() ?: return
-        }else{
+        } else {
             val component = (tree.lastSelectedPathComponent ?: return)
             if (component is DefaultMutableTreeNode && component.userObject is TestMethodUserObject) {
                 val testUserObject = (component.userObject as TestMethodUserObject)
@@ -45,7 +45,7 @@ class TestListTraceabilityAction : ToggleAction() {
                     e.project?.service<TestTracingService>()
                         ?.highlightTest("${testUserObject.reference.testClassName},${testUserObject.reference.name}")
                 } catch (ex: TraceFileNotFoundException) {
-                   service<ExceptionHandlerService>().notify(ex)
+                    service<ExceptionHandlerService>().notify(ex)
                     return
                 } catch (ex: CorruptedTraceFileException) {
                     service<ExceptionHandlerService>().notify(ex)
@@ -72,7 +72,7 @@ class TestListTraceabilityAction : ToggleAction() {
      *
      * @param tree the new value for the tree.
      */
-    fun setTree(tree : Tree){
+    fun setTree(tree: Tree) {
         this.tree = tree
     }
 }

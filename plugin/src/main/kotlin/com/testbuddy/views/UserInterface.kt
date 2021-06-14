@@ -153,7 +153,7 @@ class UserInterface(val project: Project) {
                 traceabilityAction as TestListTraceabilityAction
             )
         )
-        
+
         traceabilityAction.setTree(testCaseTree!!)
 
         panel.setViewportView(testCaseTree)
