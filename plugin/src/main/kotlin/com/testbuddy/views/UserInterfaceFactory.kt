@@ -3,7 +3,6 @@ package com.testbuddy.views
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
-import com.intellij.ui.content.ContentFactory
 
 class UserInterfaceFactory : ToolWindowFactory {
     /**
@@ -14,8 +13,8 @@ class UserInterfaceFactory : ToolWindowFactory {
      */
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val userInterface = UserInterface(project)
-        val contentFactory = ContentFactory.SERVICE.getInstance()
-        val content = contentFactory.createContent(userInterface.getContent(), "", false)
+        val contentManager = toolWindow.contentManager
+        val content = contentManager.factory.createContent(userInterface.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
     }
 }

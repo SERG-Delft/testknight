@@ -8,7 +8,7 @@ import javax.swing.JTable
 
 class CoverageStatsCellRenderer : ColoredTableCellRenderer() {
     override fun customizeCellRenderer(
-        table: JTable?,
+        table: JTable,
         value: Any?,
         selected: Boolean,
         hasFocus: Boolean,
