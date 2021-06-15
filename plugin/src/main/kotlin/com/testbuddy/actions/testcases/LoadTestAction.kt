@@ -17,6 +17,8 @@ import javax.swing.tree.DefaultTreeModel
 
 class LoadTestAction : AnAction() {
 
+    private var latestFile: PsiFile? = null
+
     /**
      * Updates the TestList tab to load the test cases from the selected file.
      *
@@ -63,8 +65,16 @@ class LoadTestAction : AnAction() {
             (testListTree.model.root as DefaultMutableTreeNode).add(classNode)
         }
 
+        val oldSelection = testListTree.selectionRows
+
         (testListTree.model as DefaultTreeModel).reload()
         TreeUtil.expandAll(testListTree)
+
+        if (latestFile != null && psiFile == latestFile) {
+            testListTree.selectionRows = oldSelection
+        }
+
+        latestFile = psiFile
     }
 
     /**
