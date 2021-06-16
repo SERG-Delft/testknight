@@ -1,5 +1,5 @@
-# Contributing to TestBuddy
-The following is a set of guidelines for contributing to TestBuddy. 
+# Contributing to TestKnight
+The following is a set of guidelines for contributing to TestKnight. 
 Please read them carefully before starting to write code.
 
 ## Git Workflow

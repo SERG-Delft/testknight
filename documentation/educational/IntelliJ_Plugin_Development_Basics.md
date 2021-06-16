@@ -1,5 +1,5 @@
 # IntelliJ Plugin Development Basics
-This is a document we created during the development of the TestBuddy IntelliJ Plugin to help ourselves and future developers quickly get an idea of what it means to develop a plugin. It is heavily based on the official [IntelliJ Platform Plugin SDK](https://plugins.jetbrains.com/docs/intellij/welcome.html).
+This is a document we created during the development of the TestKnight IntelliJ Plugin to help ourselves and future developers quickly get an idea of what it means to develop a plugin. It is heavily based on the official [IntelliJ Platform Plugin SDK](https://plugins.jetbrains.com/docs/intellij/welcome.html).
 
 ## Actions 
 [Action Docs](https://plugins.jetbrains.com/docs/intellij/plugin-actions.html)

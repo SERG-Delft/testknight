@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# TestBuddy Changelog
+# TestKnight Changelog
 
 ## [Unreleased]
 ### Added

@@ -1,7 +1,7 @@
-# TestBuddy Code Of Conduct
+# TestKnight Code Of Conduct
 
 ## Who is this code of conduct for?
-The code of conduct has to be respected by all contributors of the TestBuddy project.
+The code of conduct has to be respected by all contributors of the TestKnight project.
 
 ## Regarding comments and requests about the code of conduct
 If you have some issues with or you want to add some more rules in the code of conduct, please schedule a meeting with all team members and discuss the issue.
@@ -23,7 +23,7 @@ In case you have issues with the way or the quality of work of one of your teamm
 * In case you find issues with the way a colleague seems to work please first address this with them personally, reach out and see if you can help in any way. If that does not fix the issue please bring it up with the rest of the team.
 
 ## Handling task related issues
-When working on projects such as TestBuddy it is only natural that you encounter trouble or issues that get in the way of your work. In case this happens please first of all try to address the issue on your own. Try to see if you can find anyone who has tackled this online. 
+When working on projects such as TestKnight it is only natural that you encounter trouble or issues that get in the way of your work. In case this happens please first of all try to address the issue on your own. Try to see if you can find anyone who has tackled this online. 
 If after a sincere effort you see that you are still unable to proceed, please ask help from a team member. There is no shame in asking for help.
 
 ## Assignment delivery
