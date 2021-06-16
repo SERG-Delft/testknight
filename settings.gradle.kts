@@ -1,4 +1,4 @@
-rootProject.name = "TestBuddy"
+rootProject.name = "TestKnight"
 
 include("plugin")
 include("server")

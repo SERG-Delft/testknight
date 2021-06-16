@@ -159,7 +159,7 @@ class PopupDialogAction : AnAction() {
 When writing the above code in IntelliJ you will get a warning about the action not being registered. You can use the suggested actions to resolve the issue which will prompt you with a GUI editor to add info for the plugin. If you prefer to do things the old fashioned way you can put the following in the `plugin.xml` file (inside the `<idea-plugin>` tag):
 ```xml=
     <actions>
-        <action id="com.testbuddy.actions.PopupDialogAction" class="com.testbuddy.actions.PopupDialogAction"
+        <action id="com.testknight.actions.PopupDialogAction" class="com.testknight.actions.PopupDialogAction"
                 text="Pop Dialog Action" description="SDK action example">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
@@ -196,14 +196,15 @@ opens in IntelliJ.
 
 ### Declaring Services
 Similar to actions, services need to be declared in the `plugin.xml` file. You can do so in the following way.
+
 ```xml
 <extensions defaultExtensionNs="com.intellij">
 
     <!-- Example project service -->
-    <projectService serviceImplementation="com.testbuddy.services.LoadTestsService"/>
+    <projectService serviceImplementation="com.testknight.services.LoadTestsService"/>
 
     <!-- Example application service -->
-    <applicationService serviceImplementation="com.testbuddy.settings.SettingsService"/>
+    <applicationService serviceImplementation="com.testknight.settings.SettingsService"/>
 <extensions>
 ```
 
