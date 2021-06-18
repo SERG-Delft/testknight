@@ -1,6 +1,7 @@
 package com.testknight.actions
 
 import com.intellij.diff.tools.util.side.TwosideContentPanel
+import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.fileEditor.FileDocumentManager
@@ -13,6 +14,7 @@ import com.testknight.exceptions.DocumentNotFoundException
 import com.testknight.exceptions.InvalidVirtualFileException
 import com.testknight.services.CoverageDataService
 import com.testknight.services.CoverageHighlighterService
+import com.testknight.services.ExceptionHandlerService
 import com.testknight.services.UsageDataService
 import java.awt.event.ActionEvent
 import javax.swing.AbstractAction
@@ -48,6 +50,15 @@ class ShowCoverageDiffAction(val table: JBTable, val project: Project) : Abstrac
 
         // Return if diff is not available.
         if (!serv.isDiffAvailable(className, vFile.modificationStamp)) {
+            project.service<ExceptionHandlerService>()
+                .notify(
+                    "Source File Has Changed.",
+                    "The source file for the selected class has" +
+                        " either been modified since the latest run with coverage\n" +
+                        "or doesn't have the same source code since the past two runs.",
+                    NotificationType.WARNING
+                )
+
             return
         }
 
