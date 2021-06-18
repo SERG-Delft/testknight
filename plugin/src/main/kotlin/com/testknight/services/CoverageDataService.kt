@@ -60,7 +60,7 @@ class CoverageDataService(val project: Project) : Disposable {
             .forEach {
 
                 if (it == null || testAnalyzerService.isTestClass(it)) {
-                    return
+                    return@forEach
                 }
 
                 // Create copy from old map, and remove non existing classes.
