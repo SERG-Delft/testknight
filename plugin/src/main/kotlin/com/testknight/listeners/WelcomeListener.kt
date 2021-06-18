@@ -39,7 +39,7 @@ class WelcomeListener(val project: Project) : PluginStateListener {
 
         init {
             init()
-            title = "Welcome to the TestKnight plugin"
+            title = "TestKnight Plugin"
             isOKActionEnabled = false
         }
 
@@ -57,20 +57,19 @@ class WelcomeListener(val project: Project) : PluginStateListener {
         override fun createCenterPanel(): JComponent {
             val content = panel {
 
-                titledRow("Terms and conditions for using the plugin") {
-                    noteRow("""The terms and conditions can be found <a href="https://github.com/SERG-Delft/testknight/blob/master/PRIVACY.md">here</a>.""") {
+                titledRow("<html><b>Terms and conditions</b></html>") {
+                    noteRow("""The terms and conditions for using the plugin can be found <a href="https://github.com/SERG-Delft/testknight/blob/master/PRIVACY.md">here</a>.""") {
                         BrowserUtil.browse(it)
                     }
                 }
 
-                titledRow("Sending data") {
-
+                titledRow("<html><b>Sending data</b></html>") {
                     row {
                         checkbox()
                     }
                 }
 
-                noteRow("""The plugin is <a href="https://github.com/SERG-Delft/testknight">open source</a>.""") {
+                noteRow("""This plugin is <a href="https://github.com/SERG-Delft/testknight">open source</a>.""") {
                     BrowserUtil.browse(it)
                 }
             }

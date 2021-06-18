@@ -30,7 +30,7 @@ class LoadChecklistAction : AnAction() {
         val psiFile = event.getData(CommonDataKeys.PSI_FILE)
 
         val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java) ?: return
-        actionPerformed(project, psiClass, true)
+        actionPerformed(project, psiClass, false)
     }
 
     /**
