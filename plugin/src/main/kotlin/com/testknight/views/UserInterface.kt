@@ -39,6 +39,7 @@ import java.awt.Insets
 import java.util.Vector
 import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.tree.TreeSelectionModel
 
 class UserInterface(val project: Project) {
 
@@ -100,6 +101,7 @@ class UserInterface(val project: Project) {
 
         checkListTree.cellEditor = ChecklistCellEditor()
         checkListTree.isEditable = true
+        checkListTree.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
 
         panel.setViewportView(checkListTree)
 
@@ -142,6 +144,7 @@ class UserInterface(val project: Project) {
         testCaseTree!!.isEditable = false
         testCaseTree!!.isRootVisible = false
         testCaseTree!!.showsRootHandles = true
+        testCaseTree!!.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
 
         val mouseListener = TestListMouseListener(testCaseTree!!, cellRenderer)
         val keyboardListener = TestListKeyboardListener(testCaseTree!!, project)
@@ -216,7 +219,7 @@ class UserInterface(val project: Project) {
      * The MainUI will be a Tabbed pane with a testList and Checklist tab.
      */
     init {
-        mainUI = JBTabbedPane(JBTabbedPane.TOP, JBTabbedPane.SCROLL_TAB_LAYOUT)
+        mainUI = JBTabbedPane()
         mainUI!!.tabComponentInsets = Insets(0, 0, 0, 0)
 
         // Function call which returns the tab for copy paste
