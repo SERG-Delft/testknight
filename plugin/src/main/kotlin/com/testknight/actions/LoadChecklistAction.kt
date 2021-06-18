@@ -2,12 +2,14 @@ package com.testknight.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
@@ -27,7 +29,8 @@ class LoadChecklistAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
 
         val project = event.project!!
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE)
+        val textEditor = (FileEditorManager.getInstance(project).selectedEditor as TextEditor)
+        val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
 
         val psiClass = PsiTreeUtil.findChildOfType(psiFile, PsiClass::class.java) ?: return
         actionPerformed(project, psiClass, false)
@@ -79,7 +82,7 @@ class LoadChecklistAction : AnAction() {
         // Set the availability based on whether the project, psiFile and editor is not null
         e.presentation.isEnabled = (
             e.project != null &&
-                e.getData(CommonDataKeys.PSI_FILE) != null
+                FileEditorManager.getInstance(e.project!!).selectedEditor != null
             )
     }
 }
