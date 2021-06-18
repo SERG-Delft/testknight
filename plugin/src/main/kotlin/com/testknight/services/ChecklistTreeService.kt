@@ -205,8 +205,8 @@ class ChecklistTreeService(val project: Project) {
             if (dataClass.description == newNode.description) {
                 foundClass = true
                 buildUiMethods(uiTreeClassNode, dataClass, newNode)
+                break
             }
-            break
         }
         return foundClass
     }
