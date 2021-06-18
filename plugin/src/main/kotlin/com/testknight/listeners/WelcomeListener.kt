@@ -58,7 +58,10 @@ class WelcomeListener(val project: Project) : PluginStateListener {
             val content = panel {
 
                 titledRow("<html><b>Terms and conditions</b></html>") {
-                    noteRow("""The terms and conditions for using the plugin can be found <a href="https://github.com/SERG-Delft/testknight/blob/master/PRIVACY.md">here</a>.""") {
+                    noteRow(
+                        """The terms and conditions for using the plugin can be found """ +
+                            """<a href="https://github.com/SERG-Delft/testknight/blob/master/PRIVACY.md">here</a>."""
+                    ) {
                         BrowserUtil.browse(it)
                     }
                 }
