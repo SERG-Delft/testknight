@@ -10,7 +10,7 @@ plugins {
 	id 'pmd'
 }
 
-group = 'com.testbuddy'
+group = 'com.testknight'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -53,7 +53,7 @@ jacocoTestCoverageVerification() {
 		rule {
 			enabled = true
 			element = 'CLASS'
-			includes = ['com.testbuddy.server.*']
+			includes = ['com.testknight.server.*']
 
 			limit {
 				counter = 'BRANCH'
