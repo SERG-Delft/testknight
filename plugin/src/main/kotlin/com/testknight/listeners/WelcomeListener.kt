@@ -35,7 +35,7 @@ class WelcomeListener(val project: Project) : PluginStateListener {
 
     private class InstallDialog : DialogWrapper(true) {
 
-        private var checkbox = JBCheckBox("I ALLOW to send data!")
+        private var checkbox = JBCheckBox("I agree with sharing my usage data.")
 
         init {
             init()
@@ -58,8 +58,8 @@ class WelcomeListener(val project: Project) : PluginStateListener {
             val content = panel {
 
                 titledRow("Terms and conditions for using the plugin") {
-                    row {
-                        label("Here we will put the description")
+                    noteRow("""The terms and conditions can be found <a href="https://github.com/SERG-Delft/testknight/blob/master/PRIVACY.md">here</a>.""") {
+                        BrowserUtil.browse(it)
                     }
                 }
 
@@ -70,7 +70,7 @@ class WelcomeListener(val project: Project) : PluginStateListener {
                     }
                 }
 
-                noteRow("""Note with a link. <a href="http://github.com">Open source</a>""") {
+                noteRow("""The plugin is <a href="https://github.com/SERG-Delft/testknight">open source</a>.""") {
                     BrowserUtil.browse(it)
                 }
             }
