@@ -91,4 +91,4 @@ Alternatively, after cloning the project you can open it with IntelliJ IDEA and 
 ### Running the Server
 Similarly to above, after cloning the repository you can navigate to the `/server` directory and run `gradle bootRun`.
 Alternatively, you can open the project in IntelliJ IDEA and run the server either by the `gradle` tab by going on 
-`server -> Tasks -> application -> bootRun` or by setting `TESTBUDDYTELEMETRYSERVERAPPLICATION` as the run configuration.
+`server -> Tasks -> application -> bootRun` or by setting `TESTKNIGHTTELEMETRYSERVERAPPLICATION` as the run configuration.
