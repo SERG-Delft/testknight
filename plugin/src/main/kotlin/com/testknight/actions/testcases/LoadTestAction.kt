@@ -2,11 +2,13 @@ package com.testknight.actions.testcases
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiManager
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
 import com.testknight.models.TestMethodUserObject
@@ -27,8 +29,10 @@ class LoadTestAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
 
         val project = event.project!!
-        val psiFile = event.getData(CommonDataKeys.PSI_FILE) ?: return
-        val editor = event.getData(CommonDataKeys.EDITOR)!!
+
+        val textEditor = (FileEditorManager.getInstance(project).selectedEditor as TextEditor)
+        val editor = textEditor.editor
+        val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!) ?: return
 
         actionPerformed(project, psiFile, editor)
     }
@@ -79,7 +83,7 @@ class LoadTestAction : AnAction() {
 
     /**
      * Determines whether this menu item is available for the current context.
-     * Requires a project to be open and psiFile and Editor to be accessible from the action event.
+     * Requires a project to be open.
      *
      * @param e Event received when the associated group-id menu is chosen.
      */
@@ -87,8 +91,7 @@ class LoadTestAction : AnAction() {
         // Set the availability based on whether the project, psiFile and editor is not null
         e.presentation.isEnabled = (
             e.project != null &&
-                e.getData(CommonDataKeys.PSI_FILE) != null &&
-                e.getData(CommonDataKeys.EDITOR) != null
+                FileEditorManager.getInstance(e.project!!).selectedEditor != null
             )
     }
 }
