@@ -39,16 +39,6 @@ internal class ParameterSuggestionTreeModelTest: TestKnightTestCase() {
     }
 
     @Test
-    fun testAddPathElementRoot() {
-        val tree = ParameterSuggestionTreeModel(parameterSuggestionMap.toMutableMap())
-        val path = TreePath(tree.root)
-        tree.addPathElement(path)
-        val expected = listOf("1", "2", "0", "3")
-        val actual = tree.getChildren("int")
-        TestCase.assertEquals(expected, actual)
-    }
-
-    @Test
     fun testRemovePathElement() {
         val tree = ParameterSuggestionTreeModel(parameterSuggestionMap.toMutableMap())
         val path = TreePath(tree.root).pathByAddingChild("int").pathByAddingChild("2")
