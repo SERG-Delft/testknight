@@ -506,7 +506,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
     }
 
     @Test
-    fun testDeleteElementChecklistMethodNode(){
+    fun testDeleteElementChecklistClassNode(){
         val data = getBasicTestInfo("/Math2.java")
 
         val serv = spyk(ChecklistTreeService(data.project))
@@ -520,8 +520,34 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         val a = ChecklistUserObject(b)
         a.checklistNode = b
         node.userObject = a
+
         serv.deleteElement(node)
+
         verify { serv.deleteClass(any()) }
+    }
+
+    @Test
+    fun testDeleteElementChecklistMethodNode(){
+        val data = getBasicTestInfo("/Math2.java")
+
+        val serv = spyk(ChecklistTreeService(data.project))
+        serv.initUiTree()
+
+
+        val dad = CheckedTreeNode()
+        val kid = CheckedTreeNode()
+        dad.insert(kid,0)
+
+        val testingChecklistMethodNode = TestingChecklistMethodNode()
+        val testingChecklistClassNode = TestingChecklistClassNode()
+        kid.userObject = ChecklistUserObject(testingChecklistMethodNode)
+        (kid.userObject as ChecklistUserObject).checklistNode = testingChecklistMethodNode
+        dad.userObject = ChecklistUserObject(testingChecklistClassNode)
+        (dad.userObject as ChecklistUserObject).checklistNode = testingChecklistClassNode
+
+        serv.deleteElement(kid)
+
+        verify { serv.deleteMethod(any(),any()) }
     }
 
 
