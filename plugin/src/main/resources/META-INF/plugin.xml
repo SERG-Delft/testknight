@@ -193,13 +193,6 @@
         </action>
     </actions>
 
-    <actions>
-        <action id="TestAction"
-                class="com.testknight.actions.TestAction"
-                text="Test Action"
-                icon="/icons/pluginIcon.svg"/>
-    </actions>
-
     <projectListeners>
         <listener class="com.testknight.listeners.InitializationListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
