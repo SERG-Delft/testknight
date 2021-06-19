@@ -35,11 +35,11 @@ class WelcomeListener(val project: Project) : PluginStateListener {
 
     private class InstallDialog : DialogWrapper(true) {
 
-        private var checkbox = JBCheckBox("I ALLOW to send data!")
+        private var checkbox = JBCheckBox("I agree with sharing my usage data.")
 
         init {
             init()
-            title = "Welcome to the TestKnight plugin"
+            title = "TestKnight Plugin"
             isOKActionEnabled = false
         }
 
@@ -57,20 +57,22 @@ class WelcomeListener(val project: Project) : PluginStateListener {
         override fun createCenterPanel(): JComponent {
             val content = panel {
 
-                titledRow("Terms and conditions for using the plugin") {
-                    row {
-                        label("Here we will put the description")
+                titledRow("<html><b>Terms and conditions</b></html>") {
+                    noteRow(
+                        """The terms and conditions for using the plugin can be found """ +
+                            """<a href="https://github.com/SERG-Delft/testknight/blob/master/PRIVACY.md">here</a>."""
+                    ) {
+                        BrowserUtil.browse(it)
                     }
                 }
 
-                titledRow("Sending data") {
-
+                titledRow("<html><b>Sending data</b></html>") {
                     row {
                         checkbox()
                     }
                 }
 
-                noteRow("""Note with a link. <a href="http://github.com">Open source</a>""") {
+                noteRow("""This plugin is <a href="https://github.com/SERG-Delft/testknight">open source</a>.""") {
                     BrowserUtil.browse(it)
                 }
             }

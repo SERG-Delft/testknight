@@ -29,7 +29,7 @@ internal class TestTracingServiceTest : TestKnightTestCase() {
 
         assertThrows(
             CorruptedTraceFileException::class.java,
-            ThrowableRunnable {
+            ThrowableRunnable<CorruptedTraceFileException> {
                 service.readTraceFile(file)
             }
         )

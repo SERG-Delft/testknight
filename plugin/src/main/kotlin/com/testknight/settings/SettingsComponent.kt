@@ -57,7 +57,7 @@ class SettingsComponent {
                 row {
                     label("By selecting this, you agree to our", UIUtil.ComponentStyle.SMALL)
                     link("terms and conditions.", UIUtil.ComponentStyle.SMALL) {
-                        BrowserUtil.browse("https://youtu.be/dQw4w9WgXcQ")
+                        BrowserUtil.browse("https://github.com/SERG-Delft/testknight/blob/master/PRIVACY.md")
                     }
                 }
             }

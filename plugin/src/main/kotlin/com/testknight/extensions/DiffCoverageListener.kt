@@ -2,6 +2,9 @@ package com.testknight.extensions
 
 import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuiteListener
+import com.intellij.ide.DataManager
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.testknight.services.CoverageDataService
@@ -23,6 +26,15 @@ class DiffCoverageListener(val project: Project) : CoverageSuiteListener {
         val data = suite.coverageData
 
         covDataService.updateCoverage(suite, data)
+        DataManager.getInstance().dataContextFromFocusAsync
+            .onSuccess {
+                val actionEvent = AnActionEvent.createFromDataContext("DiffCoverageListener", null, it)
+                val action = ActionManager.getInstance().getAction("LoadCoverageAction")
+
+                if (actionEvent.project != null) {
+                    action.actionPerformed(actionEvent)
+                }
+            }
 
         if (SettingsService.state.coverageSettings.showIntegratedView) {
 

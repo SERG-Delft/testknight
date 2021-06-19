@@ -32,10 +32,18 @@ class ChecklistTreeService(val project: Project) {
         resetTree()
     }
 
+    /**
+     * Getter for the UI tree.
+     *
+     * @return the UI tree
+     */
     fun getUiTree(): CheckboxTree {
         return uiTree
     }
 
+    /**
+     * Init the UI tree from the file.
+     */
     fun initUiTree() {
 
         dataTree = project.service<ChecklistTreePersistent>().state
@@ -205,8 +213,8 @@ class ChecklistTreeService(val project: Project) {
             if (dataClass.description == newNode.description) {
                 foundClass = true
                 buildUiMethods(uiTreeClassNode, dataClass, newNode)
+                break
             }
-            break
         }
         return foundClass
     }
@@ -419,7 +427,7 @@ class ChecklistTreeService(val project: Project) {
     }
 
     /**
-     * This function return a String which represents the tree.
+     * This function returns a String which represents the tree.
      */
     fun print(): String {
         var printString: String = ""
