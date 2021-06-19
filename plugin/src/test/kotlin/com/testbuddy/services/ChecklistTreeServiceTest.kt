@@ -4,9 +4,17 @@ import com.intellij.psi.PsiMethod
 import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.testbuddy.extensions.TestBuddyTestCase
+import com.testbuddy.models.ChecklistUserObject
+import com.testbuddy.models.testingChecklist.TestingChecklistNode
 import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
+import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
+import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.views.trees.ChecklistCellRenderer
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.Test
 
 class ChecklistTreeServiceTest : TestBuddyTestCase() {
@@ -496,4 +504,25 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
 
         assertEquals(expected, received)
     }
+
+    @Test
+    fun testDeleteElementChecklistMethodNode(){
+        val data = getBasicTestInfo("/Math2.java")
+
+        val serv = spyk(ChecklistTreeService(data.project))
+        serv.initUiTree()
+        val node = CheckedTreeNode()
+        node.setParent(CheckedTreeNode())
+
+        val b = TestingChecklistClassNode()
+        (node.parent as CheckedTreeNode).userObject = ChecklistUserObject(b)
+        ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject).checklistNode = b
+        val a = ChecklistUserObject(b)
+        a.checklistNode = b
+        node.userObject = a
+        serv.deleteElement(node)
+        verify { serv.deleteClass(any()) }
+    }
+
+
 }
