@@ -79,10 +79,8 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
 
             val index = getIndexOfChild(rootNode, className)
 
-            if (index == -1) {
-                // Node doesn't exist.
-                return
-            }
+            if (index == -1) throw InvalidTreePathException("Class doesn't exist in Parameter Suggestion")
+
             paramSuggestionMap.remove(className)
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(className))
             treeNodesRemoved(path, intArrayOf(index), arrayOf(className))
@@ -92,6 +90,8 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
             val typeName = path.lastPathComponent as String
 
             val index = getIndexOfChild(className, typeName)
+
+            if (index == -1) throw InvalidTreePathException("Either Class or Value was not found")
 
             paramSuggestionMap[className]!!.removeAt(index)
 
@@ -183,7 +183,7 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
             }
         } else {
             if (path.pathCount != 3) {
-                reason = "Invalid path size. Should be 3 for Type nodes."
+                reason = "Invalid path size. Should be 3 for Value nodes."
                 throwException = true
             }
             if (path.parentPath.lastPathComponent !is String) {
@@ -191,7 +191,7 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
                 throwException = true
             }
             if (path.lastPathComponent !is String) {
-                reason = "Type node is not a string."
+                reason = "Value node is not a string."
                 throwException = true
             }
         }
