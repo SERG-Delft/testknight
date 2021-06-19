@@ -5,14 +5,10 @@ import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.testbuddy.extensions.TestBuddyTestCase
 import com.testbuddy.models.ChecklistUserObject
-import com.testbuddy.models.testingChecklist.TestingChecklistNode
 import com.testbuddy.models.testingChecklist.leafNodes.CustomChecklistNode
-import com.testbuddy.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testbuddy.models.testingChecklist.parentNodes.TestingChecklistMethodNode
 import com.testbuddy.views.trees.ChecklistCellRenderer
-import io.mockk.every
-import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Test
@@ -506,7 +502,7 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
     }
 
     @Test
-    fun testDeleteElementChecklistClassNode(){
+    fun testDeleteElementChecklistClassNode() {
         val data = getBasicTestInfo("/Math2.java")
 
         val serv = spyk(ChecklistTreeService(data.project))
@@ -514,12 +510,12 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
         val node = CheckedTreeNode()
         node.setParent(CheckedTreeNode())
 
-        val b = TestingChecklistClassNode()
-        (node.parent as CheckedTreeNode).userObject = ChecklistUserObject(b)
-        ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject).checklistNode = b
-        val a = ChecklistUserObject(b)
-        a.checklistNode = b
-        node.userObject = a
+        val testingChecklistClassNode = TestingChecklistClassNode()
+        (node.parent as CheckedTreeNode).userObject = ChecklistUserObject(testingChecklistClassNode)
+        ((node.parent as CheckedTreeNode).userObject as ChecklistUserObject).checklistNode = testingChecklistClassNode
+        val checklistUserObject = ChecklistUserObject(testingChecklistClassNode)
+        checklistUserObject.checklistNode = testingChecklistClassNode
+        node.userObject = checklistUserObject
 
         serv.deleteElement(node)
 
@@ -527,28 +523,52 @@ class ChecklistTreeServiceTest : TestBuddyTestCase() {
     }
 
     @Test
-    fun testDeleteElementChecklistMethodNode(){
+    fun testDeleteElementChecklistMethodNode() {
         val data = getBasicTestInfo("/Math2.java")
 
         val serv = spyk(ChecklistTreeService(data.project))
         serv.initUiTree()
 
-
-        val dad = CheckedTreeNode()
-        val kid = CheckedTreeNode()
-        dad.insert(kid,0)
+        val parent = CheckedTreeNode()
+        val node = CheckedTreeNode()
+        parent.insert(node, 0)
 
         val testingChecklistMethodNode = TestingChecklistMethodNode()
         val testingChecklistClassNode = TestingChecklistClassNode()
-        kid.userObject = ChecklistUserObject(testingChecklistMethodNode)
-        (kid.userObject as ChecklistUserObject).checklistNode = testingChecklistMethodNode
-        dad.userObject = ChecklistUserObject(testingChecklistClassNode)
-        (dad.userObject as ChecklistUserObject).checklistNode = testingChecklistClassNode
+        node.userObject = ChecklistUserObject(testingChecklistMethodNode)
+        (node.userObject as ChecklistUserObject).checklistNode = testingChecklistMethodNode
+        parent.userObject = ChecklistUserObject(testingChecklistClassNode)
+        (parent.userObject as ChecklistUserObject).checklistNode = testingChecklistClassNode
 
-        serv.deleteElement(kid)
+        serv.deleteElement(node)
 
-        verify { serv.deleteMethod(any(),any()) }
+        verify { serv.deleteMethod(any(), any()) }
     }
 
+    @Test
+    fun testDeleteElementChecklistItemNode() {
+        val data = getBasicTestInfo("/Math2.java")
 
+        val serv = spyk(ChecklistTreeService(data.project))
+        serv.initUiTree()
+
+        val grandparent = CheckedTreeNode()
+        val parent = CheckedTreeNode()
+        val node = CheckedTreeNode()
+        grandparent.insert(parent, 0)
+        parent.insert(node, 0)
+        val testingChecklistNode = CustomChecklistNode()
+        val testingChecklistMethodNode = TestingChecklistMethodNode()
+        val testingChecklistClassNode = TestingChecklistClassNode()
+        node.userObject = ChecklistUserObject(testingChecklistNode)
+        (node.userObject as ChecklistUserObject).checklistNode = testingChecklistNode
+        parent.userObject = ChecklistUserObject(testingChecklistMethodNode)
+        (parent.userObject as ChecklistUserObject).checklistNode = testingChecklistMethodNode
+        grandparent.userObject = ChecklistUserObject(testingChecklistClassNode)
+        (grandparent.userObject as ChecklistUserObject).checklistNode = testingChecklistClassNode
+
+        serv.deleteElement(node)
+
+        verify { serv.deleteItem(any(), any(), any()) }
+    }
 }
