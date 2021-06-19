@@ -119,18 +119,4 @@ internal class ParameterSuggestionTreeModelTest : TestKnightTestCase() {
         val actual = tree.getChildren("byte")
         TestCase.assertEquals(expected, actual)
     }
-
-    @Test
-    fun testCheckPathClassLong() {
-        val tree = ParameterSuggestionTreeModel(parameterSuggestionMap.toMutableMap())
-        val path = TreePath(tree.root)
-            .pathByAddingChild("int")
-            .pathByAddingChild("aaa")
-            .pathByAddingChild("aaa")
-            .pathByAddingChild("daa")
-
-        assertThrows<InvalidTreePathException> {
-            tree.valueForPathChanged(path, "byte")
-        }
-    }
 }
