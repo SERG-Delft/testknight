@@ -37,10 +37,10 @@ class TestListTraceabilityAction : ToggleAction() {
         selected = state
 
         if (!state) {
-            e.presentation.text = "Enable Test Tracing"
+            e.presentation.text = "Show Lines Covered"
             e.project?.service<TestTracingService>()?.removeHighlights() ?: return
         } else {
-            e.presentation.text = "Disable Test Tracing"
+            e.presentation.text = "Hide Lines Covered"
             val component = (tree.lastSelectedPathComponent ?: return)
             if (component is DefaultMutableTreeNode && component.userObject is TestMethodUserObject) {
                 val testUserObject = (component.userObject as TestMethodUserObject)
