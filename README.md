@@ -16,41 +16,41 @@ analysis of your code as well as inspect how your test-suite evolves.`
 
 Easily duplicate an existing test method and change the values of often-changed code elements such as constructor arguments and literals.
  
-<img src="https://jorgerom.eu/assets/testKnight/duplicate-test.gif" width="600">
+<img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/duplicate-test.gif?token=AJVIQP72ZH2FIWDMWISJ4W3AZ6SAM" width="600">
 
 #### Test case List
 
 Quickly navigate between the test cases within a test file.
 
-<img src="https://jorgerom.eu/assets/testKnight/test-list.gif" width="600">
+<img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/test-list.gif?token=AJVIQP4FDZP3LZM6DZ5HMYTAZ6SB2" width="600">
 
 ### Testing checklist
 
 Generate testing checklists for methods/classes based on structural and black-box testing.
 
-<img src="https://jorgerom.eu/assets/testKnight/testing-checklist.png" width=600>
+<img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/testing-checklist.png?token=AJVIQPYIJXBGHBK7Y7ZZWNTAZ6SDQ" width=600>
 
 ### Differential coverage
 
 When you run with coverage twice you can see the lines of code covered by the most recent test-run in a brighter green.
   
-<img src="https://jorgerom.eu/assets/testKnight/diff-cov.png" width=600>
+<img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/diff-cov.png?token=AJVIQP6FRKU2RI6SSCEBIXLAZ6SEQ" width=600>
 
 Additionally you can compare coverage with the previous run by pressing the "Diff" button for the class:
 
-<img src="https://jorgerom.eu/assets/testKnight/diff-window.png" width=600>
+<img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/diff-window.png?token=AJVIQPZOYPHGZZDQJFILBNTAZ6SFQ" width=600>
 
 ### Assertion suggestions
 
 TestKnight can detect the side-effects in a method and suggest assertions for the method under test.
 
-<img src="https://jorgerom.eu/assets/testKnight/assertion-suggestions.gif" width=600>
+<img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/assertion-suggestions.gif?token=AJVIQP4JXQTLJXOQ7EGAY6DAZ6SAA" width=600>
 
 ### See lines covered by a test
 
 If coverage information is available, testKnight will allow you to highlight the lines covered by a specific test case.
 
-<img src="https://jorgerom.eu/assets/testKnight/traceability.gif" width=600>
+<img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/traceability.gif?token=AJVIQP3OQDJNXZRY3VXNNPLAZ6SMG" width=600>
 
 TestKnight is designed with the user in mind.
 We have strived to create a tool that is intuitive to use and unintrusive. That means no annoying pop-ups while coding, no error messages and no breaking your flow.
