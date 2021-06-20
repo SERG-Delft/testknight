@@ -1,5 +1,5 @@
 # Kotlin for developers in a hurry
-This is a short introduction guide/cheatsheat we created during development of the initial version of the TestBuddy IntelliJ IDEA plugin. 
+This is a short introduction guide/cheatsheat we created during development of the initial version of the TestKnight IntelliJ IDEA plugin. 
 
 ## Intro
 Kotlin is a general purpose statically typed language developed by JetBrains in 2011. It can be compiled to JVM bytecode, Javascript and even native code. It is designed to interoperate fully with Java. 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+        width="40"
+        height="40"
+        viewBox="0 0 10.583332 10.583332"
+        version="1.1"
+        id="svg5"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:svg="http://www.w3.org/2000/svg">
+
+  <defs
+          id="defs2" />
+  <g
+          id="layer1"
+          transform="translate(-431.43496,-289.8627)">
+    <g
+            id="g10210"
+            transform="matrix(0.19071408,0,0,0.19071408,353.86154,228.54555)">
+      <g
+              id="g10200"
+              transform="matrix(0.40743291,0,0,0.40743291,239.68102,205.63337)">
+        <g
+                id="g10191">
+          <g
+                  id="g10183">
+            <g
+                    id="g10176"
+                    transform="translate(67.161543,166.9319)">
+              <g
+                      id="g9427"
+                      transform="translate(0.59852202,-98.492278)">
+                <path
+                        style="fill:#afb1b3;fill-opacity:1;stroke:none;stroke-width:1.291;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+                        d="m 410.39972,221.42308 c 0,0 -16.557,3.68202 -32.08887,15.38197 0,0 -14.43786,24.8409 -14.63596,65.29497 0,0 11.23838,22.59877 41.14628,44.63013 l 1.48019,-58.91868 c 0,0 -20.73029,-0.29928 -28.55211,-9.87376 l 0.5125,-9.33628 c 0,0 4.17919,-5.86013 32.13797,-5.86013"
+                        id="path9276"
+                />
+                <path
+                        style="fill:#afb1b3;fill-opacity:1;stroke:none;stroke-width:1.291;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+                        d="m 410.39972,221.42308 c 0,0 16.557,3.68202 32.08887,15.38197 0,0 14.43786,24.8409 14.63596,65.29497 0,0 -11.23838,22.59877 -41.14628,44.63013 l -1.48019,-58.91868 c 0,0 20.73029,-0.29928 28.55211,-9.87376 l -0.5125,-9.33628 c 0,0 -4.17919,-5.86013 -32.13797,-5.86013"
+                        id="path9278"/>
+              </g>
+              <path
+                      style="fill:#afb1b3;fill-opacity:1;stroke:#afb1b3;stroke-width:0.987369;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                      d="M 410.99822,123.45227 V 163.7333"
+                      id="path9715" />
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
