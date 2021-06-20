@@ -23,7 +23,7 @@ import javax.swing.Icon
 class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAction, Iconable {
 
     /**
-     * If this action is applicable, then the "Generate assertion suggestions" text will be shown in the dropdown menu
+     * If this action is applicable, then the "Generate assertion suggestions" text will be shown in the dropdown menu.
      */
     override fun getText(): String {
         return "Generate assertion suggestions"
@@ -92,7 +92,7 @@ class AssertionSuggestionsAction : PsiElementBaseIntentionAction(), IntentionAct
     }
 
     /**
-     * Returns the icon for the intention Action
+     * Returns the icon for the intention Action.
      */
     override fun getIcon(flags: Int): Icon {
         return IconLoader.getIcon("/icons/pluginIcon.svg")

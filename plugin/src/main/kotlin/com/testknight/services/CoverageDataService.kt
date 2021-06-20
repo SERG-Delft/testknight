@@ -1,6 +1,5 @@
 package com.testknight.services
 
-import com.intellij.coverage.CoverageDataManager
 import com.intellij.coverage.CoverageSuitesBundle
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.service
@@ -19,18 +18,6 @@ class CoverageDataService(val project: Project) : Disposable {
     var currentData: ProjectData? = null
     var currentSuite: CoverageSuitesBundle? = null
     var classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
-
-    /**
-     * Sets previous data and suite to null.
-     * This is required to not show wrong diff info if source code is modified after run
-     * In this case the current suite at this point would have outdated
-     */
-    fun resetCurrentDataAndMap() {
-        currentData = null
-        currentSuite = null
-        // code to be refactored after updating listener
-        // classCoveragesMap = mutableMapOf<String, CoverageDiffObject>()
-    }
 
     fun isDiffAvailable(className: String, fileStamp: Long): Boolean {
         val covObj = classCoveragesMap[className] ?: return false
@@ -76,17 +63,6 @@ class CoverageDataService(val project: Project) : Disposable {
             }
 
         classCoveragesMap = tempClassMap
-    }
-
-    /**
-     * Get the current coverage data for the current suite.
-     *
-     * @return a ProjectData which is null if no coverage suite is selected
-     */
-    fun getCurrentSuiteData(): ProjectData? {
-        val covDataManager = CoverageDataManager.getInstance(project)
-        val suite = covDataManager.currentSuitesBundle
-        return suite.coverageData
     }
 
     /**
