@@ -22,7 +22,7 @@ class ClearChecklistAction : AnAction() {
      *
      * @param project current open project.
      */
-    fun actionPerformed(project: Project) {
+    private fun actionPerformed(project: Project) {
         val checklistTreeService = project.service<ChecklistTreeService>()
         checklistTreeService.resetTree()
     }
