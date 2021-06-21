@@ -1,0 +1,48 @@
+name: Server verification
+
+on:
+  pull_request:
+    paths:
+      - '/server/**/'
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+
+  build:
+    name: Compiles the server
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: build
+        run: gradle assemble
+          
+  staticAnalysis:
+    name: Code style static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: checkStyle
+        run: gradle checkstyleMain
+        
+      - name: PMD
+        run: gradle pmdMain
+        
+  test:
+    name: Tests the server
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: test
+        run: gradle test
+      
+
+

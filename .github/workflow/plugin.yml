@@ -1,0 +1,50 @@
+name: Plugin verification
+
+on:
+  pull_request:
+    paths:
+      - '/plugin/**/'
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+
+  build:
+    name: Compiles the plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: build
+        run: |
+          gradle assemble
+          gradle testClasses
+          
+  staticAnalysis:
+    name: Code style static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: detekt
+        run: gradle detekt
+        
+      - name: ktlint
+        run: gradle ktlintCheck
+        
+  test:
+    name: Tests the plugin
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: test
+        run: gradle test
+      
+
+
