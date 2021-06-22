@@ -12,12 +12,6 @@ analysis of your code as well as inspect how your test-suite evolves.`
 
 ## Key Features:
 
-#### Test Duplication
-
-Easily duplicate an existing test method and change the values of often-changed code elements such as constructor arguments and literals.
- 
-<img src="https://jorgerom.eu/assets/testKnight/duplicate-test.gif" width="600">
-
 #### Test case List
 
 Quickly navigate between the test cases within a test file.
@@ -40,17 +34,23 @@ Additionally you can compare coverage with the previous run by pressing the "Dif
 
 <img src="https://jorgerom.eu/assets/testKnight/diff-window.png" width=600>
 
+### See lines covered by a test
+
+If coverage information is available, testKnight will allow you to highlight the lines covered by a specific test case.
+
+<img src="https://jorgerom.eu/assets/testKnight/traceability.gif" width=600>
+
 ### Assertion suggestions
 
 TestKnight can detect the side-effects in a method and suggest assertions for the method under test.
 
 <img src="https://jorgerom.eu/assets/testKnight/assertion-suggestions.gif" width=600>
 
-### See lines covered by a test
+#### Test Duplication
 
-If coverage information is available, testKnight will allow you to highlight the lines covered by a specific test case.
-
-<img src="https://jorgerom.eu/assets/testKnight/traceability.gif" width=600>
+Easily duplicate an existing test method and change the values of often-changed code elements such as constructor arguments and literals.
+ 
+<img src="https://jorgerom.eu/assets/testKnight/duplicate-test.gif" width="600">
 
 TestKnight is designed with the user in mind.
 We have strived to create a tool that is intuitive to use and unintrusive. That means no annoying pop-ups while coding, no error messages and no breaking your flow.
