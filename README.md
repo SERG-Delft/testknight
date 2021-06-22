@@ -8,7 +8,7 @@ usage information.
 
 TestKnight is an all in one plugin for IntelliJ IDEA that helps you write automatic tests for your codebase.
 Specifically, TestKnight extends your IDE to allow you to design test-suites based on structural and side-effect
-analysis of your code as well as inspect how your test-suite evolves.`
+analysis of your code as well as inspect how your test-suite evolves.
 
 Install it via IntelliJ's marketplace!
 
