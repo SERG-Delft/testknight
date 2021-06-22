@@ -20,7 +20,6 @@ import com.testknight.actions.settings.DeleteElementAction
 import com.testknight.actions.settings.EditElementAction
 import com.testknight.actions.settings.ResetTreeAction
 import com.testknight.models.ParameterSuggestionTreeModel
-import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.event.TreeModelEvent
 import javax.swing.event.TreeModelListener
