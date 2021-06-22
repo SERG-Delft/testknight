@@ -12,17 +12,17 @@ analysis of your code as well as inspect how your test-suite evolves.`
 
 ## Key Features:
 
-#### Test case List
-
-Quickly navigate between the test cases within a test file.
-
-<img src="https://jorgerom.eu/assets/testKnight/test-list.gif" width="600">
-
 ### Testing checklist
 
 Generate testing checklists for methods/classes based on structural and black-box testing.
 
 <img src="https://jorgerom.eu/assets/testKnight/testing-checklist.png" width=600>
+
+### Test case List
+
+Quickly navigate between the test cases within a test file.
+
+<img src="https://jorgerom.eu/assets/testKnight/test-list.gif" width="600">
 
 ### Differential coverage
 
