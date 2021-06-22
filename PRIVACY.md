@@ -18,8 +18,8 @@ TestKnight collects:
 
 ## Data storage
 
-The collected information is sent to a server hosted on-premise at TU Delft, in the Netherlands. Only the lead researcher of the project
-(Maurício Aniche) has access to it. 
+The collected information is sent to a server hosted on-premise at TU Delft, in the Netherlands. 
+Only the developers of the project have access to it. 
 
 ## Privacy
 
