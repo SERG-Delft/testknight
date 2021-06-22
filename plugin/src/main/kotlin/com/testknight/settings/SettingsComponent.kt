@@ -47,6 +47,9 @@ class SettingsComponent {
         myPanel = panel {
             titledRow("Telemetry") {
                 row {
+                    label("Your UUID: ${state.userId}")
+                }
+                row {
                     checkBox(
                         "Allow data collection",
                         // state.telemetrySettings::isEnabled
