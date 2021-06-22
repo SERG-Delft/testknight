@@ -11,10 +11,17 @@ _Last update:_ June 22nd, 2021
 TestKnight collects:
 
 - Whenever a test case is duplicated
-- Whenever a checklist is generated
-- Whenever items of the checklist are marked as completed, renamed, removed
-- Whenever the differential coverage window is shown
+- Whenever a test case is navigated to (using the *Goto* button of TestKnight)
 - Whenever assertions are suggested
+- Whenever a checklist is generated
+- Whenever the differential coverage window is shown
+- Whenever the integrated differential coverage view is triggered
+- Whenever the lines that a test cover are traced in the source code
+- Whenever a test method is generated
+- Whenever items of the checklist are marked as completed or are removed
+- Whenever a test or multiple tests are run with coverage
+- Whenever a test fails
+- Whenever a test is created
 
 ## Data storage
 
@@ -26,7 +33,7 @@ Only the developers of the project have access to it.
 TestKnight only stores tuples of (user id, timestamp, action). 
 
 - The user id is a randomly generated UUID. TestKnight does not know who you are and does not store any information that makes it possible for someone to link the random user id to your profile and company.
-- The action is a simple string indicating the action (e.g., "TEST CASE DUPLICATED", "CHECK LIST GENERATED", "ASSERTIONS GENERATED"). TestKnight does not store any information related to your source code and project. More specifically, we do not store any source code, concrete items in the checklist, or coverage information.
+- The action is a simple string indicating the action (e.g., "duplicateTest", "generateChecklist", "suggestAssertion"). A full list of these actions can be found in this [file](https://github.com/SERG-Delft/testknight/blob/master/documentation/design/telemetryDesign/ActionIds.md). TestKnight does not store any information related to your source code and project. More specifically, we do not store any source code, concrete items in the checklist, or coverage information.
 
 ## Data usage
 
