@@ -10,6 +10,8 @@ TestKnight is an all in one plugin for IntelliJ IDEA that helps you write automa
 Specifically, TestKnight extends your IDE to allow you to design test-suites based on structural and side-effect
 analysis of your code as well as inspect how your test-suite evolves.`
 
+Install it via IntelliJ's marketplace!
+
 ## Key Features:
 
 
@@ -74,7 +76,7 @@ Additionally, the `/documentation` directory includes useful documentation and d
 documents to help you get started with Kotlin and with the IntelliJ SDK.  
 
 ## Running Instructions
-In this section you can find instructions on how to run the different parts of TestKnight.
+In this section you can find instructions on how to run the different parts of TestKnight for development purposes.
 
 ### Running the Plugin
 After cloning the repository you can navigate to the `/plugin` directory. From there you can run: 
