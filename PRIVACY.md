@@ -25,7 +25,7 @@ Only the developers of the project have access to it.
 
 TestKnight only stores tuples of (user id, timestamp, action). 
 
-- The user id is a randomly generated UUID. TestKnight does not know who you are and does not store any information that makes it possible for someone to link the random user id to your profile.
+- The user id is a randomly generated UUID. TestKnight does not know who you are and does not store any information that makes it possible for someone to link the random user id to your profile and company.
 - The action is a simple string indicating the action (e.g., "TEST CASE DUPLICATED", "CHECK LIST GENERATED", "ASSERTIONS GENERATED"). TestKnight does not store any information related to your source code and project. More specifically, we do not store any source code, concrete items in the checklist, or coverage information.
 
 ## Data usage
