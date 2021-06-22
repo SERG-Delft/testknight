@@ -30,7 +30,7 @@ TestKnight only stores tuples of (user id, timestamp, action).
 
 ## Data usage
 
-This information may be used for research purposes and may be made available publicly to other researchers.
+This information may be used for research purposes and the anonymous data may be made available to other researchers.
 
 ## Right to be forgotten
 
