@@ -4,6 +4,8 @@ TestKnight optionally offers a telemetry feature that enables us, researchers, t
 Once telemetry is enabled, TestKnight collects data about its usage. 
 In this document, we describe what data we collect, how we store it, and how we process it.
 
+_Last update:_ June 22nd, 2021
+
 ## Data collection
 
 TestKnight collects:
