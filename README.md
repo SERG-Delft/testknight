@@ -95,4 +95,8 @@ Alternatively, you can open the project in IntelliJ IDEA and run the server eith
 `server -> Tasks -> application -> bootRun` or by setting `TESTKNIGHTTELEMETRYSERVERAPPLICATION` as the run configuration.
 
 
+## Team
   
+TestKnight is proudly developed by: Cristian Botocan, Jorge Romeu Huidobro, Mathanrajan Sundarrajan, Piyush Deshmukh, and Pavlos Makridis. 
+
+This project is developed under the supervision of Pouria Derakhshanfar, Mark Swillus, Maurício Aniche, and Andy Zaidman, all members of the [Software Engineering Research Group (SERG)](https://se.ewi.tudelft.nl/) of the [Delft University of Technology](https://www.tudelft.nl), in the Netherlands.
