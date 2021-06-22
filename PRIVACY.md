@@ -1,6 +1,7 @@
 # Privacy statement
 
-TestKnight optionally offers a telemetry feature that enables us, researchers, to understand how the tool is used. 
+TestKnight offers a telemetry feature that enables us, researchers, to understand how the tool is used. 
+The telemetry is turned off by default and can be enabled via TestKnight's settings panel. 
 Once telemetry is enabled, TestKnight collects data about its usage. 
 In this document, we describe what data we collect, how we store it, and how we process it.
 
