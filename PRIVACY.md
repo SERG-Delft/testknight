@@ -4,11 +4,13 @@ TestKnight optionally offers a telemetry feature that enables us, researchers, t
 Once telemetry is enabled, TestKnight collects data about its usage. 
 In this document, we describe what data we collect, how we store it, and how we process it.
 
+_Short summary:_ TestKnight does not collect or store any private information related to the user or to the source code in the IDE. TestKnight only collects IDE actions and timestamps related to the plugin.
+
 _Last update:_ June 22nd, 2021
 
 ## Data collection
 
-TestKnight collects:
+TestKnight collects the following IDE actions related to the plugin:
 
 - Whenever a test case is duplicated
 - Whenever a test case is navigated to (using the *Goto* button of TestKnight)
@@ -30,7 +32,7 @@ Only the developers of the project have access to it.
 
 ## Privacy
 
-TestKnight only stores tuples of (user id, timestamp, action). 
+TestKnight only stores tuples of (user id, timestamp, action). TestKnight does not collect or store any private information related to the user or to the source code.
 
 - The user id is a randomly generated UUID. TestKnight does not know who you are and does not store any information that makes it possible for someone to link the random user id to your profile and company.
 - The action is a simple string indicating the action (e.g., "duplicateTest", "generateChecklist", "suggestAssertion"). A full list of these actions can be found in this [file](https://github.com/SERG-Delft/testknight/blob/master/documentation/design/telemetryDesign/ActionIds.md). TestKnight does not store any information related to your source code and project. More specifically, we do not store any source code, concrete items in the checklist, or coverage information.
