@@ -1,6 +1,10 @@
 package com.testknight.startup
 
 import com.intellij.ide.BrowserUtil
+import com.intellij.ide.plugins.IdeaPluginDescriptor
+import com.intellij.ide.plugins.PluginInstaller
+import com.intellij.ide.plugins.PluginStateListener
+import com.intellij.ide.util.PropertiesComponent
 import com.intellij.ide.util.RunOnceUtil
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
@@ -18,9 +22,11 @@ class WelcomePage : StartupActivity {
 
     override fun runActivity(project: Project) {
 
+        PluginInstaller.addStateListener(UninstallListener())
+
         if (!ApplicationManager.getApplication().isHeadlessEnvironment) {
             RunOnceUtil.runOnceForApp(
-                "TestKnightPrivacyPrompt"
+                "HasShownTestKnightIntro"
             ) {
                 val installDialog = InstallDialog()
                 if (installDialog.showAndGet()) {
@@ -88,5 +94,16 @@ class WelcomePage : StartupActivity {
         }
 
         private inner class InstallAction(name: String?, exitCode: Int) : DialogWrapperExitAction(name, exitCode)
+    }
+
+    private class UninstallListener : PluginStateListener {
+
+        override fun install(descriptor: IdeaPluginDescriptor) {
+            // empty body for this part
+        }
+
+        override fun uninstall(descriptor: IdeaPluginDescriptor) {
+            PropertiesComponent.getInstance().setValue("RunOnceActivity.HasShownTestKnightIntro", false)
+        }
     }
 }
