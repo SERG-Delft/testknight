@@ -5,7 +5,7 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
 import com.testknight.extensions.DiffCoverageListener
-import com.testknight.services.ChecklistTreeService
+import com.testknight.services.checklist.ChecklistTreeService
 import com.testknight.services.CoverageDataService
 
 class InitializationListener : ProjectManagerListener {

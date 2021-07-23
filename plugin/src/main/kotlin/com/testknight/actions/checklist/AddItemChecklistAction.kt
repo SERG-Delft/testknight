@@ -1,4 +1,4 @@
-package com.testknight.actions
+package com.testknight.actions.checklist
 
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
@@ -11,7 +11,7 @@ import com.testknight.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testknight.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistMethodNode
-import com.testknight.services.ChecklistTreeService
+import com.testknight.services.checklist.ChecklistTreeService
 import com.testknight.services.ExceptionHandlerService
 import javax.swing.tree.TreePath
 

@@ -1,4 +1,4 @@
-package com.testknight.listeners
+package com.testknight.listeners.testlist
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Editor

@@ -1,4 +1,4 @@
-package com.testknight.views
+package com.testknight.views.coverage
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project

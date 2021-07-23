@@ -18,16 +18,16 @@
         <projectService serviceImplementation="com.testknight.services.AssertionSuggestionService"/>
         <projectService serviceImplementation="com.testknight.services.CoverageDataService"/>
         <projectService serviceImplementation="com.testknight.services.CoverageHighlighterService"/>
-        <projectService serviceImplementation="com.testknight.services.ChecklistTreeService"/>
+        <projectService serviceImplementation="com.testknight.services.checklist.ChecklistTreeService"/>
         <projectService serviceImplementation="com.testknight.services.TemplateCreationService"/>
         <projectService serviceImplementation="com.testknight.services.TestAnalyzerService"/>
         <projectService serviceImplementation="com.testknight.services.TestTracingService"/>
         <projectService serviceImplementation="com.testknight.services.TestMethodGenerationService"/>
-        <projectService serviceImplementation="com.testknight.services.ChecklistTreePersistent"/>
+        <projectService serviceImplementation="com.testknight.services.checklist.ChecklistTreePersistent"/>
         <projectService serviceImplementation="com.testknight.services.ExceptionHandlerService"/>
 
         <!-- Application services -->
-        <applicationService serviceImplementation="com.testknight.services.GenerateTestCaseChecklistService"/>
+        <applicationService serviceImplementation="com.testknight.services.checklist.GenerateTestCaseChecklistService"/>
         <applicationService serviceImplementation="com.testknight.services.UsageDataService"/>
         <applicationService serviceImplementation="com.testknight.settings.SettingsService"/>
     </extensions>
@@ -52,10 +52,10 @@
 
         <!-- Gutter icons-->
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testknight.actions.ChecklistClassLineMarkerProvider"/>
+                                        implementationClass="com.testknight.actions.checklist.ChecklistClassLineMarkerProvider"/>
 
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.testknight.actions.ChecklistMethodLineMarkerProvider"/>
+                                        implementationClass="com.testknight.actions.checklist.ChecklistMethodLineMarkerProvider"/>
 
         <!-- Test Listener -->
         <testStatusListener implementation="com.testknight.listeners.TestLoggingListener"/>
@@ -81,44 +81,44 @@
 
     <actions>
         <!---Actions in TestList tab -->
-        <action id="LoadTestAction" class="com.testknight.actions.testcases.LoadTestAction"
+        <action id="LoadTestAction" class="com.testknight.actions.testlist.LoadTestAction"
                 text="Load Test Cases from Current File"
                 description="Loads all the test cases from the current open file in the editor"
                 icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="D" keymap="$default"/>
         </action>
-        <action id="ClearTestAction" class="com.testknight.actions.testcases.ClearTestAction"
+        <action id="ClearTestAction" class="com.testknight.actions.testlist.ClearTestAction"
                 text="Clear Test Cases UI"
                 description="Clears the tree which holds all the test case information."
                 icon="AllIcons.Actions.GC">
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="D" keymap="$default"/>
         </action>
-        <action id="TestListTraceabilityAction" class="com.testknight.actions.testcases.TestListTraceabilityAction"
+        <action id="TestListTraceabilityAction" class="com.testknight.actions.testlist.TestListTraceabilityAction"
                 text="Enable Test Tracing"
                 description="Show covered lines per test."
                 icon="AllIcons.RunConfigurations.TrackCoverage">
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="T" keymap="$default"/>
         </action>
         <!---Actions in CheckList tab -->
-        <action id="ChecklistAction" class="com.testknight.actions.LoadChecklistAction"
+        <action id="ChecklistAction" class="com.testknight.actions.checklist.LoadChecklistAction"
                 text="Load Checklist for Class from Current File" description="Adds a new template test case."
                 icon="AllIcons.Actions.Refresh">
             <keyboard-shortcut first-keystroke="control alt A" second-keystroke="G" keymap="$default"/>
         </action>
-        <action id="ClearChecklistAction" class="com.testknight.actions.ClearChecklistAction"
+        <action id="ClearChecklistAction" class="com.testknight.actions.checklist.ClearChecklistAction"
                 text="Clear Checklist UI"
                 description="Clears the tree which holds all the checklist information."
                     icon="AllIcons.Actions.GC">
             <keyboard-shortcut first-keystroke="control alt C" second-keystroke="G" keymap="$default"/>
         </action>
 
-        <action id="AddItemChecklistAction" class="com.testknight.actions.AddItemChecklistAction"
+        <action id="AddItemChecklistAction" class="com.testknight.actions.checklist.AddItemChecklistAction"
                 text="Add Item"
                 description="Add an item in the tree under the selected method."
                 icon="AllIcons.General.Add">
         </action>
 
-        <action id="EditItemChecklistAction" class="com.testknight.actions.EditItemChecklistAction"
+        <action id="EditItemChecklistAction" class="com.testknight.actions.checklist.EditItemChecklistAction"
                 text="Edit Item"
                 description="Edit the selected item in the tree."
                 icon="AllIcons.Actions.EditSource">
@@ -130,19 +130,19 @@
                 icon="AllIcons.Nodes.Method">
         </action>
 
-        <action id="DeleteElementChecklistAction" class="com.testknight.actions.DeleteElementChecklistAction"
+        <action id="DeleteElementChecklistAction" class="com.testknight.actions.checklist.DeleteElementChecklistAction"
                 text="Delete Element"
                 description="Deletes the selected element from the tree."
                 icon="AllIcons.Actions.Cancel">
         </action>
         <!---Actions for hotkeys-->
-        <action id="DuplicateTestAction" class="com.testknight.actions.testcases.DuplicateTestUnderCaretAction"
+        <action id="DuplicateTestAction" class="com.testknight.actions.testlist.DuplicateTestUnderCaretAction"
                 text="Duplicate Test Under Caret"
                 icon="/icons/pluginIcon.svg"
                 description="Duplicates the test under caret of the current open file">
             <keyboard-shortcut first-keystroke="control shift D" keymap="$default"/>
         </action>
-        <action id="GenerateChecklistAction" class="com.testknight.actions.GenerateChecklistUnderCaretAction"
+        <action id="GenerateChecklistAction" class="com.testknight.actions.checklist.GenerateChecklistUnderCaretAction"
                 text="Generate Checklist for Method/Class Under Caret"
                 icon="/icons/pluginIcon.svg"
                 description="Generates the checklist for the method/class under caret of the current open file.">

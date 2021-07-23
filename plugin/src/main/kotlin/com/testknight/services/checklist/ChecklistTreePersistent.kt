@@ -1,4 +1,4 @@
-package com.testknight.services
+package com.testknight.services.checklist
 
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State

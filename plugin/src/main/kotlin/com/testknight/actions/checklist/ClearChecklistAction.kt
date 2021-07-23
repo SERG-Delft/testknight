@@ -1,10 +1,10 @@
-package com.testknight.actions
+package com.testknight.actions.checklist
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.testknight.services.ChecklistTreeService
+import com.testknight.services.checklist.ChecklistTreeService
 
 class ClearChecklistAction : AnAction() {
 

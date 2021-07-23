@@ -1,8 +1,8 @@
-package com.testknight.listeners
+package com.testknight.listeners.checklist
 
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.psi.PsiElement
-import com.testknight.actions.LoadChecklistAction
+import com.testknight.actions.checklist.LoadChecklistAction
 import com.testknight.utilities.UserInterfaceHelper
 import java.awt.event.MouseEvent
 

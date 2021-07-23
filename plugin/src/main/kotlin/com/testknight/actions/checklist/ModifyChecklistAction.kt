@@ -1,4 +1,4 @@
-package com.testknight.actions
+package com.testknight.actions.checklist
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditorManager
@@ -12,7 +12,7 @@ import com.testknight.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testknight.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistMethodNode
-import com.testknight.services.ChecklistTreeService
+import com.testknight.services.checklist.ChecklistTreeService
 import com.testknight.services.TestMethodGenerationService
 import com.testknight.services.UsageDataService
 import java.awt.event.ActionEvent

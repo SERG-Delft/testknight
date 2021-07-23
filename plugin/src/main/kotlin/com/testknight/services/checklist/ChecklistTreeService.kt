@@ -1,4 +1,4 @@
-package com.testknight.services
+package com.testknight.services.checklist
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -10,6 +10,7 @@ import com.testknight.models.testingChecklist.TestingChecklist
 import com.testknight.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testknight.services.UsageDataService
 import com.testknight.views.trees.ChecklistCellRenderer
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
