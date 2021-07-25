@@ -11,8 +11,8 @@ import com.testknight.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testknight.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistMethodNode
-import com.testknight.services.checklist.ChecklistTreeService
 import com.testknight.services.ExceptionHandlerService
+import com.testknight.services.checklist.ChecklistTreeService
 import javax.swing.tree.TreePath
 
 class AddItemChecklistAction : AnAction() {
