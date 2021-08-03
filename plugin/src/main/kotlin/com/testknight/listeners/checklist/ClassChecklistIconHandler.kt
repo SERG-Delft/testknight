@@ -1,18 +1,18 @@
-package com.testknight.listeners
+package com.testknight.listeners.checklist
 
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.psi.PsiElement
-import com.testknight.actions.LoadChecklistAction
+import com.testknight.actions.checklist.LoadChecklistAction
 import com.testknight.utilities.UserInterfaceHelper
 import java.awt.event.MouseEvent
 
 /**
- * Handler for the gutter icons which are used for the methods.
+ * Handler for the gutter icons which are used for the class.
  */
-class MethodChecklistIconHandler : GutterIconNavigationHandler<PsiElement> {
+class ClassChecklistIconHandler : GutterIconNavigationHandler<PsiElement> {
 
     /**
-     * This handler generates the checklist for the chosen method.
+     * This handler generates the checklist for the chosen class.
      *
      * @param event  MouseEvent received from the click
      * @param element PsiElement for which you have to generate the checklist

@@ -1,4 +1,4 @@
-package com.testknight.actions
+package com.testknight.actions.checklist
 
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction

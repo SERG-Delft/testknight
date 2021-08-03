@@ -1,4 +1,4 @@
-package com.testknight.views
+package com.testknight.views.coverage
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -66,7 +66,7 @@ class ButtonColumn(private val table: JTable, action: Action, column: Int, priva
     ): Component {
         if (value is Icon) {
             editButton.text = ""
-            editButton.icon = value as Icon
+            editButton.icon = value
         } else {
             editButton.text = value.toString()
             editButton.icon = null
@@ -93,7 +93,7 @@ class ButtonColumn(private val table: JTable, action: Action, column: Int, priva
 
         if (value is Icon) {
             renderButton.text = ""
-            renderButton.icon = value as Icon
+            renderButton.icon = value
         } else {
             renderButton.text = value.toString()
             renderButton.icon = null

@@ -1,8 +1,8 @@
-package com.testknight.listeners
+package com.testknight.listeners.testlist
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.testknight.actions.testcases.TestListTraceabilityAction
+import com.testknight.actions.testlist.TestListTraceabilityAction
 import com.testknight.exceptions.CorruptedTraceFileException
 import com.testknight.exceptions.NoTestCoverageDataException
 import com.testknight.exceptions.TraceFileNotFoundException

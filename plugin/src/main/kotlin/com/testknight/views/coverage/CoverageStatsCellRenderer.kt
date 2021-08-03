@@ -1,4 +1,4 @@
-package com.testknight.views
+package com.testknight.views.coverage
 
 import com.intellij.ui.ColoredTableCellRenderer
 import com.intellij.ui.JBColor

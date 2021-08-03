@@ -1,4 +1,4 @@
-package com.testknight.services
+package com.testknight.services.checklist
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
@@ -7,6 +7,7 @@ import com.testknight.checklistGenerationStrategies.parentStrategies.ClassCheckl
 import com.testknight.checklistGenerationStrategies.parentStrategies.MethodChecklistGenerationStrategy
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testknight.services.TestAnalyzerService
 
 class GenerateTestCaseChecklistService {
 

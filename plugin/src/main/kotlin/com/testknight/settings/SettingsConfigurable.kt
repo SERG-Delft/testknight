@@ -7,7 +7,7 @@ import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.ui.DialogPanel
 import com.testknight.services.CoverageHighlighterService
-import com.testknight.services.GenerateTestCaseChecklistService
+import com.testknight.services.checklist.GenerateTestCaseChecklistService
 
 class SettingsConfigurable : BoundConfigurable("TestKnight") {
     private lateinit var mySettingsComponent: SettingsComponent
