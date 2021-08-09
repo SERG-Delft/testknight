@@ -1,4 +1,4 @@
-package com.testknight.actions
+package com.testknight.actions.checklist
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -13,10 +13,10 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
-import com.testknight.services.ChecklistTreeService
-import com.testknight.services.GenerateTestCaseChecklistService
 import com.testknight.services.TestAnalyzerService
 import com.testknight.services.UsageDataService
+import com.testknight.services.checklist.ChecklistTreeService
+import com.testknight.services.checklist.GenerateTestCaseChecklistService
 
 class LoadChecklistAction : AnAction() {
 

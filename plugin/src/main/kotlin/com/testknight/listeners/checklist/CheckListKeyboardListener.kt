@@ -1,4 +1,4 @@
-package com.testknight.listeners
+package com.testknight.listeners.checklist
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
@@ -6,7 +6,7 @@ import com.intellij.ui.CheckboxTree
 import com.intellij.ui.CheckedTreeNode
 import com.testknight.models.ChecklistUserObject
 import com.testknight.models.testingChecklist.leafNodes.TestingChecklistLeafNode
-import com.testknight.services.ChecklistTreeService
+import com.testknight.services.checklist.ChecklistTreeService
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import javax.swing.tree.TreePath

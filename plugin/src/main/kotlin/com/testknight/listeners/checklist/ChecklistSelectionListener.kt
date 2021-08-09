@@ -1,4 +1,4 @@
-package com.testknight.listeners
+package com.testknight.listeners.checklist
 
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.Editor

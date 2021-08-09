@@ -3,6 +3,7 @@ package com.testknight.services
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.psi.PsiMethod
 import com.testknight.extensions.TestKnightTestCase
+import com.testknight.services.checklist.GenerateTestCaseChecklistService
 import com.testknight.settings.SettingsService
 import junit.framework.TestCase
 import org.junit.Test

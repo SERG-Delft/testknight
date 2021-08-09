@@ -1,4 +1,4 @@
-package com.testknight.actions
+package com.testknight.actions.checklist
 
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnAction
@@ -6,8 +6,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
-import com.testknight.services.ChecklistTreeService
 import com.testknight.services.ExceptionHandlerService
+import com.testknight.services.checklist.ChecklistTreeService
 import javax.swing.tree.TreePath
 
 class DeleteElementChecklistAction : AnAction() {

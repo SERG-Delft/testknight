@@ -1,4 +1,4 @@
-package com.testknight.actions.testcases
+package com.testknight.actions.testlist
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.ToggleAction

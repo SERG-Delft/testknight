@@ -8,6 +8,8 @@ import com.testknight.models.ChecklistUserObject
 import com.testknight.models.testingChecklist.leafNodes.CustomChecklistNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistClassNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistMethodNode
+import com.testknight.services.checklist.ChecklistTreeService
+import com.testknight.services.checklist.GenerateTestCaseChecklistService
 import com.testknight.views.trees.ChecklistCellRenderer
 import io.mockk.spyk
 import io.mockk.verify

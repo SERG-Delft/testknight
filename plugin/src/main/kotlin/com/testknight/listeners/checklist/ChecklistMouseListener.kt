@@ -1,11 +1,11 @@
-package com.testknight.listeners
+package com.testknight.listeners.checklist
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBMenuItem
 import com.intellij.openapi.ui.JBPopupMenu
 import com.intellij.ui.CheckedTreeNode
 import com.intellij.ui.treeStructure.Tree
-import com.testknight.actions.ModifyChecklistAction
+import com.testknight.actions.checklist.ModifyChecklistAction
 import com.testknight.models.ChecklistUserObject
 import com.testknight.models.testingChecklist.leafNodes.TestingChecklistLeafNode
 import com.testknight.models.testingChecklist.parentNodes.TestingChecklistMethodNode
