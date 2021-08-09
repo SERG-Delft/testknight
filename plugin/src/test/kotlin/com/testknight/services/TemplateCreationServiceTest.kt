@@ -95,6 +95,9 @@ internal class TemplateCreationServiceTest : TestKnightTestCase() {
 
         val expected = "@Test void (int x, int y){\n" +
             "        // contents\n" +
+            "        int expected = x;\n" +
+            "        int actual = SomeClass.magic(x, y);\n" +
+            "        assertEquals(expected, actual);\n" +
             "    }"
 
         TestCase.assertEquals(expected, template.templateText)

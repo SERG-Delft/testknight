@@ -1,13 +1,11 @@
 package com.testknight.settings
 
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.ui.DialogPanel
 import com.testknight.services.CoverageHighlighterService
-import com.testknight.services.GenerateTestCaseChecklistService
 
 class SettingsConfigurable : BoundConfigurable("TestKnight") {
     private lateinit var mySettingsComponent: SettingsComponent
@@ -56,7 +54,7 @@ class SettingsConfigurable : BoundConfigurable("TestKnight") {
         }
 
         mySettingsComponent.applyCoverageColors(state.coverageSettings)
-        ServiceManager.getService(GenerateTestCaseChecklistService::class.java).rebuildStrategies()
+//        ServiceManager.getService(GenerateTestCaseChecklistService::class.java).rebuildStrategies()
 
         // for each project apply the settings for project services
         ProjectManager.getInstance().openProjects.forEach {

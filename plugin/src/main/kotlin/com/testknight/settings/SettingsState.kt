@@ -27,19 +27,36 @@ data class TestListSettings(
     )
 )
 
+/**
+ * An enum class to wrap around the textual values of
+ * the settings for the checklist generation
+ */
+enum class ChecklistSettingsValues(val valueName: String) {
+    IF_STATEMENT("If Statement"),
+    SWITCH_STATEMENT("Switch Statement"),
+    TRY_STATEMENT("Try Statement"),
+    PARAMETER_LIST("Parameter List"),
+    WHILE_STATEMENT("While Statement"),
+    FOR_STATEMENT("For Statement"),
+    DO_WHILE_STATEMENT("Do While Statement"),
+    FOREACH_STATEMENT("Foreach Statement"),
+    THROW_STATEMENT("Throw Statement"),
+    TERNARY_OPERATOR("Ternary Operator")
+}
+
 data class ChecklistSettings(
     var coverageCriteria: String = "MC/DC",
     var checklistStrategies: MutableMap<String, Boolean> = mutableMapOf(
-        "If Statement" to true,
-        "Switch Statement" to true,
-        "Try Statement" to true,
-        "Parameter List" to true,
-        "While Statement" to true,
-        "For Statement" to true,
-        "Do While Statement" to true,
-        "Foreach Statement" to true,
-        "Throw Statement" to true,
-        "Ternary Operator" to true
+        ChecklistSettingsValues.IF_STATEMENT.valueName to true,
+        ChecklistSettingsValues.SWITCH_STATEMENT.valueName to true,
+        ChecklistSettingsValues.TRY_STATEMENT.valueName to true,
+        ChecklistSettingsValues.PARAMETER_LIST.valueName to true,
+        ChecklistSettingsValues.WHILE_STATEMENT.valueName to true,
+        ChecklistSettingsValues.FOR_STATEMENT.valueName to true,
+        ChecklistSettingsValues.DO_WHILE_STATEMENT.valueName to true,
+        ChecklistSettingsValues.FOREACH_STATEMENT.valueName to true,
+        ChecklistSettingsValues.THROW_STATEMENT.valueName to true,
+        ChecklistSettingsValues.TERNARY_OPERATOR.valueName to true
     ),
     var paramSuggestionMap: MutableMap<String, MutableList<String>> = mutableMapOf(
         "byte" to mutableListOf("Byte.MAX_VALUE", "Byte.MIN_VALUE"),

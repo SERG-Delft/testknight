@@ -28,6 +28,9 @@ public class PointTest {
     @Test
     void hasParams(int x, int y) {
         // contents
+        int expected = x;
+        int actual = SomeClass.magic(x, y);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -42,6 +45,6 @@ public class PointTest {
 
     @Test
     void hasAssertion() {
-        assertEquals(2, 1+1)
+        assertEquals(2, 1 + 1)
     }
 }

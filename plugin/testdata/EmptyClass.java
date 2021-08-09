@@ -1,3 +1,3 @@
-public class EmtpyClass {
+public class EmptyClass {
     //There is nothing here!
 }

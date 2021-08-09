@@ -18,7 +18,7 @@ internal class ClassChecklistGenerationStrategyTest : TestKnightTestCase() {
         val generator = ClassChecklistGenerationStrategy.create(MethodChecklistGenerationStrategy.create())
 
         val expected = TestingChecklistClassNode(
-            "EmtpyClass",
+            "EmptyClass",
             mutableListOf<TestingChecklistMethodNode>(),
             data.psiClass!!
         )

@@ -343,7 +343,11 @@ class ChecklistTreeServiceTest : TestKnightTestCase() {
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
         service.addChecklist(backendChecklistClass)
-        service.deleteItem(backendChecklistClass.children[0].children[0], backendChecklistClass.children[0], backendChecklistClass)
+        service.deleteItem(
+            backendChecklistClass.children[0].children[0],
+            backendChecklistClass.children[0],
+            backendChecklistClass
+        )
 
         val expected = "Math2 add Test where a has one element\n" +
             "Math2 add Test where a is null\n" +
@@ -368,8 +372,16 @@ class ChecklistTreeServiceTest : TestKnightTestCase() {
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
         service.addChecklist(backendChecklistClass)
-        service.deleteItem(backendChecklistClass.children[0].children[0], backendChecklistClass.children[0], backendChecklistClass)
-        service.deleteItem(backendChecklistClass.children[0].children[0], backendChecklistClass.children[0], backendChecklistClass)
+        service.deleteItem(
+            backendChecklistClass.children[0].children[0],
+            backendChecklistClass.children[0],
+            backendChecklistClass
+        )
+        service.deleteItem(
+            backendChecklistClass.children[0].children[0],
+            backendChecklistClass.children[0],
+            backendChecklistClass
+        )
 
         val expected = "Math2 add Test where a is null\n" +
             "Math2 add Test where foreach loop runs multiple times\n" +
@@ -389,8 +401,15 @@ class ChecklistTreeServiceTest : TestKnightTestCase() {
         val service = ChecklistTreeService(project)
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(data.psiClass!!)
 
-        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element)
-        val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element)
+        val deleteItem = CustomChecklistNode(
+            backendChecklistClass.children[0].children[0].description,
+            backendChecklistClass.children[0].children[0].element
+        )
+        val deleteMethod = TestingChecklistMethodNode(
+            backendChecklistClass.children[0].description,
+            backendChecklistClass.children[0].children,
+            backendChecklistClass.children[0].element
+        )
         val root = CheckedTreeNode("root")
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
@@ -419,7 +438,11 @@ class ChecklistTreeServiceTest : TestKnightTestCase() {
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
         service.addChecklist(backendChecklistClass)
-        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element, 0)
+        val deleteItem = CustomChecklistNode(
+            backendChecklistClass.children[0].children[0].description,
+            backendChecklistClass.children[0].children[0].element,
+            0
+        )
         service.deleteItem(deleteItem, backendChecklistClass.children[0], backendChecklistClass)
         service.deleteItem(deleteItem, backendChecklistClass.children[0], backendChecklistClass)
 
@@ -466,8 +489,15 @@ class ChecklistTreeServiceTest : TestKnightTestCase() {
         val service = ChecklistTreeService(project)
         val backendChecklistClass = checklistService.generateClassChecklistFromClass(data.psiClass!!)
 
-        val deleteItem = CustomChecklistNode(backendChecklistClass.children[0].children[0].description, backendChecklistClass.children[0].children[0].element)
-        val deleteMethod = TestingChecklistMethodNode(backendChecklistClass.children[0].description, backendChecklistClass.children[0].children, backendChecklistClass.children[0].element)
+        val deleteItem = CustomChecklistNode(
+            backendChecklistClass.children[0].children[0].description,
+            backendChecklistClass.children[0].children[0].element
+        )
+        val deleteMethod = TestingChecklistMethodNode(
+            backendChecklistClass.children[0].description,
+            backendChecklistClass.children[0].children,
+            backendChecklistClass.children[0].element
+        )
         val root = CheckedTreeNode("root")
         val checkListTree = CheckboxTree(ChecklistCellRenderer(true), root)
         service.initTrees(checkListTree)
