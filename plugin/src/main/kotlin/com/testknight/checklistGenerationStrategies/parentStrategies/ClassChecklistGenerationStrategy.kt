@@ -11,8 +11,6 @@ class ClassChecklistGenerationStrategy private constructor(
 ) :
     ParentChecklistGeneratorStrategy<PsiClass, TestingChecklistClassNode> {
 
-    // the factory currently just call the constructor
-    // but we will use it in the future to build the strategy based on the use configuration.
     companion object Factory {
         /**
          * Creates a new ClassChecklistGenerationStrategy.
