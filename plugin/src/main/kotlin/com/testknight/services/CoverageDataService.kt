@@ -51,15 +51,15 @@ class CoverageDataService(val project: Project) : Disposable {
                 }
 
                 // Create copy from old map, and remove non existing classes.
-                if (classCoveragesMap.keys.contains(it.name)) {
-                    tempClassMap[it.name!!] = classCoveragesMap[it.name!!]!!
+                if (classCoveragesMap.keys.contains(it.qualifiedName)) {
+                    tempClassMap[it.qualifiedName!!] = classCoveragesMap[it.qualifiedName!!]!!
                 } else {
-                    tempClassMap[it.name!!] = CoverageDiffObject()
+                    tempClassMap[it.qualifiedName!!] = CoverageDiffObject()
                 }
 
                 val vFile = it.containingFile.virtualFile
-                tempClassMap[it.name!!]!!.prevStamp = tempClassMap[it.name!!]!!.currStamp
-                tempClassMap[it.name!!]!!.currStamp = vFile.modificationStamp
+                tempClassMap[it.qualifiedName!!]!!.prevStamp = tempClassMap[it.qualifiedName!!]!!.currStamp
+                tempClassMap[it.qualifiedName!!]!!.currStamp = vFile.modificationStamp
             }
 
         classCoveragesMap = tempClassMap
@@ -93,21 +93,21 @@ class CoverageDataService(val project: Project) : Disposable {
                 var coveredPrev = emptySet<Int>()
                 var coveredNow = emptySet<Int>()
 
-                if (currentData!!.classes.contains(it.name)) {
-                    val classData = currentData!!.classes[it.name]
+                if (currentData!!.classes.contains(it.qualifiedName)) {
+                    val classData = currentData!!.classes[it.qualifiedName]
                     allLinesNow = getTotalLinesAndNewlyCoveredLines(classData).first
                     coveredNow = getTotalLinesAndNewlyCoveredLines(classData).second
                 }
 
-                if (previousData != null && previousData!!.classes.contains(it.name)) {
-                    allLinesPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.name]).first
-                    coveredPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.name]).second
+                if (previousData != null && previousData!!.classes.contains(it.qualifiedName)) {
+                    allLinesPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.qualifiedName]).first
+                    coveredPrev = getTotalLinesAndNewlyCoveredLines(previousData!!.classes[it.qualifiedName]).second
                 }
 
                 val vFile = it.containingFile.virtualFile
 
-                val oldObj = classCoveragesMap[it.name!!]
-                classCoveragesMap[it.name!!] = CoverageDiffObject(
+                val oldObj = classCoveragesMap[it.qualifiedName!!]
+                classCoveragesMap[it.qualifiedName!!] = CoverageDiffObject(
                     allLinesPrev,
                     allLinesNow,
                     coveredPrev,
