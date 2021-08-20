@@ -48,6 +48,12 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
         if (path.parentPath.lastPathComponent == rootNode) {
             checkPath(path, true)
             val className = path.lastPathComponent as String
+
+            // Item already exists, don't have to reset or add it again.
+            if (paramSuggestionMap.containsKey(className)) {
+                return
+            }
+
             paramSuggestionMap[className] = mutableListOf()
 
             val index = getIndexOfChild(rootNode, className)
@@ -57,6 +63,13 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
             checkPath(path, false)
             val className = path.parentPath.lastPathComponent as String
             val typeName = path.lastPathComponent as String
+
+            // Item already exists, don't have to reset or add it again.
+            if (paramSuggestionMap.containsKey(className) &&
+                paramSuggestionMap[className]!!.contains(typeName)
+            ) {
+                return
+            }
 
             paramSuggestionMap[className]?.add(typeName)
                 ?: throw InvalidTreePathException("Class doesn't exist in Parameter Suggestion")
