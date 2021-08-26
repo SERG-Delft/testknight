@@ -34,20 +34,38 @@ internal class ParameterSuggestionTreeModelTest : TestKnightTestCase() {
     fun testAddPathElementClass() {
         val tree = ParameterSuggestionTreeModel(parameterSuggestionMap.toMutableMap())
         val path = TreePath(tree.root).pathByAddingChild("byte")
-        tree.addPathElement(path)
+        val ret = tree.addPathElement(path)
         val expected = listOf("String", "int", "byte")
         val actual = tree.getChildren(tree.root)
         TestCase.assertEquals(expected, actual)
+        TestCase.assertEquals(true, ret)
     }
 
     @Test
     fun testAddPathElementValue() {
         val tree = ParameterSuggestionTreeModel(parameterSuggestionMap.toMutableMap())
         val path = TreePath(tree.root).pathByAddingChild("int").pathByAddingChild("3")
-        tree.addPathElement(path)
+        val ret = tree.addPathElement(path)
         val expected = listOf("1", "2", "0", "3")
         val actual = tree.getChildren("int")
         TestCase.assertEquals(expected, actual)
+        TestCase.assertEquals(true, ret)
+    }
+
+    @Test
+    fun testAddDuplicatePathElementValue() {
+        val tree = ParameterSuggestionTreeModel(parameterSuggestionMap.toMutableMap())
+        val path = TreePath(tree.root).pathByAddingChild("int").pathByAddingChild("1")
+        val ret = tree.addPathElement(path)
+        TestCase.assertEquals(false, ret)
+    }
+
+    @Test
+    fun testAddDuplicatePathElementClass() {
+        val tree = ParameterSuggestionTreeModel(parameterSuggestionMap.toMutableMap())
+        val path = TreePath(tree.root).pathByAddingChild("int")
+        val ret = tree.addPathElement(path)
+        TestCase.assertEquals(false, ret)
     }
 
     @Test

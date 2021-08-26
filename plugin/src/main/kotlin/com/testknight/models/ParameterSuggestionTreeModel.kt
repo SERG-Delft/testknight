@@ -43,11 +43,18 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
      * Adds the node pointed by the TreePath.
      *
      * @param path The path of the node to be added.
+     * @return True if the new element is added, false if it is not added.
      */
-    fun addPathElement(path: TreePath) {
+    fun addPathElement(path: TreePath): Boolean {
         if (path.parentPath.lastPathComponent == rootNode) {
             checkPath(path, true)
             val className = path.lastPathComponent as String
+
+            // Item already exists, don't have to reset or add it again.
+            if (paramSuggestionMap.containsKey(className)) {
+                return false
+            }
+
             paramSuggestionMap[className] = mutableListOf()
 
             val index = getIndexOfChild(rootNode, className)
@@ -58,6 +65,13 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
             val className = path.parentPath.lastPathComponent as String
             val typeName = path.lastPathComponent as String
 
+            // Item already exists, don't have to reset or add it again.
+            if (paramSuggestionMap.containsKey(className) &&
+                paramSuggestionMap[className]!!.contains(typeName)
+            ) {
+                return false
+            }
+
             paramSuggestionMap[className]?.add(typeName)
                 ?: throw InvalidTreePathException("Class doesn't exist in Parameter Suggestion")
 
@@ -65,6 +79,8 @@ class ParameterSuggestionTreeModel(private var paramSuggestionMap: MutableMap<St
             treeStructureChanged(path.parentPath, intArrayOf(index), arrayOf(typeName))
             treeNodesInserted(path, intArrayOf(index), arrayOf(className))
         }
+
+        return true
     }
 
     /**
