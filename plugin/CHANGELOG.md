@@ -22,9 +22,11 @@
 
 ## [1.0.1]
 ### Fixed
-- Fix coverage not showing for classes inside a package
-- Fix parameter suggestions tree adding empty class/values
+- Fix coverage not showing for classes inside a package.
+- Fix parameter suggestions tree adding empty class/values.
+### Changed
+- Improved checklist generation parsing strategy.
 
 ## [1.0.0]
-- Initial release
+- Initial release.
 
