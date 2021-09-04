@@ -2,6 +2,32 @@
 
 # TestKnight Changelog
 
-## [Unreleased]
+<!--
+
+## Unreleased
 ### Added
-- Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+- for new features
+### Changed 
+- for changes in existing functionality.
+### Deprecated 
+- for soon-to-be removed features.
+### Removed 
+- for now removed features.
+### Fixed 
+- for any bug fixes.
+### Security
+- in case of vulnerabilities.
+
+-->
+
+## [1.0.1]
+### Fixed
+- Fix coverage not showing for classes inside a package.
+- Fix parameter suggestions tree adding empty class/values.
+- Fix incompatibility with build 212.
+### Changed
+- Improved checklist generation parsing strategy.
+
+## [1.0.0]
+- Initial release.
+
