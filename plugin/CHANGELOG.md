@@ -24,6 +24,7 @@
 ### Fixed
 - Fix coverage not showing for classes inside a package.
 - Fix parameter suggestions tree adding empty class/values.
+- Fix incompatibility with build 212.
 ### Changed
 - Improved checklist generation parsing strategy.
 
