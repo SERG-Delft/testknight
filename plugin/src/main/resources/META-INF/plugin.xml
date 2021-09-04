@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.testknight</id>
     <name>TestKnight</name>
-    <vendor>TestKnight</vendor>
+    <vendor url="https://se.ewi.tudelft.nl/" email="m.f.aniche@tudelft.nl">serg-delft</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
