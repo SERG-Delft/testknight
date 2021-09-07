@@ -1,17 +1,11 @@
 package com.testknight.services
 
-import com.intellij.notification.NotificationGroup
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.Project
 import com.testknight.exceptions.TestKnightException
 
 class ExceptionHandlerService(private val project: Project) {
-
-    private val group = NotificationGroup.toolWindowGroup(
-        "testknight.notifications.toolWindow",
-        "TestKnight",
-        true
-    )
 
     /**
      * Display a notification with the provided title and content.
@@ -23,8 +17,10 @@ class ExceptionHandlerService(private val project: Project) {
      */
     fun notify(title: String, content: String, type: NotificationType) {
 
-        val notification = group.createNotification(title, content, type)
-        notification.notify(project)
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup("testknight.notifications")
+            .createNotification(title, content, type)
+            .notify(project)
     }
 
     /**
@@ -34,7 +30,9 @@ class ExceptionHandlerService(private val project: Project) {
      * @param exception the TestKnightException for which the user should be notified
      */
     fun notify(exception: TestKnightException) {
-        val notification = group.createNotification(exception.title, exception.content, exception.type)
-        notification.notify(project)
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup("testknight.notifications")
+            .createNotification(exception.title, exception.content, exception.type)
+            .notify(project)
     }
 }
