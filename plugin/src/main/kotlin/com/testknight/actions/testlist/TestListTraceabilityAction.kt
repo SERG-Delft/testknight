@@ -48,13 +48,13 @@ class TestListTraceabilityAction : ToggleAction() {
                     e.project?.service<TestTracingService>()
                         ?.highlightTest("${testUserObject.reference.testClassName},${testUserObject.reference.name}")
                 } catch (ex: TraceFileNotFoundException) {
-                    service<ExceptionHandlerService>().notify(ex)
+                    e.project?.service<ExceptionHandlerService>()?.notify(ex)
                     return
                 } catch (ex: CorruptedTraceFileException) {
-                    service<ExceptionHandlerService>().notify(ex)
+                    e.project?.service<ExceptionHandlerService>()?.notify(ex)
                     return
                 } catch (ex: NoTestCoverageDataException) {
-                    service<ExceptionHandlerService>().notify(ex)
+                    e.project?.service<ExceptionHandlerService>()?.notify(ex)
                     return
                 }
             }

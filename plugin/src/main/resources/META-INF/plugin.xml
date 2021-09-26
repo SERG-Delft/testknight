@@ -61,11 +61,10 @@
         <testStatusListener implementation="com.testknight.listeners.TestLoggingListener"/>
 
         <!-- Notifications -->
-        <notification.parentGroup id="testknight.notifications"
-                                  title="TestKnight notifications"/>
-
-        <notification.group parentId="testknight.notifications"
-                            groupId="testknight.notifications.toolWindow"/>
+        <notificationGroup id="testknight.notifications"
+                           toolWindowId="TestKnight"
+                           displayType="TOOL_WINDOW"
+        />
 
         <!-- Intentions -->
         <intentionAction>
