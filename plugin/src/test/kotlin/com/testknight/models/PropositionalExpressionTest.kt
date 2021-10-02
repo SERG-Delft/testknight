@@ -96,4 +96,24 @@ internal class PropositionalExpressionTest : TestKnightTestCase() {
         TestCase.assertEquals(assignments["PROP2"], "b > c")
         TestCase.assertEquals(assignments["PROP3"], "!(a == b)")
     }
+
+    @Test
+    fun testSimplificationBitwiseOps() {
+        val psiElementFactory = PsiElementFactory.getInstance(project)
+
+        val expr = psiElementFactory.createExpressionFromText(
+            "a & b || a | c && a ^ d || ~d",
+            null
+        )
+
+        val (simplified, assignments) = PropositionalExpression(expr).simplified()
+
+        // ^, &, | and ~ should be used for binary numbers and thus should not be part of the simplified expr
+
+        TestCase.assertEquals("PROP3 || PROP2 && PROP1 || PROP0", simplified)
+        TestCase.assertEquals(assignments["PROP3"], "a & b")
+        TestCase.assertEquals(assignments["PROP2"], "a | c")
+        TestCase.assertEquals(assignments["PROP1"], "a ^ d")
+        TestCase.assertEquals(assignments["PROP0"], "~d")
+    }
 }
