@@ -38,22 +38,23 @@ import com.testknight.views.trees.TestListCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
 import java.awt.Insets
-import java.util.Vector
+import java.util.*
 import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreeSelectionModel
 
+
 class UserInterface(val project: Project) {
 
-    private var mainUI: JBTabbedPane? = null
-    private var testCaseTree: Tree? = null
+    private var mainUI: JBTabbedPane = JBTabbedPane()
+    private lateinit var  testCaseTree: Tree
 
     /**
      * Gets the component to be displayed on the tool window.
      *
      * @return The JBTabbedPane which will be shown on the tool window.
      */
-    fun getContent(): JBTabbedPane? {
+    fun getContent(): JBTabbedPane {
         return mainUI
     }
 
@@ -80,6 +81,7 @@ class UserInterface(val project: Project) {
         actionGroup.add(editItem)
         actionGroup.add(generateTestMethod)
         val actionToolbar = actionManager.createActionToolbar("ChecklistToolbar", actionGroup, true)
+        actionToolbar.setTargetComponent(toolWindowPanel)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val service = project.service<ChecklistTreeService>()
@@ -133,6 +135,7 @@ class UserInterface(val project: Project) {
         val traceabilityAction = actionManager.getAction("TestListTraceabilityAction")
         actionGroup.add(traceabilityAction)
         val actionToolbar = actionManager.createActionToolbar("TestListToolbar", actionGroup, true)
+        actionToolbar.setTargetComponent(toolWindowPanel)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = JBScrollPane()
@@ -142,24 +145,24 @@ class UserInterface(val project: Project) {
         testCaseTree = Tree(root)
 
         val cellRenderer = TestListCellRenderer()
-        testCaseTree!!.cellRenderer = cellRenderer
-        testCaseTree!!.isEditable = false
-        testCaseTree!!.isRootVisible = false
-        testCaseTree!!.showsRootHandles = true
-        testCaseTree!!.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
+        testCaseTree.cellRenderer = cellRenderer
+        testCaseTree.isEditable = false
+        testCaseTree.isRootVisible = false
+        testCaseTree.showsRootHandles = true
+        testCaseTree.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
 
-        val mouseListener = TestListMouseListener(testCaseTree!!, cellRenderer)
-        val keyboardListener = TestListKeyboardListener(testCaseTree!!, project)
-        mouseListener.installOn(testCaseTree!!)
-        testCaseTree!!.addKeyListener(keyboardListener)
-        testCaseTree!!.addTreeSelectionListener(
+        val mouseListener = TestListMouseListener(testCaseTree, cellRenderer)
+        val keyboardListener = TestListKeyboardListener(testCaseTree, project)
+        mouseListener.installOn(testCaseTree)
+        testCaseTree.addKeyListener(keyboardListener)
+        testCaseTree.addTreeSelectionListener(
             TestListSelectionListener(
                 project,
                 traceabilityAction as TestListTraceabilityAction
             )
         )
 
-        traceabilityAction.setTree(testCaseTree!!)
+        traceabilityAction.setTree(testCaseTree)
 
         panel.setViewportView(testCaseTree)
         toolWindowPanel.setContent(panel)
@@ -185,6 +188,7 @@ class UserInterface(val project: Project) {
         actionGroup.add(actionManager.getAction("ShowIntegratedView"))
         actionGroup.add(actionManager.getAction("HideIntegratedView"))
         val actionToolbar = actionManager.createActionToolbar("CoverageToolbar", actionGroup, true)
+        actionToolbar.setTargetComponent(toolWindowPanel)
         toolWindowPanel.toolbar = actionToolbar.component
 
         val panel = ScrollPaneFactory.createScrollPane()
@@ -221,15 +225,14 @@ class UserInterface(val project: Project) {
      * The MainUI will be a Tabbed pane with a testList and Checklist tab.
      */
     init {
-        mainUI = JBTabbedPane()
-        mainUI!!.tabComponentInsets = Insets(0, 0, 0, 0)
+        mainUI.tabComponentInsets = Insets(0, 0, 0, 0)
 
         // Function call which returns the tab for copy paste
-        mainUI!!.addTab("Test List", getTestListTab())
+        mainUI.addTab("Test List", getTestListTab())
         // Function call which returns the tab for checklist
-        mainUI!!.addTab("Checklist", createCheckList())
+        mainUI.addTab("Checklist", createCheckList())
         // Function call which returns the tab for coverage
-        mainUI!!.addTab("Coverage", createCoverage())
+        mainUI.addTab("Coverage", createCoverage())
 
         val loadTestsService = project.service<LoadTestsService>()
 
