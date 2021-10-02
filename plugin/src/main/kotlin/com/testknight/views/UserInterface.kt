@@ -39,7 +39,7 @@ import com.testknight.views.trees.TestListCellRenderer
 import org.jetbrains.annotations.NotNull
 import java.awt.Component
 import java.awt.Insets
-import java.util.*
+import java.util.Vector
 import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreeSelectionModel
