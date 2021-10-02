@@ -23,25 +23,25 @@ class UserInterfaceHelper private constructor() {
          * @param project the current project.
          */
         fun refreshTestCaseUI(project: Project) {
-            val textEditor = FileEditorManager.getInstance(project).selectedEditor as TextEditor?
+            val textEditor = FileEditorManager.getInstance(project).selectedEditor
+
+            if(textEditor !is TextEditor) {
+                return;
+            }
 
             val actionManager = ActionManager.getInstance()
             val clearTestAction =
                 (actionManager.getAction("ClearTestAction") ?: return) as ClearTestAction
 
-            if (textEditor != null) {
-                val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!)
+            val psiFile = PsiManager.getInstance(project).findFile(textEditor.file!!)
 
-                if (psiFile == null) {
-                    clearTestAction.actionPerformed(project)
-                } else {
-                    val loadTestAction =
-                        (actionManager.getAction("LoadTestAction") ?: return) as LoadTestAction
-
-                    loadTestAction.actionPerformed(project, psiFile, textEditor.editor)
-                }
-            } else {
+            if (psiFile == null) {
                 clearTestAction.actionPerformed(project)
+            } else {
+                val loadTestAction =
+                    (actionManager.getAction("LoadTestAction") ?: return) as LoadTestAction
+
+                loadTestAction.actionPerformed(project, psiFile, textEditor.editor)
             }
         }
 
