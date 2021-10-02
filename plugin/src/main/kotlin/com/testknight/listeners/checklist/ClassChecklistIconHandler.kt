@@ -1,6 +1,7 @@
 package com.testknight.listeners.checklist
 
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
+import com.intellij.openapi.components.service
 import com.intellij.psi.PsiElement
 import com.testknight.actions.checklist.LoadChecklistAction
 import com.testknight.utilities.UserInterfaceHelper
@@ -21,7 +22,7 @@ class ClassChecklistIconHandler : GutterIconNavigationHandler<PsiElement> {
         if (element == null) return
         val project = element.project
         if (LoadChecklistAction().actionPerformed(project, element.parent)) {
-            UserInterfaceHelper.showTab(project, "Checklist")
+            project.service<UserInterfaceHelper>().showTab("Checklist")
         }
     }
 }

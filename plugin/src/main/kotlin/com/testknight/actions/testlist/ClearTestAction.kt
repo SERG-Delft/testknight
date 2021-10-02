@@ -2,6 +2,7 @@ package com.testknight.actions.testlist
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.ui.treeStructure.Tree
 import com.testknight.utilities.UserInterfaceHelper
@@ -25,7 +26,7 @@ class ClearTestAction : AnAction() {
      * @param project current open project.
      */
     fun actionPerformed(project: Project) {
-        val viewport = UserInterfaceHelper.getTabViewport(project, "Test List") ?: return
+        val viewport = project.service<UserInterfaceHelper>().getTabViewport("Test List") ?: return
         val testListTree = viewport.view as Tree
         val root = testListTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()

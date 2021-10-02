@@ -2,6 +2,7 @@ package com.testknight.views
 
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
@@ -43,11 +44,10 @@ import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.TreeSelectionModel
 
-
 class UserInterface(val project: Project) {
 
     private var mainUI: JBTabbedPane = JBTabbedPane()
-    private lateinit var  testCaseTree: Tree
+    private lateinit var testCaseTree: Tree
 
     /**
      * Gets the component to be displayed on the tool window.
@@ -244,7 +244,11 @@ class UserInterface(val project: Project) {
                 FileEditorManagerListener.FILE_EDITOR_MANAGER,
                 object : FileEditorManagerListener {
                     override fun selectionChanged(@NotNull event: FileEditorManagerEvent) {
-                        UserInterfaceHelper.refreshTestCaseUI(project)
+                        ApplicationManager.getApplication().invokeLater {
+                            ApplicationManager.getApplication().runReadAction {
+                                project.service<UserInterfaceHelper>().refreshTestCaseUI()
+                            }
+                        }
                     }
                 }
             )

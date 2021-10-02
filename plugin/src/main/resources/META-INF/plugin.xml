@@ -25,6 +25,7 @@
         <projectService serviceImplementation="com.testknight.services.TestMethodGenerationService"/>
         <projectService serviceImplementation="com.testknight.services.checklist.ChecklistTreePersistent"/>
         <projectService serviceImplementation="com.testknight.services.ExceptionHandlerService"/>
+        <projectService serviceImplementation="com.testknight.utilities.UserInterfaceHelper"/>
 
         <!-- Application services -->
         <applicationService serviceImplementation="com.testknight.services.checklist.GenerateTestCaseChecklistService"/>
