@@ -52,7 +52,7 @@ class LoadTestAction : AnAction() {
             return
         }
 
-        val testListViewport = UserInterfaceHelper.getTabViewport(project, "Test List") ?: return
+        val testListViewport = project.service<UserInterfaceHelper>().getTabViewport("Test List") ?: return
         val testListTree = testListViewport.view as Tree
         val root = testListTree.model.root as DefaultMutableTreeNode
         root.removeAllChildren()

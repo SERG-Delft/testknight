@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.components.service
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.util.PsiTreeUtil
@@ -29,9 +30,9 @@ class GenerateChecklistUnderCaretAction : AnAction() {
         val checklistAction = ActionManager.getInstance().getAction("ChecklistAction") as LoadChecklistAction
 
         if (containingMethod != null && checklistAction.actionPerformed(project, containingMethod)) {
-            UserInterfaceHelper.showTab(project, "Checklist")
+            project.service<UserInterfaceHelper>().showTab("Checklist")
         } else if (containingClass != null && checklistAction.actionPerformed(project, containingClass)) {
-            UserInterfaceHelper.showTab(project, "Checklist")
+            project.service<UserInterfaceHelper>().showTab("Checklist")
         }
     }
 
