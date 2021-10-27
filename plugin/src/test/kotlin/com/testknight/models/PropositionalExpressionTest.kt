@@ -90,11 +90,9 @@ internal class PropositionalExpressionTest : TestKnightTestCase() {
 
         val (simplified, assignments) = PropositionalExpression(expr).simplified()
 
-        TestCase.assertEquals("PROP3 && (PROP2) ^ (PROP1 || PROP0)", simplified)
-        TestCase.assertEquals(assignments["PROP0"], "!a.get()")
-        TestCase.assertEquals(assignments["PROP1"], "e")
-        TestCase.assertEquals(assignments["PROP2"], "b > c")
-        TestCase.assertEquals(assignments["PROP3"], "!(a == b)")
+        TestCase.assertEquals("PROP1 && PROP0", simplified)
+        TestCase.assertEquals(assignments["PROP0"], "(b > c) ^ (e || !a.get())")
+        TestCase.assertEquals(assignments["PROP1"], "!(a == b)")
     }
 
     @Test
