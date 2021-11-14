@@ -1,5 +1,6 @@
 package com.testknight.listeners
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiTreeChangeAdapter
@@ -25,31 +26,31 @@ class PsiTreeListener(val project: Project) : PsiTreeChangeAdapter() {
 
     override fun childAdded(event: PsiTreeChangeEvent) {
         if (checkElement(event.child)) {
-            UserInterfaceHelper.refreshTestCaseUI(project)
+            project.service<UserInterfaceHelper>().refreshTestCaseUI()
         }
     }
 
     override fun childRemoved(event: PsiTreeChangeEvent) {
         if (checkElement(event.parent)) {
-            UserInterfaceHelper.refreshTestCaseUI(project)
+            project.service<UserInterfaceHelper>().refreshTestCaseUI()
         } else if (event.child != null && event.child is PsiMethodImpl) {
             // testAnalyzer.isTestMethod(event.child as PsiMethodImpl) seems to throw exception.
             // So currently, this will be called even if removed method is not a test method.
-            UserInterfaceHelper.refreshTestCaseUI(project)
+            project.service<UserInterfaceHelper>().refreshTestCaseUI()
         }
     }
 
     override fun childReplaced(event: PsiTreeChangeEvent) {
         if (checkElement(event.parent)) {
-            UserInterfaceHelper.refreshTestCaseUI(project)
+            project.service<UserInterfaceHelper>().refreshTestCaseUI()
         } else if (checkElement(event.child)) {
-            UserInterfaceHelper.refreshTestCaseUI(project)
+            project.service<UserInterfaceHelper>().refreshTestCaseUI()
         }
     }
 
     override fun childMoved(event: PsiTreeChangeEvent) {
         if (checkElement(event.child)) {
-            UserInterfaceHelper.refreshTestCaseUI(project)
+            project.service<UserInterfaceHelper>().refreshTestCaseUI()
         }
     }
 

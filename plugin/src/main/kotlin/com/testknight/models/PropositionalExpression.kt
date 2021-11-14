@@ -21,7 +21,7 @@ class PropositionalExpression(private val psiExpression: PsiExpression) {
      * @return true if the precedence of the expression is less than that of an and operation
      */
     private fun isLowPrecedence(expression: PsiExpression): Boolean {
-        return PsiPrecedenceUtil.getPrecedence(expression) < PsiPrecedenceUtil.BINARY_AND_PRECEDENCE
+        return PsiPrecedenceUtil.getPrecedence(expression) < PsiPrecedenceUtil.AND_PRECEDENCE
     }
 
     /**

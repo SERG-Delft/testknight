@@ -44,7 +44,7 @@ internal class ConditionalExpressionChecklistGenerationStrategyTest : TestKnight
 
     @Test
     fun testMissingConditionReturnsEmptyChecklist() {
-        val data = getBasicTestInfo("/BrokenTernary.java")
+        getBasicTestInfo("/BrokenTernary.java")
         val method = getMethodByName("incompleteConditionalExpression")
 
         val conditionalExpression = PsiTreeUtil.findChildOfType(method, PsiConditionalExpression::class.java)

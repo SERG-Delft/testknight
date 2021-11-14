@@ -21,12 +21,17 @@
 -->
 
 ## [1.0.1]
+
+### Added
+- Added support for build 212.
+### Changed
+- Improved checklist generation parsing strategy.
+- Changed how notifications are registered to 2020.3 and later version.
+### Removed
+- Removed support for build 202.
 ### Fixed
 - Fix coverage not showing for classes inside a package.
 - Fix parameter suggestions tree adding empty class/values.
-- Fix incompatibility with build 212.
-### Changed
-- Improved checklist generation parsing strategy.
 
 ## [1.0.0]
 - Initial release.

@@ -25,6 +25,7 @@
         <projectService serviceImplementation="com.testknight.services.TestMethodGenerationService"/>
         <projectService serviceImplementation="com.testknight.services.checklist.ChecklistTreePersistent"/>
         <projectService serviceImplementation="com.testknight.services.ExceptionHandlerService"/>
+        <projectService serviceImplementation="com.testknight.utilities.UserInterfaceHelper"/>
 
         <!-- Application services -->
         <applicationService serviceImplementation="com.testknight.services.checklist.GenerateTestCaseChecklistService"/>
@@ -61,11 +62,10 @@
         <testStatusListener implementation="com.testknight.listeners.TestLoggingListener"/>
 
         <!-- Notifications -->
-        <notification.parentGroup id="testknight.notifications"
-                                  title="TestKnight notifications"/>
-
-        <notification.group parentId="testknight.notifications"
-                            groupId="testknight.notifications.toolWindow"/>
+        <notificationGroup id="testknight.notifications"
+                           toolWindowId="TestKnight"
+                           displayType="TOOL_WINDOW"
+        />
 
         <!-- Intentions -->
         <intentionAction>
