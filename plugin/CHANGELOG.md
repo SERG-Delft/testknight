@@ -20,6 +20,11 @@
 
 -->
 
+## [1.0.2]
+
+### Added
+- Added support for build 213.
+
 ## [1.0.1]
 
 ### Added
