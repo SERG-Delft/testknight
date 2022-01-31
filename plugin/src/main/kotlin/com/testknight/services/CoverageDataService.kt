@@ -46,7 +46,7 @@ class CoverageDataService(val project: Project) : Disposable {
             .findAll()
             .forEach {
 
-                if (it == null || testAnalyzerService.isTestClass(it)) {
+                if (it == null || testAnalyzerService.isTestClass(it) || it.qualifiedName == null) {
                     return@forEach
                 }
 
@@ -84,7 +84,7 @@ class CoverageDataService(val project: Project) : Disposable {
             .findAll()
             .forEach {
 
-                if (it == null || testAnalyzerService.isTestClass(it)) {
+                if (it == null || testAnalyzerService.isTestClass(it) || it.qualifiedName == null) {
                     return@forEach
                 }
 
@@ -105,7 +105,6 @@ class CoverageDataService(val project: Project) : Disposable {
                 }
 
                 val vFile = it.containingFile.virtualFile
-
                 val oldObj = classCoveragesMap[it.qualifiedName!!]
                 classCoveragesMap[it.qualifiedName!!] = CoverageDiffObject(
                     allLinesPrev,
