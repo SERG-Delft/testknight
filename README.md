@@ -21,7 +21,7 @@ Generate testing checklists for methods/classes based on structural and black-bo
 
 <img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/testing-checklist.png" width=600>
 
-#### Test case List
+### Test case List
 
 Quickly navigate between the test cases within a test file.
 
@@ -49,7 +49,7 @@ TestKnight can detect the side-effects in a method and suggest assertions for th
 
 <img src="https://raw.githubusercontent.com/SERG-Delft/testknight/master/screenshots/assertion-suggestions.gif" width=600>
 
-#### Test Duplication
+### Test Duplication
 
 Easily duplicate an existing test method and change the values of often-changed code elements such as constructor arguments and literals.
  
